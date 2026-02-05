@@ -46,7 +46,7 @@
 
 ## Development Workflow
 
-> Plan → Work → Review → Compound
+> Plan → Work → Review → Compound -> Ship
 
 ### Phase 1: Plan
 
@@ -64,14 +64,18 @@
 
 **Feedback Loop:** For tasks with observable outputs (UI, API, files), use the `feedback-loop` skill to design verification criteria. For UI tasks, use `agent-browser` for automated visual/interaction testing.
 
+use `prd` skill to build the final form and save it in /tasks folder
+
 ### Phase 2: Work (BDD/TDD)
 
 > No behavior change without a test.
 
-1. Write failing test (behavior-focused)
-2. Make minimal code pass test
-3. Refactor only after green
-4. Commit incrementally
+1. Create a new branch if you're in main branch
+2. Write failing test (behavior-focused)
+3. Make minimal code pass test
+4. Refactor only after green
+5. Commit incrementally
+6. Test that all Acceptance criteria are passing
 
 Run tests after every meaningful change. If something fails, understand why before proceeding.
 
@@ -89,21 +93,6 @@ Run tests after every meaningful change. If something fails, understand why befo
 After all agents complete: run full test suite, resolve conflicts, commit separately.
 
 **Always announce phase transitions with visible markers.** This helps the user track what the agent is doing.
-
-Use these exact formats:
-
-```
-<Starting Review>
-  <Sub-Agent: Code Quality> started
-  <Sub-Agent: Code Quality> completed — [summary]
-  <Sub-Agent: Security> started
-  <Sub-Agent: Security> completed — [summary]
-  <Sub-Agent: Performance> started
-  <Sub-Agent: Performance> completed — [summary]
-  <Sub-Agent: Testing> started
-  <Sub-Agent: Testing> completed — [summary]
-</Review Complete>
-```
 
 ### Phase 4: Compound
 
@@ -125,7 +114,7 @@ After review passes, capture learnings in project's `LEARNINGS.md`:
 **Applies to:** [Where else might this be relevant?]
 ```
 
-**If using Ralph:** `progress.txt` = short-term (feature-scoped), `LEARNINGS.md` = long-term (project-scoped). Migrate valuable learnings when archiving progress.txt.
+**If using Ralph/Loop:** `progress.txt` = short-term (feature-scoped), `LEARNINGS.md` = long-term (project-scoped). Migrate valuable learnings when archiving progress.txt.
 
 **Always compound at the end of the flow**. Show compound execution by:
 
@@ -145,6 +134,12 @@ I learned:
 - Review and Compound phases are **mandatory** after completing implementation work
 - Never skip these phases silently
 - If no learnings worth capturing, state: "No significant learnings from this task."
+
+### Phase 5: Ship
+
+After finishing the development, review, and compound; Ship the changes by:
+
+- Create a new PR with a sort description mentioning What, Why, How
 
 ---
 
