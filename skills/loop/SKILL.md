@@ -66,7 +66,7 @@ grep -l "status: done" .tasks/{feature}/*.md 2>/dev/null | wc -l
 grep -l "status: open" .tasks/{feature}/*.md 2>/dev/null | wc -l
 ```
 
-- **All done** → Archive tasks and progress (see Archive section), then report "✅ Loop complete - all tasks finished!"
+- **All done** → Archive tasks and progress (see Archive section), then report "Loop complete - all tasks finished!"
 - **Some blocked** → Report which tasks are blocked and why
 
 ### 4. Execute Task
@@ -265,7 +265,7 @@ if [ ! -f "$PROGRESS_FILE" ]; then
   echo "---" >> "$PROGRESS_FILE"
 fi
 
-echo "🔄 Starting Loop - Tool: $TOOL - Feature: $FEATURE - Max iterations: $MAX_ITERATIONS"
+echo "Starting Loop - Tool: $TOOL - Feature: $FEATURE - Max iterations: $MAX_ITERATIONS"
 
 PROMPT="Load the loop skill and execute the next ready task for feature: $FEATURE"
 
@@ -301,7 +301,7 @@ for i in $(seq 1 $MAX_ITERATIONS); do
 
   if echo "$OUTPUT" | grep -q "Loop complete"; then
     echo ""
-    echo "🎉 Loop completed all tasks!"
+    echo "Loop completed all tasks!"
 
     # Archive progress
     DATE=$(date +%Y-%m-%d)
@@ -316,10 +316,85 @@ for i in $(seq 1 $MAX_ITERATIONS); do
 done
 
 echo ""
-echo "⚠️  Reached max iterations ($MAX_ITERATIONS)."
+echo "Reached max iterations ($MAX_ITERATIONS)."
 echo "Check $PROGRESS_FILE for status."
 exit 1
 ```
+
+---
+
+## Running via tmux (Background + Reporting)
+
+When the user says **"run the loop using tmux"** or **"run the loop in the background"**:
+
+### 1. Spawn the loop in a tmux window
+
+```bash
+tmux new-window -n "loop-{feature}" -d
+tmux send-keys -t "loop-{feature}" "./scripts/loop/loop.sh --feature {feature}" C-m
+```
+
+### 2. Monitor and report after each iteration
+
+Stay interactive with the user. Poll for progress:
+
+```bash
+# Check latest tmux output
+tmux capture-pane -p -t "loop-{feature}"
+
+# Check progress file for completed tasks
+cat scripts/loop/progress-{feature}.txt
+```
+
+**Polling pattern:**
+
+```
+loop:
+  1. Sleep 30 seconds (or user-specified interval)
+  2. Capture tmux output: tmux capture-pane -p -t "loop-{feature}"
+  3. Read progress file: scripts/loop/progress-{feature}.txt
+  4. Compare to last known state — detect new completed tasks
+  5. Report to user:
+     - Which task just completed
+     - Key learnings from that iteration
+     - How many tasks remain
+  6. If "Loop complete" in tmux output → report final summary, stop polling
+  7. If "Reached max iterations" → report and ask user what to do
+  8. Otherwise → continue loop
+```
+
+### 3. Report format
+
+After each iteration, tell the user:
+
+```
+Loop update ({feature}) — Iteration {n}
+Completed: {task title}
+Learnings: {brief summary from progress file}
+Remaining: {count} tasks
+```
+
+When done:
+
+```
+Loop complete ({feature})
+Completed {total} tasks in {n} iterations.
+Summary: {list of what was built}
+```
+
+### 4. Multiple features in parallel
+
+Can run multiple features simultaneously:
+
+```bash
+tmux new-window -n "loop-user-auth" -d
+tmux send-keys -t "loop-user-auth" "./scripts/loop/loop.sh --feature user-auth" C-m
+
+tmux new-window -n "loop-billing" -d
+tmux send-keys -t "loop-billing" "./scripts/loop/loop.sh --feature billing" C-m
+```
+
+Monitor both by polling each window and progress file independently.
 
 ---
 

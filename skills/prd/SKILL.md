@@ -200,12 +200,12 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 **BDD Spec:**
 - Given: A task with priority 'high' exists
 - When: The task list is displayed
-- Then: The task shows a red priority badge with 🔴 icon
+- Then: The task shows a red priority badge
 
 **Acceptance Criteria:**
 
 - [ ] Each task card shows colored priority badge (red=high, yellow=medium, gray=low)
-- [ ] Badge includes icon: 🔴 high, 🟡 medium, ⚪ low
+- [ ] Badge includes color indicator: red=high, yellow=medium, gray=low
 - [ ] Priority visible without hovering or clicking
 - [ ] npm run typecheck passes
 - [ ] Verify in browser using agent-browser skill

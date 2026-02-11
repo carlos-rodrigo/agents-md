@@ -53,9 +53,9 @@
 For non-trivial requests, ask before acting:
 
 > **How do you want to work on this?**
-> 1. 🗺️ **Plan first** — Collaborative planning → PRD → tasks → implementation
-> 2. ⚡ **Straight to code** — Skip planning, go to Work → Review → Compound → Ship
-> 3. 🔄 **Run the loop** — Pick up existing tasks and execute autonomously
+> 1. **Plan first** — Collaborative planning → PRD → tasks → implementation
+> 2. **Straight to code** — Skip planning, go to Work → Review → Compound → Ship
+> 3. **Run the loop** — Pick up existing tasks and execute autonomously
 
 Skip triage for trivial requests (typos, small fixes, quick questions).
 
