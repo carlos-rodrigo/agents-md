@@ -46,40 +46,72 @@
 
 ## Development Workflow
 
-> Plan → Work → Review → Compound -> Ship
+> Plan → Create Tasks → Loop (Work → Review → Compound) → Ship
 
-### Phase 1: Plan
+### Session Start (Triage)
 
-**Before writing code**, research and plan:
+For non-trivial requests, ask before acting:
 
-- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
-- At the end of each plan, give me a list of unresolved questions to answer, if any.
-- Search codebase for similar patterns and prior art
-- Super concise and direct to the point
-- Check `git log`, docs, AGENTS.md files, `LEARNINGS.md`
-- Create task with: BDD spec, acceptance criteria, test plan, feedback loop, risks
-- If it is a PRD use the PRD skill
+> **How do you want to work on this?**
+> 1. 🗺️ **Plan first** — Collaborative planning → PRD → tasks → implementation
+> 2. ⚡ **Straight to code** — Skip planning, go to Work → Review → Compound → Ship
+> 3. 🔄 **Run the loop** — Pick up existing tasks and execute autonomously
 
-**Detail level:** Minimal (< 2h), Standard (1-2d), Comprehensive (multi-day with plan doc)
+Skip triage for trivial requests (typos, small fixes, quick questions).
 
-**Feedback Loop:** For tasks with observable outputs (UI, API, files), use the `feedback-loop` skill to design verification criteria. For UI tasks, use `agent-browser` for automated visual/interaction testing.
+---
 
-use `prd` skill to build the final form and save it in /tasks folder
+### Phase 1: Plan (PRD)
 
-### Phase 2: Work (BDD/TDD)
+**Collaborative: Agent + Human. Requires human approval.**
+
+1. Research codebase: search for patterns, prior art, `git log`, docs, `AGENTS.md`, `LEARNINGS.md`
+2. Ask clarifying questions (use lettered options for fast answers)
+3. Load the `prd` skill
+4. Generate PRD and save to `.prd/prd-[feature-name].md`
+5. Present PRD to user for approval
+6. If changes needed → iterate until approved
+
+**Detail level:** Minimal (< 2h), Standard (1-2d), Comprehensive (multi-day)
+
+**Do NOT proceed to tasks until human approves the PRD.**
+
+---
+
+### Phase 2: Create Tasks
+
+After PRD is approved:
+
+1. Load the `simple-tasks` skill
+2. Read the approved PRD from `.prd/`
+3. Derive feature name from PRD filename (`prd-user-auth.md` → `user-auth`)
+4. Create feature folder: `.tasks/{feature}/`
+5. Break user stories into implementable tasks in `.tasks/{feature}/`
+6. Create `.tasks/{feature}/_active.md` with progress checklist
+7. Each task must be completable in one iteration (one context window)
+
+**Parallel features:** Each feature gets its own folder. Multiple agents can work different features simultaneously.
+
+**Rule of thumb:** If you can't describe the change in 2-3 sentences, split it.
+
+---
+
+### Phase 3: Work (BDD/TDD)
 
 > No behavior change without a test.
 
-1. Create a new branch if you're in main branch
+1. Create a new branch if on main
 2. Write failing test (behavior-focused)
 3. Make minimal code pass test
 4. Refactor only after green
 5. Commit incrementally
-6. Test that all Acceptance criteria are passing
+6. Verify acceptance criteria pass
 
 Run tests after every meaningful change. If something fails, understand why before proceeding.
 
-### Phase 3: Review
+---
+
+### Phase 4: Review
 
 **Before committing**, spawn one agent per perspective using Task tool. Each agent MUST fix issues (not just report):
 
@@ -92,9 +124,11 @@ Run tests after every meaningful change. If something fails, understand why befo
 
 After all agents complete: run full test suite, resolve conflicts, commit separately.
 
-**Always announce phase transitions with visible markers.** This helps the user track what the agent is doing.
+**Always announce phase transitions with visible markers.**
 
-### Phase 4: Compound
+---
+
+### Phase 5: Compound
 
 After review passes, capture learnings in project's `LEARNINGS.md`:
 
@@ -113,8 +147,6 @@ After review passes, capture learnings in project's `LEARNINGS.md`:
 **Learning:** [What did you discover?]
 **Applies to:** [Where else might this be relevant?]
 ```
-
-**If using Ralph/Loop:** `progress.txt` = short-term (feature-scoped), `LEARNINGS.md` = long-term (project-scoped). Migrate valuable learnings when archiving progress.txt.
 
 **Always compound at the end of the flow**. Show compound execution by:
 
@@ -135,11 +167,13 @@ I learned:
 - Never skip these phases silently
 - If no learnings worth capturing, state: "No significant learnings from this task."
 
-### Phase 5: Ship
+---
 
-After finishing the development, review, and compound; Ship the changes by:
+### Phase 6: Ship
 
-- Create a new PR with a sort description mentioning What, Why, How
+After development, review, and compound:
+
+- Create a new PR with a short description mentioning What, Why, How
 
 ---
 

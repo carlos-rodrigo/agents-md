@@ -11,14 +11,23 @@ Lightweight task management using markdown files. Agents read and write tasks di
 
 ## Structure
 
+Tasks are organized by feature. Each feature gets its own folder under `.tasks/`:
+
 ```
 .tasks/
-├── _active.md          # Current feature context (optional)
-├── 001-setup-schema.md
-├── 002-add-api.md
-├── 003-build-ui.md
-└── archive/            # Completed features
+├── user-auth/              # Feature folder (matches PRD name)
+│   ├── _active.md          # Feature context and progress checklist
+│   ├── 001-setup-schema.md
+│   ├── 002-add-api.md
+│   └── 003-build-ui.md
+├── billing/                # Another feature (can run in parallel)
+│   ├── _active.md
+│   ├── 001-stripe-setup.md
+│   └── 002-webhooks.md
+└── archive/                # Completed features
 ```
+
+The feature folder name is derived from the PRD: `.prd/prd-user-auth.md` → `.tasks/user-auth/`
 
 ---
 
@@ -69,17 +78,17 @@ npm run db:migrate && npm run typecheck
 
 ### List Tasks
 
-Read `.tasks/` directory, parse frontmatter, filter by status:
+Read `.tasks/{feature}/` directory, parse frontmatter, filter by status:
 
 ```bash
-ls -1 .tasks/*.md 2>/dev/null | head -20
+ls -1 .tasks/{feature}/*.md 2>/dev/null | head -20
 ```
 
 Then read each file's frontmatter to get status.
 
 **Quick status check:**
 ```bash
-grep -l "status: open" .tasks/*.md
+grep -l "status: open" .tasks/{feature}/*.md
 ```
 
 ### Find Ready Tasks
@@ -90,7 +99,7 @@ A task is **ready** when:
 
 ```bash
 # Find open tasks
-grep -l "status: open" .tasks/*.md
+grep -l "status: open" .tasks/{feature}/*.md
 
 # For each, check if dependencies are done
 ```
@@ -123,14 +132,14 @@ When all tasks for a feature are done:
 DATE=$(date +%Y-%m-%d)
 FEATURE="feature-name"
 mkdir -p .tasks/archive/$DATE-$FEATURE
-mv .tasks/*.md .tasks/archive/$DATE-$FEATURE/
+mv .tasks/$FEATURE/ .tasks/archive/$DATE-$FEATURE/
 ```
 
 ---
 
 ## Active Feature Context
 
-Optional `_active.md` tracks current feature:
+Each feature folder contains `_active.md` (`.tasks/{feature}/_active.md`) to track progress:
 
 ```markdown
 # Current Feature: User Preferences
@@ -183,19 +192,6 @@ Validate email format and required fields before save.
 
 ---
 
-## Integration with Ralph
-
-Replace `task_list` calls with direct file operations:
-
-| Old (Beads)                          | New (Simple Tasks)                    |
-|--------------------------------------|---------------------------------------|
-| `bd add "title"`                     | Create `.tasks/NNN-title.md`          |
-| `task_list list ready:true`          | Parse files, check depends satisfied  |
-| `task_list update status:completed`  | Edit frontmatter `status: done`       |
-| `bd update --desc "..."`             | Edit task file content                |
-
----
-
 ## Helper Script (Optional)
 
 For convenience, create `.tasks/tasks.sh`:
@@ -205,7 +201,7 @@ For convenience, create `.tasks/tasks.sh`:
 
 case "$1" in
   list)
-    for f in .tasks/*.md; do
+    for f in .tasks/${2:-*}/*.md; do
       [ -f "$f" ] || continue
       id=$(basename "$f" .md | cut -d'-' -f1)
       status=$(grep "^status:" "$f" | cut -d' ' -f2)
@@ -214,7 +210,7 @@ case "$1" in
     done
     ;;
   ready)
-    for f in .tasks/*.md; do
+    for f in .tasks/${2:-*}/*.md; do
       [ -f "$f" ] || continue
       status=$(grep "^status:" "$f" | cut -d' ' -f2)
       [ "$status" = "open" ] || continue
@@ -247,11 +243,11 @@ esac
 
 ```bash
 # 1. Create feature tasks
-# Agent creates .tasks/001-schema.md, 002-api.md, 003-ui.md
+# Agent creates .tasks/user-prefs/001-schema.md, 002-api.md, 003-ui.md
 
 # 2. Find ready task
-grep -l "status: open" .tasks/*.md
-# → .tasks/001-schema.md (no dependencies)
+grep -l "status: open" .tasks/user-prefs/*.md
+# → .tasks/user-prefs/001-schema.md (no dependencies)
 
 # 3. Work on task
 # Agent reads task, implements, runs verify command
@@ -266,5 +262,5 @@ grep -l "status: open" .tasks/*.md
 
 # 7. Archive
 mkdir -p .tasks/archive/2025-02-05-user-prefs
-mv .tasks/*.md .tasks/archive/2025-02-05-user-prefs/
+mv .tasks/user-prefs/ .tasks/archive/2025-02-05-user-prefs/
 ```

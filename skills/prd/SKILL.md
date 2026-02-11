@@ -14,7 +14,7 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 1. Receive a feature description from the user
 2. Ask 3-5 essential clarifying questions (with lettered options)
 3. Generate a structured PRD based on answers
-4. Save to `/tasks/prd-[feature-name].md`
+4. Save to `.prd/prd-[feature-name].md`
 
 **Important:** Do NOT start implementing. Just create the PRD.
 
@@ -155,7 +155,7 @@ The PRD reader may be a junior developer or AI agent. Therefore:
 ## Output
 
 - **Format:** Markdown (`.md`)
-- **Location:** `/tasks/`
+- **Location:** `.prd/`
 - **Filename:** `prd-[feature-name].md` (kebab-case)
 
 ---
@@ -288,17 +288,14 @@ Before saving the PRD:
 - [ ] Each user story has BDD spec (Given/When/Then)
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
-- [ ] Saved to `/tasks/prd-[feature-name].md`
+- [ ] Saved to `.prd/prd-[feature-name].md`
 
 ---
 
 ## Next Step
 
-After PRD is approved, convert user stories to executable tasks using Beads:
+After PRD is approved, create tasks:
 
-```bash
-bd add "[Feature Name]" --desc "Parent task for [feature]"
-bd add "[US-001 title]" --parent <parent-id> --desc "[full BDD spec + test plan]"
-```
-
-Or say **"set up ralph"** to interactively create tasks with proper dependencies, BDD specs, and test plans.
+> Say **"create tasks"** to convert user stories into `.tasks/{feature}/` files using the simple-tasks skill.
+> The feature folder name is derived from this PRD's filename (e.g., `prd-user-auth.md` → `.tasks/user-auth/`).
+> Then say **"run the loop"** to start autonomous execution.
