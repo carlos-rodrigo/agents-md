@@ -1,11 +1,11 @@
 ---
 name: loop
-description: "Autonomous task execution loop. Triggers on: run the loop, start the loop, loop, run loop. Picks ready tasks from .tasks/, executes them one at a time using Work → Review → Compound from AGENTS.md, commits, and repeats."
+description: "Autonomous task execution loop. Triggers on: run the loop, start the loop, loop, run loop. Picks ready tasks from .features/{feature}/tasks/, executes them one at a time using Work → Review → Compound from AGENTS.md, commits, and repeats."
 ---
 
 # Loop - Autonomous Task Execution
 
-Executes tasks from `.tasks/` one at a time in dependency order. Each iteration: pick a ready task, implement it, commit, repeat.
+Executes tasks from `.features/{feature}/tasks/` one at a time in dependency order. Each iteration: pick a ready task, implement it, commit, repeat.
 
 Uses **simple-tasks** for task management. Uses **AGENTS.md** for the Work → Review → Compound methodology.
 
@@ -15,13 +15,14 @@ Uses **simple-tasks** for task management. Uses **AGENTS.md** for the Work → R
 
 Before running the loop:
 
-- `.tasks/{feature}/` folder exists with task files (created by Phase 2: Create Tasks)
-- `.tasks/{feature}/_active.md` has the feature context and progress checklist
+- `.features/{feature}/tasks/` folder exists with task files (created by Phase 3: Create Tasks)
+- `.features/{feature}/tasks/_active.md` has the feature context and progress checklist
+- `.features/{feature}/prd.md` and `.features/{feature}/design.md` exist (for context)
 - Tasks have proper `depends` relationships
 
 If prerequisites are missing, tell the user to run planning first.
 
-**Feature discovery:** List feature folders with `ls -d .tasks/*/`. If multiple features exist, ask the user which one to work on.
+**Feature discovery:** List feature folders with `ls -d .features/*/`. If multiple features exist, ask the user which one to work on.
 
 ---
 
@@ -32,13 +33,14 @@ If prerequisites are missing, tell the user to run planning first.
 Discover available features:
 
 ```bash
-ls -d .tasks/*/ 2>/dev/null | grep -v archive
+ls -d .features/*/ 2>/dev/null | grep -v archive
 ```
 
 If multiple features have open tasks, ask the user which one to work on.
 
 Once a feature is selected (e.g., `user-auth`):
-- Read `.tasks/user-auth/_active.md` for feature context
+- Read `.features/user-auth/prd.md` and `.features/user-auth/design.md` for feature context
+- Read `.features/user-auth/tasks/_active.md` for progress
 - Read `scripts/loop/progress-user-auth.txt` for patterns from previous iterations
 
 ### 2. Find Ready Tasks
@@ -49,10 +51,10 @@ A task is **ready** when:
 
 ```bash
 # List task files for selected feature
-ls -1 .tasks/{feature}/*.md 2>/dev/null | grep -v _active
+ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -v _active
 
 # Find open tasks
-grep -l "status: open" .tasks/{feature}/*.md
+grep -l "status: open" .features/{feature}/tasks/*.md
 ```
 
 Parse each task's frontmatter. Build a map of `id → status`. Find tasks where all dependencies are done.
@@ -62,8 +64,8 @@ Parse each task's frontmatter. Build a map of `id → status`. Find tasks where 
 Check completion:
 
 ```bash
-grep -l "status: done" .tasks/{feature}/*.md 2>/dev/null | wc -l
-grep -l "status: open" .tasks/{feature}/*.md 2>/dev/null | wc -l
+grep -l "status: done" .features/{feature}/tasks/*.md 2>/dev/null | wc -l
+grep -l "status: open" .features/{feature}/tasks/*.md 2>/dev/null | wc -l
 ```
 
 - **All done** → Archive tasks and progress (see Archive section), then report "Loop complete - all tasks finished!"
@@ -78,7 +80,8 @@ Use `handoff` with this goal:
 ```
 Implement and verify task [id]: [title].
 
-Read the full task file: .tasks/{feature}/NNN-task-name.md
+Read the full task file: .features/{feature}/tasks/NNN-task-name.md
+Read the design doc: .features/{feature}/design.md (for architectural context)
 
 FIRST: Read scripts/loop/progress-{feature}.txt - check "Codebase Patterns" section for context from previous iterations.
 
@@ -120,7 +123,7 @@ Task ID: [id]
 
 3. Mark task as done - edit task file: status: open → status: done
 
-4. Update .tasks/{feature}/_active.md - check off the completed task
+4. Update .features/{feature}/tasks/_active.md - check off the completed task
 
 5. Invoke the loop skill to continue
 ```
@@ -165,9 +168,9 @@ When all tasks for a feature complete:
 DATE=$(date +%Y-%m-%d)
 FEATURE="feature-name"
 
-# Archive tasks
-mkdir -p .tasks/archive/$DATE-$FEATURE
-mv .tasks/$FEATURE/ .tasks/archive/$DATE-$FEATURE/
+# Archive feature (PRD + design + tasks all together)
+mkdir -p .features/archive/$DATE-$FEATURE
+mv .features/$FEATURE/ .features/archive/$DATE-$FEATURE/
 
 # Archive progress
 mkdir -p scripts/loop/archive
@@ -242,9 +245,9 @@ cd "$REPO_ROOT"
 
 # Auto-detect feature if not specified
 if [ -z "$FEATURE" ]; then
-  FEATURES=($(ls -d .tasks/*/ 2>/dev/null | grep -v archive | xargs -I{} basename {}))
+  FEATURES=($(ls -d .features/*/ 2>/dev/null | grep -v archive | xargs -I{} basename {}))
   if [ ${#FEATURES[@]} -eq 0 ]; then
-    echo "Error: No feature folders found in .tasks/"
+    echo "Error: No feature folders found in .features/"
     exit 1
   elif [ ${#FEATURES[@]} -eq 1 ]; then
     FEATURE="${FEATURES[0]}"

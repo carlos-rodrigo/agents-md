@@ -46,14 +46,14 @@
 
 ## Development Workflow
 
-> Plan → Create Tasks → Loop (Work → Review → Compound) → Ship
+> Plan → Design → Create Tasks → Loop (Work → Review → Compound) → Ship
 
 ### Session Start (Triage)
 
 For non-trivial requests, ask before acting:
 
 > **How do you want to work on this?**
-> 1. **Plan first** — Collaborative planning → PRD → tasks → implementation
+> 1. **Plan first** — Collaborative planning → PRD → Design → tasks → implementation
 > 2. **Straight to code** — Skip planning, go to Work → Review → Compound → Ship
 > 3. **Run the loop** — Pick up existing tasks and execute autonomously
 
@@ -68,27 +68,43 @@ Skip triage for trivial requests (typos, small fixes, quick questions).
 1. Research codebase: search for patterns, prior art, `git log`, docs, `AGENTS.md`, `LEARNINGS.md`
 2. Ask clarifying questions (use lettered options for fast answers)
 3. Load the `prd` skill
-4. Generate PRD and save to `.prd/prd-[feature-name].md`
+4. Generate PRD and save to `.features/{feature}/prd.md`
 5. Present PRD to user for approval
 6. If changes needed → iterate until approved
 
 **Detail level:** Minimal (< 2h), Standard (1-2d), Comprehensive (multi-day)
 
-**Do NOT proceed to tasks until human approves the PRD.**
+**Do NOT proceed to design until human approves the PRD.**
 
 ---
 
-### Phase 2: Create Tasks
+### Phase 2: Design
+
+**Collaborative: Agent + Human. Requires human approval.**
 
 After PRD is approved:
 
+1. Load the `design-solution` skill
+2. Read the approved PRD from `.features/{feature}/prd.md`
+3. Research the existing codebase: identify reusable components, hooks, APIs, services, and established patterns
+4. Generate a technical design document and save to `.features/{feature}/design.md`
+5. Present design to user for approval
+6. If changes needed → iterate until approved
+
+**Do NOT proceed to tasks until human approves the design.**
+
+---
+
+### Phase 3: Create Tasks
+
+After design is approved:
+
 1. Load the `simple-tasks` skill
-2. Read the approved PRD from `.prd/`
-3. Derive feature name from PRD filename (`prd-user-auth.md` → `user-auth`)
-4. Create feature folder: `.tasks/{feature}/`
-5. Break user stories into implementable tasks in `.tasks/{feature}/`
-6. Create `.tasks/{feature}/_active.md` with progress checklist
-7. Each task must be completable in one iteration (one context window)
+2. Read the approved PRD and design from `.features/{feature}/`
+3. Create tasks folder: `.features/{feature}/tasks/`
+4. Break user stories into implementable tasks derived from the design
+5. Create `.features/{feature}/tasks/_active.md` with progress checklist
+6. Each task must be completable in one iteration (one context window)
 
 **Parallel features:** Each feature gets its own folder. Multiple agents can work different features simultaneously.
 
@@ -96,7 +112,7 @@ After PRD is approved:
 
 ---
 
-### Phase 3: Work (BDD/TDD)
+### Phase 4: Work (BDD/TDD)
 
 > No behavior change without a test.
 
@@ -111,7 +127,7 @@ Run tests after every meaningful change. If something fails, understand why befo
 
 ---
 
-### Phase 4: Review
+### Phase 5: Review
 
 **Before committing**, spawn one agent per perspective using Task tool. Each agent MUST fix issues (not just report):
 
@@ -128,7 +144,7 @@ After all agents complete: run full test suite, resolve conflicts, commit separa
 
 ---
 
-### Phase 5: Compound
+### Phase 6: Compound
 
 After review passes, capture learnings in project's `LEARNINGS.md`:
 
@@ -169,7 +185,7 @@ I learned:
 
 ---
 
-### Phase 6: Ship
+### Phase 7: Ship
 
 After development, review, and compound:
 

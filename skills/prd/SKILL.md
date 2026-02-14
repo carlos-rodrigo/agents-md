@@ -14,7 +14,7 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 1. Receive a feature description from the user
 2. Ask 3-5 essential clarifying questions (with lettered options)
 3. Generate a structured PRD based on answers
-4. Save to `.prd/prd-[feature-name].md`
+4. Save to `.features/{feature}/prd.md`
 
 **Important:** Do NOT start implementing. Just create the PRD.
 
@@ -155,8 +155,8 @@ The PRD reader may be a junior developer or AI agent. Therefore:
 ## Output
 
 - **Format:** Markdown (`.md`)
-- **Location:** `.prd/`
-- **Filename:** `prd-[feature-name].md` (kebab-case)
+- **Location:** `.features/{feature}/prd.md`
+- **Feature folder:** kebab-case derived from feature name (e.g., "User Auth" → `.features/user-auth/prd.md`)
 
 ---
 
@@ -288,14 +288,15 @@ Before saving the PRD:
 - [ ] Each user story has BDD spec (Given/When/Then)
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
-- [ ] Saved to `.prd/prd-[feature-name].md`
+- [ ] Saved to `.features/{feature}/prd.md`
 
 ---
 
 ## Next Step
 
-After PRD is approved, create tasks:
+After PRD is approved, create the technical design:
 
-> Say **"create tasks"** to convert user stories into `.tasks/{feature}/` files using the simple-tasks skill.
-> The feature folder name is derived from this PRD's filename (e.g., `prd-user-auth.md` → `.tasks/user-auth/`).
+> Say **"create design"** to generate the technical design document using the design-solution skill.
+> The design will be saved to `.features/{feature}/design.md` alongside the PRD.
+> After design is approved, say **"create tasks"** to break it into implementable tasks.
 > Then say **"run the loop"** to start autonomous execution.
