@@ -26,6 +26,24 @@ If prerequisites are missing, tell the user to run planning first.
 
 ---
 
+## Execution Modes
+
+The loop runs **one task per context window**. There are two ways to get a fresh context between tasks:
+
+| Mode            | Mechanism                                           | When to use                               |
+| --------------- | --------------------------------------------------- | ----------------------------------------- |
+| **Interactive** | `/handoff` creates a new session after each task    | You're in a pi interactive session        |
+| **Background**  | `loop.sh` spawns a fresh `pi` process per iteration | You want autonomous execution (hands-off) |
+
+**How to choose:**
+
+- User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then `/handoff`.
+- User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
+
+Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
+
+---
+
 ## Loop Workflow
 
 ### 1. Check Context
@@ -39,6 +57,7 @@ ls -d .features/*/ 2>/dev/null | grep -v archive
 If multiple features have open tasks, ask the user which one to work on.
 
 Once a feature is selected (e.g., `user-auth`):
+
 - Read `.features/user-auth/prd.md` and `.features/user-auth/design.md` for feature context
 - Read `.features/user-auth/tasks/_active.md` for progress
 - Read `scripts/loop/progress-user-auth.txt` for patterns from previous iterations
@@ -46,6 +65,7 @@ Once a feature is selected (e.g., `user-auth`):
 ### 2. Find Ready Tasks
 
 A task is **ready** when:
+
 - `status: open`
 - All IDs in `depends` array have `status: done`
 
@@ -75,42 +95,42 @@ grep -l "status: open" .features/{feature}/tasks/*.md 2>/dev/null | wc -l
 
 Pick the lowest-numbered ready task (or one related to just-completed work).
 
-Use `handoff` with this goal:
+Implement the task **in this session**:
 
-```
-Implement and verify task [id]: [title].
+1. Read the full task file: `.features/{feature}/tasks/NNN-task-name.md`
+2. Read the design doc: `.features/{feature}/design.md` (for architectural context)
+3. Read `scripts/loop/progress-{feature}.txt` — check "Codebase Patterns" section for context from previous iterations
 
-Read the full task file: .features/{feature}/tasks/NNN-task-name.md
-Read the design doc: .features/{feature}/design.md (for architectural context)
+Then follow the AGENTS.md methodology:
 
-FIRST: Read scripts/loop/progress-{feature}.txt - check "Codebase Patterns" section for context from previous iterations.
+#### Work
 
-Follow the AGENTS.md methodology for each task:
-
-## Work
 - Implement the task per the BDD spec and acceptance criteria
 - Run quality checks from the task's "Verify" section
 - If checks fail, FIX THE ISSUES and re-run until they pass
 
-## Review
+#### Review
+
 - Spawn review agents per AGENTS.md Phase 4 (Code Quality, Security, Performance, Testing)
 - Each agent MUST fix issues, not just report
 - Run full test suite after review
 
-## Compound
+#### Compound
+
 - Capture learnings in LEARNINGS.md (Pattern, Decision, Failure, Gotcha)
-- If you discovered a reusable pattern for THIS FEATURE, add it to "## Codebase Patterns" at the TOP of scripts/loop/progress-{feature}.txt
+- If you discovered a reusable pattern for THIS FEATURE, add it to "## Codebase Patterns" at the TOP of `scripts/loop/progress-{feature}.txt`
 - Show compound execution markers as defined in AGENTS.md
 - If no significant learnings, state it explicitly
 
-## Finalize
-1. Commit all changes with message: feat: [Task Title]
+#### Finalize
 
-2. Append to scripts/loop/progress-{feature}.txt:
+1. Commit all changes with message: `feat: [Task Title]`
 
+2. Append to `scripts/loop/progress-{feature}.txt`:
+
+```
 ## [Date] - [Task Title]
 
-Thread: [current thread URL]
 Task ID: [id]
 
 - What was implemented
@@ -120,13 +140,43 @@ Task ID: [id]
   - Gotchas encountered
 
 ---
-
-3. Mark task as done - edit task file: status: open → status: done
-
-4. Update .features/{feature}/tasks/_active.md - check off the completed task
-
-5. Invoke the loop skill to continue
 ```
+
+3. Mark task as done — edit task file: `status: open` → `status: done`
+
+4. Update `.features/{feature}/tasks/_active.md` — check off the completed task
+
+### 5. Next Iteration
+
+**CRITICAL: Do NOT continue to the next task in the same session.**
+
+#### Interactive mode → `/handoff`
+
+Call `/handoff` with a goal that gives the new session everything it needs. Fill in the template with concrete values from the task you just completed:
+
+```
+/handoff Continue the loop for feature "{feature}". I just completed task {id}: {title}. Key patterns/gotchas from this task: {1-2 sentence summary of learnings}. The next ready task should be picked from .features/{feature}/tasks/ — read _active.md for progress and scripts/loop/progress-{feature}.txt for codebase patterns discovered so far. Load the loop skill to continue.
+```
+
+**Example:**
+
+```
+/handoff Continue the loop for feature "agentic-assistant". I just completed task 005: Memory system — Go backend domain with facts CRUD + frontend memory tools proxying to Go endpoints. Key patterns: all Firestore ops go through Go backend (no firebase-admin in frontend); use jsonSchema<T>() not Zod for AI SDK tool schemas. The next ready task should be picked from .features/agentic-assistant/tasks/ — read _active.md for progress and scripts/loop/progress-agentic-assistant.txt for codebase patterns discovered so far. Load the loop skill to continue.
+```
+
+The `/handoff` extension uses this goal plus conversation history to generate a focused prompt for the new session.
+
+#### Background mode → just exit
+
+When running via `loop.sh`, the script handles iteration. After finalizing the task, just stop. The script will spawn a fresh `pi` process for the next iteration automatically.
+
+If all tasks are done, output "Loop complete" so the script detects it and stops.
+
+#### Why fresh context matters
+
+- Prevents context degradation over many tasks
+- Each task gets full context budget for implementation
+- Progress file is the durable memory; the handoff goal (or script prompt) is the warm summary
 
 ---
 
@@ -154,6 +204,7 @@ Feature: [feature name]
 ```
 
 **Rules:**
+
 - APPEND entries, never replace
 - Codebase Patterns section is at the top for quick reference
 - When a new feature starts, archive old progress and reset
@@ -179,9 +230,9 @@ mv scripts/loop/progress-$FEATURE.txt scripts/loop/archive/$DATE-$FEATURE-progre
 
 ---
 
-## Shell Script
+## Shell Script (Background Mode)
 
-For running the loop externally (outside an agent session), create `scripts/loop/loop.sh`:
+Used by **background mode** — each iteration spawns a fresh `pi` process with a clean context window. Create `scripts/loop/loop.sh`:
 
 ```bash
 #!/bin/bash
@@ -428,8 +479,9 @@ Before marking any task complete:
 
 ## Important
 
-- ONE task per iteration
-- Each handoff runs in a fresh thread with clean context
-- progress.txt is the memory between iterations
+- **ONE task per context window** — never implement multiple tasks in the same session
+- **Interactive mode**: after completing a task, ALWAYS call `/handoff` to create a fresh session
+- **Background mode**: after completing a task, just stop — `loop.sh` spawns the next iteration
+- `scripts/loop/progress-{feature}.txt` is the memory between sessions — append learnings before handoff/exit
 - Prefer tasks in the same area as just-completed work
 - If not confident, stop and document uncertainty
