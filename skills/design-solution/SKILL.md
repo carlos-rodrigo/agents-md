@@ -25,6 +25,34 @@ Create a technical design document that defines **how** to build a feature. Brid
 
 Before writing anything, **understand what already exists**. This is the most critical step.
 
+### Sub-agent assisted research
+
+Use sub-agents to accelerate and deepen the research phase:
+
+**Scout** — Fast codebase recon (cheap, uses Haiku). Start here to map the landscape:
+
+```
+subagent({ agent: "scout", task: "Find all code relevant to: {feature}. Focus on reusable components, hooks, services, data models, and established patterns." })
+```
+
+**Librarian** — Deep library research. Use when the feature integrates with external libraries:
+
+```
+subagent({ agent: "librarian", task: "Investigate how {library/framework} handles {specific concern}. Show the source code for key APIs we'll integrate with." })
+```
+
+**Oracle** — Architecture validation. After drafting the approach, ask the oracle to stress-test it:
+
+```
+subagent({ agent: "oracle", task: "Review this technical approach for {feature}: {brief description of approach}. Analyze trade-offs, identify edge cases, and suggest alternatives if there's a better way. Key files: {list relevant files}" })
+```
+
+**When to use which:**
+- **Always** use scout first — it's fast and cheap
+- Use librarian when integrating with libraries you don't fully understand
+- Use oracle when facing non-trivial architecture decisions or trade-offs
+- For simple features, scout alone may be sufficient
+
 ### What to search for:
 
 - **Reusable components:** Search for UI components that can be reused or extended
@@ -35,7 +63,7 @@ Before writing anything, **understand what already exists**. This is the most cr
 - **Utilities:** Look for helper functions, validators, formatters already in use
 - **Patterns:** How does the codebase handle similar features today?
 
-### How to search:
+### How to search (in addition to sub-agents):
 
 ```bash
 # Find components

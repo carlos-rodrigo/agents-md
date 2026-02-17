@@ -199,92 +199,64 @@ Check every acceptance criterion from the task. If any fails, add more TDD cycle
 
 ## Phase 3: Review
 
-**Goal:** Four independent reviewers check the implementation, each fixing issues they find.
+**Goal:** Four oracle instances review the implementation in parallel, each focused on one dimension. The main agent then applies fixes.
 
-### Setup: Spawn 4 review agents via tmux
+### Run 4 oracle reviews in parallel
 
-Use tmux to run 4 parallel pi instances, each focused on one review dimension.
-
-First, create a diff of all changes for the reviewers to examine:
+Generate the diff, then use the `subagent` tool in parallel mode to run 4 oracle reviews simultaneously:
 
 ```bash
-# Generate the diff for review
+# Generate the diff for reviewers
 git diff main --stat
 git diff main > /tmp/review-diff.txt
 ```
 
-Then spawn the 4 reviewers:
-
-```bash
-# Code Quality reviewer
-tmux new-window -n "review-quality" -d
-tmux send-keys -t "review-quality" "echo 'Review this diff for CODE QUALITY issues (patterns, naming, complexity, duplication, readability). Fix any issues you find by editing the files directly. When done, create /tmp/review-quality-done.txt with a summary of what you fixed or \"No issues found\".' | pi --yes-always --no-git" C-m
-
-# Security reviewer
-tmux new-window -n "review-security" -d
-tmux send-keys -t "review-security" "echo 'Review this diff for SECURITY issues (secrets, input validation, data handling, auth, injection, XSS). Fix any issues you find by editing the files directly. When done, create /tmp/review-security-done.txt with a summary of what you fixed or \"No issues found\".' | pi --yes-always --no-git" C-m
-
-# Performance reviewer
-tmux new-window -n "review-perf" -d
-tmux send-keys -t "review-perf" "echo 'Review this diff for PERFORMANCE issues (N+1 queries, missing indexes, unnecessary re-renders, large bundles, caching opportunities, bottlenecks). Fix any issues you find by editing the files directly. When done, create /tmp/review-perf-done.txt with a summary of what you fixed or \"No issues found\".' | pi --yes-always --no-git" C-m
-
-# Testing reviewer
-tmux new-window -n "review-testing" -d
-tmux send-keys -t "review-testing" "echo 'Review this diff for TESTING issues (missing coverage, edge cases, brittle tests, missing assertions, test quality). Fix any issues you find by editing the files directly. When done, create /tmp/review-testing-done.txt with a summary of what you fixed or \"No issues found\".' | pi --yes-always --no-git" C-m
+```
+subagent({ tasks: [
+  {
+    agent: "oracle",
+    task: "Review the changes in this task for CODE QUALITY issues. Read /tmp/review-diff.txt for the diff, then read the changed files. Focus on: patterns, naming, complexity, duplication, readability. For each issue found, report the file path, line number, the problem, and a specific fix."
+  },
+  {
+    agent: "oracle",
+    task: "Review the changes in this task for SECURITY issues. Read /tmp/review-diff.txt for the diff, then read the changed files. Focus on: secrets exposure, input validation, data handling, auth bypasses, injection, XSS. For each issue found, report the file path, line number, the problem, and a specific fix."
+  },
+  {
+    agent: "oracle",
+    task: "Review the changes in this task for PERFORMANCE issues. Read /tmp/review-diff.txt for the diff, then read the changed files. Focus on: N+1 queries, missing indexes, unnecessary re-renders, large bundles, caching opportunities, bottlenecks. For each issue found, report the file path, line number, the problem, and a specific fix."
+  },
+  {
+    agent: "oracle",
+    task: "Review the changes in this task for TESTING issues. Read /tmp/review-diff.txt for the diff, then read the changed files. Focus on: missing coverage, edge cases not tested, brittle tests, missing assertions, test quality. For each issue found, report the file path, line number, the problem, and a specific fix."
+  }
+]})
 ```
 
-### Wait for reviewers to complete
+The oracle agents are **read-only** — they analyze and report but don't edit files. This eliminates the conflict problem of multiple agents editing simultaneously.
 
-Poll for completion:
+### Apply fixes
 
-```bash
-# Check if all 4 reviewers are done
-ls /tmp/review-quality-done.txt /tmp/review-security-done.txt /tmp/review-perf-done.txt /tmp/review-testing-done.txt 2>/dev/null | wc -l
-```
+After all 4 reviews complete:
 
-Wait until all 4 files exist. Check every 30 seconds:
-
-```bash
-while [ $(ls /tmp/review-*-done.txt 2>/dev/null | wc -l) -lt 4 ]; do
-  sleep 30
-  echo "Waiting for reviewers... $(ls /tmp/review-*-done.txt 2>/dev/null | wc -l)/4 complete"
-done
-echo "All reviewers complete"
-```
-
-### Collect results
-
-```bash
-echo "=== Code Quality ===" && cat /tmp/review-quality-done.txt
-echo "=== Security ===" && cat /tmp/review-security-done.txt
-echo "=== Performance ===" && cat /tmp/review-perf-done.txt
-echo "=== Testing ===" && cat /tmp/review-testing-done.txt
-```
-
-### Post-review
-
-1. **Run the full test suite** — reviewers may have made changes that conflict:
+1. **Triage findings** — Categorize as critical (must fix), warning (should fix), or suggestion (consider)
+2. **Apply critical and warning fixes** — Edit the files based on oracle recommendations
+3. **Run the full test suite** to ensure fixes don't break anything:
 
 ```bash
 {test_command}
 ```
 
-2. **Fix any conflicts or broken tests** from reviewer changes
-3. **Commit review fixes separately:**
+4. **Commit review fixes separately:**
 
 ```bash
 git add -A
-git commit -m "review: apply fixes from code review"
+git commit -m "review: apply fixes from oracle code review"
 ```
 
-4. **Clean up:**
+5. **Clean up:**
 
 ```bash
-rm -f /tmp/review-*-done.txt /tmp/review-diff.txt
-tmux kill-window -t "review-quality" 2>/dev/null
-tmux kill-window -t "review-security" 2>/dev/null
-tmux kill-window -t "review-perf" 2>/dev/null
-tmux kill-window -t "review-testing" 2>/dev/null
+rm -f /tmp/review-diff.txt
 ```
 
 ---
@@ -374,7 +346,7 @@ git push
 ```
 Phase 1: Context    → Read task, PRD, design. Search codebase. Build plan.
 Phase 2: Code       → TDD loop on every step: RED → GREEN → REFACTOR → commit.
-Phase 3: Review     → 4 pi instances via tmux, each fixes one dimension.
+Phase 3: Review     → 4 oracle sub-agents in parallel, main agent applies fixes.
 Phase 4: Compound   → Capture learnings to LEARNINGS.md.
 Finalize            → Mark done, commit, push, report.
 ```
@@ -385,5 +357,5 @@ Finalize            → Mark done, commit, push, report.
 
 - **Never skip Phase 1.** Jumping into code without context leads to rework.
 - **TDD on every step is non-negotiable.** Not "write tests after". Not "tests at the end". Every step.
-- **Reviewers fix, not report.** If a reviewer only reports issues, the review failed.
+- **Oracle reviews, main agent fixes.** Oracle reports issues with specific file paths and fixes. The main agent applies them.
 - **One task per session.** After completing a task, hand off to a fresh context for the next one.

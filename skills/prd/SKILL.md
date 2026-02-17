@@ -12,11 +12,36 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 ## The Job
 
 1. Receive a feature description from the user
-2. Ask 3-5 essential clarifying questions (with lettered options)
-3. Generate a structured PRD based on answers
-4. Save to `.features/{feature}/prd.md`
+2. **Research** the landscape using sub-agents (researcher + librarian)
+3. Ask 3-5 essential clarifying questions (with lettered options)
+4. Generate a structured PRD informed by research
+5. Save to `.features/{feature}/prd.md`
 
 **Important:** Do NOT start implementing. Just create the PRD.
+
+---
+
+## Step 0: Research (Sub-agents)
+
+Before asking clarifying questions, gather intelligence using sub-agents. Use the `subagent` tool in **parallel** to run both simultaneously:
+
+- **Researcher**: Investigate the state of the art, common approaches, and best practices for the problem domain
+- **Librarian**: Search for how relevant libraries/frameworks solve this, check APIs you'll likely integrate with
+
+```
+subagent({ tasks: [
+  { agent: "researcher", task: "Research the state of the art for: {feature description}. Focus on common approaches, best practices, and trade-offs." },
+  { agent: "librarian", task: "Search for how relevant libraries and frameworks handle: {feature description}. Show key APIs, patterns, and integration points." }
+]})
+```
+
+**Use research findings to:**
+- Inform clarifying questions (offer options based on what you found)
+- Identify approaches the user may not have considered
+- Spot potential pitfalls early
+- Reference real-world implementations in the PRD
+
+**When to skip research:** Trivial features, well-understood domains, or when the user explicitly says to skip it.
 
 ---
 
