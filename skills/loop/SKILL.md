@@ -95,32 +95,13 @@ grep -l "status: open" .features/{feature}/tasks/*.md 2>/dev/null | wc -l
 
 Pick the lowest-numbered ready task (or one related to just-completed work).
 
-Implement the task **in this session**:
+1. Read `scripts/loop/progress-{feature}.txt` — check "Codebase Patterns" section for context from previous iterations
+2. Load the `implement-task` skill
+3. Pass the task file path: `.features/{feature}/tasks/NNN-task-name.md`
 
-1. Read the full task file: `.features/{feature}/tasks/NNN-task-name.md`
-2. Read the design doc: `.features/{feature}/design.md` (for architectural context)
-3. Read `scripts/loop/progress-{feature}.txt` — check "Codebase Patterns" section for context from previous iterations
+The skill handles Context → Code → Review → Compound.
 
-Then follow the AGENTS.md methodology:
-
-#### Work
-
-- Implement the task per the BDD spec and acceptance criteria
-- Run quality checks from the task's "Verify" section
-- If checks fail, FIX THE ISSUES and re-run until they pass
-
-#### Review
-
-- Spawn review agents per AGENTS.md Phase 4 (Code Quality, Security, Performance, Testing)
-- Each agent MUST fix issues, not just report
-- Run full test suite after review
-
-#### Compound
-
-- Capture learnings in LEARNINGS.md (Pattern, Decision, Failure, Gotcha)
-- If you discovered a reusable pattern for THIS FEATURE, add it to "## Codebase Patterns" at the TOP of `scripts/loop/progress-{feature}.txt`
-- Show compound execution markers as defined in AGENTS.md
-- If no significant learnings, state it explicitly
+Additionally, if you discovered a reusable pattern for THIS FEATURE, add it to "## Codebase Patterns" at the TOP of `scripts/loop/progress-{feature}.txt`.
 
 #### Finalize
 

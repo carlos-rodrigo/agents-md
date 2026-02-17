@@ -46,7 +46,7 @@
 
 ## Development Workflow
 
-> Plan → Design → Create Tasks → Loop (Work → Review → Compound) → Ship
+> Plan → Design → Create Tasks → Implement → Ship
 
 ### Session Start (Triage)
 
@@ -54,7 +54,7 @@ For non-trivial requests, ask before acting:
 
 > **How do you want to work on this?**
 > 1. **Plan first** — Collaborative planning → PRD → Design → tasks → implementation
-> 2. **Straight to code** — Skip planning, go to Work → Review → Compound → Ship
+> 2. **Straight to code** — Skip planning, go to Implement → Ship
 > 3. **Run the loop** — Pick up existing tasks and execute autonomously
 
 Skip triage for trivial requests (typos, small fixes, quick questions).
@@ -112,80 +112,22 @@ After design is approved:
 
 ---
 
-### Phase 4: Work (BDD/TDD)
+### Phase 4: Implement Task
 
-> No behavior change without a test.
+For each task:
 
-1. Create a new branch if on main
-2. Write failing test (behavior-focused)
-3. Make minimal code pass test
-4. Refactor only after green
-5. Commit incrementally
-6. Verify acceptance criteria pass
+1. Load the `implement-task` skill
+2. Pass the task file path: `.features/{feature}/tasks/NNN-task-name.md`
 
-Run tests after every meaningful change. If something fails, understand why before proceeding.
+The skill handles four phases: Context → Code → Review → Compound.
 
----
+Create a new branch if on main before starting. One task per session.
 
-### Phase 5: Review
-
-**Before committing**, spawn one agent per perspective using Task tool. Each agent MUST fix issues (not just report):
-
-| Agent        | Focus                              | Fixes                                 |
-| ------------ | ---------------------------------- | ------------------------------------- |
-| Code Quality | Patterns, naming, complexity       | Refactor to match patterns, simplify  |
-| Security     | Secrets, validation, data handling | Add validation, sanitize inputs       |
-| Performance  | N+1 queries, caching, bottlenecks  | Optimize queries, add caching         |
-| Testing      | Coverage, edge cases, brittleness  | Add missing tests, improve assertions |
-
-After all agents complete: run full test suite, resolve conflicts, commit separately.
-
-**Always announce phase transitions with visible markers.**
+**Do NOT skip any phase.** The skill defines each phase in detail.
 
 ---
 
-### Phase 6: Compound
-
-After review passes, capture learnings in project's `LEARNINGS.md`:
-
-- **Patterns**: Reusable solutions discovered
-- **Decisions**: Why an approach was chosen
-- **Failures**: Bugs and how to prevent them
-- **Gotchas**: Non-obvious behavior, edge cases
-
-**Format:**
-
-```markdown
-## [Category]: [Brief Title]
-
-**Date:** YYYY-MM-DD
-**Context:** [What were you trying to do?]
-**Learning:** [What did you discover?]
-**Applies to:** [Where else might this be relevant?]
-```
-
-**Always compound at the end of the flow**. Show compound execution by:
-
-```
-<Starting Compound>
-  Analyzing changes for learnings...
-</Compound Complete>
-
-I learned:
-1. [First learning]
-2. [Second learning]
-3. [Third learning]
-```
-
-**Rules:**
-
-- Review and Compound phases are **mandatory** after completing implementation work
-- Never skip these phases silently
-- If no learnings worth capturing, state: "No significant learnings from this task."
-
----
-
-### Phase 7: Ship
+### Phase 5: Ship
 
 After development, review, and compound:
 
