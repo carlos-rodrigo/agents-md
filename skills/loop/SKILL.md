@@ -32,12 +32,12 @@ The loop runs **one task per context window**. There are two ways to get a fresh
 
 | Mode            | Mechanism                                           | When to use                               |
 | --------------- | --------------------------------------------------- | ----------------------------------------- |
-| **Interactive** | `/handoff` creates a new session after each task    | You're in a pi interactive session        |
+| **Interactive** | `handoff` tool creates a new session after each task | You're in a pi interactive session        |
 | **Background**  | `loop.sh` spawns a fresh `pi` process per iteration | You want autonomous execution (hands-off) |
 
 **How to choose:**
 
-- User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then `/handoff`.
+- User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then call the `handoff` tool.
 - User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
 
 Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
@@ -131,21 +131,21 @@ Task ID: [id]
 
 **CRITICAL: Do NOT continue to the next task in the same session.**
 
-#### Interactive mode → `/handoff`
+#### Interactive mode → handoff tool
 
-Call `/handoff` with a goal that gives the new session everything it needs. Fill in the template with concrete values from the task you just completed:
+Call the `handoff` tool with a goal that gives the new session everything it needs. Fill in the template with concrete values from the task you just completed:
 
 ```
-/handoff Continue the loop for feature "{feature}". I just completed task {id}: {title}. Key patterns/gotchas from this task: {1-2 sentence summary of learnings}. The next ready task should be picked from .features/{feature}/tasks/ — read _active.md for progress and scripts/loop/progress-{feature}.txt for codebase patterns discovered so far. Load the loop skill to continue.
+goal: Continue the loop for feature "{feature}". I just completed task {id}: {title}. Key patterns/gotchas from this task: {1-2 sentence summary of learnings}. The next ready task should be picked from .features/{feature}/tasks/ — read _active.md for progress and scripts/loop/progress-{feature}.txt for codebase patterns discovered so far. Load the loop skill to continue.
 ```
 
 **Example:**
 
 ```
-/handoff Continue the loop for feature "agentic-assistant". I just completed task 005: Memory system — Go backend domain with facts CRUD + frontend memory tools proxying to Go endpoints. Key patterns: all Firestore ops go through Go backend (no firebase-admin in frontend); use jsonSchema<T>() not Zod for AI SDK tool schemas. The next ready task should be picked from .features/agentic-assistant/tasks/ — read _active.md for progress and scripts/loop/progress-agentic-assistant.txt for codebase patterns discovered so far. Load the loop skill to continue.
+goal: Continue the loop for feature "agentic-assistant". I just completed task 005: Memory system — Go backend domain with facts CRUD + frontend memory tools proxying to Go endpoints. Key patterns: all Firestore ops go through Go backend (no firebase-admin in frontend); use jsonSchema<T>() not Zod for AI SDK tool schemas. The next ready task should be picked from .features/agentic-assistant/tasks/ — read _active.md for progress and scripts/loop/progress-agentic-assistant.txt for codebase patterns discovered so far. Load the loop skill to continue.
 ```
 
-The `/handoff` extension uses this goal plus conversation history to generate a focused prompt for the new session.
+The `handoff` tool uses this goal plus conversation history to generate a focused prompt, then creates a new session automatically.
 
 #### Background mode → just exit
 
@@ -461,7 +461,7 @@ Before marking any task complete:
 ## Important
 
 - **ONE task per context window** — never implement multiple tasks in the same session
-- **Interactive mode**: after completing a task, ALWAYS call `/handoff` to create a fresh session
+- **Interactive mode**: after completing a task, ALWAYS call the `handoff` tool to create a fresh session
 - **Background mode**: after completing a task, just stop — `loop.sh` spawns the next iteration
 - `scripts/loop/progress-{feature}.txt` is the memory between sessions — append learnings before handoff/exit
 - Prefer tasks in the same area as just-completed work
