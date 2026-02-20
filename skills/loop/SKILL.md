@@ -33,12 +33,13 @@ The loop runs **one task per context window**. There are two ways to get a fresh
 | Mode            | Mechanism                                           | When to use                               |
 | --------------- | --------------------------------------------------- | ----------------------------------------- |
 | **Interactive** | `handoff` tool creates a new session after each task | You're in a pi interactive session        |
-| **Background**  | `loop.sh` spawns a fresh `pi` process per iteration | You want autonomous execution (hands-off) |
+| **Background**  | `loop.sh` spawns a fresh agent process per iteration | You want autonomous execution (hands-off) |
 
 **How to choose:**
 
 - User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then call the `handoff` tool.
 - User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
+- User says "run loop in background using pi" (or amp/claude/opencode) → **Background mode** with explicit `--tool` set from the request (example: `--tool pi`).
 
 Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
 
@@ -149,7 +150,7 @@ The `handoff` tool uses this goal plus conversation history to generate a focuse
 
 #### Background mode → just exit
 
-When running via `loop.sh`, the script handles iteration. After finalizing the task, just stop. The script will spawn a fresh `pi` process for the next iteration automatically.
+When running via `loop.sh`, the script handles iteration. After finalizing the task, just stop. The script will spawn a fresh agent process for the next iteration automatically.
 
 If all tasks are done, output "Loop complete" so the script detects it and stops.
 
@@ -213,148 +214,37 @@ mv scripts/loop/progress-$FEATURE.txt scripts/loop/archive/$DATE-$FEATURE-progre
 
 ## Shell Script (Background Mode)
 
-Used by **background mode** — each iteration spawns a fresh `pi` process with a clean context window. Create `scripts/loop/loop.sh`:
+Used by **background mode** — each iteration spawns a fresh agent process with a clean context window.
+
+The background assets now live **next to this skill** (global skill path):
+
+- Script: `~/agents/skills/loop/loop.sh`
+- Prompt template: `~/agents/skills/loop/prompt.md`
+
+Prompt placeholders:
+
+- `{{FEATURE}}`
+- `{{PROGRESS_FILE}}`
+
+Run it from any project by passing `--project-root` (or execute it while already `cd`'d into the project):
 
 ```bash
-#!/bin/bash
-# Loop - Autonomous AI agent loop
-# Usage: ./scripts/loop/loop.sh [--feature name] [--tool amp|claude|opencode|pi] [max_iterations]
-# If --tool is not specified, auto-detects which agent is available.
-
-set -e
-
-TOOL=""
-MAX_ITERATIONS=10
-FEATURE=""
-
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    --tool)
-      TOOL="$2"
-      shift 2
-      ;;
-    --tool=*)
-      TOOL="${1#*=}"
-      shift
-      ;;
-    --feature)
-      FEATURE="$2"
-      shift 2
-      ;;
-    --feature=*)
-      FEATURE="${1#*=}"
-      shift
-      ;;
-    *)
-      if [[ "$1" =~ ^[0-9]+$ ]]; then
-        MAX_ITERATIONS="$1"
-      fi
-      shift
-      ;;
-  esac
-done
-
-# Auto-detect tool if not specified
-if [ -z "$TOOL" ]; then
-  if command -v amp &>/dev/null; then
-    TOOL="amp"
-  elif command -v claude &>/dev/null; then
-    TOOL="claude"
-  elif command -v opencode &>/dev/null; then
-    TOOL="opencode"
-  elif command -v pi &>/dev/null; then
-    TOOL="pi"
-  else
-    echo "Error: No supported agent found. Install amp, claude, opencode, or pi."
-    exit 1
-  fi
-fi
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-
-cd "$REPO_ROOT"
-
-# Auto-detect feature if not specified
-if [ -z "$FEATURE" ]; then
-  FEATURES=($(ls -d .features/*/ 2>/dev/null | grep -v archive | xargs -I{} basename {}))
-  if [ ${#FEATURES[@]} -eq 0 ]; then
-    echo "Error: No feature folders found in .features/"
-    exit 1
-  elif [ ${#FEATURES[@]} -eq 1 ]; then
-    FEATURE="${FEATURES[0]}"
-  else
-    echo "Multiple features found:"
-    for f in "${FEATURES[@]}"; do echo "  - $f"; done
-    echo "Use --feature <name> to select one."
-    exit 1
-  fi
-fi
-
-PROGRESS_FILE="$SCRIPT_DIR/progress-$FEATURE.txt"
-
-if [ ! -f "$PROGRESS_FILE" ]; then
-  echo "# Loop Progress Log" > "$PROGRESS_FILE"
-  echo "Started: $(date)" >> "$PROGRESS_FILE"
-  echo "Feature: $FEATURE" >> "$PROGRESS_FILE"
-  echo "---" >> "$PROGRESS_FILE"
-fi
-
-echo "Starting Loop - Tool: $TOOL - Feature: $FEATURE - Max iterations: $MAX_ITERATIONS"
-
-PROMPT="Load the loop skill and execute the next ready task for feature: $FEATURE"
-
-for i in $(seq 1 $MAX_ITERATIONS); do
-  echo ""
-  echo "==============================================================="
-  echo "  Loop Iteration $i of $MAX_ITERATIONS ($TOOL)"
-  echo "==============================================================="
-
-  TEMP_OUTPUT="/tmp/loop_${TOOL}_$$.txt"
-
-  case "$TOOL" in
-    amp)
-      echo "$PROMPT" | amp --dangerously-allow-all 2>&1 | tee "$TEMP_OUTPUT" || true
-      ;;
-    claude)
-      echo "$PROMPT" | claude --dangerously-skip-permissions --print 2>&1 | tee "$TEMP_OUTPUT" || true
-      ;;
-    opencode)
-      opencode run "$PROMPT" 2>&1 | tee "$TEMP_OUTPUT" || true
-      ;;
-    pi)
-      echo "$PROMPT" | pi --yes-always --no-git 2>&1 | tee "$TEMP_OUTPUT" || true
-      ;;
-    *)
-      echo "Error: Unknown tool '$TOOL'. Use amp, claude, opencode, or pi."
-      exit 1
-      ;;
-  esac
-
-  OUTPUT=$(cat "$TEMP_OUTPUT")
-  rm -f "$TEMP_OUTPUT"
-
-  if echo "$OUTPUT" | grep -q "Loop complete"; then
-    echo ""
-    echo "Loop completed all tasks!"
-
-    # Archive progress
-    DATE=$(date +%Y-%m-%d)
-    mkdir -p "$SCRIPT_DIR/archive"
-    mv "$PROGRESS_FILE" "$SCRIPT_DIR/archive/$DATE-progress.txt" 2>/dev/null || true
-
-    exit 0
-  fi
-
-  echo "Iteration $i complete."
-  sleep 2
-done
-
-echo ""
-echo "Reached max iterations ($MAX_ITERATIONS)."
-echo "Check $PROGRESS_FILE for status."
-exit 1
+~/agents/skills/loop/loop.sh --feature {feature} --project-root "$PWD" --tool {tool} 20
 ```
+
+Supported flags:
+
+- `--feature <name>`
+- `--project-root <path>`
+- `--tool amp|claude|opencode|pi` (explicit; overrides auto-detect order)
+- `--tool-order <csv>` (auto-detect priority, e.g. `pi,amp,claude,opencode`)
+- `LOOP_TOOL_ORDER` env var (same as `--tool-order`; CLI flag wins)
+- positional `max_iterations` (default: 10)
+
+Completion contract:
+
+- Agent must output exactly: `Loop complete`
+- Script also accepts legacy `<promise>COMPLETE</promise>` for backward compatibility
 
 ---
 
@@ -366,8 +256,10 @@ When the user says **"run the loop using tmux"** or **"run the loop in the backg
 
 ```bash
 tmux new-window -n "loop-{feature}" -d
-tmux send-keys -t "loop-{feature}" "./scripts/loop/loop.sh --feature {feature}" C-m
+tmux send-keys -t "loop-{feature}" "~/agents/skills/loop/loop.sh --feature {feature} --project-root $PWD --tool {tool}" C-m
 ```
+
+If the user says **"run loop in background using pi"**, use `--tool pi` explicitly.
 
 ### 2. Monitor and report after each iteration
 
@@ -423,10 +315,10 @@ Can run multiple features simultaneously:
 
 ```bash
 tmux new-window -n "loop-user-auth" -d
-tmux send-keys -t "loop-user-auth" "./scripts/loop/loop.sh --feature user-auth" C-m
+tmux send-keys -t "loop-user-auth" "~/agents/skills/loop/loop.sh --feature user-auth --project-root $PWD --tool {tool}" C-m
 
 tmux new-window -n "loop-billing" -d
-tmux send-keys -t "loop-billing" "./scripts/loop/loop.sh --feature billing" C-m
+tmux send-keys -t "loop-billing" "~/agents/skills/loop/loop.sh --feature billing --project-root $PWD --tool {tool}" C-m
 ```
 
 Monitor both by polling each window and progress file independently.
