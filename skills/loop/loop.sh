@@ -12,6 +12,7 @@ FEATURE=""
 PROJECT_ROOT=""
 MAX_ITERATIONS=10
 SLEEP_SECONDS=2
+POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
 
 is_supported_tool() {
   case "$1" in
@@ -46,6 +47,18 @@ validate_tool_order() {
   return 0
 }
 
+validate_non_negative_int() {
+  local name="$1"
+  local value="$2"
+
+  if ! [[ "$value" =~ ^[0-9]+$ ]]; then
+    echo "Error: $name must be a non-negative integer (got '$value')"
+    return 1
+  fi
+
+  return 0
+}
+
 usage() {
   cat <<'EOF'
 Usage: loop.sh [options] [max_iterations]
@@ -57,12 +70,14 @@ Options:
   --tool-order <csv>       Tool priority for auto-detect, e.g. "pi,amp,claude,opencode"
                            Can also be set via LOOP_TOOL_ORDER env var
   --sleep <seconds>        Delay between iterations (default: 2)
+  --poll <seconds>         Heartbeat log interval while tool runs (default: 3)
+                           Set 0 to disable heartbeat logging
   -h, --help               Show this help
 
 Examples:
-  ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi 20
+  ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi --poll 1 20
   ~/agents/skills/loop/loop.sh --feature pwa-hardening --project-root /path/to/repo --tool-order "amp,claude,pi"
-  LOOP_TOOL_ORDER="claude,opencode,pi,amp" ~/agents/skills/loop/loop.sh --feature billing --project-root "$PWD"
+  LOOP_TOOL_ORDER="claude,opencode,pi,amp" LOOP_POLL_SECONDS=1 ~/agents/skills/loop/loop.sh --feature billing --project-root "$PWD"
 EOF
 }
 
@@ -108,6 +123,14 @@ while [[ $# -gt 0 ]]; do
       SLEEP_SECONDS="${1#*=}"
       shift
       ;;
+    --poll)
+      POLL_SECONDS="${2:-}"
+      shift 2
+      ;;
+    --poll=*)
+      POLL_SECONDS="${1#*=}"
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -124,6 +147,19 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if ! validate_non_negative_int "--sleep" "$SLEEP_SECONDS"; then
+  exit 1
+fi
+
+if ! validate_non_negative_int "--poll" "$POLL_SECONDS"; then
+  exit 1
+fi
+
+if [[ "$MAX_ITERATIONS" -le 0 ]]; then
+  echo "Error: max_iterations must be > 0"
+  exit 1
+fi
 
 if [[ -z "$PROJECT_ROOT" ]]; then
   PROJECT_ROOT="$PWD"
@@ -219,7 +255,7 @@ PROMPT="${PROMPT_TEMPLATE//\{\{FEATURE\}\}/$FEATURE}"
 PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/scripts/loop/progress-$FEATURE.txt}"
 
 echo "=== loop start $(date) ===" | tee -a "$LOG_FILE"
-echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS" | tee -a "$LOG_FILE"
+echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
 
 for i in $(seq 1 "$MAX_ITERATIONS"); do
@@ -254,16 +290,28 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   esac
 
   START_TS=$(date +%s)
-  while kill -0 "$CMD_PID" 2>/dev/null; do
-    sleep 30
-    if kill -0 "$CMD_PID" 2>/dev/null; then
-      ELAPSED=$(( $(date +%s) - START_TS ))
-      echo "[$(date '+%Y-%m-%d %H:%M:%S')] iteration $i still running (${ELAPSED}s elapsed)..." | tee -a "$LOG_FILE"
-    fi
-  done
+  HEARTBEAT_PID=""
+
+  if [[ "$POLL_SECONDS" -gt 0 ]]; then
+    (
+      while kill -0 "$CMD_PID" 2>/dev/null; do
+        sleep "$POLL_SECONDS"
+        if kill -0 "$CMD_PID" 2>/dev/null; then
+          ELAPSED=$(( $(date +%s) - START_TS ))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] iteration $i still running (${ELAPSED}s elapsed)..." | tee -a "$LOG_FILE"
+        fi
+      done
+    ) &
+    HEARTBEAT_PID=$!
+  fi
 
   wait "$CMD_PID"
   TOOL_EXIT=$?
+
+  if [[ -n "$HEARTBEAT_PID" ]]; then
+    wait "$HEARTBEAT_PID" 2>/dev/null || true
+  fi
+
   set -e
 
   if [[ $TOOL_EXIT -ne 0 ]]; then

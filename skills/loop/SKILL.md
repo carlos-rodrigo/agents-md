@@ -239,6 +239,9 @@ Supported flags:
 - `--tool amp|claude|opencode|pi` (explicit; overrides auto-detect order)
 - `--tool-order <csv>` (auto-detect priority, e.g. `pi,amp,claude,opencode`)
 - `LOOP_TOOL_ORDER` env var (same as `--tool-order`; CLI flag wins)
+- `--sleep <seconds>` delay between iterations (default: `2`)
+- `--poll <seconds>` heartbeat interval while an iteration runs (default: `3`, set `0` to disable heartbeat logs)
+- `LOOP_POLL_SECONDS` env var (same as `--poll`; CLI flag wins)
 - positional `max_iterations` (default: 10)
 
 Completion contract:
