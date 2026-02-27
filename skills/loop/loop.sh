@@ -267,19 +267,19 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   set +e
   case "$TOOL" in
     pi)
-      (pi -p "$PROMPT" 2>&1 | tee "$TEMP_OUTPUT" | tee -a "$LOG_FILE") &
+      (pi -p "$PROMPT" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     amp)
-      (printf "%s\n" "$PROMPT" | amp --dangerously-allow-all 2>&1 | tee "$TEMP_OUTPUT" | tee -a "$LOG_FILE") &
+      (printf "%s\n" "$PROMPT" | amp --dangerously-allow-all 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     claude)
-      (printf "%s\n" "$PROMPT" | claude --dangerously-skip-permissions --print 2>&1 | tee "$TEMP_OUTPUT" | tee -a "$LOG_FILE") &
+      (printf "%s\n" "$PROMPT" | claude --dangerously-skip-permissions --print 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     opencode)
-      (opencode run "$PROMPT" 2>&1 | tee "$TEMP_OUTPUT" | tee -a "$LOG_FILE") &
+      (opencode run "$PROMPT" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     *)
@@ -290,27 +290,26 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   esac
 
   START_TS=$(date +%s)
-  HEARTBEAT_PID=""
 
   if [[ "$POLL_SECONDS" -gt 0 ]]; then
-    (
-      while kill -0 "$CMD_PID" 2>/dev/null; do
-        sleep "$POLL_SECONDS"
-        if kill -0 "$CMD_PID" 2>/dev/null; then
+    while ps -p "$CMD_PID" >/dev/null 2>&1; do
+      STATUS="$(ps -o stat= -p "$CMD_PID" 2>/dev/null | tr -d '[:space:]')"
+      [[ -z "$STATUS" || "$STATUS" == Z* ]] && break
+
+      sleep "$POLL_SECONDS"
+
+      if ps -p "$CMD_PID" >/dev/null 2>&1; then
+        STATUS="$(ps -o stat= -p "$CMD_PID" 2>/dev/null | tr -d '[:space:]')"
+        if [[ -n "$STATUS" && "$STATUS" != Z* ]]; then
           ELAPSED=$(( $(date +%s) - START_TS ))
           echo "[$(date '+%Y-%m-%d %H:%M:%S')] iteration $i still running (${ELAPSED}s elapsed)..." | tee -a "$LOG_FILE"
         fi
-      done
-    ) &
-    HEARTBEAT_PID=$!
+      fi
+    done
   fi
 
-  wait "$CMD_PID"
+  wait "$CMD_PID" 2>/dev/null
   TOOL_EXIT=$?
-
-  if [[ -n "$HEARTBEAT_PID" ]]; then
-    wait "$HEARTBEAT_PID" 2>/dev/null || true
-  fi
 
   set -e
 
