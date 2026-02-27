@@ -15,7 +15,8 @@ Create a technical design document that defines **how** to build a feature. Brid
 2. Research the existing codebase thoroughly
 3. Generate a technical design document
 4. Save to `.features/{feature}/design.md`
-5. Present to user for approval
+5. Call `open_file` for the design you just created (`mode: "view"`)
+6. Present to user for approval
 
 **Important:** Do NOT create tasks or implement. Just create the design.
 
@@ -262,6 +263,7 @@ The design must embody these principles:
 
 - **Format:** Markdown (`.md`)
 - **Location:** `.features/{feature}/design.md`
+- **After saving:** Call `open_file({ path: ".features/{feature}/design.md", mode: "view" })`
 
 ---
 
@@ -281,13 +283,14 @@ Before saving the design:
 - [ ] Trade-offs document what was considered and why
 - [ ] Open questions are listed for human review
 - [ ] Saved to `.features/{feature}/design.md`
+- [ ] Opened `.features/{feature}/design.md` with `open_file` in `view` mode
 
 ---
 
 ## Next Step
 
-After design is approved, create tasks:
+After design is reviewed and approved, create tasks:
 
-> Say **"create tasks"** to break the design into implementable tasks using the simple-tasks skill.
+> Say **"create tasks"** (or **"pro"**) to break the design into implementable tasks using the simple-tasks skill.
 > Tasks will be saved to `.features/{feature}/tasks/`.
 > Then say **"run the loop"** to start autonomous execution.

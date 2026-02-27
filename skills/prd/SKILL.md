@@ -16,6 +16,7 @@ Create detailed Product Requirements Documents that are clear, actionable, and s
 3. Ask 3-5 essential clarifying questions (with lettered options)
 4. Generate a structured PRD informed by research
 5. Save to `.features/{feature}/prd.md`
+6. Call `open_file` for the PRD you just created (`mode: "view"`) so the user can review it immediately
 
 **Important:** Do NOT start implementing. Just create the PRD.
 
@@ -182,6 +183,7 @@ The PRD reader may be a junior developer or AI agent. Therefore:
 - **Format:** Markdown (`.md`)
 - **Location:** `.features/{feature}/prd.md`
 - **Feature folder:** kebab-case derived from feature name (e.g., "User Auth" → `.features/user-auth/prd.md`)
+- **After saving:** Call `open_file({ path: ".features/{feature}/prd.md", mode: "view" })`
 
 ---
 
@@ -314,14 +316,15 @@ Before saving the PRD:
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
 - [ ] Saved to `.features/{feature}/prd.md`
+- [ ] Opened `.features/{feature}/prd.md` with `open_file` in `view` mode
 
 ---
 
 ## Next Step
 
-After PRD is approved, create the technical design:
+After PRD is reviewed and approved, create the technical design:
 
-> Say **"create design"** to generate the technical design document using the design-solution skill.
+> Say **"create design"** (or **"pro"**) to generate the technical design document using the design-solution skill.
 > The design will be saved to `.features/{feature}/design.md` alongside the PRD.
 > After design is approved, say **"create tasks"** to break it into implementable tasks.
 > Then say **"run the loop"** to start autonomous execution.
