@@ -186,7 +186,14 @@ git commit -m "feat({scope}): {what this step achieved}"
 
 ### When all steps are done
 
-Run the full verification from the task file:
+Run the **Feedback Loop** from the user story (defined in the PRD). This is the definition of done — not just acceptance criteria checkboxes, but concrete verification steps:
+
+1. Follow the **Setup** instructions from the feedback loop
+2. Execute every **Verification** step and confirm the expected results
+3. Test every **Edge case** listed
+4. Run the **Regression** check (full test suite)
+
+If the user story doesn't have a Feedback Loop section, fall back to:
 
 ```bash
 # Run the verify command from the task's "Verify" section

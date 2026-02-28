@@ -120,13 +120,29 @@ Each story should be small enough to implement in one focused session.
 - [ ] Specific verifiable criterion
 - [ ] Another criterion
 - [ ] npm run typecheck passes
-- [ ] **[UI stories only]** Verify in browser using agent-browser skill
+
+**Feedback Loop:**
+
+Setup: [what needs to be running]
+
+Verification:
+1. [Action] → Expected: [specific result]
+2. [Action] → Expected: [specific result]
+
+Edge cases:
+- [Edge case action] → Expected: [result]
+
+Regression: [run full test suite command]
 ```
 
 **Important:**
 
-- Acceptance criteria must be verifiable, not vague. "Works correctly" is bad. "Button shows confirmation dialog before deleting" is good.
-- **For any story with UI changes:** Always include "Verify in browser using dev-browser skill" as acceptance criteria. This ensures visual verification of frontend work.
+- Load the **feedback-loop** skill for guidance on writing actionable feedback loops.
+- Every user story MUST have a **Feedback Loop** section — not just acceptance criteria checkboxes, but concrete, numbered steps an agent can execute to verify the work.
+- Fastest loop first: prefer automated tests > CLI > API > browser. Use agent-browser only for visual verification.
+- Each step must specify the **action** AND the **expected result**. "Verify it works" is not a step.
+- Include at least 2-3 **edge cases** that stress the happy path.
+- For UI stories: describe the page URL, exact actions to perform, and what the agent should see.
 
 ### 4. Functional Requirements
 
@@ -220,6 +236,22 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Generate and run migration successfully
 - [ ] npm run typecheck passes
 
+**Feedback Loop:**
+
+Setup: `npm run db:migrate` then `npm run dev`
+
+Verification:
+1. Run `npm run test -- --grep "priority"` → migration test passes
+2. Run `npm run typecheck` → Task type includes priority field, no errors
+3. `curl -X POST localhost:3000/api/tasks -d '{"title":"Test"}' -H 'Content-Type: application/json'` → 201, response includes `"priority": "medium"`
+4. `curl -X POST localhost:3000/api/tasks -d '{"title":"Test","priority":"high"}' -H 'Content-Type: application/json'` → 201, response includes `"priority": "high"`
+
+Edge cases:
+- POST with `"priority": "urgent"` → 400 validation error
+- POST with `"priority": ""` → 400 or defaults to "medium"
+
+Regression: `npm run test` → all existing tests pass
+
 ### US-002: Display priority indicator on task cards
 
 **Description:** As a user, I want to see task priority at a glance so I know what needs attention first.
@@ -232,10 +264,24 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 **Acceptance Criteria:**
 
 - [ ] Each task card shows colored priority badge (red=high, yellow=medium, gray=low)
-- [ ] Badge includes color indicator: red=high, yellow=medium, gray=low
-- [ ] Priority visible without hovering or clicking
+- [ ] Badge is visible without hovering or clicking
 - [ ] npm run typecheck passes
-- [ ] Verify in browser using agent-browser skill
+
+**Feedback Loop:**
+
+Setup: `npm run dev`, seed DB with tasks at all three priority levels
+
+Verification:
+1. Run `npm run test -- --grep "PriorityBadge"` → component tests pass
+2. Run `npm run typecheck` → no errors
+3. Agent-browser: Open http://localhost:3000/tasks → each task card shows a small colored badge next to the title (red for high, yellow for medium, gray for low)
+4. Agent-browser: Confirm badge is always visible — not hidden behind hover or click
+
+Edge cases:
+- Agent-browser: Task with no priority value → should show gray/default badge, not crash
+- Agent-browser: Page with 50+ tasks → badges render without layout shift or overlap
+
+Regression: `npm run test` → all existing tests pass
 
 ### US-003: Add priority selector to task edit
 
@@ -252,7 +298,23 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Shows current priority as selected
 - [ ] Saves immediately on selection change
 - [ ] npm run typecheck passes
-- [ ] Verify in browser using agent-browser skill
+
+**Feedback Loop:**
+
+Setup: `npm run dev`, ensure at least one task with priority "medium" exists
+
+Verification:
+1. Run `npm run test -- --grep "priority selector"` → tests pass
+2. Run `npm run typecheck` → no errors
+3. Agent-browser: Open http://localhost:3000/tasks → click "Edit" on a medium-priority task → verify dropdown shows "Medium" selected
+4. Agent-browser: Change dropdown to "High" → close modal → verify task now shows red badge
+5. `curl localhost:3000/api/tasks/{id}` → confirm response has `"priority": "high"`
+
+Edge cases:
+- Agent-browser: Open edit, change priority, then cancel → priority should NOT change
+- Agent-browser: Rapidly toggle priority between values → no flickering, final value persists
+
+Regression: `npm run test` → all existing tests pass
 
 ### US-004: Filter tasks by priority
 
@@ -269,7 +331,25 @@ Add priority levels to tasks so users can focus on what matters most. Tasks can 
 - [ ] Filter persists in URL params
 - [ ] Empty state message when no tasks match filter
 - [ ] npm run typecheck passes
-- [ ] Verify in browser using agent-browser skill
+
+**Feedback Loop:**
+
+Setup: `npm run dev`, seed DB with tasks across all three priority levels
+
+Verification:
+1. Run `npm run test -- --grep "priority filter"` → tests pass
+2. Run `npm run typecheck` → no errors
+3. Agent-browser: Open http://localhost:3000/tasks → select "High" from priority filter → only tasks with red badges visible
+4. Agent-browser: Check URL → should contain `?priority=high`
+5. Agent-browser: Refresh page → filter should persist (URL-driven state)
+6. Agent-browser: Select "Low" → verify URL updates to `?priority=low`, only gray badges shown
+
+Edge cases:
+- Agent-browser: Select filter with no matching tasks → empty state message appears (not blank page)
+- Agent-browser: Select "All" → all tasks visible again, URL param removed
+- Direct URL: Navigate to `/tasks?priority=high` → page loads with filter pre-applied
+
+Regression: `npm run test` → all existing tests pass
 
 ## Functional Requirements
 
@@ -313,6 +393,8 @@ Before saving the PRD:
 - [ ] Incorporated user's answers
 - [ ] User stories are small and specific (one behavior each)
 - [ ] Each user story has BDD spec (Given/When/Then)
+- [ ] Each user story has a **Feedback Loop** section (load feedback-loop skill for guidance)
+- [ ] Feedback loops include setup, numbered verification steps, edge cases, and regression checks
 - [ ] Functional requirements are numbered and unambiguous
 - [ ] Non-goals section defines clear boundaries
 - [ ] Saved to `.features/{feature}/prd.md`

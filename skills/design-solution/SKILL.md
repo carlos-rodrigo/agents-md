@@ -118,7 +118,52 @@ Generate the design with these sections:
 
 Brief summary of the technical approach. 2-3 sentences explaining the high-level strategy.
 
-### 2. Codebase Analysis
+### 2. High-Level Architecture
+
+Provide Mermaid diagrams that visually explain the architecture. Include:
+
+- **System/component diagram:** How the main pieces connect (frontend, backend, services, database, external APIs)
+- **Data flow diagram:** How data moves through the system for the core use case(s)
+- **Additional diagrams as needed:** Sequence diagrams for complex flows, ER diagrams for data models, state diagrams for stateful features
+
+````markdown
+#### System Architecture
+
+```mermaid
+graph TD
+    A[Frontend - React] -->|REST API| B[Backend - API Server]
+    B --> C[Service Layer]
+    C --> D[(Database)]
+    C --> E[External API]
+```
+
+#### Core Data Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant F as Frontend
+    participant A as API
+    participant S as Service
+    participant D as Database
+    U->>F: Create invoice
+    F->>A: POST /api/invoices
+    A->>S: InvoiceService.Create()
+    S->>D: INSERT invoice
+    D-->>S: invoice record
+    S-->>A: invoice DTO
+    A-->>F: 201 Created
+    F-->>U: Show confirmation
+```
+````
+
+**Guidelines:**
+- Use Mermaid syntax (`graph`, `sequenceDiagram`, `erDiagram`, `stateDiagram-v2`)
+- Keep diagrams focused — one concept per diagram, not everything in one
+- Diagrams should be understandable without reading the rest of the document
+- Reference the diagrams in subsequent sections (e.g., "As shown in the System Architecture diagram above...")
+
+### 3. Codebase Analysis (What Already Exists)
 
 What already exists that this feature will leverage:
 
@@ -143,7 +188,7 @@ What already exists that this feature will leverage:
 - [Pattern name]: [Where it's used] → [How we'll follow it]
 ```
 
-### 3. Data Model
+### 4. Data Model
 
 Schema changes, new entities, relationships:
 
@@ -158,9 +203,21 @@ Schema changes, new entities, relationships:
 - How new entities connect to existing ones
 ```
 
-Include migration considerations if applicable.
+Include migration considerations if applicable. If the data model is non-trivial, include an ER diagram:
 
-### 4. API Design
+````markdown
+```mermaid
+erDiagram
+    TASK ||--o{ PRIORITY : has
+    TASK {
+        int id
+        string title
+        string priority
+    }
+```
+````
+
+### 5. API Design
 
 New or modified endpoints/contracts:
 
@@ -174,7 +231,7 @@ New or modified endpoints/contracts:
 |----------|--------|--------|
 ```
 
-### 5. Component Architecture (Frontend)
+### 6. Component Architecture (Frontend)
 
 Structure, state management, data flow:
 
@@ -190,7 +247,7 @@ Structure, state management, data flow:
 - Which hooks/patterns to use for data loading
 ```
 
-### 6. Backend Architecture
+### 7. Backend Architecture
 
 Service layer, handler organization, business logic flow:
 
@@ -203,7 +260,7 @@ Service layer, handler organization, business logic flow:
 - Key rules and where they're enforced
 ```
 
-### 7. Integration Points
+### 8. Integration Points
 
 How this feature connects to existing systems:
 
@@ -211,7 +268,42 @@ How this feature connects to existing systems:
 - Cross-cutting concerns (auth, validation, logging, notifications)
 - External service interactions
 
-### 8. Suggested Improvements
+### 9. Implementation Plan per User Story
+
+Map each user story from the PRD to the architecture defined above. For each story, describe **how** the architecture solves it — which files change, which components/services are involved, and what the implementation approach is. This is not code, but a clear guide so each task is unambiguous.
+
+```markdown
+#### US-001: [Title from PRD]
+
+**What changes:**
+- `backend/migrations/001_add_priority.sql` — Add priority column to tasks table
+- `backend/models/task.go` — Add Priority field to Task struct
+
+**How it works:**
+- Create a new migration that adds a `priority` column with type VARCHAR and default 'medium'
+- Update the Task model to include the new field with proper validation
+- References: System Architecture diagram (Database layer)
+
+#### US-002: [Title from PRD]
+
+**What changes:**
+- `frontend/components/TaskCard.tsx` — Add PriorityBadge child component
+- `frontend/components/ui/PriorityBadge.tsx` — New component (reuses Badge from design system)
+
+**How it works:**
+- Create PriorityBadge component that maps priority values to colors (red/yellow/gray)
+- Render PriorityBadge inside TaskCard, positioned next to the title
+- References: Core Data Flow diagram (Frontend → API response includes priority)
+```
+
+**Guidelines:**
+- Cover **every** user story from the PRD — no story should be left unmapped
+- Reference the architecture diagrams and components defined in earlier sections
+- Focus on **what files change** and **the approach**, not implementation details
+- Each story's implementation should be completable in one focused session
+- If a story requires multiple non-trivial steps, note that it may need to be split into sub-tasks
+
+### 10. Suggested Improvements
 
 Opportunities identified during research:
 
@@ -225,7 +317,7 @@ Opportunities identified during research:
 - Clearly beneficial (not opinion-based)
 - Implementable within the feature's scope or as a small follow-up
 
-### 9. Trade-offs & Alternatives
+### 11. Trade-offs & Alternatives
 
 What was considered and why this approach was chosen:
 
@@ -236,7 +328,7 @@ What was considered and why this approach was chosen:
 - **Why:** [Reasoning]
 ```
 
-### 10. Open Questions
+### 12. Open Questions
 
 Unresolved technical decisions that need input:
 
@@ -272,6 +364,7 @@ The design must embody these principles:
 Before saving the design:
 
 - [ ] Read the PRD thoroughly
+- [ ] High-level architecture includes Mermaid diagrams (system, data flow, and others as needed)
 - [ ] Searched codebase for reusable components, hooks, services, and patterns
 - [ ] Documented all reusable pieces with file paths
 - [ ] Data model changes are explicit (new entities, modified entities, relationships)
@@ -279,6 +372,7 @@ Before saving the design:
 - [ ] Frontend architecture identifies which components to reuse vs. create
 - [ ] Backend architecture follows existing handler → service → repository pattern
 - [ ] Integration points with existing code are mapped
+- [ ] Implementation plan covers every user story from the PRD with files and approach
 - [ ] Improvements are justified and scoped
 - [ ] Trade-offs document what was considered and why
 - [ ] Open questions are listed for human review
