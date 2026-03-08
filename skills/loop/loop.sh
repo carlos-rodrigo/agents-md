@@ -13,6 +13,9 @@ PROJECT_ROOT=""
 MAX_ITERATIONS=10
 SLEEP_SECONDS=2
 POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
+AGENT=""
+AGENT_FILE=""
+AGENT_MODEL=""
 
 is_supported_tool() {
   case "$1" in
@@ -69,6 +72,8 @@ Options:
   --tool <name>            amp | claude | opencode | pi (explicit; overrides order)
   --tool-order <csv>       Tool priority for auto-detect, e.g. "pi,amp,claude,opencode"
                            Can also be set via LOOP_TOOL_ORDER env var
+  --agent <name>           Use a specific agent (e.g. crafter). Resolves model and system
+                           prompt from ~/.pi/agent/agents/{name}.md. Forces --tool pi.
   --sleep <seconds>        Delay between iterations (default: 2)
   --poll <seconds>         Heartbeat log interval while tool runs (default: 3)
                            Set 0 to disable heartbeat logging
@@ -76,6 +81,7 @@ Options:
 
 Examples:
   ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi --poll 1 20
+  ~/agents/skills/loop/loop.sh --agent crafter --feature user-auth --project-root "$PWD" 20
   ~/agents/skills/loop/loop.sh --feature pwa-hardening --project-root /path/to/repo --tool-order "amp,claude,pi"
   LOOP_TOOL_ORDER="claude,opencode,pi,amp" LOOP_POLL_SECONDS=1 ~/agents/skills/loop/loop.sh --feature billing --project-root "$PWD"
 EOF
@@ -83,6 +89,14 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --agent)
+      AGENT="${2:-}"
+      shift 2
+      ;;
+    --agent=*)
+      AGENT="${1#*=}"
+      shift
+      ;;
     --tool)
       TOOL="$(printf '%s' "${2:-}" | tr '[:upper:]' '[:lower:]')"
       shift 2
@@ -181,6 +195,26 @@ if ! validate_tool_order "$TOOL_ORDER"; then
   exit 1
 fi
 
+# Resolve agent (--agent flag).
+if [[ -n "$AGENT" ]]; then
+  AGENT_FILE="${HOME}/.pi/agent/agents/${AGENT}.md"
+  if [[ ! -f "$AGENT_FILE" ]]; then
+    echo "Error: agent file not found: $AGENT_FILE"
+    exit 1
+  fi
+
+  # Extract model from frontmatter (line matching "model: ...")
+  AGENT_MODEL="$(awk '/^---$/{n++; next} n==1 && /^model:/{sub(/^model:[[:space:]]*/, ""); print; exit}' "$AGENT_FILE")"
+  if [[ -z "$AGENT_MODEL" ]]; then
+    echo "Error: no 'model:' found in frontmatter of $AGENT_FILE"
+    exit 1
+  fi
+
+  # Agent mode forces pi as the tool
+  TOOL="pi"
+  echo "Agent: $AGENT (model=$AGENT_MODEL, prompt=$AGENT_FILE)"
+fi
+
 # Resolve tool.
 if [[ -n "$TOOL" ]]; then
   if ! is_supported_tool "$TOOL"; then
@@ -255,7 +289,11 @@ PROMPT="${PROMPT_TEMPLATE//\{\{FEATURE\}\}/$FEATURE}"
 PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/scripts/loop/progress-$FEATURE.txt}"
 
 echo "=== loop start $(date) ===" | tee -a "$LOG_FILE"
-echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
+if [[ -n "$AGENT" ]]; then
+  echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
+else
+  echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
+fi
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
 
 for i in $(seq 1 "$MAX_ITERATIONS"); do
@@ -267,7 +305,15 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   set +e
   case "$TOOL" in
     pi)
-      (pi -p "$PROMPT" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
+      PI_CMD=(pi)
+      if [[ -n "$AGENT_MODEL" ]]; then
+        PI_CMD+=(--model "$AGENT_MODEL")
+      fi
+      if [[ -n "$AGENT_FILE" ]]; then
+        PI_CMD+=(--append-system-prompt "$AGENT_FILE")
+      fi
+      PI_CMD+=(-p "$PROMPT")
+      ("${PI_CMD[@]}" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     amp)

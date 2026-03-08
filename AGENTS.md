@@ -177,7 +177,7 @@ Specialized agents available via the `subagent` tool. Each runs in an isolated c
 
 | Agent | Model | Purpose | When to use |
 |-------|-------|---------|-------------|
-| **oracle** | gpt-5.3-codex | Deep reasoning, second opinion | Complex debugging, architecture decisions, code review |
+| **oracle** | gpt-5.4 | Deep reasoning, second opinion | Complex debugging, architecture decisions, code review |
 | **librarian** | Sonnet | Code research via GitHub | Understanding library internals, cross-repo investigation |
 | **researcher** | Sonnet | Internet research | State of the art, technology comparisons, best practices |
 | **scout** | Haiku | Fast codebase recon | Quick mapping before deeper analysis (cheap, use liberally) |

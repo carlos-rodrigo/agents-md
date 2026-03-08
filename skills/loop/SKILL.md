@@ -1,6 +1,6 @@
 ---
 name: loop
-description: "Autonomous task execution loop. Triggers on: run the loop, start the loop, loop, run loop. Picks ready tasks from .features/{feature}/tasks/, executes them one at a time using Work → Review → Compound from AGENTS.md, commits, and repeats."
+description: "Autonomous task execution loop. Triggers on: run the loop, start the loop, loop, run loop, run the loop with crafter. Picks ready tasks from .features/{feature}/tasks/, executes them one at a time using Work → Review → Compound from AGENTS.md, commits, and repeats."
 ---
 
 # Loop - Autonomous Task Execution
@@ -40,6 +40,7 @@ The loop runs **one task per context window**. There are two ways to get a fresh
 - User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then call the `handoff` tool.
 - User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
 - User says "run loop in background using pi" (or amp/claude/opencode) → **Background mode** with explicit `--tool` set from the request (example: `--tool pi`).
+- User says "run the loop with crafter" / "loop with crafter" → **Background mode with Crafter agent**. Each iteration uses the crafter's model and system prompt. Pass `--agent crafter` to `loop.sh` (see [Running with an agent](#running-with-an-agent)).
 
 Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
 
@@ -238,6 +239,7 @@ Supported flags:
 - `--project-root <path>`
 - `--tool amp|claude|opencode|pi` (explicit; overrides auto-detect order)
 - `--tool-order <csv>` (auto-detect priority, e.g. `pi,amp,claude,opencode`)
+- `--agent <name>` (use a specific agent's model + system prompt; forces `--tool pi`; resolves from `~/.pi/agent/agents/{name}.md`)
 - `LOOP_TOOL_ORDER` env var (same as `--tool-order`; CLI flag wins)
 - `--sleep <seconds>` delay between iterations (default: `2`)
 - `--poll <seconds>` heartbeat interval while an iteration runs (default: `3`, set `0` to disable heartbeat logs)
@@ -248,6 +250,30 @@ Completion contract:
 
 - Agent must output exactly: `Loop complete`
 - Script also accepts legacy `<promise>COMPLETE</promise>` for backward compatibility
+
+---
+
+## Running with an agent
+
+When the user says **"run the loop with crafter"** (or any agent name):
+
+Use `--agent {name}` to run each iteration with a specific agent's model and system prompt. The flag:
+
+- Resolves the agent file from `~/.pi/agent/agents/{name}.md`
+- Reads the `model:` from frontmatter and passes it as `--model` to pi
+- Passes the agent file as `--append-system-prompt` to pi
+- Forces `--tool pi` (agents are pi-specific)
+
+```bash
+# Run directly
+~/agents/skills/loop/loop.sh --agent crafter --feature {feature} --project-root "$PWD" 20
+
+# Run via tmux
+tmux new-window -n "loop-{feature}" -d
+tmux send-keys -t "loop-{feature}" "~/agents/skills/loop/loop.sh --agent crafter --feature {feature} --project-root $PWD 20" C-m
+```
+
+The agent must be self-sufficient — its system prompt should contain the full implement-task workflow (Context → Code → Review → Compound) and loop awareness (mark tasks done, update progress file, output "Loop complete").
 
 ---
 

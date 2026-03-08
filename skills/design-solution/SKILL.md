@@ -114,11 +114,77 @@ While researching, look for opportunities to improve the architecture. Flag thes
 
 Generate the design with these sections:
 
-### 1. Overview
+### 1. Executive Summary
 
-Brief summary of the technical approach. 2-3 sentences explaining the high-level strategy.
+A high-level overview written for someone who won't read the rest of the document. This is the "elevator pitch" of the technical design — a stakeholder should understand the approach, scope, and key decisions after reading only this section.
 
-### 2. High-Level Architecture
+Include:
+
+- **What we're building** — One paragraph summarizing the feature in plain language
+- **How we're building it** — The technical strategy in 2-3 sentences (no jargon where possible)
+- **What we're reusing** — Key existing infrastructure this builds on
+- **What's new** — The main new pieces being introduced
+- **Scope & effort** — Rough size (e.g., "3 new components, 2 API endpoints, 1 migration") and complexity assessment
+- **Key decisions** — The 1-3 most important architectural choices, stated as conclusions (details in Trade-offs section)
+
+```markdown
+## Executive Summary
+
+We're adding task priorities so users can flag what matters most and filter their workload accordingly.
+
+**Approach:** Extend the existing Task model with a priority field, add a filtering UI to the task list, and introduce color-coded badges for visual scanning. This builds on top of the existing DataTable filtering system and follows the same component patterns used for task status.
+
+**Reusing:** DataTable component, useTaskQuery hook, Badge design system component, existing filter architecture.
+
+**New:** PriorityBadge component, priority column migration, 2 updated API endpoints.
+
+**Scope:** Small feature — 1 migration, 2 modified endpoints, 3 frontend components. Low risk, no new dependencies.
+
+**Key decisions:** Priority is a string enum (not numeric) for readability and extensibility. Filtering happens server-side to keep the existing pagination pattern consistent.
+```
+
+### 2. How It Works
+
+A narrative walkthrough that tells the story of how this feature works end-to-end. Walk through the system **as if you're following a user** — what they do, what happens behind the scenes at each step, and what they see as a result.
+
+This section makes the architecture **tangible**. Instead of abstract component lists, the reader watches the feature come alive step by step.
+
+**Guidelines:**
+- Write in present tense, second person ("The user clicks...", "The API receives...")
+- Follow the happy path first, then note key alternate paths
+- Reference specific components, services, and files as you go — this connects the narrative to the technical details below
+- Include what happens at every layer (UI → API → service → database → back)
+- Keep it concrete — use realistic example data, not abstract placeholders
+
+```markdown
+## How It Works
+
+### Setting a Priority
+
+1. **The user opens a task** and sees a new "Priority" dropdown next to the status field. It defaults to "Medium" — a neutral gray badge (`PriorityBadge` component).
+
+2. **They select "High"** from the dropdown. The `TaskEditForm` calls `useUpdateTask`, which sends a `PATCH /api/tasks/:id` request with `{ priority: "high" }`.
+
+3. **The API handler** (`TaskHandler.Update`) validates the priority value against the allowed enum (`low`, `medium`, `high`, `urgent`), then passes it to `TaskService.Update()`.
+
+4. **The service layer** updates the task record in the database. No side effects — priority changes don't trigger notifications (a deliberate decision; see Trade-offs).
+
+5. **The response** returns the updated task. The frontend receives it, React Query invalidates the task list cache, and the badge next to the task title turns red to reflect "High" priority.
+
+### Filtering by Priority
+
+1. **On the task list**, the user clicks the new "Priority" filter chip in the DataTable toolbar (reuses the existing `FilterBar` component).
+
+2. **They select "High" and "Urgent"**. The `useTaskQuery` hook adds `?priority=high,urgent` to the API call.
+
+3. **The API** passes the filter to `TaskRepository.List()`, which adds a `WHERE priority IN (...)` clause. Pagination still works — the total count reflects filtered results.
+
+4. **The filtered list** renders, showing only high and urgent tasks with their color-coded badges. The active filter is visible in the toolbar so the user knows the list is filtered.
+```
+
+**If the feature has multiple distinct flows**, add a subsection for each (e.g., "Creating an Invoice", "Sending for Approval", "Processing Payment"). Cover every major user-facing scenario.
+
+### 3. High-Level Architecture
 
 Provide Mermaid diagrams that visually explain the architecture. Include:
 
@@ -163,7 +229,7 @@ sequenceDiagram
 - Diagrams should be understandable without reading the rest of the document
 - Reference the diagrams in subsequent sections (e.g., "As shown in the System Architecture diagram above...")
 
-### 3. Codebase Analysis (What Already Exists)
+### 4. Codebase Analysis (What Already Exists)
 
 What already exists that this feature will leverage:
 
@@ -188,7 +254,7 @@ What already exists that this feature will leverage:
 - [Pattern name]: [Where it's used] → [How we'll follow it]
 ```
 
-### 4. Data Model
+### 5. Data Model
 
 Schema changes, new entities, relationships:
 
@@ -217,7 +283,7 @@ erDiagram
 ```
 ````
 
-### 5. API Design
+### 6. API Design
 
 New or modified endpoints/contracts:
 
@@ -231,7 +297,7 @@ New or modified endpoints/contracts:
 |----------|--------|--------|
 ```
 
-### 6. Component Architecture (Frontend)
+### 7. Component Architecture (Frontend)
 
 Structure, state management, data flow:
 
@@ -247,7 +313,7 @@ Structure, state management, data flow:
 - Which hooks/patterns to use for data loading
 ```
 
-### 7. Backend Architecture
+### 8. Backend Architecture
 
 Service layer, handler organization, business logic flow:
 
@@ -260,7 +326,7 @@ Service layer, handler organization, business logic flow:
 - Key rules and where they're enforced
 ```
 
-### 8. Integration Points
+### 9. Integration Points
 
 How this feature connects to existing systems:
 
@@ -268,7 +334,7 @@ How this feature connects to existing systems:
 - Cross-cutting concerns (auth, validation, logging, notifications)
 - External service interactions
 
-### 9. Implementation Plan per User Story
+### 10. Implementation Plan per User Story
 
 Map each user story from the PRD to the architecture defined above. For each story, describe **how** the architecture solves it — which files change, which components/services are involved, and what the implementation approach is. This is not code, but a clear guide so each task is unambiguous.
 
@@ -303,7 +369,7 @@ Map each user story from the PRD to the architecture defined above. For each sto
 - Each story's implementation should be completable in one focused session
 - If a story requires multiple non-trivial steps, note that it may need to be split into sub-tasks
 
-### 10. Suggested Improvements
+### 11. Suggested Improvements
 
 Opportunities identified during research:
 
@@ -317,7 +383,7 @@ Opportunities identified during research:
 - Clearly beneficial (not opinion-based)
 - Implementable within the feature's scope or as a small follow-up
 
-### 11. Trade-offs & Alternatives
+### 12. Trade-offs & Alternatives
 
 What was considered and why this approach was chosen:
 
@@ -328,7 +394,7 @@ What was considered and why this approach was chosen:
 - **Why:** [Reasoning]
 ```
 
-### 12. Open Questions
+### 13. Open Questions
 
 Unresolved technical decisions that need input:
 
@@ -364,6 +430,8 @@ The design must embody these principles:
 Before saving the design:
 
 - [ ] Read the PRD thoroughly
+- [ ] Executive summary is clear, self-contained, and readable without the rest of the document
+- [ ] "How It Works" walkthrough covers every major user flow end-to-end with concrete examples
 - [ ] High-level architecture includes Mermaid diagrams (system, data flow, and others as needed)
 - [ ] Searched codebase for reusable components, hooks, services, and patterns
 - [ ] Documented all reusable pieces with file paths
