@@ -40,7 +40,7 @@ The loop runs **one task per context window**. There are two ways to get a fresh
 - User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then call the `handoff` tool.
 - User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
 - User says "run loop in background using pi" (or amp/claude/opencode) → **Background mode** with explicit `--tool` set from the request (example: `--tool pi`).
-- User says "run the loop with crafter" / "loop with crafter" → **Background mode with Crafter agent**. Each iteration uses the crafter's model and system prompt. Pass `--agent crafter` to `loop.sh` (see [Running with an agent](#running-with-an-agent)).
+- User says "run the loop with crafter" / "loop with crafter" → **Background mode with Crafter agent**. Each iteration uses the crafter system prompt on pi (default model `openai-codex/gpt-5.4`, thinking `high`). Pass `--agent crafter` to `loop.sh` (see [Running with an agent](#running-with-an-agent)).
 
 Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
 
@@ -239,12 +239,21 @@ Supported flags:
 - `--project-root <path>`
 - `--tool amp|claude|opencode|pi` (explicit; overrides auto-detect order)
 - `--tool-order <csv>` (auto-detect priority, e.g. `pi,amp,claude,opencode`)
-- `--agent <name>` (use a specific agent's model + system prompt; forces `--tool pi`; resolves from `~/.pi/agent/agents/{name}.md`)
+- `--agent <name>` (use a specific agent system prompt; forces `--tool pi`; resolves from `~/.pi/agent/agents/{name}.md`)
 - `LOOP_TOOL_ORDER` env var (same as `--tool-order`; CLI flag wins)
+- `LOOP_PI_MODEL` env var (pi model override; default: `openai-codex/gpt-5.4`)
+- `LOOP_PI_THINKING` env var (pi thinking override; default: `high`)
+- `LOOP_OPENCODE_MODEL` env var (OpenCode model override; default: same as `LOOP_PI_MODEL`)
+- `LOOP_OPENCODE_VARIANT` env var (OpenCode reasoning variant override; default: same as `LOOP_PI_THINKING`)
 - `--sleep <seconds>` delay between iterations (default: `2`)
 - `--poll <seconds>` heartbeat interval while an iteration runs (default: `3`, set `0` to disable heartbeat logs)
 - `LOOP_POLL_SECONDS` env var (same as `--poll`; CLI flag wins)
 - positional `max_iterations` (default: 10)
+
+Tool-specific runtime flags:
+- `pi` gets `--model` and `--thinking`
+- `opencode` gets `--model` and `--variant`
+- `amp` and `claude` receive no model/thinking flags from this script
 
 Completion contract:
 
@@ -257,12 +266,12 @@ Completion contract:
 
 When the user says **"run the loop with crafter"** (or any agent name):
 
-Use `--agent {name}` to run each iteration with a specific agent's model and system prompt. The flag:
+Use `--agent {name}` to run each iteration with a specific agent system prompt. The flag:
 
 - Resolves the agent file from `~/.pi/agent/agents/{name}.md`
-- Reads the `model:` from frontmatter and passes it as `--model` to pi
 - Passes the agent file as `--append-system-prompt` to pi
 - Forces `--tool pi` (agents are pi-specific)
+- Uses pi defaults `--model openai-codex/gpt-5.4 --thinking high` (override via `LOOP_PI_MODEL` / `LOOP_PI_THINKING`)
 
 ```bash
 # Run directly

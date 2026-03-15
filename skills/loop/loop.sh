@@ -16,6 +16,10 @@ POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
 AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
+PI_MODEL="${LOOP_PI_MODEL:-openai-codex/gpt-5.4}"
+PI_THINKING="${LOOP_PI_THINKING:-high}"
+OPENCODE_MODEL="${LOOP_OPENCODE_MODEL-$PI_MODEL}"
+OPENCODE_VARIANT="${LOOP_OPENCODE_VARIANT-$PI_THINKING}"
 
 is_supported_tool() {
   case "$1" in
@@ -72,12 +76,19 @@ Options:
   --tool <name>            amp | claude | opencode | pi (explicit; overrides order)
   --tool-order <csv>       Tool priority for auto-detect, e.g. "pi,amp,claude,opencode"
                            Can also be set via LOOP_TOOL_ORDER env var
-  --agent <name>           Use a specific agent (e.g. crafter). Resolves model and system
-                           prompt from ~/.pi/agent/agents/{name}.md. Forces --tool pi.
+  --agent <name>           Use a specific agent (e.g. crafter). Resolves system prompt
+                           from ~/.pi/agent/agents/{name}.md. Forces --tool pi.
   --sleep <seconds>        Delay between iterations (default: 2)
   --poll <seconds>         Heartbeat log interval while tool runs (default: 3)
                            Set 0 to disable heartbeat logging
   -h, --help               Show this help
+
+Environment overrides:
+  LOOP_PI_MODEL            Pi model (default: openai-codex/gpt-5.4)
+  LOOP_PI_THINKING         Pi thinking level (default: high)
+  LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
+  LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
+                           Set LOOP_OPENCODE_VARIANT='' to omit --variant
 
 Examples:
   ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi --poll 1 20
@@ -203,16 +214,15 @@ if [[ -n "$AGENT" ]]; then
     exit 1
   fi
 
-  # Extract model from frontmatter (line matching "model: ...")
+  # Optional: extract model from frontmatter for logging only.
   AGENT_MODEL="$(awk '/^---$/{n++; next} n==1 && /^model:/{sub(/^model:[[:space:]]*/, ""); print; exit}' "$AGENT_FILE")"
   if [[ -z "$AGENT_MODEL" ]]; then
-    echo "Error: no 'model:' found in frontmatter of $AGENT_FILE"
-    exit 1
+    AGENT_MODEL="unspecified"
   fi
 
-  # Agent mode forces pi as the tool
+  # Agent mode forces pi as the tool (using enforced pi model/thinking).
   TOOL="pi"
-  echo "Agent: $AGENT (model=$AGENT_MODEL, prompt=$AGENT_FILE)"
+  echo "Agent: $AGENT (agent_model=$AGENT_MODEL, prompt=$AGENT_FILE, pi_model=$PI_MODEL, pi_thinking=$PI_THINKING)"
 fi
 
 # Resolve tool.
@@ -288,11 +298,18 @@ PROMPT_TEMPLATE="$(<"$PROMPT_TEMPLATE_FILE")"
 PROMPT="${PROMPT_TEMPLATE//\{\{FEATURE\}\}/$FEATURE}"
 PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/scripts/loop/progress-$FEATURE.txt}"
 
+TOOL_RUNTIME=""
+if [[ "$TOOL" == "pi" ]]; then
+  TOOL_RUNTIME=" pi_model=$PI_MODEL pi_thinking=$PI_THINKING"
+elif [[ "$TOOL" == "opencode" ]]; then
+  TOOL_RUNTIME=" opencode_model=${OPENCODE_MODEL:-none} opencode_variant=${OPENCODE_VARIANT:-none}"
+fi
+
 echo "=== loop start $(date) ===" | tee -a "$LOG_FILE"
 if [[ -n "$AGENT" ]]; then
-  echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 else
-  echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 fi
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
 
@@ -305,10 +322,7 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   set +e
   case "$TOOL" in
     pi)
-      PI_CMD=(pi)
-      if [[ -n "$AGENT_MODEL" ]]; then
-        PI_CMD+=(--model "$AGENT_MODEL")
-      fi
+      PI_CMD=(pi --model "$PI_MODEL" --thinking "$PI_THINKING")
       if [[ -n "$AGENT_FILE" ]]; then
         PI_CMD+=(--append-system-prompt "$AGENT_FILE")
       fi
@@ -325,7 +339,15 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
       CMD_PID=$!
       ;;
     opencode)
-      (opencode run "$PROMPT" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
+      OPENCODE_CMD=(opencode run)
+      if [[ -n "$OPENCODE_MODEL" ]]; then
+        OPENCODE_CMD+=(--model "$OPENCODE_MODEL")
+      fi
+      if [[ -n "$OPENCODE_VARIANT" ]]; then
+        OPENCODE_CMD+=(--variant "$OPENCODE_VARIANT")
+      fi
+      OPENCODE_CMD+=("$PROMPT")
+      ("${OPENCODE_CMD[@]}" 2>&1 | tee -a "$LOG_FILE" "$TEMP_OUTPUT") &
       CMD_PID=$!
       ;;
     *)
