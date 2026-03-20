@@ -305,7 +305,8 @@ elif [[ "$TOOL" == "opencode" ]]; then
   TOOL_RUNTIME=" opencode_model=${OPENCODE_MODEL:-none} opencode_variant=${OPENCODE_VARIANT:-none}"
 fi
 
-echo "=== loop start $(date) ===" | tee -a "$LOG_FILE"
+LOOP_START_TS=$(date +%s)
+echo "=== loop start $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
 if [[ -n "$AGENT" ]]; then
   echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 else
@@ -315,9 +316,12 @@ echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
 
 for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo "" | tee -a "$LOG_FILE"
-  echo "[iteration $i/$MAX_ITERATIONS]" | tee -a "$LOG_FILE"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | tee -a "$LOG_FILE"
+  echo "[iteration $i/$MAX_ITERATIONS] started at $(date '+%Y-%m-%d %H:%M:%S')" | tee -a "$LOG_FILE"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | tee -a "$LOG_FILE"
 
   TEMP_OUTPUT="$(mktemp -t "loop_${TOOL}")"
+  START_TS=$(date +%s)
 
   set +e
   case "$TOOL" in
@@ -357,8 +361,6 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
       ;;
   esac
 
-  START_TS=$(date +%s)
-
   if [[ "$POLL_SECONDS" -gt 0 ]]; then
     while ps -p "$CMD_PID" >/dev/null 2>&1; do
       STATUS="$(ps -o stat= -p "$CMD_PID" 2>/dev/null | tr -d '[:space:]')"
@@ -381,21 +383,72 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
 
   set -e
 
+  # Calculate duration
+  END_TS=$(date +%s)
+  DURATION=$((END_TS - START_TS))
+  MINUTES=$((DURATION / 60))
+  SECONDS=$((DURATION % 60))
+  if [[ $MINUTES -gt 0 ]]; then
+    DURATION_STR="${MINUTES}m ${SECONDS}s"
+  else
+    DURATION_STR="${SECONDS}s"
+  fi
+
+  echo "" | tee -a "$LOG_FILE"
+  echo "──────────────────────────────────────────────────────────" | tee -a "$LOG_FILE"
+  echo "[iteration $i/$MAX_ITERATIONS] finished at $(date '+%Y-%m-%d %H:%M:%S') (duration: $DURATION_STR)" | tee -a "$LOG_FILE"
+
   if [[ $TOOL_EXIT -ne 0 ]]; then
-    echo "Tool exited non-zero (exit=$TOOL_EXIT). Continuing loop." | tee -a "$LOG_FILE"
+    echo "⚠️  Tool exited non-zero (exit=$TOOL_EXIT). Continuing loop." | tee -a "$LOG_FILE"
   fi
 
   if grep -Eq "Loop complete|<promise>COMPLETE</promise>" "$TEMP_OUTPUT"; then
-    echo "Loop complete detected." | tee -a "$LOG_FILE"
+    echo "✅ Loop complete detected." | tee -a "$LOG_FILE"
     rm -f "$TEMP_OUTPUT"
-    echo "=== loop end $(date) ===" | tee -a "$LOG_FILE"
+    
+    # Calculate total duration
+    LOOP_END_TS=$(date +%s)
+    TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
+    TOTAL_MINUTES=$((TOTAL_DURATION / 60))
+    TOTAL_SECONDS=$((TOTAL_DURATION % 60))
+    if [[ $TOTAL_MINUTES -ge 60 ]]; then
+      TOTAL_HOURS=$((TOTAL_MINUTES / 60))
+      TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
+      TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+    elif [[ $TOTAL_MINUTES -gt 0 ]]; then
+      TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+    else
+      TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+    fi
+    
+    echo "──────────────────────────────────────────────────────────" | tee -a "$LOG_FILE"
+    echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
+    echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
     exit 0
   fi
 
   rm -f "$TEMP_OUTPUT"
+  echo "──────────────────────────────────────────────────────────" | tee -a "$LOG_FILE"
   sleep "$SLEEP_SECONDS"
 done
 
-echo "Reached max iterations ($MAX_ITERATIONS)." | tee -a "$LOG_FILE"
-echo "=== loop end $(date) ===" | tee -a "$LOG_FILE"
+# Calculate total duration
+LOOP_END_TS=$(date +%s)
+TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
+TOTAL_MINUTES=$((TOTAL_DURATION / 60))
+TOTAL_SECONDS=$((TOTAL_DURATION % 60))
+if [[ $TOTAL_MINUTES -ge 60 ]]; then
+  TOTAL_HOURS=$((TOTAL_MINUTES / 60))
+  TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
+  TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+elif [[ $TOTAL_MINUTES -gt 0 ]]; then
+  TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+else
+  TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+fi
+
+echo "" | tee -a "$LOG_FILE"
+echo "⏹️  Reached max iterations ($MAX_ITERATIONS)." | tee -a "$LOG_FILE"
+echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
+echo "📊 Total: $MAX_ITERATIONS iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
 exit 1
