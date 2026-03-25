@@ -39,7 +39,7 @@ The feature folder name is derived from the PRD feature name in kebab-case (e.g.
 
 ## Task File Format
 
-Each task is a markdown file with YAML frontmatter:
+Each task is a markdown file with YAML frontmatter. **Tasks must be self-contained** — an agent should be able to implement the task by reading only this file, without needing to explore the codebase to discover patterns.
 
 ```markdown
 ---
@@ -54,11 +54,36 @@ created: 2025-02-05
 
 Add user preferences table with settings column.
 
+## Context
+
+<!-- Inline the relevant design phase or section. NOT a reference to "read design.md". -->
+<!-- Include only what this task needs — not the full design. -->
+
+This task implements Phase 1 of the User Preferences feature.
+The preferences table stores per-user settings as JSONB with a FK to users.
+
 ## What to do
 
 - Create migration file
 - Add preferences table with jsonb settings column
 - Add foreign key to users table
+
+## Patterns to follow
+
+<!-- Include actual code snippets showing the pattern to replicate. -->
+<!-- The agent should see the pattern here, not need to find it. -->
+
+Follow the existing migration pattern in `db/migrations/003-add-teams.ts`:
+
+```typescript
+export async function up(db: Kysely<any>): Promise<void> {
+  await db.schema
+    .createTable("teams")
+    .addColumn("id", "uuid", (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn("name", "varchar(255)", (col) => col.notNull())
+    .execute();
+}
+```
 
 ## Acceptance criteria
 
@@ -68,8 +93,8 @@ Add user preferences table with settings column.
 
 ## Files
 
-- db/migrations/
-- db/schema.ts
+- db/migrations/ (new migration file)
+- db/schema.ts (add type)
 
 ## Verify
 
@@ -182,7 +207,7 @@ Files use zero-padded IDs for natural sorting:
 
 ## Minimal Task (Quick Capture)
 
-For fast task creation, minimal format works:
+For fast task creation when context is obvious from the title:
 
 ```markdown
 ---
@@ -194,6 +219,10 @@ depends: [003]
 # Add validation to settings form
 
 Validate email format and required fields before save.
+
+## Patterns to follow
+
+Validation follows the pattern in `SettingsForm.tsx` — use zod schema + `useForm` resolver.
 ```
 
 ---
@@ -239,11 +268,13 @@ esac
 
 ## Best Practices
 
-1. **One task = one commit** - Keep tasks small enough to complete in one iteration
-2. **Always update status** - Mark in-progress when starting, done when complete
-3. **Check dependencies** - Don't start a task until depends are done
-4. **Archive regularly** - Move completed features to archive/
-5. **Use acceptance criteria** - Makes it clear when task is done
+1. **One task = one commit** — Keep tasks small enough to complete in one iteration
+2. **Tasks must be self-contained** — Include inline context (design excerpt, code patterns, contracts). The implementing agent should NOT need to read the full PRD, full design, or explore broadly to understand what to build
+3. **Always update status** — Mark in-progress when starting, done when complete
+4. **Check dependencies** — Don't start a task until depends are done
+5. **Archive regularly** — Move completed features to archive/
+6. **Use acceptance criteria** — Makes it clear when task is done
+7. **Include "Patterns to follow"** — Copy the relevant code snippet from the codebase that the agent should replicate. This prevents expensive codebase exploration
 
 ---
 

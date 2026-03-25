@@ -16,7 +16,7 @@ POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
 AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
-PI_MODEL="${LOOP_PI_MODEL:-openai-codex/gpt-5.4}"
+PI_MODEL="${LOOP_PI_MODEL:-gpt-5.3-codex}"
 PI_THINKING="${LOOP_PI_THINKING:-high}"
 OPENCODE_MODEL="${LOOP_OPENCODE_MODEL-$PI_MODEL}"
 OPENCODE_VARIANT="${LOOP_OPENCODE_VARIANT-$PI_THINKING}"
@@ -84,7 +84,7 @@ Options:
   -h, --help               Show this help
 
 Environment overrides:
-  LOOP_PI_MODEL            Pi model (default: openai-codex/gpt-5.4)
+  LOOP_PI_MODEL            Pi model (default: gpt-5.3-codex)
   LOOP_PI_THINKING         Pi thinking level (default: high)
   LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)

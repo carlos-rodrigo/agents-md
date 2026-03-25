@@ -7,7 +7,7 @@ description: "Autonomous task execution loop. Triggers on: run the loop, start t
 
 Executes tasks from `.features/{feature}/tasks/` one at a time in dependency order. Each iteration: pick a ready task, implement it, commit, repeat.
 
-Uses **simple-tasks** for task management. Uses **AGENTS.md** for the Work → Review → Compound methodology.
+Uses **simple-tasks** for task management and **implement-task** for Context → Code → Review → Compound execution (including adaptive review).
 
 ---
 
@@ -40,7 +40,7 @@ The loop runs **one task per context window**. There are two ways to get a fresh
 - User says "run the loop" / "start the loop" → **Interactive mode**. Execute one task in this session, then call the `handoff` tool.
 - User says "run the loop in the background" / "run the loop using tmux" → **Background mode**. Set up `loop.sh` via tmux (see [Running via tmux](#running-via-tmux-background--reporting)).
 - User says "run loop in background using pi" (or amp/claude/opencode) → **Background mode** with explicit `--tool` set from the request (example: `--tool pi`).
-- User says "run the loop with crafter" / "loop with crafter" → **Background mode with Crafter agent**. Each iteration uses the crafter system prompt on pi (default model `openai-codex/gpt-5.4`, thinking `high`). Pass `--agent crafter` to `loop.sh` (see [Running with an agent](#running-with-an-agent)).
+- User says "run the loop with crafter" / "loop with crafter" → **Background mode with Crafter agent**. Each iteration uses the crafter system prompt on pi (default model `gpt-5.3-codex`, thinking `high`). Pass `--agent crafter` to `loop.sh` (see [Running with an agent](#running-with-an-agent)).
 
 Both modes use the same task execution steps (4. Execute Task). They only differ in how the next iteration starts.
 
@@ -102,6 +102,10 @@ Pick the lowest-numbered ready task (or one related to just-completed work).
 3. Pass the task file path: `.features/{feature}/tasks/NNN-task-name.md`
 
 The skill handles Context → Code → Review → Compound.
+
+**Review policy is adaptive (from `implement-task`):**
+- Small, low-risk diffs (≤ 150 changed lines, ≤ 3 files, no auth/security/payment logic) → self-review
+- Complex/high-risk diffs → full 4-way oracle review
 
 Additionally, if you discovered a reusable pattern for THIS FEATURE, add it to "## Codebase Patterns" at the TOP of `scripts/loop/progress-{feature}.txt`.
 
@@ -241,7 +245,7 @@ Supported flags:
 - `--tool-order <csv>` (auto-detect priority, e.g. `pi,amp,claude,opencode`)
 - `--agent <name>` (use a specific agent system prompt; forces `--tool pi`; resolves from `~/.pi/agent/agents/{name}.md`)
 - `LOOP_TOOL_ORDER` env var (same as `--tool-order`; CLI flag wins)
-- `LOOP_PI_MODEL` env var (pi model override; default: `openai-codex/gpt-5.4`)
+- `LOOP_PI_MODEL` env var (pi model override; default: `gpt-5.3-codex`)
 - `LOOP_PI_THINKING` env var (pi thinking override; default: `high`)
 - `LOOP_OPENCODE_MODEL` env var (OpenCode model override; default: same as `LOOP_PI_MODEL`)
 - `LOOP_OPENCODE_VARIANT` env var (OpenCode reasoning variant override; default: same as `LOOP_PI_THINKING`)
@@ -271,7 +275,7 @@ Use `--agent {name}` to run each iteration with a specific agent system prompt. 
 - Resolves the agent file from `~/.pi/agent/agents/{name}.md`
 - Passes the agent file as `--append-system-prompt` to pi
 - Forces `--tool pi` (agents are pi-specific)
-- Uses pi defaults `--model openai-codex/gpt-5.4 --thinking high` (override via `LOOP_PI_MODEL` / `LOOP_PI_THINKING`)
+- Uses pi defaults `--model gpt-5.3-codex --thinking high` (override via `LOOP_PI_MODEL` / `LOOP_PI_THINKING`)
 
 ```bash
 # Run directly
@@ -282,7 +286,7 @@ tmux new-window -n "loop-{feature}" -d
 tmux send-keys -t "loop-{feature}" "~/agents/skills/loop/loop.sh --agent crafter --feature {feature} --project-root $PWD 20" C-m
 ```
 
-The agent must be self-sufficient — its system prompt should contain the full implement-task workflow (Context → Code → Review → Compound) and loop awareness (mark tasks done, update progress file, output "Loop complete").
+The agent must be self-sufficient — its system prompt should contain the full implement-task workflow (Context → Code → Review → Compound with adaptive review) and loop awareness (mark tasks done, update progress file, output "Loop complete").
 
 ---
 
@@ -381,6 +385,7 @@ UI task is NOT complete until browser verification passes.
 Before marking any task complete:
 
 - Verify command from task must pass
+- Review completed via adaptive policy (self-review for small low-risk diffs; oracle review for complex/high-risk diffs)
 - Changes committed and pushed
 - Progress logged
 - Task file updated to `status: done`
