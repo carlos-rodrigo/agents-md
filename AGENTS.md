@@ -2,16 +2,7 @@
 
 > Baseline methodology for all projects. Project `AGENTS.md` adds context and may override specifics.
 
-## Precedence
-
-1. Project `AGENTS.md` (context + overrides)
-2. This file (global defaults)
-3. Agent built-ins (last resort)
-
-## Scope
-
-- **Global (this file):** workflow discipline, safety, autonomy
-- **Project AGENTS.md:** stack, commands, architecture, domain rules
+Precedence: Project `AGENTS.md` > this file > built-ins.
 
 ---
 
@@ -28,11 +19,7 @@
 - Bug fixes, readability improvements, duplication reduction, documentation
 
 **Requires approval:**
-- Schema changes
-- API contract changes
-- Auth/financial logic changes
-- Infra pattern changes
-- Major dependency upgrades
+- Schema, API contract, auth/financial, infra pattern changes; major dependency upgrades
 
 ---
 
@@ -40,8 +27,29 @@
 
 - One task = one behavior (small, focused, reversible diffs)
 - Keep system working after each step
-- Don’t mix formatting with logic changes
+- Don't mix formatting with logic changes
 - Before removing/changing code, understand why it exists and who depends on it
+
+### Anti-Slop Policy
+
+- Prefer minimal, surgical changes over rewrites
+- Follow existing code style and local patterns first
+- Find 2-3 prior-art examples in the repo and mirror them
+- Do not introduce new abstractions unless clearly necessary
+- Avoid opportunistic cleanup/refactors unrelated to the requested behavior
+
+---
+
+## Documentation Policy
+
+Projects use `docs/` as the single place for agent-facing knowledge:
+- `docs/playbooks/` — curated how-to guides, auto-maintained by agents during Finalize
+- `docs/features/` — feature specs (PRD, design) + verification workflows
+- `AGENTS.md` — small, always loaded; points to `docs/` for details
+- `.features/` — ephemeral task files only
+
+Load playbooks on demand during research — don't read everything upfront.
+Auto-doc sub-agent updates `docs/` during Finalize (no manual step).
 
 ---
 
@@ -58,16 +66,11 @@ Skip triage for trivial requests.
 
 ---
 
-## Workflow (Overview)
+## Workflow
 
 > Plan → Design → Create Tasks → Implement → Ship
 
-Use dedicated skills for detailed phase instructions:
-- **Plan:** `prd`
-- **Design:** `design-solution`
-- **Tasks:** `simple-tasks`
-- **Implement:** `implement-task`
-- **Autonomous execution:** `loop`
+Skills: `prd`, `design-solution`, `simple-tasks`, `implement-task`, `loop`
 
 ### Phase gates
 
@@ -79,44 +82,25 @@ Use dedicated skills for detailed phase instructions:
 
 ## Testing Policy
 
-Prefer TDD. Test-first exceptions are rare and must be auditable:
-- Test harness absent/broken
-- Unreachable legacy code
-- Trivial docs/comments
-- Emergency hotfix
-
-If exception is used:
-1. Document why in task
-2. Define manual verification steps
-3. Create follow-up task for tests
-4. Keep scope minimal
+Prefer TDD. Exceptions (harness absent, trivial docs, emergency hotfix) must be documented in the task with manual verification steps and a follow-up task for tests.
 
 ---
 
 ## Sub-agents
 
-| Agent | Purpose | When to use |
-|-------|---------|-------------|
-| `researcher` | Internet + library/source research | State-of-the-art, unfamiliar APIs/libraries |
-| `oracle` | Deep reasoning + second opinion | Complex debugging, architecture, review |
+| Agent | When to use |
+|-------|-------------|
+| `researcher` | Unfamiliar APIs/libraries, state-of-the-art |
+| `oracle` | Blocked after 2 failed attempts, pre-merge deep review, architecture trade-offs |
 
-Use sub-agents when they materially improve outcome; avoid for trivial work.
+Chain `researcher` → `oracle` when uncertainty is high. Accepted recommendations must become code/tests/docs.
 
 ---
 
 ## Session Completion
 
-Work is not complete until push succeeds:
 1. Run quality gates (tests/lint/build)
 2. Update task/workflow state
-3. Capture reusable learnings in `LEARNINGS.md` (if any)
-4. `git pull --rebase && git push`
-5. Confirm `git status` is up to date
+3. `git pull --rebase && git push`
 
----
-
-## Golden Rule
-
-> If not confident, do not act.
-
-State uncertainty, list assumptions, and ask.
+> **Golden Rule:** If not confident, do not act. State uncertainty and ask.

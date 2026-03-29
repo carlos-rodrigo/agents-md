@@ -13,6 +13,7 @@ PROJECT_ROOT=""
 MAX_ITERATIONS=10
 SLEEP_SECONDS=2
 POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
+RATE_LIMIT_MAX_STREAK="${LOOP_RATE_LIMIT_MAX_STREAK:-3}"
 AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
@@ -66,6 +67,11 @@ validate_non_negative_int() {
   return 0
 }
 
+is_rate_limit_error_output() {
+  local file="$1"
+  grep -Eiq 'rate_limit_error|too[[:space:]]+many[[:space:]]+requests|\bHTTP[[:space:]]*429\b|\b429\b' "$file"
+}
+
 usage() {
   cat <<'EOF'
 Usage: loop.sh [options] [max_iterations]
@@ -81,6 +87,7 @@ Options:
   --sleep <seconds>        Delay between iterations (default: 2)
   --poll <seconds>         Heartbeat log interval while tool runs (default: 3)
                            Set 0 to disable heartbeat logging
+  --rate-limit-streak <n>  Stop loop after n consecutive rate-limit failures (default: 3)
   -h, --help               Show this help
 
 Environment overrides:
@@ -89,6 +96,7 @@ Environment overrides:
   LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
                            Set LOOP_OPENCODE_VARIANT='' to omit --variant
+  LOOP_RATE_LIMIT_MAX_STREAK  Consecutive rate-limit failures before stopping (default: 3)
 
 Examples:
   ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi --poll 1 20
@@ -156,6 +164,14 @@ while [[ $# -gt 0 ]]; do
       POLL_SECONDS="${1#*=}"
       shift
       ;;
+    --rate-limit-streak)
+      RATE_LIMIT_MAX_STREAK="${2:-}"
+      shift 2
+      ;;
+    --rate-limit-streak=*)
+      RATE_LIMIT_MAX_STREAK="${1#*=}"
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -178,6 +194,15 @@ if ! validate_non_negative_int "--sleep" "$SLEEP_SECONDS"; then
 fi
 
 if ! validate_non_negative_int "--poll" "$POLL_SECONDS"; then
+  exit 1
+fi
+
+if ! validate_non_negative_int "--rate-limit-streak" "$RATE_LIMIT_MAX_STREAK"; then
+  exit 1
+fi
+
+if [[ "$RATE_LIMIT_MAX_STREAK" -le 0 ]]; then
+  echo "Error: --rate-limit-streak must be > 0"
   exit 1
 fi
 
@@ -308,11 +333,13 @@ fi
 LOOP_START_TS=$(date +%s)
 echo "=== loop start $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
 if [[ -n "$AGENT" ]]; then
-  echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 else
-  echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 fi
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
+
+RATE_LIMIT_STREAK=0
 
 for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo "" | tee -a "$LOG_FILE"
@@ -405,7 +432,7 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   if grep -Eq "Loop complete|<promise>COMPLETE</promise>" "$TEMP_OUTPUT"; then
     echo "✅ Loop complete detected." | tee -a "$LOG_FILE"
     rm -f "$TEMP_OUTPUT"
-    
+
     # Calculate total duration
     LOOP_END_TS=$(date +%s)
     TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
@@ -420,11 +447,42 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     else
       TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
     fi
-    
+
     echo "──────────────────────────────────────────────────────────" | tee -a "$LOG_FILE"
     echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
     echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
     exit 0
+  fi
+
+  if is_rate_limit_error_output "$TEMP_OUTPUT"; then
+    RATE_LIMIT_STREAK=$((RATE_LIMIT_STREAK + 1))
+    echo "⚠️  Rate-limit error detected (streak $RATE_LIMIT_STREAK/$RATE_LIMIT_MAX_STREAK)." | tee -a "$LOG_FILE"
+
+    if [[ "$RATE_LIMIT_STREAK" -ge "$RATE_LIMIT_MAX_STREAK" ]]; then
+      rm -f "$TEMP_OUTPUT"
+
+      LOOP_END_TS=$(date +%s)
+      TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
+      TOTAL_MINUTES=$((TOTAL_DURATION / 60))
+      TOTAL_SECONDS=$((TOTAL_DURATION % 60))
+      if [[ $TOTAL_MINUTES -ge 60 ]]; then
+        TOTAL_HOURS=$((TOTAL_MINUTES / 60))
+        TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
+        TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+      elif [[ $TOTAL_MINUTES -gt 0 ]]; then
+        TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+      else
+        TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+      fi
+
+      echo "🛑 Stopping loop after $RATE_LIMIT_STREAK consecutive rate-limit failures." | tee -a "$LOG_FILE"
+      echo "   Adjust with --rate-limit-streak <n> or LOOP_RATE_LIMIT_MAX_STREAK." | tee -a "$LOG_FILE"
+      echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
+      echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
+      exit 2
+    fi
+  else
+    RATE_LIMIT_STREAK=0
   fi
 
   rm -f "$TEMP_OUTPUT"
