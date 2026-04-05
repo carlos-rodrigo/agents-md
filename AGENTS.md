@@ -6,6 +6,12 @@ Precedence: Project `AGENTS.md` > this file > built-ins.
 
 ---
 
+## Response Style
+
+Be concise. No preamble, no summaries unless asked. Short answers for simple questions.
+
+---
+
 ## Non-Negotiables
 
 **Never:**
