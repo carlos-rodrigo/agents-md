@@ -99,6 +99,8 @@ Prefer TDD. Exceptions (harness absent, trivial docs, emergency hotfix) must be 
 | `researcher` | Unfamiliar APIs/libraries, state-of-the-art |
 | `oracle` | Blocked after 2 failed attempts, pre-merge deep review, architecture trade-offs |
 
+Use `agent_job_start`/agent-jobs for researcher, oracle, and deep-review work by default when tmux is available; reserve synchronous `subagent` for explicit blocking requests or non-tmux fallback.
+
 Chain `researcher` → `oracle` when uncertainty is high. Accepted recommendations must become code/tests/docs.
 
 ---
