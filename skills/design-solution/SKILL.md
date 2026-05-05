@@ -1,54 +1,77 @@
 ---
 name: design-solution
-description: "Turn a PRD into a phased implementation plan using vertical slices. Triggers on: create design, design this, plan phases, break down prd, tracer bullets."
+description: "Turn an approved brief or PRD into a concise implementation design when a separate design doc is actually useful. Triggers on: create design, design this, plan phases, break down prd, tracer bullets."
 ---
 
 # Design Solution
 
-Break a PRD into a phased implementation plan using **vertical slices** (tracer bullets). Each phase cuts through ALL layers end-to-end.
+Use this skill when a separate design doc will reduce execution risk.
+
+## First decide if a design doc is warranted
+
+Write `docs/features/{feature}/design.md` when:
+- the change is cross-cutting or multi-day,
+- there are multiple reasonable technical approaches,
+- schema/API/auth/migration decisions matter,
+- or the user explicitly asks for design.
+
+Skip the design doc and recommend direct task creation or implementation when:
+- the change is bounded and the approach is obvious,
+- there are no durable technical tradeoffs,
+- or a short chat plan is enough.
+
+If you skip it, say so explicitly and recommend the lighter path.
+
+---
 
 ## Process
 
-### 1. Read the PRD
+### 1. Read the approved context
 
-Load `.features/{feature}/prd.md`. If not found, ask the user.
+Prefer, in order:
+1. `docs/features/{feature}/prd.md`
+2. an approved brief in chat
+3. the user prompt
+
+If none exist, ask for the missing context.
 
 ### 2. Explore the codebase
 
-Understand current architecture, patterns, and integration layers. Use scout/librarian sub-agents if needed.
+Understand current architecture, patterns, seams, and verification surfaces.
+Capture only the findings that execution will actually need:
+- existing modules/components/handlers to mirror,
+- likely integration points,
+- tests and verification surfaces,
+- contracts or constraints that must be preserved.
 
 ### 3. Identify durable decisions
 
-High-level decisions unlikely to change:
-- Route structures / URL patterns
-- Database schema shape
-- Key data models
-- Auth approach
-- Third-party service boundaries
+Focus on decisions unlikely to change during implementation:
+- route or workflow shape,
+- schema/API boundaries,
+- data ownership,
+- third-party integration boundaries,
+- migration/rollback approach.
 
-### 4. Draft vertical slices
+### 4. Slice the work only as far as needed
 
-Break PRD into **tracer bullet** phases:
+If this work benefits from tasking, break it into thin vertical slices:
+- each slice should be independently verifiable,
+- prefer a few thin slices over a giant phase plan,
+- do not force phases for a one-step change.
 
-- Each slice is a thin VERTICAL cut through ALL layers (schema → API → UI → tests)
-- NOT horizontal slices (all DB first, then all API, etc.)
-- Each phase is demoable/verifiable on its own
-- Prefer many thin slices over few thick ones
-- Include durable decisions (routes, schema), NOT file paths
+### 5. Check granularity with the user
 
-### 5. Quiz the user
-
-Present phases as numbered list with:
-- **Title**: short name
-- **User stories**: which ones from PRD
-
-Ask: "Too coarse? Too fine? Merge or split anything?"
+Present the proposed slices/decisions and ask:
+- too coarse?
+- too fine?
+- any decision that still needs input?
 
 Iterate until approved.
 
 ### 6. Write the design
 
-Save to `.features/{feature}/design.md`
+Save to `docs/features/{feature}/design.md`.
 
 ---
 
@@ -57,60 +80,48 @@ Save to `.features/{feature}/design.md`
 ```markdown
 # Design: {Feature Name}
 
-> PRD: .features/{feature}/prd.md
+> Context: docs/features/{feature}/prd.md or approved brief
 
-## Architectural Decisions
+## Goal
 
-Durable decisions across all phases:
+One short paragraph on the technical outcome this design enables.
 
-- **Routes**: ...
-- **Schema**: ...
-- **Key models**: ...
+## Key Decisions
 
----
+- **Decision 1**: what we chose and why
+- **Decision 2**: what we chose and why
 
-## Phase 1: {Title}
+## Implementation Slices
 
-**User stories**: US-001, US-002
+### Slice 1: {Title}
+- Outcome:
+- Main changes:
+- Verification:
 
-### What to build
+### Slice 2: {Title}
+- Outcome:
+- Main changes:
+- Verification:
 
-Concise description of this vertical slice. End-to-end behavior, not layer-by-layer.
+## Risks / Open Questions
 
-### Acceptance criteria
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-
----
-
-## Phase 2: {Title}
-
-**User stories**: US-003
-
-### What to build
-
-...
-
-### Acceptance criteria
-
-- [ ] ...
-
-<!-- Repeat for each phase -->
+- Risk or unresolved tradeoff
 ```
 
 ---
 
 ## Guidelines
 
-- **Vertical over horizontal** — Every phase touches all layers
-- **Thin slices** — Smaller is better; easier to verify and course-correct
-- **Demoable** — Each phase produces something visible
-- **No file paths** — They change; describe by responsibility
+- **Minimum durable design** — record only decisions that matter later
+- **No architecture essay** — keep it concise and execution-oriented
+- **Verification in every slice** — each slice should say how it will be checked
+- **No file inventories for their own sake** — mention likely seams, not exhaustive paths
+- **Use tasks only when they help** — don’t force decomposition for small work
 
 ---
 
 ## Next Step
 
-After design is approved:
-> Say **"create tasks"** to break phases into tasks.
+After design approval:
+- If the work should be split, say **"create tasks"**
+- If the work is still small enough to do directly, implement without forcing task files

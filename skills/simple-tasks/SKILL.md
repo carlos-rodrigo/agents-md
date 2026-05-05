@@ -5,49 +5,68 @@ description: "File-based task management for agents. No CLI, no MCP - just markd
 
 # Simple Tasks
 
-Lightweight task management using markdown files. Agents read and write tasks directly - no external dependencies.
+Lightweight task management using markdown files. Agents read and write tasks directly — no external dependencies.
+
+Use tasks when the work benefits from explicit execution state. Do **not** force task files for tiny or one-shot changes.
+
+Before splitting work into tasks, research the relevant code and inline that research into each task. A task is only implementation-ready when it names the likely files to inspect/change, shows prior-art snippets to mirror, and calls out the tests/verification surface.
 
 ---
 
 ## Structure
 
-Tasks live inside the feature folder under `.features/`, alongside the PRD and design:
+Tasks live in `.features/`. Durable feature docs, if they exist, live in `docs/features/`.
 
-```
+```text
+docs/features/
+├── user-auth/
+│   ├── prd.md           # optional
+│   ├── design.md        # optional
+│   └── workflows/       # optional durable verification docs
+└── archive/
+
 .features/
-├── user-auth/                    # Feature folder
-│   ├── prd.md                    # Product requirements
-│   ├── design.md                 # Technical design
-│   └── tasks/                    # Implementable tasks
-│       ├── _active.md            # Feature context and progress checklist
-│       ├── 001-setup-schema.md
-│       ├── 002-add-api.md
-│       └── 003-build-ui.md
-├── billing/                      # Another feature (can run in parallel)
-│   ├── prd.md
-│   ├── design.md
+├── user-auth/
 │   └── tasks/
 │       ├── _active.md
-│       ├── 001-stripe-setup.md
-│       └── 002-webhooks.md
-└── archive/                      # Completed features
+│       ├── 001-setup-schema.md
+│       └── 002-add-api.md
+└── billing/
+    └── tasks/
 ```
 
-The feature folder name is derived from the PRD feature name in kebab-case (e.g., "User Auth" → `.features/user-auth/`)
+Tasks can be created from any stable source of truth:
+- an approved chat plan,
+- `docs/features/{feature}/prd.md`,
+- `docs/features/{feature}/design.md`,
+- or a combination of the above.
+
+---
+
+## When to create tasks
+
+Create tasks when:
+- the work will span multiple commits or sessions,
+- dependencies between steps matter,
+- autonomous execution/looping is desired,
+- or the user wants explicit workflow state.
+
+Skip tasks when:
+- the change is small and can be completed in one bounded pass,
+- or the next step is obvious enough to implement directly.
 
 ---
 
 ## Task File Format
 
-Each task is a markdown file with YAML frontmatter. **Tasks must be self-contained** — an agent should be able to implement the task by reading only this file, without needing to explore the codebase to discover patterns.
+Each task is a markdown file with YAML frontmatter. **Tasks must be self-contained** — an implementing agent should not need to read the full PRD/design or explore broadly just to understand what to build.
 
 ```markdown
 ---
 id: 001
 status: open          # open | in-progress | done | blocked
 depends: []           # IDs of tasks that must complete first
-parent: null          # ID of parent task (for grouping)
-created: 2025-02-05
+created: 2026-04-10
 ---
 
 # Setup database schema
@@ -56,32 +75,33 @@ Add user preferences table with settings column.
 
 ## Context
 
-<!-- Inline the relevant design phase or section. NOT a reference to "read design.md". -->
-<!-- Include only what this task needs — not the full design. -->
-
-This task implements Phase 1 of the User Preferences feature.
-The preferences table stores per-user settings as JSONB with a FK to users.
+Only the relevant brief/design excerpt for this task.
 
 ## What to do
 
-- Create migration file
-- Add preferences table with jsonb settings column
-- Add foreign key to users table
+- Concrete step 1
+- Concrete step 2
+
+## Codebase research
+
+- **Files to inspect**
+  - `db/migrations/003-add-teams.ts` — migration structure to mirror
+- **Files likely to change**
+  - `db/migrations/` — new migration file
+  - `db/schema.ts` — generated schema/types update
+- **Tests / verification surface**
+  - migration command
+  - typecheck command
+- **Constraints discovered**
+  - IDs use `gen_random_uuid()`
 
 ## Patterns to follow
 
-<!-- Include actual code snippets showing the pattern to replicate. -->
-<!-- The agent should see the pattern here, not need to find it. -->
-
-Follow the existing migration pattern in `db/migrations/003-add-teams.ts`:
+Use the existing migration pattern in `db/migrations/003-add-teams.ts`:
 
 ```typescript
 export async function up(db: Kysely<any>): Promise<void> {
-  await db.schema
-    .createTable("teams")
-    .addColumn("id", "uuid", (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
-    .addColumn("name", "varchar(255)", (col) => col.notNull())
-    .execute();
+  await db.schema.createTable("teams").execute();
 }
 ```
 
@@ -93,8 +113,8 @@ export async function up(db: Kysely<any>): Promise<void> {
 
 ## Files
 
-- db/migrations/ (new migration file)
-- db/schema.ts (add type)
+- db/migrations/
+- db/schema.ts
 
 ## Verify
 
@@ -105,201 +125,80 @@ npm run db:migrate && npm run typecheck
 
 ---
 
+## Task Readiness Rules
+
+A task is **ready** only when all are true:
+- `status: open`
+- dependencies are done
+- it includes `Context`, `What to do`, `Codebase research`, `Patterns to follow`, `Acceptance criteria`, `Files`, and `Verify`
+- the research includes real repo-specific prior art, not placeholders
+
+If a task only restates the desired outcome, treat it as a draft and enrich it before implementation.
+
+---
+
 ## Operations
 
-### List Tasks
-
-Read `.features/{feature}/tasks/` directory, parse frontmatter, filter by status:
+### List tasks
 
 ```bash
-ls -1 .features/{feature}/tasks/*.md 2>/dev/null | head -20
+ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -v _active
 ```
 
-Then read each file's frontmatter to get status.
+### Find ready tasks
 
-**Quick status check:**
+A task is ready when it is open and all IDs in `depends` have `status: done`.
+
 ```bash
 grep -l "status: open" .features/{feature}/tasks/*.md
 ```
 
-### Find Ready Tasks
+### Create a task
 
-A task is **ready** when:
-- `status: open`
-- All tasks in `depends` array have `status: done`
+1. Research the relevant code first
+2. Find the next ID
+3. Write a full implementation-ready task file
+4. Use kebab-case filename: `003-descriptive-name.md`
 
-```bash
-# Find open tasks
-grep -l "status: open" .features/{feature}/tasks/*.md
-
-# For each, check if dependencies are done
-```
-
-### Create Task
-
-1. Find next ID: `ls .features/{feature}/tasks/*.md | wc -l` + 1
-2. Create file with template
-3. Use kebab-case filename: `003-descriptive-name.md`
-
-### Update Task Status
+### Update status
 
 Edit the frontmatter directly:
 
 ```bash
-# Mark in-progress
-sed -i '' 's/status: open/status: in-progress/' .features/{feature}/tasks/001-task-name.md
-
-# Mark done  
-sed -i '' 's/status: in-progress/status: done/' .features/{feature}/tasks/001-task-name.md
+# open -> in-progress
+# in-progress -> done
 ```
 
-Or use `edit_file` to update the status line.
+### Archive completed feature tasks
 
-### Archive Completed Feature
-
-When all tasks for a feature are done:
-
-```bash
-DATE=$(date +%Y-%m-%d)
-FEATURE="feature-name"
-mkdir -p .features/archive/$DATE-$FEATURE
-mv .features/$FEATURE/ .features/archive/$DATE-$FEATURE/
-```
+When the feature is done, remove or archive `.features/{feature}/` according to repo conventions. Durable docs stay under `docs/features/` if they still matter.
 
 ---
 
 ## Active Feature Context
 
-Each feature's tasks folder contains `_active.md` (`.features/{feature}/tasks/_active.md`) to track progress:
+Each feature may include `.features/{feature}/tasks/_active.md` to track progress:
 
 ```markdown
 # Current Feature: User Preferences
 
-Started: 2025-02-05
-Parent Task: 001
+Started: 2026-04-10
 
 ## Progress
-
 - [x] 001 - Schema setup
-- [ ] 002 - API endpoints  
-- [ ] 003 - Settings UI
+- [ ] 002 - API endpoints
 
 ## Patterns Discovered
-
 - Use jsonb for flexible settings storage
-- Preferences component follows SettingsCard pattern
-```
-
----
-
-## Naming Convention
-
-Files use zero-padded IDs for natural sorting:
-
-```
-001-first-task.md
-002-second-task.md
-...
-010-tenth-task.md
-```
-
----
-
-## Minimal Task (Quick Capture)
-
-For fast task creation when context is obvious from the title:
-
-```markdown
----
-id: 004
-status: open
-depends: [003]
----
-
-# Add validation to settings form
-
-Validate email format and required fields before save.
-
-## Patterns to follow
-
-Validation follows the pattern in `SettingsForm.tsx` — use zod schema + `useForm` resolver.
-```
-
----
-
-## Helper Script (Optional)
-
-For convenience, create `.features/tasks.sh`:
-
-```bash
-#!/bin/bash
-
-case "$1" in
-  list)
-    for f in .features/${2:-*}/tasks/*.md; do
-      [ -f "$f" ] || continue
-      [[ "$(basename "$f")" == _* ]] && continue
-      id=$(basename "$f" .md | cut -d'-' -f1)
-      status=$(grep "^status:" "$f" | cut -d' ' -f2)
-      title=$(grep "^# " "$f" | head -1 | sed 's/^# //')
-      printf "%s [%s] %s\n" "$id" "$status" "$title"
-    done
-    ;;
-  ready)
-    for f in .features/${2:-*}/tasks/*.md; do
-      [ -f "$f" ] || continue
-      [[ "$(basename "$f")" == _* ]] && continue
-      status=$(grep "^status:" "$f" | cut -d' ' -f2)
-      [ "$status" = "open" ] || continue
-      # Check dependencies (simplified - assumes empty depends means ready)
-      deps=$(grep "^depends:" "$f" | sed 's/depends: \[//' | sed 's/\]//')
-      if [ -z "$deps" ] || [ "$deps" = "" ]; then
-        basename "$f"
-      fi
-    done
-    ;;
-  *)
-    echo "Usage: tasks.sh [list|ready] [feature-name]"
-    ;;
-esac
 ```
 
 ---
 
 ## Best Practices
 
-1. **One task = one commit** — Keep tasks small enough to complete in one iteration
-2. **Tasks must be self-contained** — Include inline context (design excerpt, code patterns, contracts). The implementing agent should NOT need to read the full PRD, full design, or explore broadly to understand what to build
-3. **Always update status** — Mark in-progress when starting, done when complete
-4. **Check dependencies** — Don't start a task until depends are done
-5. **Archive regularly** — Move completed features to archive/
-6. **Use acceptance criteria** — Makes it clear when task is done
-7. **Include "Patterns to follow"** — Copy the relevant code snippet from the codebase that the agent should replicate. This prevents expensive codebase exploration
-
----
-
-## Example Workflow
-
-```bash
-# 1. Create feature tasks (after PRD and design are approved)
-# Agent creates .features/user-prefs/tasks/001-schema.md, 002-api.md, 003-ui.md
-
-# 2. Find ready task
-grep -l "status: open" .features/user-prefs/tasks/*.md
-# → .features/user-prefs/tasks/001-schema.md (no dependencies)
-
-# 3. Work on task
-# Agent reads task, implements, runs verify command
-
-# 4. Mark complete
-# Agent edits 001-schema.md: status: open → status: done
-
-# 5. Find next ready task
-# 002-api.md now ready (depends: [001] is done)
-
-# 6. Repeat until all done
-
-# 7. Archive
-mkdir -p .features/archive/2025-02-05-user-prefs
-mv .features/user-prefs/ .features/archive/2025-02-05-user-prefs/
-```
+1. **Research before splitting** — capture prior art, likely files, and verification before writing the task
+2. **One task = one behavior** — keep tasks small enough to complete cleanly
+3. **Tasks must be self-contained** — do not offload missing context to future exploration
+4. **Prefer one good task over many vague tasks**
+5. **Always update status** — make execution state trustworthy
+6. **Use acceptance criteria and verify commands** — definition of done must be explicit
