@@ -1,127 +1,136 @@
 ---
 name: design-solution
-description: "Turn an approved brief or PRD into a concise implementation design when a separate design doc is actually useful. Triggers on: create design, design this, plan phases, break down prd, tracer bullets."
+description: "Model a feature's system design from approved strategy: current flow, intended flow, decisions, proof, and optional work orders. Triggers on: create design, design this, system model, plan phases, break down strategy, tracer bullets."
 ---
 
-# Design Solution
+# Feature System Model / Design
 
-Use this skill when a separate design doc will reduce execution risk.
+Use this skill when implementation needs a durable system model or decision record before coding.
 
-## First decide if a design doc is warranted
+Default feature-flow artifacts:
 
-Write `docs/features/{feature}/design.md` when:
-- the change is cross-cutting or multi-day,
-- there are multiple reasonable technical approaches,
-- schema/API/auth/migration decisions matter,
-- or the user explicitly asks for design.
+```text
+docs/features/{feature}/system-model.md
+docs/features/{feature}/decisions.md
+docs/features/{feature}/proof.md
+docs/features/{feature}/work-orders/   # optional
+```
 
-Skip the design doc and recommend direct task creation or implementation when:
-- the change is bounded and the approach is obvious,
-- there are no durable technical tradeoffs,
-- or a short chat plan is enough.
+A standalone `design.md` is now optional/legacy. Create it only when the user explicitly asks for a design doc or the repo already uses that artifact.
 
-If you skip it, say so explicitly and recommend the lighter path.
+## When to use
 
----
+Use this skill when:
+- current vs intended behavior is not obvious,
+- multiple implementation approaches exist,
+- domain concepts/states/rules need naming,
+- API/schema/auth/migration boundaries matter,
+- execution should be split into Work Orders.
+
+Skip durable design when the change is small, the strategy/proof are clear, and implementation can proceed directly.
 
 ## Process
 
-### 1. Read the approved context
+### 1. Read approved strategy
 
-Prefer, in order:
-1. `docs/features/{feature}/prd.md`
-2. an approved brief in chat
-3. the user prompt
+Prefer:
+1. `docs/features/{feature}/strategy.md`
+2. an approved feature brief in chat
+3. a classic `prd.md` only if that is the available source
 
-If none exist, ask for the missing context.
+If strategic decisions are missing, ask or update `decisions.md` before designing around assumptions.
 
-### 2. Explore the codebase
+### 2. Inspect the system
 
-Understand current architecture, patterns, seams, and verification surfaces.
-Capture only the findings that execution will actually need:
-- existing modules/components/handlers to mirror,
-- likely integration points,
-- tests and verification surfaces,
-- contracts or constraints that must be preserved.
+Read/search enough code to anchor the model:
+- actors/triggers,
+- current components/functions/routes/jobs,
+- data/state ownership,
+- boundaries and contracts,
+- tests/verification surfaces.
 
-### 3. Identify durable decisions
+Do not create exhaustive file inventories. Capture only anchors that matter for execution.
 
-Focus on decisions unlikely to change during implementation:
-- route or workflow shape,
-- schema/API boundaries,
-- data ownership,
-- third-party integration boundaries,
-- migration/rollback approach.
+### 3. Write the system model
 
-### 4. Slice the work only as far as needed
-
-If this work benefits from tasking, break it into thin vertical slices:
-- each slice should be independently verifiable,
-- prefer a few thin slices over a giant phase plan,
-- do not force phases for a one-step change.
-
-### 5. Check granularity with the user
-
-Present the proposed slices/decisions and ask:
-- too coarse?
-- too fine?
-- any decision that still needs input?
-
-Iterate until approved.
-
-### 6. Write the design
-
-Save to `docs/features/{feature}/design.md`.
-
----
-
-## Template
+Use `system-model.md`:
 
 ```markdown
-# Design: {Feature Name}
+# System Model: {Feature Name}
 
-> Context: docs/features/{feature}/prd.md or approved brief
+## Current flow
 
-## Goal
+Actor/input → current components/functions → current behavior/output.
 
-One short paragraph on the technical outcome this design enables.
+## Intended flow
 
-## Key Decisions
+Actor/input → changed components/functions → intended behavior/output.
 
-- **Decision 1**: what we chose and why
-- **Decision 2**: what we chose and why
+## Key concepts
 
-## Implementation Slices
+- Concept: meaning, states, rules.
 
-### Slice 1: {Title}
-- Outcome:
-- Main changes:
-- Verification:
+## Invariants
 
-### Slice 2: {Title}
-- Outcome:
-- Main changes:
-- Verification:
+- Rules that must remain true.
 
-## Risks / Open Questions
+## Boundaries
 
-- Risk or unresolved tradeoff
+- Module/service/process/API boundaries and ownership.
+
+## Code anchors
+
+- `{file/function}` — why it matters.
+
+## Diagram candidates
+
+- `current-flow.html`
+- `intended-flow.html`
+- `code-flow.html`
+- `domain-model.html`
 ```
 
----
+Use the `system-diagram` skill for diagrams under `docs/features/{feature}/diagrams/` when a visual model will help the user retain the system.
 
-## Guidelines
+### 4. Record decisions
 
-- **Minimum durable design** — record only decisions that matter later
-- **No architecture essay** — keep it concise and execution-oriented
-- **Verification in every slice** — each slice should say how it will be checked
-- **No file inventories for their own sake** — mention likely seams, not exhaustive paths
-- **Use tasks only when they help** — don’t force decomposition for small work
+Update `decisions.md`:
 
----
+```markdown
+| ID | Status | Decision | Why | Owner | Date |
+| --- | --- | --- | --- | --- | --- |
+| D-001 | decided | ... | ... | user | YYYY-MM-DD |
+```
 
-## Next Step
+Mark unresolved items as `proposed` or `open`; do not let them silently become implementation assumptions.
 
-After design approval:
-- If the work should be split, say **"create tasks"**
-- If the work is still small enough to do directly, implement without forcing task files
+### 5. Define proof
+
+Update `proof.md` with acceptance evidence, targeted checks, manual/E2E checks, and final regression gate.
+
+### 6. Create Work Orders only when useful
+
+Use Work Orders when execution should be approved, split, delegated, or resumed later.
+
+Each Work Order should include:
+- mission,
+- strategic context,
+- decisions to preserve,
+- agent-owned choices,
+- escalation triggers,
+- proof required,
+- execution report expectation.
+
+Small approved features may skip Work Orders and execute directly from strategy/model/decisions/proof.
+
+## Output
+
+End with:
+
+```text
+System model updated: docs/features/{feature}/system-model.md
+Decisions updated: docs/features/{feature}/decisions.md
+Proof updated: docs/features/{feature}/proof.md
+Work orders: {none | list}
+Next: {execute directly | review work order | resolve decisions | define proof}
+```

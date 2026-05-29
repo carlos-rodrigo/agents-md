@@ -1,6 +1,6 @@
 ---
 name: implement-task
-description: "Implement a single task using Understand → Plan → Code → Review → Finalize. Use when implementing a task from .features/{feature}/tasks/. Triggers on: implement task, implement this, code this task, start implementation, work on task."
+description: "Execute one approved Work Order v2 or legacy task using Understand → Plan → Code → Review → Report. Triggers on: implement task, execute work order, implement this, code this task, start implementation, work on task."
 allowed-tools:
   - Bash
   - Read
@@ -8,163 +8,172 @@ allowed-tools:
   - Write
 ---
 
-# Implement Task
+# Execute Work Order / Task
 
-Implements a single task from `.features/{feature}/tasks/` through five phases: **Understand → Plan → Code → Review → Finalize**.
+Implement exactly one approved execution unit.
 
-Each phase must complete before moving to the next.
+Primary source of truth:
 
-> **Context budget:** Read the task first. Prefer targeted reads over broad exploration. If the task is underspecified, fix the task or ask — do not compensate with random repo wandering.
+```text
+docs/features/{feature}/work-orders/NNN-title.md
+```
 
----
+Legacy fallback:
+
+```text
+.features/{feature}/tasks/NNN-task-name.md
+```
+
+Prefer Work Order v2 for feature-flow work. Use legacy `.features/` tasks only when the repo or user explicitly chose that workflow.
 
 ## Prerequisites
 
-Before starting:
-- A task file exists at `.features/{feature}/tasks/NNN-task-name.md`
-- Its `status` is `open`
-- All dependencies in `depends` are `done`
-- The task is implementation-ready: it includes concrete context, repo research, likely files, acceptance criteria, and verify steps
+### Work Order v2
 
-If any prerequisite is missing, stop and tell the user.
+Before starting:
+- work order frontmatter has `status: ready`,
+- strategy/model/decisions/proof are clear enough to execute,
+- proof required is specific,
+- escalation triggers are understood.
+
+Do **not** execute `draft` or `blocked` work orders. Review or unblock them first.
+
+### Legacy task
+
+Before starting:
+- task file exists at `.features/{feature}/tasks/NNN-task-name.md`,
+- `status: open`,
+- dependencies are done,
+- task is implementation-ready.
+
+If prerequisites are missing, stop and tell the user the next required action.
 
 ---
 
 ## Phase 1: Understand
 
-**Goal:** Understand what to build with minimal noise.
+Read the execution unit first.
 
-### 1.1 Read the task file
+For Work Orders, also read only the relevant packet docs:
+- `strategy.md` for intent,
+- `system-model.md` for flow and code anchors,
+- `decisions.md` for decisions to preserve,
+- `proof.md` for verification.
 
-The task file is the primary source of truth.
-It should already contain:
-- `Context`
-- `What to do`
-- `Codebase research`
-- `Patterns to follow`
-- `Acceptance criteria`
-- `Files`
-- `Verify`
+Do targeted follow-up reads only when the work order points to them. Avoid broad repo wandering.
 
-### 1.2 Do only targeted follow-up reads
+Capture:
+- mission,
+- decisions to preserve,
+- agent-owned choices,
+- escalation triggers,
+- proof required,
+- likely files/tests.
 
-Read additional files only when the task file clearly points to them:
-- a file that must be edited,
-- the prior-art file named in `Patterns to follow`,
-- a specific interface/type/contract the task mentions.
-
-**Do not** read the full PRD or design by default.
-If the task lacks enough context to proceed, call that out and enrich the task first.
+If product/system ambiguity appears, stop and escalate instead of inventing behavior.
 
 ---
 
 ## Phase 2: Plan
 
-**Goal:** State the implementation plan before coding.
+Before coding, state:
+1. files to create/modify,
+2. tests to add/update,
+3. patterns to mirror,
+4. order of operations,
+5. proof commands/manual checks,
+6. whether any decision needs escalation.
 
-Write down:
-1. **Files to create/modify**
-2. **Tests to add/update**
-3. **Patterns to mirror**
-4. **Order of operations**
-5. **Verification steps**
-
-If the plan is still ambiguous after targeted reads, stop and ask.
+For behavior changes, prefer `verification_plan` before editing unless the proof contract is already explicit.
 
 ---
 
 ## Phase 3: Code
 
-**Goal:** Implement with tight feedback loops.
+Use tight feedback loops.
 
-### TDD loop for every behavior change
+For behavior changes, prefer TDD:
 
 ```text
-RED → write a failing test
-GREEN → write the minimum code to pass
-REFACTOR → clean up while tests stay green
+RED → write failing test
+GREEN → minimal implementation
+REFACTOR → clean up while green
 ```
 
-### Backpressure rules
-
-- Run the narrowest test that proves the current step
-- Prefer fail-fast modes when available
-- If `scripts/run_silent.sh` exists, use it for noisy commands
-- Do not flood context with passing test output
-
-Examples:
-
-```bash
-# narrow test first
-npm test -- --runInBand path/to/test
-
-# if available
-source scripts/run_silent.sh
-run_silent "unit tests" npm test
-```
-
-### Coding rules
-
-- Keep steps small
-- Match existing patterns before inventing new ones
-- No unrelated refactors
-- Re-run verification after meaningful changes
+Rules:
+- keep steps small,
+- match nearby patterns,
+- no unrelated refactors,
+- run the narrowest proof first,
+- use `scripts/run_silent.sh` when available,
+- rerun relevant verification after meaningful changes.
 
 ---
 
 ## Phase 4: Review
 
-**Goal:** Review proportional to risk.
+Review proportional to risk.
 
-### Choose review depth
+Self-review small/local changes. Use oracle/deep review for larger, risky, auth/security/payment, schema/API, or cross-cutting changes.
 
-| Condition | Review type |
-|-----------|-------------|
-| ≤ 150 changed lines, ≤ 3 files, no auth/security/payment logic | Self-review |
-| Everything else | Deep review |
+Check:
+- decisions preserved,
+- no scope creep,
+- tests cover behavior,
+- edge cases handled,
+- proof matches `proof.md` / work-order requirements.
 
-### Self-review
-
-Check your diff for:
-- naming consistency,
-- missing edge-case tests,
-- error handling gaps,
-- accidental scope creep.
-
-### Deep review
-
-If an oracle/subagent reviewer is available, use it for larger or higher-risk diffs.
-Otherwise do a slower manual review over the changed files and tests.
-
-After review, fix issues and re-run verification.
+Fix review findings and rerun verification.
 
 ---
 
-## Phase 5: Finalize
+## Phase 5: Report / Finalize
 
-**Goal:** Leave clean execution state.
+### For Work Orders
 
-1. Mark the task `status: done`
-2. Update `.features/{feature}/tasks/_active.md` if present
-3. Run the task verify command and any repo-level verification that clearly applies
-4. Update docs **only if** the work changed durable guidance or verification workflows
-5. Commit if the user or repo workflow expects commits
-6. Push only when explicitly requested or clearly part of the workflow
-
-### Report
+1. Write or update an execution report under:
 
 ```text
-✅ Task {id} complete: {title}
-- Verification: {what passed}
-- Review: {self-review | deep review}
-- Docs: {updated | none}
+docs/features/{feature}/execution/NNN-wo-XXX.md
 ```
 
----
+2. Include:
+- mission executed,
+- linked work order id,
+- repo-relative files changed,
+- decisions preserved,
+- deviations from plan,
+- proof commands and results,
+- strategic follow-up.
+
+3. Mark execution report `status: complete` only after proof evidence is recorded.
+4. Mark work order `status: done` only after implementation and report exist.
+5. Regenerate/open the feature view if useful:
+
+```text
+/feature view {feature}
+```
+
+### For legacy tasks
+
+1. Mark task `status: done`.
+2. Update `_active.md` if present.
+3. Update progress docs only if the repo uses them.
+
+### Final response
+
+```text
+✅ Execution complete: {work order/task}
+- Changed: {repo-relative files}
+- Proof: {commands/checks passed}
+- Report: {execution report path | legacy task status}
+- Review: {self-review | deep review}
+- Follow-up: {none | decision/proof/reown suggestion}
+```
 
 ## Important
 
-- The task file should do most of the context-loading work
-- Read on demand, not upfront
-- TDD and verification are non-negotiable for behavior changes
-- One task per session is preferred
+- One execution unit per session is preferred.
+- Work Orders are optional; do not create them for tiny direct work unless they help.
+- Do not mark done without proof.
+- Use repo-relative paths in durable reports.

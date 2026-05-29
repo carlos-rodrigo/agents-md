@@ -1,161 +1,132 @@
 ---
 name: loop
-description: "Autonomous task execution loop. Triggers on: run the loop, start the loop, loop, run loop, run the loop with crafter. Picks ready tasks from .features/{feature}/tasks/, executes them one at a time using Understand → Plan → Code → Review → Finalize, commits, and repeats."
+description: "Autonomous execution loop. Prefer ready Work Orders v2 under docs/features/{feature}/work-orders/; legacy .features tasks remain supported. Triggers on: run the loop, start the loop, loop, run loop, run the loop with crafter."
 ---
 
-# Loop - Autonomous Task Execution
+# Loop - Autonomous Execution
 
-Executes tasks from `.features/{feature}/tasks/` one at a time in dependency order.
-Each iteration: pick a ready task, implement it, update progress, then start the next task in a fresh context.
+Execute one ready execution unit per context window, update state, then hand off to the next session.
 
-Uses **simple-tasks** for task management and **implement-task** for execution.
+Primary source:
+
+```text
+docs/features/{feature}/work-orders/
+```
+
+Legacy fallback:
+
+```text
+.features/{feature}/tasks/
+```
+
+Uses `simple-tasks` for state conventions and `implement-task` for execution.
 
 ---
 
 ## Prerequisites
 
-Before running the loop:
-- `.features/{feature}/tasks/` exists with task files
-- tasks have proper `depends` relationships
-- `_active.md` exists if the feature is being tracked that way
+For feature-flow work:
+- `docs/features/{feature}/` exists,
+- strategy/model/decisions/proof are clear enough,
+- at least one work order has `status: ready`, or the next action is to review/create/unblock a work order.
 
-Optional but useful:
-- `docs/features/{feature}/prd.md`
-- `docs/features/{feature}/design.md`
-- relevant `docs/playbooks/`
+For legacy work:
+- `.features/{feature}/tasks/` exists,
+- tasks have dependency/status metadata.
 
-Do **not** block the loop just because PRD/design docs are missing. Tasks are the execution source of truth.
-
-If multiple features have open tasks, ask the user which one to work on.
+If multiple features have ready work, ask which one to run.
 
 ---
 
 ## Execution Modes
 
-The loop should run **one task per context window**.
+Run **one execution unit per context window**.
 
 | Mode | Mechanism | When to use |
-|------|-----------|-------------|
-| Interactive | handoff/new session after each task | normal guided usage |
-| Background | `loop.sh` spawns a fresh agent process per iteration | hands-off execution |
+| --- | --- | --- |
+| Interactive | handoff/new session after each unit | normal guided usage |
+| Background | `loop.sh` spawns a fresh agent process per iteration | hands-off legacy usage |
 
 ---
 
-## Loop Workflow
+## Feature-flow loop
 
-### 1. Check context
+### 1. Check packet state
 
-For the selected feature:
-- read `.features/{feature}/tasks/_active.md` if present
-- read `scripts/loop/progress-{feature}.txt` if present
-- read feature docs only if they exist and the task context needs them
-- load relevant playbooks on demand
+Read:
+- `/feature status {feature}` output if available,
+- `docs/features/{feature}/work-orders/`,
+- `docs/features/{feature}/execution/`,
+- `proof.md` and `decisions.md` only as needed.
 
-### 2. Find ready tasks
+### 2. Pick a ready work order
 
-A task is **ready** when:
-- `status: open`
-- all IDs in `depends` have `status: done`
-- the task is implementation-ready (context, research, patterns, verify)
+Ready means:
+- `status: ready`,
+- proof requirements are specific,
+- decisions referenced by the work order are resolved.
 
-If an open task is missing the needed research/patterns, treat it as not ready and fix the task first.
+If no work orders are ready:
+- draft/blocked exists → ask/recommend review or unblock,
+- none exist → direct execution may be appropriate for small work; otherwise create a work order,
+- all done → move to reports/review.
 
-### 3. No ready tasks?
+### 3. Execute exactly one work order
 
-- If all tasks are done, report `Loop complete`
-- If some tasks are blocked, report which ones and why
-- If tasks are open but underspecified, enrich them before continuing
+1. Load `implement-task`.
+2. Execute the work order.
+3. Run proof.
+4. Write execution report under `execution/`.
+5. Mark report `complete` after evidence is recorded.
+6. Mark work order `done`.
+7. Refresh dashboard with `/feature view {feature}` if useful.
 
-### 4. Execute one task
+### 4. Fresh context handoff
 
-Pick the lowest-numbered ready task unless there is a clear reason to stay in the same area of the codebase.
+Never continue to the next work order in the same session.
 
-Execution steps:
-1. Read the progress file for discovered patterns
-2. Load `implement-task`
-3. Implement exactly one task
-4. Append progress notes to `scripts/loop/progress-{feature}.txt`
-5. Mark the task done and update `_active.md`
-
-### 5. Fresh context for the next iteration
-
-**Never** continue to the next task in the same session.
-
-#### Interactive mode
-
-Create a handoff/new session with a goal like:
+Handoff shape:
 
 ```text
-Continue the loop for feature "{feature}".
-Completed: task {id} — {title}
-What changed: {brief summary}
-Patterns discovered: {summary or none}
-Next step: pick the next ready task from .features/{feature}/tasks/
-Context to load: _active.md, progress file, and any relevant playbooks/docs if present.
+Continue the feature-flow loop for {feature}.
+Completed: WO-XXX — {title}
+Report: docs/features/{feature}/execution/...
+Proof: {summary}
+Next: run /feature status {feature}, then pick the next ready work order or finish review.
 ```
 
-#### Background mode
+---
 
-Exit after finalizing the task. `loop.sh` will start the next iteration in a fresh process.
+## Legacy `.features` loop
+
+Use only for existing `.features/{feature}/tasks/` workflows.
+
+A legacy task is ready when:
+- `status: open`,
+- dependencies are done,
+- task is implementation-ready.
+
+After execution:
+- mark task `done`,
+- update `_active.md` if present,
+- append progress notes if the repo uses a progress file.
 
 ---
 
-## Progress File
+## Completion
 
-Use `scripts/loop/progress-{feature}.txt` as lightweight memory between sessions.
-
-Suggested shape:
-
-```markdown
-# Loop Progress Log
-
-Started: [date]
-Feature: [feature]
-
-## Codebase Patterns
-- reusable pattern 1
-
----
-
-## [date] - [task title]
-- What was implemented
-- Files changed
-- Verification result
-- Patterns or gotchas
-```
-
-Rules:
-- append, don’t rewrite history
-- keep it concise and reusable
-- do not dump raw logs
-
----
-
-## Archive
-
-When all tasks for a feature are complete:
-- archive or remove `.features/{feature}/` according to repo conventions
-- archive `scripts/loop/progress-{feature}.txt` if the repo keeps progress history
-- keep durable docs under `docs/features/` only if they still matter
-
----
-
-## Quality Requirements
-
-Before marking a task complete:
-- task verify command passes
-- any clearly relevant repo verification passes
-- review is done at the appropriate depth
-- progress is logged
-- task status is updated
-
-Commits/pushes should follow repo workflow and user intent; do not assume they are always required.
+When all work is done:
+- ensure no ready/draft reports are incomplete,
+- run final proof/regression gate,
+- update `review.md` with strategy alignment,
+- suggest `/reown --remember` only when the lesson should become searchable memory,
+- do not assume commit/push unless the user or repo workflow expects it.
 
 ---
 
 ## Important
 
-- **One task per context window**
-- Tasks, not PRDs, are the execution source of truth
-- Prefer the lightest workflow that keeps the loop reliable
-- If not confident, stop and surface the blocker instead of guessing
+- One execution unit per context window.
+- Work Orders are optional; do not force them for tiny direct work.
+- Tasks/work orders are execution state, not strategy. Strategy lives under `docs/features/{feature}/`.
+- Stop and surface blockers instead of guessing.

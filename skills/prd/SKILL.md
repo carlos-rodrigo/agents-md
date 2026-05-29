@@ -1,104 +1,112 @@
 ---
 name: prd
-description: "Create a concise PRD when written requirements are actually needed. Triggers on: create a prd, write prd, plan feature, requirements for."
+description: "Frame a feature strategy packet; create a classic PRD only when explicitly useful. Triggers on: create a prd, write prd, plan feature, requirements for, feature strategy."
 ---
 
-# PRD / Feature Brief
+# Feature Strategy / PRD Compatibility
 
-Use this skill only when a written requirements artifact will reduce risk.
+Use this skill to help the user own the product/system strategy before implementation.
 
-## First decide if a PRD is warranted
+Default to the new feature-flow source of truth:
 
-Write `docs/features/{feature}/prd.md` when:
-- the user explicitly asks for a PRD or written requirements,
-- the work is large, risky, or ambiguous,
-- the feature spans multiple user stories or stakeholders,
-- or a later design/task handoff needs a durable brief.
+```text
+docs/features/{feature}/strategy.md
+```
 
-Skip the PRD and recommend a lighter path when:
-- the change is small or bounded,
-- scope is already clear,
-- or a short plan in chat is enough.
+Create a classic `prd.md` only when the user explicitly asks for a PRD or an external stakeholder/process needs that artifact.
 
-If you skip it, say so explicitly and suggest the next step (`investigate + plan`, `create tasks`, or implement directly).
+## First decide the artifact
 
----
+Prefer `strategy.md` when:
+- the user is framing a feature or behavior change,
+- strategic ownership matters more than formal requirements,
+- the next step is system modeling, decisions, proof, or work orders.
+
+Write `docs/features/{feature}/prd.md` only when:
+- the user explicitly says PRD,
+- stakeholder/user-story formatting is required,
+- the team process expects PRDs.
+
+For tiny, obvious changes, skip durable docs and recommend direct implementation with proof.
 
 ## Process
 
-1. **Clarify only what matters** — Ask only questions that change scope, constraints, or verification.
-2. **Explore** — Search the codebase for relevant patterns, modules, and prior art.
-3. **Define success** — Capture goals, constraints, and verification clearly.
-4. **Write** — Generate a concise PRD.
-5. **Save** — `docs/features/{feature}/prd.md`
+1. **Interview lightly** — Ask only questions that affect scope, constraints, decisions, or proof.
+2. **Explore reality** — Read/search relevant code and docs enough to avoid invented requirements.
+3. **Capture strategy** — Problem, desired system behavior, constraints, non-goals, success evidence.
+4. **Identify decisions** — What the user must own vs what the agent can decide.
+5. **Define proof** — Observable checks that prove the behavior.
+6. **Write/update** — Prefer `docs/features/{feature}/strategy.md`; optionally update `decisions.md` and `proof.md` if the packet exists.
 
-Skip or compress steps when the answer is already obvious.
+## Strategy Template
 
----
+```markdown
+# Strategy: {Feature Name}
 
-## Template
+## Problem to own
+
+What user/business/system pain are we solving?
+
+## Desired system behavior
+
+What should the system do in plain language after this change?
+
+## Scope
+
+### In
+- ...
+
+### Out
+- ...
+
+## Constraints
+
+- Existing contracts, security, performance, migration, UX, or operational constraints.
+
+## User-owned decisions
+
+| ID | Decision needed | Options | Recommendation | Status |
+| --- | --- | --- | --- | --- |
+| D-001 | ... | ... | ... | proposed |
+
+## Agent-owned choices
+
+- Implementation details the agent may choose without changing product/system intent.
+
+## Success evidence
+
+- Observable behavior or command that proves the feature works.
+- Regression gate that should stay green.
+
+## Teach-back
+
+The mental model the user should retain after this feature ships.
+```
+
+## Classic PRD Template (only if requested)
 
 ```markdown
 # PRD: {Feature Name}
 
 ## Problem
 
-What problem are we solving? 2-3 sentences max.
-
 ## Goals
-
-- Goal 1
-- Goal 2
 
 ## Scope
 
-### In
-- What this change includes
-
-### Out
-- What this change does not include
-
 ## User Stories
-
-Include only if they help clarify behavior.
-
-### US-001: {Title}
-
-**As a** {actor}, **I want** {capability}, **so that** {benefit}.
-
-**Acceptance Criteria:**
-- [ ] Specific, verifiable criterion
-- [ ] Another criterion
 
 ## Constraints / Dependencies
 
-- Technical, product, or operational constraints
-- Existing contracts that must be preserved
-
 ## Verification
 
-- Automated checks to run
-- Manual scenarios to verify
-
 ## Open Questions
-
-- [ ] Unresolved decision needing input
 ```
-
----
-
-## Guidelines
-
-- **Concise over comprehensive** — This is a brief, not a spec dump
-- **Ask less, but ask the right things** — only questions that change the outcome
-- **Prefer constraints and verification over prose**
-- **No file-by-file tours** — describe responsibilities and boundaries instead
-- **Leave architecture to design** — unless the user explicitly wants it here
-
----
 
 ## Next Step
 
-After the PRD is approved:
-- If meaningful technical tradeoffs remain, say **"create design"**
-- Otherwise, say **"create tasks"** or implement directly
+After strategy is approved:
+- create/update `system-model.md` when implementation flow or domain model needs explanation,
+- update `decisions.md` for unresolved strategic choices,
+- update `proof.md` for acceptance evidence,
+- create Work Orders only when delegation/splitting is useful.
