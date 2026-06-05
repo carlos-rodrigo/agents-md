@@ -54,13 +54,22 @@ If prerequisites are missing, stop and tell the user the next required action.
 
 Read the execution unit first.
 
+Always try to find the relevant PRD and design before planning. Prefer:
+- `docs/features/{feature}/prd.md`,
+- `docs/features/{feature}/design.md`,
+- `.features/{feature}/prd.md`,
+- `.features/{feature}/design.md`,
+- any PRD/design paths explicitly linked by the execution unit.
+
+Read existing PRD/design docs for durable requirements, architecture decisions, boundaries, and verification expectations that affect the work. If they are missing, continue only if the execution unit is ready on its own; otherwise stop and ask for clarification or enrich it.
+
 For Work Orders, also read only the relevant packet docs:
 - `strategy.md` for intent,
 - `system-model.md` for flow and code anchors,
 - `decisions.md` for decisions to preserve,
 - `proof.md` for verification.
 
-Do targeted follow-up reads only when the work order points to them. Avoid broad repo wandering.
+Do targeted follow-up reads only when the execution unit, PRD, design, or packet docs point to them. Avoid broad repo wandering.
 
 Capture:
 - mission,
@@ -174,6 +183,7 @@ docs/features/{feature}/execution/NNN-wo-XXX.md
 ## Important
 
 - One execution unit per session is preferred.
+- Always try to find/read the relevant PRD and design, then do targeted follow-up reads on demand.
 - Work Orders are optional; do not create them for tiny direct work unless they help.
 - Do not mark done without proof.
 - Use repo-relative paths in durable reports.
