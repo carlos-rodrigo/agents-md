@@ -13,7 +13,7 @@ In feature-flow, write durable proof to:
 docs/features/{feature}/proof.md
 ```
 
-Work Orders reference the relevant proof, and execution reports record what actually passed.
+Tasks/Work Orders in `.features/{feature}/tasks/` reference the relevant proof; execution reports in `.features/{feature}/execution/` record what actually passed.
 
 ---
 
@@ -111,9 +111,9 @@ Use `agent-browser` only after fast checks pass.
 
 ---
 
-## Work Order integration
+## Task / Work Order integration
 
-Each Work Order should include a compact **Proof required** section:
+Each execution unit should include a compact **Proof required** section:
 
 ```markdown
 ## Proof required
@@ -122,13 +122,13 @@ Each Work Order should include a compact **Proof required** section:
 - [ ] Regression gate: ...
 ```
 
-Do not mark a Work Order `done` until an execution report records the proof result.
+Do not mark a task/work order `done` until an execution report records the proof result.
 
 ---
 
 ## Execution report integration
 
-Execution reports should copy actual evidence, not plans:
+Execution reports live under `.features/{feature}/execution/` and should copy actual evidence, not plans:
 
 ```markdown
 ## Proof commands and results

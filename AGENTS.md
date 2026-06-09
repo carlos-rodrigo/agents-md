@@ -39,7 +39,7 @@ Bug fixes, docs, readability improvements, and small duplication reduction are a
 - Keep always-loaded `AGENTS.md` files short.
 - Load playbooks/docs on demand; do not read everything upfront.
 - Write durable docs only when they preserve requirements, decisions, reusable verification, or non-obvious gotchas.
-- Use `.features/{feature}/tasks/` only when work is split into executable tasks.
+- Keep execution state (tasks, work orders, reports) under ignored `.features/{feature}/`, not durable docs.
 
 ## Subagents
 

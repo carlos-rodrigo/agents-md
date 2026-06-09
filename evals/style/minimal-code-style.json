@@ -1,0 +1,36 @@
+{
+  "id": "minimal-code-style",
+  "description": "Criteria-based style eval for small, focused, safe patches.",
+  "fixture": "evals/fixtures/style/minimal-agents-diff.patch",
+  "criteria": [
+    {
+      "id": "changed-files-exist",
+      "type": "changed_files_exist"
+    },
+    {
+      "id": "max-one-file",
+      "type": "max_changed_files",
+      "max": 1
+    },
+    {
+      "id": "small-diff",
+      "type": "max_changed_lines",
+      "max": 4
+    },
+    {
+      "id": "no-ts-ignore",
+      "type": "forbid_regex",
+      "pattern": "@ts-ignore"
+    },
+    {
+      "id": "no-unscoped-any",
+      "type": "forbid_regex",
+      "pattern": "\\bas any\\b"
+    },
+    {
+      "id": "no-execution-state-in-docs",
+      "type": "forbid_regex",
+      "pattern": "docs/features/\\{[^}]+\\}/(tasks|work-orders|execution)"
+    }
+  ]
+}

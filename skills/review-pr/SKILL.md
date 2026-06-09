@@ -7,14 +7,14 @@ description: "Code review a pull request or branch, including feature-flow strat
 
 Review a pull request or branch for correctness, maintainability, verification, and alignment with the stated product/system intent.
 
-If the change includes a feature-flow packet under `docs/features/{slug}/`, review both code and the packet:
+If the change includes a feature-flow packet under `docs/features/{slug}/`, review code plus durable strategy docs:
 - strategy,
 - system model,
 - decisions,
 - proof,
-- work orders,
-- execution reports,
 - review/teach-back.
+
+If local ignored execution state exists under `.features/{slug}/`, inspect tasks/work orders and execution reports for proof/status, but do not expect them in the PR.
 
 ---
 
@@ -42,9 +42,9 @@ docs/features/{slug}/strategy.md
 docs/features/{slug}/system-model.md
 docs/features/{slug}/decisions.md
 docs/features/{slug}/proof.md
-docs/features/{slug}/work-orders/
-docs/features/{slug}/execution/
 docs/features/{slug}/review.md
+.features/{slug}/tasks/       # local/ignored, if present
+.features/{slug}/execution/   # local/ignored, if present
 ```
 
 ---
@@ -59,7 +59,7 @@ docs/features/{slug}/review.md
 
 ### Strategy alignment (feature-flow)
 - [ ] Implementation preserves decisions in `decisions.md`.
-- [ ] Work Orders, if present, are `done` only when execution reports exist.
+- [ ] Tasks/Work Orders, if local execution state exists, are `done` only when execution reports exist.
 - [ ] Execution reports record repo-relative changed files, proof, deviations, and follow-up.
 - [ ] `review.md` or PR summary teaches the final system rule.
 - [ ] No durable local absolute path leakage.

@@ -297,9 +297,9 @@ if [[ ! -d ".features/$FEATURE/tasks" ]]; then
   exit 1
 fi
 
-mkdir -p scripts/loop
-PROGRESS_FILE="scripts/loop/progress-${FEATURE}.txt"
-LOG_FILE="scripts/loop/tmux-loop-${FEATURE}.log"
+mkdir -p ".features/$FEATURE/execution"
+PROGRESS_FILE=".features/$FEATURE/execution/progress.txt"
+LOG_FILE=".features/$FEATURE/execution/loop.log"
 
 if [[ ! -f "$PROGRESS_FILE" ]]; then
   {
@@ -321,7 +321,7 @@ fi
 
 PROMPT_TEMPLATE="$(<"$PROMPT_TEMPLATE_FILE")"
 PROMPT="${PROMPT_TEMPLATE//\{\{FEATURE\}\}/$FEATURE}"
-PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/scripts/loop/progress-$FEATURE.txt}"
+PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/$PROGRESS_FILE}"
 
 TOOL_RUNTIME=""
 if [[ "$TOOL" == "pi" ]]; then
@@ -452,6 +452,29 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
     echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
     exit 0
+  fi
+
+  if grep -Eq "^Loop blocked:" "$TEMP_OUTPUT"; then
+    echo "🛑 Loop blocked; stopping." | tee -a "$LOG_FILE"
+    rm -f "$TEMP_OUTPUT"
+
+    LOOP_END_TS=$(date +%s)
+    TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
+    TOTAL_MINUTES=$((TOTAL_DURATION / 60))
+    TOTAL_SECONDS=$((TOTAL_DURATION % 60))
+    if [[ $TOTAL_MINUTES -ge 60 ]]; then
+      TOTAL_HOURS=$((TOTAL_MINUTES / 60))
+      TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
+      TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+    elif [[ $TOTAL_MINUTES -gt 0 ]]; then
+      TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+    else
+      TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+    fi
+
+    echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
+    echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
+    exit 3
   fi
 
   if is_rate_limit_error_output "$TEMP_OUTPUT"; then

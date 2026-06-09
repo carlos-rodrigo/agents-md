@@ -33,14 +33,10 @@ If skipping, say so and suggest `prd`, `design-solution`, `simple-tasks`, or dir
 Save the starting brief or summarize it in chat. If the feature name is known, prefer:
 
 ```text
-docs/features/{feature}/prd.md
-```
-
-or a strategy section inside that PRD. If the idea is still too early for a PRD, use:
-
-```text
 docs/features/{feature}/strategy.md
 ```
+
+Create `prd.md` only when the user explicitly asks for a PRD or an external process needs it.
 
 Do not force a final feature name too early; propose one and confirm when needed.
 
@@ -159,7 +155,7 @@ docs/features/{feature}/
 ```
 
 Recommended outputs:
-- `prd.md` — product strategy, wedge, goals, scope, non-goals, verification.
+- `strategy.md` — product strategy, wedge, goals, scope, non-goals, verification.
 - `mvp-scope.md` — first loop, in/out of scope, success metric, open decisions.
 - `system-domain-model.md` — domain concepts and source-of-truth boundaries, when useful.
 

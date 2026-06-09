@@ -7,13 +7,18 @@ description: "Model a feature's system design from approved strategy: current fl
 
 Use this skill when implementation needs a durable system model or decision record before coding.
 
-Default feature-flow artifacts:
+Default durable artifacts:
 
 ```text
 docs/features/{feature}/system-model.md
 docs/features/{feature}/decisions.md
 docs/features/{feature}/proof.md
-docs/features/{feature}/work-orders/   # optional
+```
+
+Optional execution units live outside docs:
+
+```text
+.features/{feature}/tasks/   # gitignored
 ```
 
 A standalone `design.md` is now optional/legacy. Create it only when the user explicitly asks for a design doc or the repo already uses that artifact.
@@ -108,11 +113,11 @@ Mark unresolved items as `proposed` or `open`; do not let them silently become i
 
 Update `proof.md` with acceptance evidence, targeted checks, manual/E2E checks, and final regression gate.
 
-### 6. Create Work Orders only when useful
+### 6. Create execution units only when useful
 
-Use Work Orders when execution should be approved, split, delegated, or resumed later.
+Use tasks/Work Orders when execution should be approved, split, delegated, or resumed later. Put them under ignored `.features/{feature}/tasks/`, not `docs/features/`.
 
-Each Work Order should include:
+Each execution unit should include:
 - mission,
 - strategic context,
 - decisions to preserve,
@@ -121,7 +126,7 @@ Each Work Order should include:
 - proof required,
 - execution report expectation.
 
-Small approved features may skip Work Orders and execute directly from strategy/model/decisions/proof.
+Small approved features may skip tasks/Work Orders and execute directly from strategy/model/decisions/proof.
 
 ## Output
 
@@ -131,6 +136,6 @@ End with:
 System model updated: docs/features/{feature}/system-model.md
 Decisions updated: docs/features/{feature}/decisions.md
 Proof updated: docs/features/{feature}/proof.md
-Work orders: {none | list}
-Next: {execute directly | review work order | resolve decisions | define proof}
+Execution units: {none | .features/{feature}/tasks/...}
+Next: {execute directly | review task/work order | resolve decisions | define proof}
 ```
