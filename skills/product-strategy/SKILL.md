@@ -7,7 +7,7 @@ description: "Shape a raw product idea into a buildable strategy before PRD/desi
 
 Use this skill when the user has a raw or ambiguous product idea and needs to shape it into a buildable strategy before writing a PRD, technical design, or tasks.
 
-This skill is upstream of `prd`, `design-solution`, and `simple-tasks`.
+This skill is upstream of `prd`, `design-solution`, `feedback-loop`, and `simple-tasks`.
 
 ## When to use
 
@@ -45,13 +45,15 @@ Do not force a final feature name too early; propose one and confirm when needed
 Clarify only what changes strategic direction:
 - core problem,
 - target user/customer,
+- current alternative or workaround,
 - product promise,
+- desired user/business outcome,
 - emotional outcome,
 - key concepts,
 - non-goals,
 - why existing tools are insufficient.
 
-Prefer concise strategy statements over long requirements prose.
+Prefer concise strategy statements over long requirements prose. Frame outcomes before outputs: the strategy should explain what repeated behavior or measurable result improves, not just which features will exist.
 
 ### 3. Choose the first wedge
 
@@ -98,7 +100,7 @@ user action
 -> success moment
 ```
 
-Include a 7-day or first-use success metric when possible.
+Include a 7-day or first-use success metric when possible. Name the riskiest assumptions the loop must test; do not expand scope to features that avoid the core uncertainty.
 
 ### 6. Define domain boundaries
 
@@ -159,13 +161,15 @@ Recommended outputs:
 - `mvp-scope.md` — first loop, in/out of scope, success metric, open decisions.
 - `system-domain-model.md` — domain concepts and source-of-truth boundaries, when useful.
 
-Keep docs decision-grade, not exhaustive.
+Keep docs decision-grade, not exhaustive. Do not write detailed PRD requirements or task-level design while the wedge or interface thesis is still unstable.
 
 ### 10. Hand off to design/tasks
 
 After strategy is stable:
-- use `design-solution` when technical tradeoffs remain,
-- use `simple-tasks` when implementation should be split into executable tasks,
+- use `prd` when product definition, BDD requirements, or user stories are needed,
+- use `design-solution` for high-level architecture, stack shape, principal workflows, and major tradeoffs,
+- use `feedback-loop` when proof needs to be made executable,
+- use `simple-tasks` when implementation should be split into executable tasks with task-level design,
 - use `implement-task` only after tasks are implementation-ready.
 
 ## Output style
@@ -177,6 +181,7 @@ Current unclear idea
 -> chosen first wedge
 -> interface thesis
 -> MVP loop
+-> riskiest assumptions
 -> domain/trust boundaries
 -> next artifact
 ```
@@ -186,12 +191,15 @@ Be opinionated but mark uncertainty. Do not invent business logic; ask when a de
 ## Checklist
 
 Before leaving product strategy, confirm:
+- [ ] Target user/customer and current alternative are named.
 - [ ] First wedge is explicit.
+- [ ] Desired outcome is framed before feature outputs.
 - [ ] Primary interface thesis is explicit.
 - [ ] MVP loop is written as an end-to-end behavior.
+- [ ] Riskiest assumptions are explicit.
 - [ ] Non-goals are clear.
 - [ ] Core domain concepts are distinct.
 - [ ] Agent/user/system authority boundaries are defined if relevant.
 - [ ] Trust, audit, privacy, and permissions are addressed if relevant.
 - [ ] Success metric or verification signal exists.
-- [ ] Next step is PRD, design, tasks, or implementation.
+- [ ] Next step is PRD, high-level design, proof, task breakdown, or implementation.
