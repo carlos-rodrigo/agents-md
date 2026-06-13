@@ -54,17 +54,53 @@ If product/system ambiguity appears, stop and escalate instead of inventing beha
 
 ---
 
+## Phase 1.5: Work Order design sufficiency gate
+
+Before planning code, call `verification_plan` unless the Work Order and linked `proof.md` already contain an explicit, executable proof contract. Use the Work Order path and any likely changed paths known so far.
+
+Then verify that the Work Order's task-level design is sufficient for this execution slice.
+
+Required design sufficiency checks:
+- Mission is one behavior or one vertical slice.
+- Task-level design identifies files/modules to create or modify. For greenfield or missing-file work, planned new files/modules are acceptable substitutes for existing anchors.
+- Local contracts/interfaces, data/state ownership, edge/error/permission handling, and tests/proof are clear enough to implement without inventing product or system behavior.
+- Existing-code anchors still match reality when files exist. If anchors are stale, re-read/search narrowly and correct the Work Order before coding.
+- Patterns to mirror or intentionally introduce are stated. In greenfield work, name the initial local pattern explicitly.
+- Agent-owned choices and escalation triggers are explicit.
+- Design is consistent with `system-model.md`, `decisions.md`, and `proof.md` when present.
+
+If design is insufficient but the missing choices are local to this Work Order, complete or correct the `## Task-level design`, `## Likely code anchors`, `## Agent-owned choices`, `## Escalation triggers`, and `## Proof required` sections before coding. Mark the update as task-level design completion; do not promote local implementation details to durable docs.
+
+Local choices the agent may complete:
+- file/function/component names within the slice,
+- internal module boundaries that do not affect other Work Orders,
+- helper interfaces used only by this slice,
+- test file placement and narrow proof commands,
+- adaptation to stale anchors when behavior and architecture are unchanged.
+
+Stop and escalate instead of completing the design when the gap affects:
+- product behavior or acceptance criteria,
+- high-level architecture or cross-task boundaries,
+- public API/schema contracts,
+- auth/security/privacy/permissions,
+- persistence/migration/backfill decisions,
+- rollout/rollback strategy,
+- proof that cannot be made executable.
+
+For greenfield tasks with no existing code anchors, the Work Order must define the first local architecture for the slice: planned files/modules, responsibilities, local contracts, test approach, and what is intentionally deferred. Lack of existing files is not a blocker; lack of task-level design is.
+
+---
+
 ## Phase 2: Plan
 
 Before coding, state:
 1. files to create/modify,
 2. tests to add/update,
-3. patterns to mirror,
+3. patterns to mirror or introduce,
 4. order of operations,
-5. proof commands/manual checks,
-6. whether any decision needs escalation.
-
-For behavior changes, prefer `verification_plan` before editing unless the proof contract is already explicit.
+5. proof commands/manual checks from `verification_plan` and the Work Order,
+6. whether any decision needs escalation,
+7. whether the Work Order design was already sufficient, locally completed, corrected for stale anchors, or blocked.
 
 ---
 
@@ -126,6 +162,7 @@ Fix review findings and rerun verification.
 
 3. Mark report `status: complete` only after proof evidence is recorded.
 4. Mark task/work order `status: done` only after implementation and report exist.
+5. Refresh the semantic-search index after code/doc changes so future agents can find the new design and implementation context. Prefer checking index freshness first; if a rebuild is already running, do not start a duplicate. Record the index action/status in the execution report or final response.
 
 ### Final response
 
@@ -135,6 +172,7 @@ Fix review findings and rerun verification.
 - Proof: {commands/checks passed}
 - Report: {.features/.../execution/...}
 - Review: {self-review | deep review}
+- Semantic index: {refreshed | already fresh | rebuild already running | skipped: reason}
 - Follow-up: {none | decision/proof suggestion}
 ```
 

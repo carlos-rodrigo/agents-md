@@ -28,6 +28,15 @@ Bug fixes, docs, readability improvements, and small duplication reduction are a
 - Before changing or deleting code, understand references and dependents.
 - Do not mix formatting-only churn with logic changes.
 
+## Code Change Workflow
+
+- Tiny obvious fixes may proceed directly after search/read and proof planning.
+- Non-trivial feature work should have a clear source of truth before coding: `strategy.md` → `prd.md` with BDD requirements → `system-model.md` / `proof.md` → Work Order when splitting/delegating.
+- Keep high-level architecture in `system-model.md`; keep low-level implementation design inside the Work Order.
+- Before coding, identify code anchors, dependents, targeted proof, and regression gate.
+- Promote local task decisions to `decisions.md` when they affect architecture, API/schema, auth/security, migration, rollout, or product behavior.
+- Do not mark work done until proof evidence is recorded.
+
 ## Testing
 
 - Prefer TDD for behavior changes.
