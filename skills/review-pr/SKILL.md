@@ -1,144 +1,101 @@
 ---
 name: review-pr
-description: "Code review a pull request or branch, including feature-flow strategy/proof alignment when docs/features packets are present. Triggers on: review pr, review this pr, code review, check this branch."
+description: "Code review a pull request or branch, including strategy, architecture, and feedback-loop alignment when feature packets are present. Triggers on: review pr, review this pr, code review, check this branch."
 ---
 
 # Review PR
 
-Review a pull request or branch for correctness, maintainability, verification, and alignment with the stated product/system intent.
+Review correctness, maintainability, verification, and alignment with product/system intent.
 
-If the change includes a feature-flow packet under `docs/features/{slug}/`, review code plus durable strategy docs:
-- strategy,
-- system model,
-- decisions,
-- proof,
-- review/teach-back.
+## Context to inspect
 
-If local ignored execution state exists under `.features/{slug}/`, inspect tasks/work orders and execution reports for proof/status, but do not expect them in the PR.
-
----
-
-## 1. Get Context
-
-```bash
-# If PR number given
-gh pr view <number> --json title,body,additions,deletions,files
-gh pr diff <number>
-
-# If branch given
-git diff main...<branch>
-```
-
-Understand:
-- what the PR claims to do,
-- what behavior changed,
-- which files and docs changed,
-- what proof was run.
-
-If a feature packet exists, inspect:
+If present, read only what is relevant:
 
 ```text
 docs/features/{slug}/strategy.md
+docs/features/{slug}/prd.md
 docs/features/{slug}/system-model.md
-docs/features/{slug}/decisions.md
-docs/features/{slug}/proof.md
-docs/features/{slug}/review.md
-.features/{slug}/tasks/       # local/ignored, if present
-.features/{slug}/execution/   # local/ignored, if present
+docs/adrs/{architecture,api,web}.md
+.features/{slug}/tasks/       # local/ignored, if available
+.features/{slug}/execution/   # local/ignored evidence, if available
 ```
 
----
+Do not expect `.features/` execution state in the PR.
 
-## 2. Review Checklist
+## Review flow
+
+1. Get PR/branch diff.
+2. Identify claimed behavior and changed files.
+3. Check strategy/architecture alignment when docs exist.
+4. Check tests and feedback-loop evidence.
+5. Leave specific file:line findings.
+
+Commands:
+
+```bash
+gh pr view <number> --json title,body,additions,deletions,files
+gh pr diff <number>
+# or
+git diff main...<branch>
+```
+
+## Checklist
 
 ### Correctness
-- [ ] Does the code do what the PR/strategy says?
-- [ ] Edge cases handled?
-- [ ] Error handling adequate?
-- [ ] No silent behavior changes outside scope?
+- [ ] Code matches claimed behavior.
+- [ ] Edge/error/empty/permission cases handled.
+- [ ] No silent scope expansion.
 
-### Strategy alignment (feature-flow)
-- [ ] Implementation preserves decisions in `decisions.md`.
-- [ ] Tasks/Work Orders, if local execution state exists, are `done` only when execution reports exist.
-- [ ] Execution reports record repo-relative changed files, proof, deviations, and follow-up.
-- [ ] `review.md` or PR summary teaches the final system rule.
-- [ ] No durable local absolute path leakage.
+### Architecture alignment
+- [ ] Matches `system-model.md` when present.
+- [ ] Preserves relevant ADRs in `docs/adrs/`.
+- [ ] Changes live in the right layer with appropriate abstraction.
+- [ ] API/schema/auth/persistence changes are intentional and documented.
 
-### Architecture
-- [ ] Follows existing codebase patterns?
-- [ ] Changes in the right layer?
-- [ ] Appropriate abstraction level?
-- [ ] No unnecessary coupling?
+### Task/evidence alignment
+- [ ] Ready/done tasks have execution reports when `.features/` exists.
+- [ ] Reports record changed files, feedback-loop results, deviations, and follow-up.
+- [ ] Regression gate passed or exception is explicit.
 
-### Code Quality
-- [ ] Clear names?
-- [ ] No unnecessary complexity?
-- [ ] DRY without premature abstraction?
-- [ ] No formatting-only churn mixed with behavior change?
+### Code quality
+- [ ] Clear names and simple control flow.
+- [ ] Nearby patterns followed or intentional deviation explained.
+- [ ] No unrelated refactor/formatting churn.
+- [ ] No secrets/PII or validation/auth weakening.
 
-### Testing / Proof
-- [ ] Tests cover behavior change?
-- [ ] Proof uses real inputs/boundaries when relevant?
-- [ ] Regression gate passed?
-- [ ] Manual/E2E checks recorded when needed?
-
-### Security / contracts
-- [ ] Input validation?
-- [ ] Auth/permission checks preserved?
-- [ ] No secrets/PII exposed?
-- [ ] Schema/API/contract changes are intentional and documented?
-
----
-
-## 3. Explore if Needed
-
-If something looks off, inspect existing patterns before commenting.
-
-Use targeted search/read. Do not assume behavior from filenames alone.
-
----
-
-## 4. Feedback Format
+## Feedback format
 
 ```markdown
 ## Summary
 
-One paragraph: what this PR does and overall assessment.
+One paragraph: what changed and review outcome.
 
 ## Must Fix
 
-Merge blockers:
-- **[file:line]** Issue description, why it matters, recommended fix.
+- **file:line** Issue, impact, recommended fix.
 
 ## Should Fix
 
-Important but not necessarily blocking:
-- **[file:line]** Issue description, why it matters, recommended fix.
+- **file:line** Issue, impact, recommended fix.
 
 ## Suggestions
 
-Optional improvements:
-- **[file:line]** Suggestion.
+- **file:line** Optional improvement.
 
-## Strategy / Proof Alignment
+## Alignment
 
-If a feature packet exists:
-- Alignment: match/mismatch with strategy and decisions.
-- Proof: what passed, what is missing.
-- Follow-up: review/reown/memory recommendation if useful.
+- Strategy/architecture: aligned | mismatch | not checked
+- Feedback loop: passed | missing | partial | not applicable
+- Follow-up: none | ...
 
 ## Questions
 
-- Clarifying question about a design/product choice.
+- ...
 ```
-
----
 
 ## Guidelines
 
-- Be specific: file:line, concrete behavior, concrete fix.
-- Explain why; do not just label code as bad.
-- Prefer small fixes over rewrites.
-- Ask when intent is unclear.
-- Acknowledge good work.
-- Do not invent requirements beyond the PR/strategy.
+- Be specific and concise.
+- Explain impact, not just preference.
+- Do not block on style-only concerns unless repo conventions require them.
+- Stop and ask when product/architecture intent is unclear.

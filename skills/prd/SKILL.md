@@ -5,169 +5,115 @@ description: "Frame a feature strategy packet and PRD with BDD-style requirement
 
 # Feature Strategy / PRD Compatibility
 
-Use this skill to help the user own the product/system strategy before implementation.
+Use this skill when the user needs product/system intent clarified before design or implementation.
 
-Default to the new feature-flow source of truth:
+Default artifact:
 
 ```text
 docs/features/{feature}/strategy.md
 ```
 
-Create a classic `prd.md` only when the user explicitly asks for a PRD or an external stakeholder/process needs that artifact.
+Create `prd.md` only when the user asks for a PRD, BDD requirements, user stories, or an external process needs it.
 
-Keep the layers distinct:
+## Layers
 
-| Layer | Artifact | Owns | Does not own |
-| --- | --- | --- | --- |
-| Product strategy | `strategy.md` | why this matters, wedge, outcomes, boundaries | detailed requirements or implementation |
-| Product definition | `prd.md` | what product experience/capability we will build, BDD requirements, acceptance criteria | code structure or low-level implementation design |
-| High-level system design | `system-model.md` | stack/architecture shape, principal workflows, system boundaries, invariants, major tradeoffs | task-level implementation details |
-| Proof | `proof.md` | how PRD requirements and system risks will be verified | new requirements or design decisions |
-| Execution | `.features/.../tasks/*.md` | one vertical slice, low-level design, local decisions, feedback loop, code anchors | product strategy or broad architecture |
+| Layer | Artifact | Owns |
+| --- | --- | --- |
+| Strategy | `strategy.md` | why, target user, outcome, scope, constraints |
+| Product definition | `prd.md` | accepted behavior, BDD scenarios, acceptance criteria |
+| System model | `system-model.md` | current intended architecture, workflows, boundaries |
+| ADRs | `docs/adrs/{architecture,api,web}.md` | system-level architecture rationale |
+| Execution | `.features/.../tasks/*.md` | one vertical slice, task-level design, feedback loop |
 
-Default artifact flow:
+Default flow:
 
 ```text
-raw idea
-→ strategy.md
-→ prd.md with BDD-style requirements/user stories
-→ system-model.md + decisions.md for high-level architecture/workflows
-→ proof.md mapped to PRD requirements and system risks
-→ .features/{feature}/tasks/*.md with task-level design + feedback loop
+raw idea → strategy.md → optional prd.md → system-model.md → optional ADR update → compact tasks with feedback loops
 ```
 
-Avoid a separate specs layer by default. Create standalone specs/contracts only when an external API/schema/protocol, cross-team handoff, or compliance process needs a stable contract outside the PRD and Work Orders.
+Do not create generic `decisions.md` or `proof.md` by default.
 
-## First decide the artifact
+## Progressive disclosure rule
 
-Prefer `strategy.md` when:
-- the user is framing a feature or behavior change,
-- strategic ownership matters more than formal requirements,
-- the next step is system modeling, decisions, proof, or work orders.
+Strategy/PRD can be human-readable, but keep them layered:
 
-Write `docs/features/{feature}/prd.md` only when:
-- the user explicitly says PRD,
-- stakeholder/user-story formatting is required,
-- the team process expects PRDs.
-
-For tiny, obvious changes, skip durable docs and recommend direct implementation with proof.
+- Put outcome, scope, and open questions near the top.
+- Keep requirements observable and design-ready, not implementation-heavy.
+- Link to architecture/tasks instead of duplicating details.
+- Defer task-level checks to task feedback loops.
 
 ## Process
 
-1. **Interview lightly** — Ask only questions that affect scope, constraints, decisions, or proof.
-2. **Explore reality** — Read/search relevant code and docs enough to avoid invented requirements.
-3. **Capture strategy** — Target user, problem, desired system behavior/outcome, constraints, non-goals, success evidence.
-4. **Identify decisions and assumptions** — What the user must own, what the agent can decide, and what remains risky.
-5. **Define proof** — Observable checks that prove the behavior and guardrails that should stay green.
-6. **Write/update strategy or PRD** — Prefer `docs/features/{feature}/strategy.md`; optionally update `decisions.md` and `proof.md` if the packet exists.
-7. **Make requirements design-ready** — Put user stories/requirements in the PRD, preferably BDD-style. Capture enough behavior for high-level design without turning the PRD into low-level implementation instructions.
+1. Ask only questions that affect scope, constraints, acceptance behavior, or risk.
+2. Read/search enough reality to avoid invented requirements.
+3. Capture strategy: user, problem, outcome, behavior, scope, constraints, risks.
+4. Identify user-owned decisions and agent-owned implementation choices.
+5. Name success evidence at the product level; detailed verification goes in task feedback loops.
+6. Write/update `strategy.md`; write/update `prd.md` only when needed.
+7. Hand off to `design-solution` or `simple-tasks` when behavior is clear enough.
 
-## Strategy Template
+## Strategy template
 
 ```markdown
 # Strategy: {Feature Name}
 
-## Target user / customer
-
-Who is affected, and in what situation?
-
-## Problem to own
-
-What user/business/system pain are we solving?
-
 ## Outcome
 
-What measurable user/business/system outcome should improve?
+- Target user:
+- Problem:
+- Desired result:
+- Success signal:
 
-## Desired system behavior
+## Desired behavior
 
-What should the system do in plain language after this change?
+Plain-language system behavior after the change.
 
 ## Scope
 
-### In
-- ...
-
-### Out
-- ...
+- In:
+- Out:
 
 ## Constraints
 
-- Existing contracts, security, performance, migration, UX, or operational constraints.
+- Product/UX/API/security/performance/migration constraints.
 
-## Assumptions / risks
+## Open questions
 
-- Assumption: ...
-- Risk: ...
-- How we will know: ...
+| Question | Owner | Blocks |
+| --- | --- | --- |
+| ... | user/agent | design/task/none |
 
-## User-owned decisions
+## Risks / assumptions
 
-| ID | Decision needed | Options | Recommendation | Status |
-| --- | --- | --- | --- | --- |
-| D-001 | ... | ... | ... | proposed |
+- Risk: ... → how we will know:
 
 ## Agent-owned choices
 
-- Implementation details the agent may choose without changing product/system intent.
+- Local implementation choices the agent may make without changing intent.
 
-## Success evidence
+## Next
 
-- Observable behavior or command that proves the feature works.
-- Regression gate that should stay green.
-
-## Teach-back
-
-The mental model the user should retain after this feature ships.
+- PRD: needed/not needed
+- System model: needed/not needed
+- Tasks: needed/not needed
 ```
 
-## Classic PRD Template (only if requested)
+## PRD template (only when needed)
 
 ````markdown
 # PRD: {Feature Name}
 
-## Problem
+## Summary
 
-## Target users / customers
+- User:
+- Capability:
+- Outcome:
 
-## Goals / outcomes
+## Requirements
 
-## Scope
-
-## Non-goals
-
-## Requirements / user stories
-
-Prefer BDD-style requirements:
-
-```gherkin
-Scenario: ...
-  Given ...
-  When ...
-  Then ...
-```
-
-For each story, include relevant states, errors, permissions, and observable acceptance criteria.
-
-## Success metrics / guardrails
-
-## Constraints / dependencies
-
-## Assumptions / risks
-
-## Verification
-
-## Open questions
-````
-
-## BDD Requirement Template (inside PRD)
-
-````markdown
 ### Story: {Capability}
 
-As a {user/system actor}, I want {capability}, so that {outcome}.
-
-#### Scenarios
+As a {actor}, I want {capability}, so that {outcome}.
 
 ```gherkin
 Scenario: Main path
@@ -181,25 +127,31 @@ Scenario: Edge/error/permission case
   Then ...
 ```
 
-#### Acceptance criteria
+Acceptance:
+- [ ] Observable result:
+- [ ] Boundary/error result:
+- [ ] Permission/empty state, if relevant:
 
-- [ ] Observable result with expected state/output.
-- [ ] Boundary or negative case with expected result.
-- [ ] Permission/error/empty state if relevant.
+## Non-goals
 
-#### Notes
+- ...
 
-- Product constraints:
-- UX/API/CLI surface, if known:
-- Open questions:
+## Constraints / dependencies
+
+- ...
+
+## Open questions
+
+- ...
 ````
 
-A PRD is ready for high-level design when the main stories, acceptance criteria, constraints, and open questions are clear enough that design does not need to invent product behavior.
+A PRD is ready for design when stories, acceptance criteria, constraints, and open questions are clear enough that architecture does not need to invent product behavior.
 
-## Next Step
+## Next step
 
-After strategy/PRD is approved:
-- create/update `system-model.md` for high-level architecture, stack shape, principal workflows, boundaries, and major tradeoffs,
-- update `decisions.md` for unresolved strategic or architectural choices,
-- update `proof.md` so PRD scenarios and high-level design risks have concrete evidence,
-- create Work Orders when implementation should be split, delegated, or resumed; each Work Order carries the task-level design and feedback loop.
+After approval:
+
+- use `design-solution` for high-level architecture/workflows/boundaries,
+- update `docs/adrs/` if system-level architecture rationale changes,
+- use `simple-tasks` for compact agent-readable tasks with feedback loops,
+- execute only ready tasks.

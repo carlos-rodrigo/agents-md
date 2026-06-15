@@ -4,26 +4,31 @@ Personal collection of agent skills for AI coding assistants (Pi, Claude Code, C
 
 ## Workflow direction
 
-Default feature workflow is strategy-first: durable docs in `docs/features/`, execution state in ignored `.features/`.
+Default feature workflow is strategy-first: durable feature docs in `docs/features/`, system-level ADRs in `docs/adrs/`, and execution state in ignored `.features/`.
 
 ```text
 docs/features/{slug}/
   strategy.md
-  system-model.md
-  decisions.md
-  proof.md
+  prd.md            # when BDD requirements are needed
+  system-model.md   # current intended architecture for the feature
   diagrams/
   review.md
-  index.html        # generated learning dashboard
+```
+
+```text
+docs/adrs/
+  architecture.md   # whole-system architecture decisions
+  api.md            # API decisions, created when needed
+  web.md            # web/client decisions, created when needed
 ```
 
 ```text
 .features/{slug}/   # gitignored execution state
-  tasks/            # optional tasks / Work Order v2 briefs
-  execution/        # optional execution reports and proof evidence
+  tasks/            # optional tasks / Work Order briefs with feedback loops
+  execution/        # optional execution reports and feedback-loop evidence
 ```
 
-Classic `prd.md` and `design.md` are compatibility artifacts, not the default.
+Classic `design.md` is a compatibility artifact, not the default. Generic `decisions.md` and `proof.md` are not default artifacts.
 
 This setup intentionally avoids MCP-specific workflows. Prefer local files, built-in harness tools, and explicit user approval for external services.
 
@@ -32,12 +37,12 @@ This setup intentionally avoids MCP-specific workflows. Prefer local files, buil
 Compaction/handoff is runtime state, not another durable artifact. When context gets large or work moves to a fresh session, carry forward only:
 
 - goal and current status,
-- decisions/constraints to preserve,
+- architecture/constraints to preserve,
 - files read or changed,
-- proof run or still missing,
+- feedback-loop evidence run or still missing,
 - blockers and next action.
 
-Durable docs capture strategy and proof contracts; `.features/{slug}/execution/` captures task evidence.
+Durable docs capture strategy, current architecture, and ADR-worthy rationale; task feedback loops and `.features/{slug}/execution/` capture execution evidence.
 
 ## Skills
 
@@ -47,8 +52,8 @@ Durable docs capture strategy and proof contracts; `.features/{slug}/execution/`
 |-------|-------------|
 | **product-strategy** | Shape raw product ideas into a buildable first wedge and MVP loop |
 | **prd** ★ | Compatibility skill for PRDs; defaults to feature strategy when durable framing is needed |
-| **design-solution** ★ | Create/update system model, decisions, proof, and optional `.features` execution units |
-| **feedback-loop** | Define proof in `proof.md` and execution-report evidence |
+| **design-solution** ★ | Create/update system model, system-level ADRs when needed, and optional `.features` execution units |
+| **feedback-loop** | Define task-level feedback loops and execution-report evidence |
 | **system-diagram** | Create Excalidraw-style HTML/SVG diagrams for code flow, component communication, domains, and decisions |
 
 ### Development
@@ -58,7 +63,7 @@ Durable docs capture strategy and proof contracts; `.features/{slug}/execution/`
 | **implement-task** | Execute one approved `.features` task/work order |
 | **loop** | Autonomous execution loop over ready `.features` task/work orders |
 | **simple-tasks** | Manage ignored `.features` task/work-order execution state |
-| **review-pr** | Code review plus strategy/proof alignment when feature packets exist |
+| **review-pr** | Code review plus strategy, architecture, and feedback-loop alignment when feature packets exist |
 
 ### Architecture
 
@@ -121,12 +126,14 @@ Skills marked with ★ are adapted from [mattpocock/skills](https://github.com/m
 
 ## Philosophy
 
-- **Strategy before execution** — user owns product/system rules, tradeoffs, scope, and proof
-- **Agent owns mechanics** — implementation details, tests, and reports are agent-owned unless they alter strategy
-- **Lightest durable artifact** — write docs when they preserve decisions, proof, or reusable understanding
-- **Execution state is disposable** — tasks/work orders/reports live under ignored `.features`; durable decisions/proof stay in docs
+- **Strategy before execution** — user owns product/system rules, tradeoffs, scope, and acceptance behavior
+- **Progressive disclosure** — essential facts first; links and optional sections for detail
+- **Agent-first tasks** — task briefs use bullets, paths, commands, expected results, and escalation triggers
+- **Agent owns mechanics** — implementation details, tests, and reports are agent-owned unless they alter strategy or architecture
+- **Lightest durable artifact** — write docs when they preserve requirements, current architecture, ADR-worthy rationale, or reusable understanding
+- **Execution state is disposable** — tasks/work orders/reports live under ignored `.features`; durable architecture/rationale stays in docs
 - **Work Orders are optional** — use them for delegation/splitting, not for every small change
-- **Proof is part of done** — execution reports record evidence, not just summaries
+- **Evidence is part of done** — execution reports record feedback-loop evidence, not just summaries
 
 ## License
 

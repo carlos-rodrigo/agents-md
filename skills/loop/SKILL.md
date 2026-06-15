@@ -1,113 +1,73 @@
 ---
 name: loop
-description: "Autonomous execution loop over ready tasks/work orders in ignored .features/{feature}/tasks/. Triggers on: run the loop, start the loop, loop, run loop, run the loop with crafter."
+description: "Autonomous execution loop over ready project-local tasks in .features/{feature}/tasks/. Triggers on: run the loop, start the loop, task loop, run task loop."
 disable-model-invocation: true
 ---
 
-# Loop - Autonomous Execution
+# Loop - Autonomous Task Execution
 
-Execute one ready execution unit per loop iteration and update `.features/` state. Do not create or expect a continuation artifact.
-
-Primary source:
+Execute one ready task per iteration. Do not create continuation artifacts.
 
 ```text
-.features/{feature}/tasks/
+.features/{feature}/tasks/      # source
+.features/{feature}/execution/  # evidence
 ```
 
-Execution reports:
+Use `simple-tasks` for state conventions and `implement-task` for execution.
 
-```text
-.features/{feature}/execution/
-```
-
-Durable strategy/model/decisions/proof may live under `docs/features/{feature}/`, but execution state stays out of docs.
-
-Uses `simple-tasks` for state conventions and `implement-task` for execution.
-
----
-
-## Prerequisites
+## Start gate
 
 - `.features/{feature}/tasks/` exists.
-- At least one task/work order has `status: ready` or legacy `status: open`.
+- At least one task has `status: ready` or legacy `status: open`.
 - Dependencies are satisfied.
-- Proof requirements are specific enough to run.
+- Task brief is executable or locally fixable: `Brief`, `Execute`, `Feedback loop`, `Escalate if`.
 
 If multiple features have ready work, ask which one to run.
 
----
+## Modes
 
-## Execution Modes
+- Interactive: execute one task, report, ask before continuing.
+- Background: `loop.sh` spawns a fresh agent per iteration until complete/blocked/max iterations.
+- `loop.sh --task TASK-001`: execute only that task.
 
-Run **one execution unit per iteration**.
+## Steps
 
-| Mode | Mechanism | When to use |
-| --- | --- | --- |
-| Interactive | execute one unit, report status, ask before continuing | guided usage |
-| Background | `loop.sh` spawns a fresh agent process per iteration until complete/blocked/max iterations | hands-off usage |
+1. Read task state: `.features/{feature}/tasks/` and existing `.features/{feature}/execution/`.
+2. Pick the target or next executable ready/open task.
+3. Load `implement-task` and execute exactly one task.
+4. Record feedback-loop evidence in `.features/{feature}/execution/`.
+5. Mark report complete and task done only after evidence and review.
+6. Report iteration status.
 
----
+Ready/open task is executable when:
 
-## Loop Steps
+- dependencies are done,
+- task-level `Execute` details are sufficient or locally fixable,
+- feedback loop is present/executable or locally fixable,
+- no user-owned product/architecture/API/schema/auth/persistence/rollout blocker exists.
 
-### 1. Check state
+If no task is executable, stop and report the blocker.
 
-Read:
-- `.features/{feature}/tasks/`,
-- `.features/{feature}/execution/`,
-- `docs/features/{feature}/proof.md` and `decisions.md` only as needed.
-
-### 2. Pick a ready unit
-
-Ready means:
-- `status: ready` (`open` for legacy tasks),
-- dependencies are satisfied,
-- proof is specific,
-- referenced decisions are resolved.
-
-If no units are ready:
-- draft/blocked exists → ask/recommend review or unblock,
-- none exist → direct execution may be appropriate for small work; otherwise create a task/work order,
-- all done → move to reports/review.
-
-### 3. Execute exactly one unit
-
-1. Load `implement-task`.
-2. Execute the selected task/work order.
-3. Run proof.
-4. Write execution report under `.features/{feature}/execution/`.
-5. Mark report `complete` after evidence is recorded.
-6. Mark task/work order `done`.
-
-### 4. Report iteration status
-
-Do not produce a continuation or new-session template. Record durable evidence in `.features/{feature}/execution/`, then report only the iteration result:
+## Iteration output
 
 ```text
-Loop iteration complete: WO-XXX — {title}
+Loop iteration complete: TASK-XXX — {title}
 Report: .features/{feature}/execution/...
-Proof: {summary}
+Feedback loop: {summary}
 Next: {continue | blocked | complete}
 ```
 
-If no executable unit is ready, stop and report the blocker instead of guessing.
+Blocked output:
 
----
+```text
+Loop blocked: {specific blocker and owner}
+```
 
 ## Completion
 
-When all work is done:
-- ensure no ready/draft reports are incomplete,
-- run final proof/regression gate,
-- update durable `docs/features/{feature}/review.md` only if it preserves a reusable lesson,
-- suggest `/reown --remember` only when the lesson should become searchable memory,
-- do not assume commit/push unless the user or repo workflow expects it.
+When targeted work is done:
 
----
-
-## Important
-
-- One execution unit per loop iteration.
-- Work Orders are optional; do not force them for tiny direct work.
-- Tasks/work orders are execution state, not durable docs.
-- Stop and surface blockers instead of guessing.
+- ensure reports are complete,
+- run final regression gate if required by task feedback loops,
+- update durable docs only for reusable architecture/product lessons,
+- do not commit/push unless explicitly expected.

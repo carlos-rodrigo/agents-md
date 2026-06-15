@@ -168,7 +168,7 @@ Keep docs decision-grade, not exhaustive. Do not write detailed PRD requirements
 After strategy is stable:
 - use `prd` when product definition, BDD requirements, or user stories are needed,
 - use `design-solution` for high-level architecture, stack shape, principal workflows, and major tradeoffs,
-- use `feedback-loop` when proof needs to be made executable,
+- use `feedback-loop` when task verification needs to be made executable,
 - use `simple-tasks` when implementation should be split into executable tasks with task-level design,
 - use `implement-task` only after tasks are implementation-ready.
 
@@ -202,4 +202,4 @@ Before leaving product strategy, confirm:
 - [ ] Agent/user/system authority boundaries are defined if relevant.
 - [ ] Trust, audit, privacy, and permissions are addressed if relevant.
 - [ ] Success metric or verification signal exists.
-- [ ] Next step is PRD, high-level design, proof, task breakdown, or implementation.
+- [ ] Next step is PRD, high-level design, task feedback loop, task breakdown, or implementation.

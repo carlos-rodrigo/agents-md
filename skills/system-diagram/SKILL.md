@@ -27,7 +27,7 @@ The diagram is a **learning artifact**, not decoration. It should help the user 
 - where responsibilities and boundaries live,
 - which domain concepts are being introduced,
 - how data/state moves,
-- which strategic decisions or proof points matter.
+- which strategic decisions or feedback-loop evidence matter.
 
 ## When to Use
 
@@ -180,7 +180,7 @@ State the question the diagram should answer, for example:
 - “Which classes and methods run when a user submits this form?”
 - “How does this event move from controller → service → job → subscriber?”
 - “What domain concepts are introduced by this feature and how do they relate?”
-- “How do ownership-loop, feature-flow, work orders, and proof docs communicate?”
+- “How do strategy, system models, ADRs, task briefs, and execution evidence communicate?”
 
 If the question is unclear, ask one focused clarifying question before drawing.
 

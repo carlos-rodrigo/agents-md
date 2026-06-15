@@ -1,199 +1,171 @@
 ---
 name: simple-tasks
-description: "File-based task/work-order management in ignored .features directories. Use when creating, listing, or updating execution units; durable strategy/PRD/design/proof stay in docs/features. Triggers on: create tasks, list tasks, task status, work orders."
+description: "Project-local task management in .features/{feature}/tasks/. Use when creating, listing, or updating compact agent-readable task briefs with feedback loops. Triggers on: create tasks, list tasks, task status, task briefs."
 ---
 
-# Simple Tasks / Work Orders
+# Simple Tasks
 
-Use markdown execution state only when work benefits from explicit delegation, sequencing, or resumption.
-
-Execution state lives in gitignored `.features/`:
+Use tasks only when work needs sequencing, delegation, looping, or resumption. `.features/` is execution state, not durable product documentation.
 
 ```text
-.features/{feature}/
-├── tasks/          # optional tasks / Work Order v2 briefs
-└── execution/      # optional execution reports and proof evidence
+.features/{feature}/tasks/      # task briefs optimized for agents
+.features/{feature}/execution/  # evidence after execution
+.features/{feature}/artifacts/  # run artifacts, screenshots, logs
 ```
 
-Durable feature docs, when useful, stay in `docs/features/{feature}/`:
+Durable context stays outside tasks:
 
 ```text
-docs/features/{feature}/
-├── strategy.md
-├── prd.md              # product definition / BDD requirements when useful
-├── system-model.md     # high-level architecture and principal workflows
-├── decisions.md
-├── proof.md
-├── diagrams/
-└── review.md
+docs/features/{feature}/strategy.md
+docs/features/{feature}/prd.md
+docs/features/{feature}/system-model.md
+docs/adrs/{architecture,api,web}.md
 ```
 
-Do **not** put tasks, work orders, or execution reports under `docs/features/`. Do **not** force task files for tiny or one-shot changes.
+## Progressive disclosure rule
+
+Task files are for agents. Keep the top-level brief small, actionable, and scannable.
+
+- Put the execution-critical facts first: goal, files, risks, feedback loop, blockers.
+- Link to strategy/PRD/system-model/ADRs instead of copying long context.
+- Use terse bullets, paths, commands, and expected results.
+- Add optional detail sections only when the agent must know them to execute.
+- Target one screen / ~80 lines for normal tasks. Split the task if the brief needs much more.
 
 ---
 
-## Task / Work Order format
+## Task template
 
 ```markdown
 ---
-id: WO-001
+id: TASK-001
 status: draft # draft | ready | blocked | done
 order: 1
 created: YYYY-MM-DD
 ---
 
-# WO-001: {Title}
+# TASK-001 — {verb + object}
 
-## Mission
+## Brief
 
-One concrete execution mission.
+- Goal: {desired user/system outcome}
+- Change: {smallest vertical slice}
+- Done: {observable completion signal}
 
-## Strategic / PRD context
+## Context
 
-Relevant excerpt from strategy, PRD BDD story/requirement, system model, or a direct user-approved brief.
+- Source: {chat | strategy/prd link | user-approved brief}
+- Architecture: {system-model link or none}
+- ADRs: {docs/adrs/... or none}
+- Depends: {none | TASK-...}
 
-## High-level design context
+## Execute
 
-- System model: `docs/features/{feature}/system-model.md#...` or none
-- Decisions: `docs/features/{feature}/decisions.md#D-...` or none
-- Proof: `docs/features/{feature}/proof.md#...`
+- Touch: `{file/function}`; `{file/test}`
+- Pattern: {nearby pattern to mirror or new local pattern}
+- Risk: {edge/error/permission/data concern or none}
+- Agent may decide: {local choices only}
 
-## Task-level design
+## Feedback loop
 
-Low-level design for this execution slice only:
-- Current code path / anchors:
-- Intended code path / change:
-- Data/state changes:
-- Interfaces/contracts touched:
-- Edge/error/permission handling:
-- Local alternatives considered:
-- Rollback/safety notes:
+- State: {what must be true}
+- Fast: `{command}` → {expected}
+- User/system: {action/API/browser/manual check} → {expected}
+- Edge: {case} → {expected}
+- Gate: `{regression command}` → {expected}
+- Evidence: `.features/{feature}/execution/001-title.md`
 
-## Decisions to preserve or make locally
+## Escalate if
 
-- D-001 — ...
-- Local task decision: ...
+- {product/architecture/API/schema/auth/persistence/rollout ambiguity}
+- Feedback loop cannot be executed
+- Scope no longer fits this task
 
-If a local decision changes high-level architecture, product behavior, API/schema contracts, auth/security, migration, or rollout risk, promote it to `docs/features/{feature}/decisions.md` before implementation.
+## Notes
 
-## Agent-owned choices
-
-- Implementation details the agent may decide.
-
-## Dependencies / sequencing
-
-- Depends on: none | WO-...
-- Must preserve compatibility with: ...
-
-## Likely code anchors
-
-- `{file/function}` — why it matters
-
-## Escalation triggers
-
-- Product/system ambiguity
-- Conflict with decisions
-- Proof cannot be produced
-- Scope expansion
-
-## Proof required
-
-- [ ] PRD acceptance scenario covered: ...
-- [ ] Targeted check: ...
-- [ ] Design-risk check, if applicable: ...
-- [ ] Regression gate: ...
-
-## Execution report
-
-After implementation, write an execution report under `../execution/` and mark this task/work order `done`.
+Optional. Only include details that prevent rediscovery or mistakes.
 ```
 
-### Status semantics
+### Optional detail sections
+
+Add after `## Notes` only when needed:
+
+```markdown
+## Investigation
+## Fixtures / setup
+## Rollback
+## Local alternatives rejected
+```
+
+---
+
+## Status semantics
 
 - `draft` — not approved for execution.
-- `ready` — user approved; agent may execute.
-- `blocked` — waiting on decision/dependency/proof.
-- `done` — implemented and execution report exists.
+- `ready` — approved and executable.
+- `blocked` — waiting on user/dependency/environment.
+- `done` — implementation complete and execution evidence recorded.
+- Legacy `open` may be treated as `ready` only when the brief is executable.
 
-Only `ready` execution units should be executed. Existing legacy tasks may use `status: open`; treat `open` as ready only when dependencies and proof are clear.
+## Ready gate
 
-### Ready checklist
+A task can be `ready` only when:
 
-Mark `ready` only when:
-- [ ] Mission is one behavior or one vertical slice, not a grab bag.
-- [ ] Scope is small enough for one focused session or roughly 1–2 days.
-- [ ] Relevant strategy/PRD/system-model/proof links are included or explicitly unnecessary.
-- [ ] PRD requirement or BDD scenario for this slice is identified.
-- [ ] Task-level design is specific enough to implement without inventing architecture/product behavior.
-- [ ] Dependencies and sequencing are clear.
-- [ ] Likely code anchors are listed enough to avoid broad rediscovery.
-- [ ] Proof required is executable, tied to PRD acceptance behavior, and has a regression gate.
-- [ ] Escalation triggers are clear.
+- one goal / one vertical slice,
+- context links are enough to avoid broad rediscovery,
+- `Execute` names likely files or planned new files,
+- feedback loop is concrete and executable,
+- escalation triggers are clear.
 
----
-
-## Execution reports
-
-Reports live in:
-
-```text
-.features/{feature}/execution/
-```
-
-They should include frontmatter:
-
-```yaml
----
-id: ER-001
-workOrder: WO-001
-status: draft # draft | complete
-created: YYYY-MM-DD
----
-```
-
-Reports capture repo-relative files changed, proof results, deviations, and follow-up. Keep them concise; they are execution evidence, not durable product docs.
+Use the `feedback-loop` skill to fill or tighten `## Feedback loop` before marking a task ready.
 
 ---
 
 ## Operations
 
-### List execution units
-
 ```bash
+# List tasks
 ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -v README
-```
 
-### Find ready execution units
-
-```bash
+# Find executable tasks
 grep -El "status: (ready|open)" .features/{feature}/tasks/*.md 2>/dev/null
 ```
 
-### Create an execution unit
-
-Create the next numbered markdown file manually under:
+Create the next task as:
 
 ```text
-.features/{feature}/tasks/NNN-title.md
+.features/{feature}/tasks/NNN-short-title.md
 ```
 
-### Create an execution report
-
-Create the matching report under:
+Create the matching evidence report as:
 
 ```text
-.features/{feature}/execution/NNN-wo-XXX.md
+.features/{feature}/execution/NNN-short-title.md
 ```
 
+## Execution report minimum
+
+```markdown
+---
+id: ER-001
+workTask: TASK-001
+status: complete
+created: YYYY-MM-DD
 ---
 
-## Best Practices
+# ER-001 — TASK-001
 
-1. **Research before splitting** — capture likely files and verification before writing execution units.
-2. **Prefer vertical slices** — slice through usable behavior or a deployable compatibility step; avoid layer-only tasks unless they are a safe prerequisite.
-3. **One unit = one behavior** — keep each task/work order small enough to finish cleanly.
-4. **Self-contained execution** — include enough context to execute without broad rediscovery.
-5. **Prefer one good task over many vague ones.**
-6. **Low-level design lives in the task** — keep implementation instructions close to the execution unit; promote only architecture-significant decisions to durable docs.
-7. **Status must be trustworthy** — never mark ready/done prematurely.
-8. **Proof is part of done** — no `done` without recorded evidence.
+- Changed: `path`, `path`
+- Feedback loop: passed/failed/skipped with reason
+- Evidence: command/action → result
+- Review: self/oracle + findings
+- Follow-up: none | ...
+```
+
+## Principles
+
+1. Agent-first: commands, files, constraints, expected results.
+2. Progressive disclosure: brief first, links/details only as needed.
+3. One task = one behavior.
+4. Feedback loop lives in the task.
+5. No `done` without evidence.
