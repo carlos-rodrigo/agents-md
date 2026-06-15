@@ -79,21 +79,33 @@ State briefly:
 - feedback-loop commands/actions,
 - escalation status.
 
-## 4. Code
+## 4. Implement/check/fix loop
 
-Use small increments.
+Use small increments. Complete one feedback loop before widening scope.
 
-- Prefer TDD for behavior changes.
-- Run the narrowest feedback-loop check after meaningful changes.
-- Match nearby patterns; avoid unrelated refactors.
+Loop:
+
+1. Implement the smallest in-scope change that can move the task toward the desired state.
+2. Run the `Fast` check from `## Feedback loop` after each meaningful change.
+3. If the fast check passes, run the practical `User/system` and `Edge` checks.
+4. If a check fails, diagnose the smallest in-scope cause, fix it, and rerun the same failing check before moving on.
+5. After required task checks pass, run the `Gate` command from `## Feedback loop`.
+6. If the gate fails because of this task's scope, fix and rerun the failing command, then rerun the gate.
+
+Retry rules:
+
+- Default max: 3 fix attempts per distinct failure before stopping as blocked.
+- If the same failure repeats twice with no new information, stop and ask oracle/deep review or report blocked.
 - If a check reveals a local task gap, update the task and continue.
-- If a check reveals a user-owned decision, stop as blocked.
+- If a check reveals a user-owned decision, unrelated regression, missing environment/data, or out-of-scope architecture/API/schema/auth/persistence concern, stop as blocked.
+- Use context-efficient output (`scripts/run_silent.sh` or equivalent) for noisy commands; keep success terse and preserve failure details.
+- Do not mark the task done while any required check fails or is skipped without an explicit reason.
 
 ## 5. Review
 
-Self-review small/local changes. Use oracle/deep review for large, risky, auth/security/payment, schema/API, persistence, or cross-cutting changes.
+Self-review small/local changes. Use oracle/deep review for large, risky, auth/security/payment, schema/API, persistence, repeated loop failure, or cross-cutting changes.
 
-Check: scope, architecture/ADR consistency, edge cases, tests, feedback-loop evidence.
+Check: scope, architecture/ADR consistency, edge cases, tests, feedback-loop evidence, and whether the final gate passed after the last fix.
 
 ## 6. Report / finalize
 
@@ -116,7 +128,8 @@ created: YYYY-MM-DD
 # ER-001 — TASK-001
 
 - Changed: `path`, `path`
-- Feedback loop: `command/action` → result
+- Feedback loop: `command/action` → result, including failed attempts/fixes when relevant
+- Gate: `command` → passed/failed/skipped with reason
 - Review: self/oracle; findings resolved
 - Deviations: none | ...
 - Follow-up: none | ...
