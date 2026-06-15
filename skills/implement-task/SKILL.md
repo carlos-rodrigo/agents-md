@@ -11,8 +11,11 @@ Implement exactly one approved task.
 Source of truth:
 
 ```text
-.features/{feature}/tasks/NNN-title.md
+.features/{feature}/tasks/NNN-title.md  # execution contract
+.features/{feature}/tasks/_active.md    # feature/loop progress board
 ```
+
+The task brief is the execution contract; `_active.md` is the navigation/status board for looped or resumable work.
 
 Context, when linked/relevant:
 
@@ -30,7 +33,8 @@ Proceed only if:
 - task status is `ready` (`open` only for executable legacy tasks),
 - dependencies are satisfied,
 - `## Brief`, `## Execute`, `## Feedback loop`, and `## Escalate if` exist,
-- the feedback loop is executable.
+- the feedback loop is executable,
+- for looped or multi-task work, `_active.md` exists or can be refreshed from task files.
 
 Stop on `draft`, `blocked`, missing context, or user-owned ambiguity.
 
@@ -40,9 +44,10 @@ Stop on `draft`, `blocked`, missing context, or user-owned ambiguity.
 
 Read in this order:
 
-1. task brief,
-2. linked strategy/PRD/system-model/ADRs only as needed,
-3. targeted code anchors from `## Execute`.
+1. `_active.md` when present or when running as part of a loop,
+2. task brief,
+3. linked strategy/PRD/system-model/ADRs only as needed,
+4. targeted code anchors from `## Execute`.
 
 Capture: goal, files, risks, agent-owned choices, feedback loop, escalation triggers.
 
@@ -55,6 +60,7 @@ If missing details are local and agent-owned, update the task before coding.
 Allowed local fixes:
 
 - stale file/function anchors,
+- missing/stale `_active.md` checklist/current/next lines,
 - test file placement,
 - local helper names/interfaces,
 - clearer fast checks or regression gate,
@@ -116,7 +122,13 @@ created: YYYY-MM-DD
 - Follow-up: none | ...
 ```
 
-Mark task `done` only after implementation, review, and recorded feedback-loop evidence.
+After evidence is recorded:
+
+1. Mark task `status: done`.
+2. Update `_active.md`: check off the completed task, record or point to the execution report, set `Current` to `none`, and set `Next` to the next ready task, `complete`, or `blocked`.
+3. If `_active.md` is missing for a looped or multi-task feature, create it from the task files before reporting completion.
+
+Do not mark the task `done` until implementation, review, and feedback-loop evidence are recorded.
 
 Refresh semantic index after code/doc changes when available; record skipped/running/fresh status.
 
@@ -127,6 +139,7 @@ Refresh semantic index after code/doc changes when available; record skipped/run
 - Changed: ...
 - Feedback loop: ...
 - Report: .features/.../execution/...
+- Active board: .features/.../tasks/_active.md updated | not used
 - Review: ...
 - Semantic index: ...
 - Follow-up: ...

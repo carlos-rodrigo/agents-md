@@ -8,9 +8,10 @@ description: "Project-local task management in .features/{feature}/tasks/. Use w
 Use tasks only when work needs sequencing, delegation, looping, or resumption. `.features/` is execution state, not durable product documentation.
 
 ```text
-.features/{feature}/tasks/      # task briefs optimized for agents
-.features/{feature}/execution/  # evidence after execution
-.features/{feature}/artifacts/  # run artifacts, screenshots, logs
+.features/{feature}/tasks/_active.md    # loop progress board and next-task pointer
+.features/{feature}/tasks/NNN-title.md  # task briefs optimized for agents
+.features/{feature}/execution/          # evidence after execution
+.features/{feature}/artifacts/          # run artifacts, screenshots, logs
 ```
 
 Durable context stays outside tasks:
@@ -31,6 +32,40 @@ Task files are for agents. Keep the top-level brief small, actionable, and scann
 - Use terse bullets, paths, commands, and expected results.
 - Add optional detail sections only when the agent must know them to execute.
 - Target one screen / ~80 lines for normal tasks. Split the task if the brief needs much more.
+
+---
+
+## Active progress board
+
+For any feature with more than one task, delegation, looping, or resumption, create and maintain:
+
+```text
+.features/{feature}/tasks/_active.md
+```
+
+`_active.md` is the loop's first read: it lists the feature goal, task checklist/status, current/next task, and blockers. It is a map, not a duplicate task brief.
+
+Minimum shape:
+
+```markdown
+# Current Feature: {name}
+
+Started: YYYY-MM-DD
+
+## Goal
+- {one sentence}
+
+## Progress
+- [ ] TASK-001 — {title} ({status})
+- [ ] TASK-002 — {title} ({status})
+
+## Current / Next
+- Current: {TASK-... | none}
+- Next: {TASK-... | complete | blocked}
+- Blockers: {none | ...}
+```
+
+Update `_active.md` whenever a task is added, blocked, or completed. Check off a task only after its execution report records feedback-loop evidence.
 
 ---
 
@@ -124,11 +159,11 @@ Use the `feedback-loop` skill to fill or tighten `## Feedback loop` before marki
 ## Operations
 
 ```bash
-# List tasks
-ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -v README
+# List task briefs
+ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -Ev '(_active|README)'
 
-# Find executable tasks
-grep -El "status: (ready|open)" .features/{feature}/tasks/*.md 2>/dev/null
+# Find executable task briefs
+grep -El "status: (ready|open)" .features/{feature}/tasks/*.md 2>/dev/null | grep -v '/_active\.md$'
 ```
 
 Create the next task as:
@@ -136,6 +171,8 @@ Create the next task as:
 ```text
 .features/{feature}/tasks/NNN-short-title.md
 ```
+
+Then add/update the matching line in `.features/{feature}/tasks/_active.md` with its status and checklist state.
 
 Create the matching evidence report as:
 
@@ -168,4 +205,5 @@ created: YYYY-MM-DD
 2. Progressive disclosure: brief first, links/details only as needed.
 3. One task = one behavior.
 4. Feedback loop lives in the task.
-5. No `done` without evidence.
+5. `_active.md` is first-class loop state.
+6. No `done` without evidence.
