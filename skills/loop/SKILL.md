@@ -20,7 +20,7 @@ Use `simple-tasks` for state conventions and `implement-task` for execution.
 
 - `.features/{feature}/tasks/` exists.
 - `.features/{feature}/tasks/_active.md` exists or can be created/refreshed from task files before execution.
-- At least one task has `status: ready` or legacy `status: open`.
+- At least one task has `status: ready`, legacy `status: open`, or `status: blocked` with a clearly agent-owned/local blocker.
 - Dependencies are satisfied.
 - Task brief is executable or locally fixable: `Brief`, `Execute`, `Feedback loop`, `Escalate if`.
 
@@ -36,13 +36,15 @@ If multiple features have ready work, ask which one to run.
 
 1. Read `_active.md`, task briefs in `.features/{feature}/tasks/`, and existing `.features/{feature}/execution/`.
 2. If `_active.md` is missing or stale, create/refresh it from task frontmatter before selecting work.
-3. Pick the target or next executable ready/open task using both `_active.md` and task frontmatter.
-4. Load `implement-task` and execute exactly one task.
-5. Record feedback-loop evidence in `.features/{feature}/execution/`.
-6. Mark report complete, mark task done, and update `_active.md` only after evidence and review.
-7. Report iteration status.
+3. Pick the target or next executable task using both `_active.md` and task frontmatter.
+4. Resolve agent-owned blockers before declaring blocked: stale task metadata, missing `_active.md`, stale anchors, missing local feedback-loop commands, report/status drift, or in-scope check failures.
+5. If a blocked task's blocker is agent-owned/local, document the unblock action, set it back to `status: ready`, refresh `_active.md`, then execute it. Keep user-owned blocked tasks blocked.
+6. Load `implement-task` and execute exactly one task.
+7. Record feedback-loop evidence in `.features/{feature}/execution/`.
+8. Mark report complete, mark task done, and update `_active.md` only after evidence and review.
+9. Report iteration status.
 
-Ready/open task is executable when:
+Ready/open/locally-blocked task is executable when:
 
 - dependencies are done,
 - `_active.md` points to the task or can be refreshed to do so,
@@ -50,7 +52,7 @@ Ready/open task is executable when:
 - feedback loop is present/executable or locally fixable,
 - no user-owned product/architecture/API/schema/auth/persistence/rollout blocker exists.
 
-If no task is executable, stop and report the blocker.
+If no task is executable, first try to make one executable when the blocker is local and agent-owned. Stop only for user-owned blockers or an exhausted local unblock/fix loop.
 
 ## Iteration output
 
@@ -65,8 +67,11 @@ Next: {continue | blocked | complete}
 Blocked output:
 
 ```text
-Loop blocked: {specific blocker and owner}
+Loop blocked: user-owned — {specific blocker and owner}
+Loop blocked: exhausted — {local blocker/failure after retry budget}
 ```
+
+Do not use `Loop blocked:` for a blocker you can fix locally. Fix it, update task/_active/report state as needed, and either complete the task or end with `Loop iteration complete:` so the harness continues.
 
 ## Completion
 

@@ -20,7 +20,7 @@ AGENT_FILE=""
 AGENT_MODEL=""
 PI_PROVIDER="${LOOP_PI_PROVIDER:-openai-codex}"
 PI_MODEL="${LOOP_PI_MODEL:-gpt-5.5}"
-PI_THINKING="${LOOP_PI_THINKING:-medium}"
+PI_THINKING="${LOOP_PI_THINKING:-xhigh}"
 OPENCODE_MODEL="${LOOP_OPENCODE_MODEL-$PI_MODEL}"
 OPENCODE_VARIANT="${LOOP_OPENCODE_VARIANT-$PI_THINKING}"
 
@@ -96,7 +96,7 @@ Options:
 Environment overrides:
   LOOP_PI_PROVIDER         Pi provider (default: openai-codex)
   LOOP_PI_MODEL            Pi model (default: gpt-5.5)
-  LOOP_PI_THINKING         Pi thinking level (default: medium)
+  LOOP_PI_THINKING         Pi thinking level (default: xhigh)
   LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
                            Set LOOP_OPENCODE_VARIANT='' to omit --variant
@@ -474,26 +474,30 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   fi
 
   if grep -Eq "^Loop blocked:" "$TEMP_OUTPUT"; then
-    echo "🛑 Loop blocked; stopping." | tee -a "$LOG_FILE"
-    rm -f "$TEMP_OUTPUT"
+    if grep -Eiq "^Loop blocked:[[:space:]]*(user-owned|exhausted|hard|requires(-|[[:space:]])+user|manual|product|architecture|api|schema|auth|persistence|rollout|decision)" "$TEMP_OUTPUT"; then
+      echo "🛑 Terminal loop blocker detected; stopping." | tee -a "$LOG_FILE"
+      rm -f "$TEMP_OUTPUT"
 
-    LOOP_END_TS=$(date +%s)
-    TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
-    TOTAL_MINUTES=$((TOTAL_DURATION / 60))
-    TOTAL_SECONDS=$((TOTAL_DURATION % 60))
-    if [[ $TOTAL_MINUTES -ge 60 ]]; then
-      TOTAL_HOURS=$((TOTAL_MINUTES / 60))
-      TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
-      TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
-    elif [[ $TOTAL_MINUTES -gt 0 ]]; then
-      TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
-    else
-      TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+      LOOP_END_TS=$(date +%s)
+      TOTAL_DURATION=$((LOOP_END_TS - LOOP_START_TS))
+      TOTAL_MINUTES=$((TOTAL_DURATION / 60))
+      TOTAL_SECONDS=$((TOTAL_DURATION % 60))
+      if [[ $TOTAL_MINUTES -ge 60 ]]; then
+        TOTAL_HOURS=$((TOTAL_MINUTES / 60))
+        TOTAL_MINUTES=$((TOTAL_MINUTES % 60))
+        TOTAL_DURATION_STR="${TOTAL_HOURS}h ${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+      elif [[ $TOTAL_MINUTES -gt 0 ]]; then
+        TOTAL_DURATION_STR="${TOTAL_MINUTES}m ${TOTAL_SECONDS}s"
+      else
+        TOTAL_DURATION_STR="${TOTAL_SECONDS}s"
+      fi
+
+      echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
+      echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
+      exit 3
     fi
 
-    echo "=== loop end $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
-    echo "📊 Total: $i iterations in $TOTAL_DURATION_STR" | tee -a "$LOG_FILE"
-    exit 3
+    echo "↻ Non-terminal loop blocker reported; continuing so the next iteration can resolve agent-owned work." | tee -a "$LOG_FILE"
   fi
 
   if is_rate_limit_error_output "$TEMP_OUTPUT"; then
