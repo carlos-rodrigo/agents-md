@@ -31,12 +31,12 @@ Bug fixes, docs, readability improvements, and small duplication reduction are a
 ## Code Change Workflow
 
 - Tiny obvious fixes may proceed directly after search/read and verification planning.
-- Non-trivial feature work should have a clear source of truth before coding: `strategy.md` → `prd.md` with BDD requirements → `system-model.md` → Work Order when splitting/delegating.
-- Keep the current intended architecture in `system-model.md`; keep low-level implementation design and feedback loops inside the Work Order.
-- When architecture context matters, read both the relevant `system-model.md` and system-level ADRs under `docs/adrs/` before changing code.
+- Non-trivial feature work should have a clear product source of truth before coding: `prd.html` with why, what, scope, BDD requirements, and acceptance criteria → `design.html` → task briefs when splitting/delegating.
+- Keep the current intended architecture in `design.html`; keep low-level implementation design and feedback loops inside task briefs.
+- When architecture context matters, read both the relevant `design.html` and system-level ADRs under `docs/adrs/` before changing code.
 - Use ADR files by architectural area, created when needed: `docs/adrs/architecture.md`, `docs/adrs/api.md`, `docs/adrs/web.md`.
 - Before coding, identify code anchors, dependents, targeted feedback loop, and regression gate.
-- Promote architecture-significant local choices by updating `system-model.md` and updating the relevant ADR when rationale must be preserved.
+- Promote architecture-significant local choices by updating `design.html` and updating the relevant ADR when rationale must be preserved.
 - Do not mark work done until feedback-loop evidence is recorded.
 
 ## Testing
@@ -51,7 +51,7 @@ Bug fixes, docs, readability improvements, and small duplication reduction are a
 - Follow progressive disclosure: put essential facts first, link/defer details, and avoid copying context across docs.
 - Load playbooks/docs on demand; do not read everything upfront.
 - Write durable docs only when they preserve requirements, current architecture, ADR-worthy rationale, reusable verification, or non-obvious gotchas.
-- Keep execution state (tasks, work orders, reports) under ignored `.features/{feature}/`, not durable docs.
+- Keep task-loop state and large run artifacts under ignored `.features/{feature}/`, not durable docs.
 - Optimize task briefs for agents: concise bullets, paths, commands, expected results, and escalation triggers.
 
 ## Subagents

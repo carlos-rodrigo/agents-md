@@ -30,7 +30,7 @@
     {
       "id": "no-execution-state-in-docs",
       "type": "forbid_regex",
-      "pattern": "docs/features/\\{[^}]+\\}/(tasks|work-orders|execution)"
+      "pattern": "docs/features/\\{[^}]+\\}/(tasks|execution|artifacts)"
     }
   ]
 }

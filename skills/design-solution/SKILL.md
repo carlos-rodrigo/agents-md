@@ -1,72 +1,103 @@
 ---
 name: design-solution
-description: "Model a feature's high-level system design from approved strategy/PRD: current flow, intended flow, architecture state, ADRs when needed, and optional work orders. Triggers on: create design, design this, system model, plan phases, break down strategy, tracer bullets."
+description: "Create a feature's high-level design.html from an approved PRD: pattern research, architecture diagrams, design rationale, ADRs when needed, and optional task briefs. Triggers on: create design, design this, design.html, architecture diagram, plan phases, break down PRD, tracer bullets."
 ---
 
-# Feature System Model / Design
+# Feature Design
 
-Use this skill when implementation needs a durable high-level system model before coding.
+Use this skill when implementation needs a durable high-level design before coding.
 
 Default durable artifacts:
 
 ```text
-docs/features/{feature}/strategy.md     # product direction source
-docs/features/{feature}/prd.md          # product definition / BDD requirements when needed
-docs/features/{feature}/system-model.md # current intended architecture and principal workflows
-docs/adrs/                              # optional system-level ADRs by architectural area
+docs/features/{feature}/prd.html    # product source of truth / BDD requirements
+docs/features/{feature}/design.html # high-level design source of truth and visual review artifact
+docs/adrs/                          # optional system-level ADRs by architectural area
 ```
 
-Optional execution units live outside docs:
+Optional task briefs live outside docs:
 
 ```text
 .features/{feature}/tasks/   # gitignored task briefs with task-level design and feedback loops
 ```
 
-A standalone `design.md` is optional/legacy. Create it only when the user explicitly asks for a design doc or the repo already uses that artifact.
+Markdown design artifacts are legacy. Do not create a separate `.md` design file by default. The current intended high-level design belongs in `design.html`; durable rationale for architecture-significant choices belongs in ADRs; task verification belongs in each task's feedback loop.
 
-Do **not** create generic `decisions.md` or `proof.md` files by default. The current desired architecture belongs in `system-model.md`; durable rationale for architecture-significant changes belongs in ADRs; task verification belongs in each task's feedback loop.
+## Ownership boundaries
 
-## Design granularity
-
-Default to one collective `system-model.md` for the feature. It should describe the stack/architecture shape, principal workflows, shared invariants, boundaries, rollout, and major tradeoffs as the **current intended state**.
-
-Do **not** put low-level implementation design in `system-model.md`. Task-level design belongs in the Work Order that implements one vertical slice.
+| Layer | Owns | Does not own |
+| --- | --- | --- |
+| `prd.html` | product why, what, scope, constraints, accepted behavior | architecture or implementation mechanics |
+| `design.html` | high-level solution shape, diagrams, workflow, boundaries, invariants, architecture why, pattern research | low-level task steps or test evidence |
+| `docs/adrs/` | durable rationale for architecture-significant decisions | running notes or feature-local task history |
+| `.features/.../tasks/` | vertical slices, local implementation choices, feedback loops, results | durable product/architecture source of truth |
 
 Design should not invent product behavior. If the PRD/user stories are too vague for architecture, pause and update the PRD with clearer BDD requirements before designing.
 
-## When to use
+## Design needed gate
 
-Use this skill when:
+Create or update `design.html` when:
+
 - current vs intended behavior is not obvious,
 - approved PRD requirements need high-level architecture/workflow modeling,
 - multiple implementation approaches exist,
 - domain concepts/states/rules need naming,
 - API/schema/auth/migration boundaries matter,
 - rollout/rollback/observability concerns matter,
-- execution should be split into Work Orders with task-level design and feedback loops.
+- execution should be split into tasks with task-level design and feedback loops.
 
-Skip durable design when the change is small, the strategy and feedback loop are clear, and implementation can proceed directly.
+Skip durable design when the change is small, the PRD or approved brief and feedback loop are clear, and implementation can proceed directly.
+
+## Design granularity
+
+Default to one self-contained `design.html` for the feature. It should explain the stack/architecture shape, principal workflows, shared invariants, boundaries, rollout, major tradeoffs, and pattern research as the **current intended state**.
+
+If `design.html` already exists, update it as the current intended design. Do not append historical design logs; preserve history only in ADRs when rationale matters.
+
+Do **not** put low-level implementation design in `design.html`. Task-level design belongs in the task brief that implements one vertical slice.
+
+The HTML must be readable in a browser without chat history. It should combine concise text with graph diagrams: architecture boundaries, flows, component communication, domain concepts, state/lifecycle, major decisions, and how the PRD maps to the solution.
 
 ## Process
 
-### 1. Read approved strategy and PRD
+### 1. Read the approved PRD
 
 Prefer:
-1. `docs/features/{feature}/strategy.md`
-2. `docs/features/{feature}/prd.md` when product definition / BDD requirements exist
-3. an approved feature brief in chat
+1. `docs/features/{feature}/prd.html`
+2. an approved feature brief in chat
 
 If PRD behavior is still ambiguous, use `prd` to clarify BDD requirements before designing. If an architecture-significant choice is missing, ask the user or capture an explicit ADR instead of designing around a hidden assumption.
 
 Design gate:
 - PRD/user stories are clear enough to identify principal workflows and architecture boundaries.
 - Open product questions stay in the PRD; do not convert them into design assumptions silently.
-- Architecture-significant open questions are called out in `system-model.md` and resolved by ADR when needed.
-- Task-level unknowns may be deferred to Work Orders if they do not change high-level architecture or product behavior.
+- Architecture-significant open questions are called out in `design.html` and resolved by ADR when needed.
+- Task-level unknowns may be deferred to tasks if they do not change high-level architecture or product behavior.
 
-### 2. Inspect the system
+### 2. Research patterns and prior art
 
-Read/search enough code to anchor the model:
+Before choosing a design for non-trivial or unfamiliar work, run a short research phase to ground the solution in proven patterns.
+
+Research targets:
+- official framework/platform docs for the relevant components,
+- mature open-source implementations or reference architectures,
+- credible engineering/product case studies and success/failure reports,
+- known patterns for the feature type, interaction model, data flow, reliability, observability, security, and rollout.
+
+Use `websearch` / `webfetch` for targeted external research. Use the `researcher` agent when the domain is unfamiliar, broad, or benefits from parallel code/web exploration.
+
+Keep research decision-grade:
+- timebox unless the user asks for deep research,
+- prefer primary sources and production examples over blog spam,
+- capture links and only the insight that changes design,
+- compare patterns against the PRD, repo constraints, and existing architecture,
+- do not copy external architecture blindly.
+
+If web research is unavailable or unnecessary, state why and proceed with repo/system inspection.
+
+### 3. Inspect the system
+
+Read/search enough code to anchor the design:
 - actors/triggers,
 - current components/functions/routes/jobs,
 - data/state ownership,
@@ -74,88 +105,72 @@ Read/search enough code to anchor the model:
 - PRD BDD requirements and acceptance criteria,
 - verification surfaces that tasks can use for feedback loops.
 
+Read existing `design.html` and relevant `docs/adrs/` before changing architecture-significant areas.
+
 Do not create exhaustive file inventories. Capture only anchors that matter for execution.
 
-### 3. Write the system model
+### 4. Create `design.html`
 
-Use `system-model.md`:
+Use `html-report-designer` for the report shell, visual hierarchy, accessibility, and review UX. Use the `system-diagram` skill for inline SVG diagrams inside the report.
 
-```markdown
-# System Model: {Feature Name}
+Create a self-contained HTML/SVG artifact:
 
-## Current flow
-
-Actor/input → current components/functions → current behavior/output.
-
-## Intended flow
-
-Actor/input → changed components/functions → intended behavior/output.
-
-## Key concepts
-
-- Concept: meaning, states, rules.
-
-## Invariants
-
-- Rules that must remain true.
-
-## Boundaries
-
-- Module/service/process/API boundaries and ownership.
-
-## Requirement coverage
-
-| PRD story / requirement | High-level design response | Task feedback-loop hook | Status |
-| --- | --- | --- | --- |
-| `prd.md#...` | workflow/boundary/component response | `.features/{feature}/tasks/...#feedback-loop` or `TBD` | planned |
-
-## Requirement gaps / questions
-
-- Product behavior that must be clarified before implementation.
-- Architecture-significant questions that need an ADR before implementation.
-- Task-level details that can safely be deferred to Work Orders.
-
-## Alternatives considered
-
-| Option | Pros | Cons | Outcome |
-| --- | --- | --- | --- |
-| ... | ... | ... | chosen / rejected / needs ADR |
-
-## Rollout / rollback
-
-- Rollout:
-- Rollback:
-- Migration/backfill:
-- Compatibility or feature flag plan:
-
-## Operational concerns
-
-- Observability:
-- Security/privacy:
-- Performance:
-- Accessibility:
-
-## Code anchors
-
-- `{file/function}` — why it matters.
-
-## ADRs
-
-- `docs/adrs/architecture.md` — whole-system architecture decisions.
-- `docs/adrs/api.md` — API boundary/contract decisions, when needed.
-- `docs/adrs/web.md` — web/client architecture decisions, when needed.
-
-## Diagram candidates
-
-- `current-flow.html`
-- `intended-flow.html`
-- `code-flow.html`
-- `domain-model.html`
+```text
+docs/features/{feature}/design.html
 ```
 
-Use the `system-diagram` skill for diagrams under `docs/features/{feature}/diagrams/` when a visual model will help the user retain the system.
+The page should be understandable without chat history and should include:
 
-### 4. Record ADRs only when needed
+- title, feature summary, status, and link/path to `prd.html`,
+- how to read the diagrams and color/ownership legend,
+- pattern research influences and success cases that shaped the design,
+- design thesis: the high-level solution shape and why it fits the PRD, constraints, and existing system,
+- current flow and intended flow,
+- component/service/module communication and boundaries,
+- domain concepts and important states/lifecycle,
+- invariants and operational concerns,
+- major design decisions and tradeoffs,
+- architecture alternatives considered,
+- rollout/rollback or migration paths when relevant,
+- PRD requirement coverage highlights,
+- task boundary hints and feedback-loop hooks when tasks are planned,
+- architecture/product questions that block design or task execution.
+
+Use graph diagrams for the architecture story and an enjoyable report layout for the review story. Prefer a small set of clear sections in one page over many separate files. If a section becomes crowded, use progressive disclosure and multiple SVG diagrams inside `design.html` rather than creating sibling diagram files by default.
+
+Add stable review anchors to meaningful sections and diagram elements so HTML review comments can attach to durable targets:
+
+```html
+<section data-review-id="flow.intended">
+<g data-review-id="component.worker-retry-boundary">
+<div data-review-id="decision.cache-strategy">
+```
+
+Recommended page structure:
+
+```html
+<!-- docs/features/{feature}/design.html -->
+<section data-review-id="summary">...</section>
+<section data-review-id="pattern-research">...</section>
+<section data-review-id="design-thesis">...</section>
+<section data-review-id="current-flow">...</section>
+<section data-review-id="intended-flow">...</section>
+<section data-review-id="component-communication">...</section>
+<section data-review-id="domain-model">...</section>
+<section data-review-id="design-decisions">...</section>
+<section data-review-id="requirement-coverage">...</section>
+<section data-review-id="tasks-and-feedback">...</section>
+```
+
+Open the HTML when local browser access is available:
+
+```bash
+open docs/features/{feature}/design.html
+```
+
+If an HTML review tool is available, open `design.html` in review mode so the user can comment directly on the design before tasks are created. If browser/review access is unavailable, report the path and how to open it.
+
+### 5. Record ADRs only when needed
 
 Create or update a system-level ADR only for architecture-significant decisions where durable rationale matters, such as API/schema boundaries, auth/security/privacy, persistence/migration, rollout strategy, cross-service ownership, or major module boundaries.
 
@@ -190,23 +205,23 @@ The chosen architecture direction.
 - Follow-up required.
 ```
 
-Do not use ADRs as a running conversation log or feature-local task history. ADRs are system-level architecture records grouped by architectural area. When architecture changes, update the relevant architecture/system model to the new intended state and update the relevant ADR file only if the rationale must be preserved.
+Do not use ADRs as a running conversation log or feature-local task history. ADRs are system-level architecture records grouped by architectural area. When architecture changes, update `design.html` to the new intended design and update the relevant ADR file only if the rationale must be preserved.
 
-### 5. Defer verification to task feedback loops
+### 6. Defer verification to task feedback loops
 
-Do not create a default feature-level `proof.md`. Verification is task-local by default.
+Verification is task-local by default.
 
-Each task/work order should include a compact `## Feedback loop` from the `feedback-loop` skill: desired state, fastest check, user/system check, edge case, gate, and evidence path.
+Each task should include a compact `## Feedback loop` from the `feedback-loop` skill: desired state, fastest check, user/system check, edge case, gate, and evidence path.
 
 If a feature has cross-task release acceptance that cannot fit inside individual tasks, capture it in the relevant task or ask before creating a separate release checklist.
 
-### 6. Create execution units only when useful
+### 7. Create tasks only when useful
 
-Use tasks/Work Orders when execution should be approved, split, delegated, or resumed later. Put them under ignored `.features/{feature}/tasks/`, not `docs/features/`.
+Use task briefs when execution should be approved, split, delegated, or resumed later. Put them under ignored `.features/{feature}/tasks/`, not `docs/features/`.
 
-Execution units should follow `simple-tasks`: compact, agent-readable, and progressively disclosed. Include only execution-critical goal/context/files/risks/feedback loop up front; link human-oriented strategy/PRD/system-model/ADRs instead of copying them.
+Tasks should follow `simple-tasks`: compact, agent-readable, and progressively disclosed. Include only execution-critical goal/context/files/risks/feedback loop up front; link human-oriented PRD/design/ADRs instead of copying them.
 
-Small approved features may skip tasks/Work Orders and execute directly from strategy/model plus an inline feedback loop.
+Small approved features may skip task briefs and execute directly from the PRD or approved brief plus an inline feedback loop.
 
 ## Output
 
@@ -214,9 +229,10 @@ End with:
 
 ```text
 Design gate: {satisfied | blocked pending PRD/architecture clarification}
-Design mode: high-level system model; task-level design and feedback loops deferred to Work Orders
-System model updated: docs/features/{feature}/system-model.md
+Research: {sources reviewed | skipped with reason}
+Design mode: single HTML design artifact; task-level design and feedback loops deferred to tasks
+Design updated: docs/features/{feature}/design.html {opened/reviewed | not opened + reason}
 ADRs: {none | docs/adrs/architecture.md | docs/adrs/api.md | docs/adrs/web.md}
-Execution units: {none | .features/{feature}/tasks/...}
-Next: {execute directly | create/review Work Orders | resolve PRD/architecture questions | define task feedback loops}
+Tasks: {none | .features/{feature}/tasks/...}
+Next: {review design.html | execute directly | create/review tasks | resolve PRD/architecture questions | define task feedback loops}
 ```

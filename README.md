@@ -4,15 +4,12 @@ Personal collection of agent skills for AI coding assistants (Pi, Claude Code, C
 
 ## Workflow direction
 
-Default feature workflow is strategy-first: durable feature docs in `docs/features/`, system-level ADRs in `docs/adrs/`, and execution state in ignored `.features/`.
+Default feature workflow is PRD-first: durable feature docs in `docs/features/`, system-level ADRs in `docs/adrs/`, and task-loop state in ignored `.features/`.
 
 ```text
 docs/features/{slug}/
-  strategy.md
-  prd.md            # when BDD requirements are needed
-  system-model.md   # current intended architecture for the feature
-  diagrams/
-  review.md
+  prd.html          # product source of truth and visual review artifact
+  design.html       # high-level architecture/design source of truth and visual review artifact
 ```
 
 ```text
@@ -23,12 +20,12 @@ docs/adrs/
 ```
 
 ```text
-.features/{slug}/   # gitignored execution state
-  tasks/            # optional tasks / Work Order briefs with feedback loops
-  execution/        # optional execution reports and feedback-loop evidence
+.features/{slug}/   # gitignored task-loop state
+  tasks/            # optional task briefs with feedback loops and results
+  artifacts/        # optional large logs/screenshots/raw outputs
 ```
 
-Classic `design.md` is a compatibility artifact, not the default. Generic `decisions.md` and `proof.md` are not default artifacts.
+Classic `design.md` and extra feature-level snapshot docs are compatibility artifacts, not the default.
 
 This setup intentionally avoids MCP-specific workflows. Prefer local files, built-in harness tools, and explicit user approval for external services.
 
@@ -42,28 +39,28 @@ Compaction/handoff is runtime state, not another durable artifact. When context 
 - feedback-loop evidence run or still missing,
 - blockers and next action.
 
-Durable docs capture strategy, current architecture, and ADR-worthy rationale; task feedback loops and `.features/{slug}/execution/` capture execution evidence.
+Durable docs capture product requirements, current architecture, and ADR-worthy rationale; task feedback loops and `## Result` sections capture task-local evidence.
 
 ## Skills
 
-### Planning / Strategy
+### Planning / Product
 
 | Skill | Description |
 |-------|-------------|
-| **product-strategy** | Shape raw product ideas into a buildable first wedge and MVP loop |
-| **prd** ★ | Compatibility skill for PRDs; defaults to feature strategy when durable framing is needed |
-| **design-solution** ★ | Create/update system model, system-level ADRs when needed, and optional `.features` execution units |
-| **feedback-loop** | Define task-level feedback loops and execution-report evidence |
-| **system-diagram** | Create Excalidraw-style HTML/SVG diagrams for code flow, component communication, domains, and decisions |
+| **prd** ★ | Create/update feature `prd.html` reports with why, what, scope, BDD requirements, and acceptance criteria |
+| **design-solution** ★ | Create/update `design.html`, system-level ADRs when needed, and optional task briefs |
+| **html-report-designer** | Create enjoyable, accessible, self-contained HTML reports for PRDs, designs, diagrams, and decision packets |
+| **feedback-loop** | Define task-level feedback loops and task-local results |
+| **system-diagram** | Create reviewable HTML/SVG diagrams for code flow, component communication, domains, and decisions |
 
 ### Development
 
 | Skill | Description |
 |-------|-------------|
-| **implement-task** | Execute one approved `.features` task/work order |
-| **loop** | Autonomous execution loop over ready `.features` task/work orders |
-| **simple-tasks** | Manage ignored `.features` task/work-order execution state |
-| **review-pr** | Code review plus strategy, architecture, and feedback-loop alignment when feature packets exist |
+| **implement-task** | Execute one approved `.features` task brief |
+| **loop** | Autonomous execution loop over ready `.features` task briefs |
+| **simple-tasks** | Manage ignored `.features` task loop state |
+| **review-pr** | Code review plus PRD, architecture, and feedback-loop alignment when feature packets exist |
 
 ### Architecture
 
@@ -116,7 +113,7 @@ Eval definitions are durable. Raw run notes/logs should stay under ignored `.fea
 
 ## Rename policy
 
-Some skill names are kept for muscle memory (`prd`, `design-solution`, `implement-task`) but their content now follows the strategy-first workflow. Add renamed aliases later only if usage proves the old names are confusing.
+Some skill names are kept for muscle memory (`prd`, `design-solution`, `implement-task`) and now follow the PRD-first workflow. Add renamed aliases later only if usage proves the old names are confusing.
 
 ## Credits
 
@@ -126,14 +123,14 @@ Skills marked with ★ are adapted from [mattpocock/skills](https://github.com/m
 
 ## Philosophy
 
-- **Strategy before execution** — user owns product/system rules, tradeoffs, scope, and acceptance behavior
+- **PRD before execution** — user owns product/system rules, tradeoffs, scope, and acceptance behavior
 - **Progressive disclosure** — essential facts first; links and optional sections for detail
 - **Agent-first tasks** — task briefs use bullets, paths, commands, expected results, and escalation triggers
-- **Agent owns mechanics** — implementation details, tests, and reports are agent-owned unless they alter strategy or architecture
+- **Agent owns mechanics** — implementation details, tests, and reports are agent-owned unless they alter product intent or architecture
 - **Lightest durable artifact** — write docs when they preserve requirements, current architecture, ADR-worthy rationale, or reusable understanding
-- **Execution state is disposable** — tasks/work orders/reports live under ignored `.features`; durable architecture/rationale stays in docs
-- **Work Orders are optional** — use them for delegation/splitting, not for every small change
-- **Evidence is part of done** — execution reports record feedback-loop evidence, not just summaries
+- **Task-loop state is disposable** — tasks and large artifacts live under ignored `.features`; durable architecture/rationale stays in docs
+- **Task briefs are optional** — use them for delegation/splitting, not for every small change
+- **Evidence is part of done** — task `## Result` sections record feedback-loop evidence, not just summaries
 
 ## License
 

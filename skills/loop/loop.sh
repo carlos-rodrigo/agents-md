@@ -310,9 +310,9 @@ if [[ ! -d ".features/$FEATURE/tasks" ]]; then
   exit 1
 fi
 
-mkdir -p ".features/$FEATURE/execution"
-PROGRESS_FILE=".features/$FEATURE/execution/progress.txt"
-LOG_FILE=".features/$FEATURE/execution/loop.log"
+mkdir -p ".features/$FEATURE/artifacts/loop"
+PROGRESS_FILE=".features/$FEATURE/artifacts/loop/progress.txt"
+LOG_FILE=".features/$FEATURE/artifacts/loop/loop.log"
 
 if [[ ! -f "$PROGRESS_FILE" ]]; then
   {

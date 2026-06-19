@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: "Code review a pull request or branch, including strategy, architecture, and feedback-loop alignment when feature packets are present. Triggers on: review pr, review this pr, code review, check this branch."
+description: "Code review a pull request or branch, including PRD, architecture, and feedback-loop alignment when feature packets are present. Triggers on: review pr, review this pr, code review, check this branch."
 ---
 
 # Review PR
@@ -12,21 +12,20 @@ Review correctness, maintainability, verification, and alignment with product/sy
 If present, read only what is relevant:
 
 ```text
-docs/features/{slug}/strategy.md
-docs/features/{slug}/prd.md
-docs/features/{slug}/system-model.md
+docs/features/{slug}/prd.html
+docs/features/{slug}/design.html
 docs/adrs/{architecture,api,web}.md
-.features/{slug}/tasks/       # local/ignored, if available
-.features/{slug}/execution/   # local/ignored evidence, if available
+.features/{slug}/tasks/       # local/ignored tasks/results, if available
+.features/{slug}/artifacts/   # local/ignored large logs/screenshots, if available
 ```
 
-Do not expect `.features/` execution state in the PR.
+Do not expect `.features/` task-loop state in the PR.
 
 ## Review flow
 
 1. Get PR/branch diff.
 2. Identify claimed behavior and changed files.
-3. Check strategy/architecture alignment when docs exist.
+3. Check PRD/architecture alignment when docs exist.
 4. Check tests and feedback-loop evidence.
 5. Leave specific file:line findings.
 
@@ -47,14 +46,14 @@ git diff main...<branch>
 - [ ] No silent scope expansion.
 
 ### Architecture alignment
-- [ ] Matches `system-model.md` when present.
+- [ ] Matches `design.html` when present.
 - [ ] Preserves relevant ADRs in `docs/adrs/`.
 - [ ] Changes live in the right layer with appropriate abstraction.
 - [ ] API/schema/auth/persistence changes are intentional and documented.
 
-### Task/evidence alignment
-- [ ] Ready/done tasks have execution reports when `.features/` exists.
-- [ ] Reports record changed files, feedback-loop results, deviations, and follow-up.
+### Task/result alignment
+- [ ] Done/blocked tasks have current `## Result` sections when `.features/` exists.
+- [ ] Results record changed files, feedback-loop results, deviations, and follow-up needed by later tasks.
 - [ ] Regression gate passed or exception is explicit.
 
 ### Code quality
@@ -84,7 +83,7 @@ One paragraph: what changed and review outcome.
 
 ## Alignment
 
-- Strategy/architecture: aligned | mismatch | not checked
+- PRD/architecture: aligned | mismatch | not checked
 - Feedback loop: passed | missing | partial | not applicable
 - Follow-up: none | ...
 

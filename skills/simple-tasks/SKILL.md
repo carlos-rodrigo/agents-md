@@ -5,21 +5,19 @@ description: "Project-local task management in .features/{feature}/tasks/. Use w
 
 # Simple Tasks
 
-Use tasks only when work needs sequencing, delegation, looping, or resumption. `.features/` is execution state, not durable product documentation.
+Use tasks only when work needs sequencing, delegation, looping, or resumption. `.features/` is task-loop state, not durable product documentation.
 
 ```text
 .features/{feature}/tasks/_active.md    # loop progress board and next-task pointer
-.features/{feature}/tasks/NNN-title.md  # task briefs optimized for agents
-.features/{feature}/execution/          # evidence after execution
-.features/{feature}/artifacts/          # run artifacts, screenshots, logs
+.features/{feature}/tasks/NNN-title.md  # task brief, lifecycle state, and result
+.features/{feature}/artifacts/          # large run artifacts, screenshots, logs when needed
 ```
 
 Durable context stays outside tasks:
 
 ```text
-docs/features/{feature}/strategy.md
-docs/features/{feature}/prd.md
-docs/features/{feature}/system-model.md
+docs/features/{feature}/prd.html
+docs/features/{feature}/design.html
 docs/adrs/{architecture,api,web}.md
 ```
 
@@ -28,7 +26,7 @@ docs/adrs/{architecture,api,web}.md
 Task files are for agents. Keep the top-level brief small, actionable, and scannable.
 
 - Put the execution-critical facts first: goal, files, risks, feedback loop, blockers.
-- Link to strategy/PRD/system-model/ADRs instead of copying long context.
+- Link to PRD/design/ADRs instead of copying long context.
 - Use terse bullets, paths, commands, and expected results.
 - Add optional detail sections only when the agent must know them to execute.
 - Target one screen / ~80 lines for normal tasks. Split the task if the brief needs much more.
@@ -65,7 +63,7 @@ Started: YYYY-MM-DD
 - Blockers: {none | ...}
 ```
 
-Update `_active.md` whenever a task is added, blocked, or completed. Check off a task only after its execution report records feedback-loop evidence.
+Update `_active.md` whenever a task is added, blocked, or completed. Check off a task only after the task's `## Result` records feedback-loop results.
 
 ---
 
@@ -89,8 +87,8 @@ created: YYYY-MM-DD
 
 ## Context
 
-- Source: {chat | strategy/prd link | user-approved brief}
-- Architecture: {system-model link or none}
+- Source: {chat | prd link | user-approved brief}
+- Design: {design.html link or none}
 - ADRs: {docs/adrs/... or none}
 - Depends: {none | TASK-...}
 
@@ -108,7 +106,7 @@ created: YYYY-MM-DD
 - User/system: {action/API/browser/manual check} → {expected}
 - Edge: {case} → {expected}
 - Gate: `{regression command}` → {expected}
-- Evidence: `.features/{feature}/execution/001-title.md`
+- Result: update this task's `## Result` section before marking done
 
 ## Escalate if
 
@@ -139,7 +137,7 @@ Add after `## Notes` only when needed:
 - `draft` — not approved for execution.
 - `ready` — approved and executable.
 - `blocked` — waiting on user/dependency/environment.
-- `done` — implementation complete and execution evidence recorded.
+- `done` — implementation complete and `## Result` records feedback-loop results.
 - Legacy `open` may be treated as `ready` only when the brief is executable.
 
 ## Ready gate
@@ -174,30 +172,20 @@ Create the next task as:
 
 Then add/update the matching line in `.features/{feature}/tasks/_active.md` with its status and checklist state.
 
-Create the matching evidence report as:
-
-```text
-.features/{feature}/execution/NNN-short-title.md
-```
-
-## Execution report minimum
+Append or update the task result as:
 
 ```markdown
----
-id: ER-001
-workTask: TASK-001
-status: complete
-created: YYYY-MM-DD
----
+## Result
 
-# ER-001 — TASK-001
-
-- Changed: `path`, `path`
+- Status: done | blocked
+- Changed: `path`, `path` | none
 - Feedback loop: passed/failed/skipped with reason
-- Evidence: command/action → result
+- Gate: passed/failed/skipped with reason
 - Review: self/oracle + findings
-- Follow-up: none | ...
+- Follow-up applied to next task: none | `TASK-002`
 ```
+
+If a later task needs information discovered during execution, write that information into the later task directly instead of creating a separate handoff/report file.
 
 ## Principles
 
@@ -206,4 +194,4 @@ created: YYYY-MM-DD
 3. One task = one behavior.
 4. Feedback loop lives in the task.
 5. `_active.md` is first-class loop state.
-6. No `done` without evidence.
+6. No `done` without a task-local `## Result`.

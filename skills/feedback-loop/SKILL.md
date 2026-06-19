@@ -1,20 +1,20 @@
 ---
 name: feedback-loop
-description: "Define task-level feedback loops: how an agent proves an implementation reaches the desired user/system state using tests, CLI/API/browser/manual checks, expected results, reruns, and evidence. Triggers on: feedback loop, how to test, verification plan, define testing, acceptance criteria."
+description: "Define task-level feedback loops: how an agent proves an implementation reaches the desired user/system state using tests, CLI/API/browser/manual checks, expected results, reruns, and task-local results. Triggers on: feedback loop, how to test, verification plan, define testing, acceptance criteria."
 ---
 
 # Feedback Loop
 
 A feedback loop is the task-local test/observe/fix cycle. It tells the agent how to know the implementation reached the desired state.
 
-Default locations:
+Default location:
 
 ```text
 .features/{feature}/tasks/NNN-title.md#feedback-loop      # plan
-.features/{feature}/execution/NNN-title.md                # evidence
+.features/{feature}/tasks/NNN-title.md#result             # actual results after execution
 ```
 
-Do not create `docs/features/{feature}/proof.md` by default.
+Do not create feature-level verification documents or separate report files by default; keep planned checks and actual results in the task file.
 
 ## Progressive disclosure rule
 
@@ -30,7 +30,7 @@ Keep the task section compact. Put exact checks in the task; put long setup note
 - User/system: {API/browser/CLI/manual action} → {expected observation}
 - Edge: {important failure/boundary case} → {expected result}
 - Gate: `{final regression command}` → {expected result}
-- Evidence: `.features/{feature}/execution/NNN-title.md`
+- Result: update this task's `## Result` section before marking done
 ```
 
 Rules:
@@ -39,7 +39,7 @@ Rules:
 - Include expected results, not just commands.
 - For bugs, include the failing reproduction before the fixed check.
 - If automation is not practical, say why and use explicit manual/browser evidence.
-- Do not mark the task done until the execution report records actual results.
+- Do not mark the task done until its `## Result` section records actual results.
 
 ## Check patterns
 
@@ -51,12 +51,13 @@ Rules:
 - Manual: compare screenshot to design → spacing, hierarchy, and empty state match
 ```
 
-## Evidence report shape
+## Result shape
 
 ```markdown
-## Feedback loop evidence
+## Result
 
-- `command/action` → passed/failed/skipped; output or observation summary
+- Feedback loop: `command/action` → passed/failed/skipped; output or observation summary
+- Gate: `command/action` → passed/failed/skipped with reason
 ```
 
 ## Escalate when
