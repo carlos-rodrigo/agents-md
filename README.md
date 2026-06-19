@@ -101,12 +101,19 @@ cp -r skills/* ~/.claude/skills/
 ln -s AGENTS.md CLAUDE.md
 ```
 
-## Evals
+## Evals and validation
 
 Harness evals live under `evals/`. They test agent behavior and model fit, especially when changing instructions or trying a new model.
 
 ```bash
 python3 scripts/evals/run_style_eval.py evals/style/minimal-code-style.json
+```
+
+HTML report templates and generated reports can be checked with the local validator:
+
+```bash
+node scripts/validate-html-report.mjs --allow-placeholders skills/html-report-designer/resources/report-template.html
+node scripts/validate-html-report.mjs docs/features/<feature>/design.html
 ```
 
 Eval definitions are durable. Raw run notes/logs should stay under ignored `.features/evals/` when needed.

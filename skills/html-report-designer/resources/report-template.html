@@ -7,26 +7,18 @@
   <style>
     :root {
       color-scheme: light;
-
-      /* Surfaces: warm, editorial, and still neutral enough for technical review. */
       --page-100: #f4ecdf;
       --surface-100: #fffaf1;
       --surface-200: #fff6e6;
       --surface-300: #f8ead5;
-
-      /* Text ranks mirror the Vercel idea: 1000 primary, 900 secondary, 700 muted. */
       --text-1000: #16211d;
       --text-900: #48554f;
-      --text-700: #6b7771;
-
-      /* Borders/overlays. */
+      --text-700: #68746e;
       --border-400: #d8cbb8;
       --border-500: #c7b7a1;
       --alpha-100: rgba(22, 33, 29, .05);
       --alpha-200: rgba(22, 33, 29, .09);
       --alpha-300: rgba(22, 33, 29, .14);
-
-      /* Semantic accents. Use 700 for solid/state, 100 for backgrounds. */
       --accent-100: #f3dccb;
       --accent-700: #a8572a;
       --accent-900: #5b2712;
@@ -38,8 +30,6 @@
       --warning-700: #946b1f;
       --danger-100: #f4d9d6;
       --danger-700: #a33b32;
-
-      /* Rhythm: 4px base scale. */
       --space-1: 4px;
       --space-2: 8px;
       --space-3: 12px;
@@ -49,18 +39,15 @@
       --space-10: 40px;
       --space-16: 64px;
       --space-24: 96px;
-
-      /* Shape and elevation. */
       --radius-sm: 6px;
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-xl: 24px;
       --radius-full: 9999px;
-      --shadow-card: 0 2px 2px rgba(61, 45, 31, .04), 0 12px 24px -20px rgba(61, 45, 31, .28);
-      --shadow-pop: 0 16px 44px -24px rgba(61, 45, 31, .32);
+      --shadow-card: 0 2px 2px rgba(61, 45, 31, .04), 0 14px 30px -24px rgba(61, 45, 31, .32);
+      --shadow-pop: 0 18px 52px -30px rgba(61, 45, 31, .38);
       --focus-ring: 0 0 0 2px var(--surface-100), 0 0 0 4px var(--info-700);
-
-      --content: 78ch;
+      --content: 76ch;
       --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
       --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --serif: "Iowan Old Style", "New York", Charter, Georgia, serif;
@@ -92,9 +79,8 @@
         --warning-700: #f0d37a;
         --danger-100: #4a2928;
         --danger-700: #ffaaa2;
-        --shadow-card: 0 1px 2px rgba(0, 0, 0, .18), 0 18px 36px -28px rgba(0, 0, 0, .72);
-        --shadow-pop: 0 20px 54px -28px rgba(0, 0, 0, .86);
-        --focus-ring: 0 0 0 2px var(--surface-100), 0 0 0 4px var(--info-700);
+        --shadow-card: 0 1px 2px rgba(0, 0, 0, .22), 0 18px 36px -28px rgba(0, 0, 0, .78);
+        --shadow-pop: 0 22px 60px -34px rgba(0, 0, 0, .88);
       }
     }
 
@@ -102,30 +88,25 @@
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      min-width: 320px;
       background:
-        radial-gradient(circle at top left, color-mix(in srgb, var(--accent-700) 16%, transparent), transparent 34rem),
+        radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--accent-700) 16%, transparent), transparent 34rem),
         linear-gradient(180deg, var(--page-100), color-mix(in srgb, var(--page-100) 88%, var(--text-1000)));
       color: var(--text-1000);
       font-family: var(--sans);
       line-height: 1.6;
       text-rendering: optimizeLegibility;
     }
-
     a { color: var(--info-700); text-underline-offset: .18em; }
     code, kbd { font-family: var(--mono); font-size: .92em; }
     code {
-      background: color-mix(in srgb, var(--accent-100) 58%, transparent);
       padding: .12rem .32rem;
       border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--accent-100) 58%, transparent);
       overflow-wrap: anywhere;
-      word-break: break-word;
       white-space: normal;
     }
-    strong { color: color-mix(in srgb, var(--text-1000) 88%, var(--accent-700)); }
-    :where(a, button, summary, [tabindex]):focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
+    :where(a, button, summary, [tabindex]):focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
     .skip-link {
       position: fixed;
@@ -136,14 +117,11 @@
       color: var(--surface-100);
       padding: .7rem 1rem;
       border-radius: var(--radius-full);
-      z-index: 10;
+      z-index: 20;
     }
     .skip-link:focus { transform: translateY(0); }
 
     .hero {
-      width: 100%;
-      max-width: none;
-      margin: 0;
       padding: clamp(var(--space-8), 5vw, var(--space-16)) clamp(var(--space-4), 4vw, var(--space-10)) var(--space-8);
     }
     .eyebrow {
@@ -153,9 +131,9 @@
       align-items: center;
       margin-bottom: var(--space-4);
       color: var(--text-700);
-      font-size: .86rem;
-      font-weight: 700;
-      letter-spacing: .06em;
+      font-size: .78rem;
+      font-weight: 820;
+      letter-spacing: .08em;
       text-transform: uppercase;
     }
     .pill {
@@ -168,20 +146,17 @@
       border-radius: var(--radius-full);
       background: color-mix(in srgb, var(--surface-100) 84%, transparent);
       color: var(--text-700);
-      font-weight: 800;
-      letter-spacing: .03em;
-      text-transform: uppercase;
       font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .04em;
+      text-transform: uppercase;
     }
     .pill.review { background: var(--warning-100); color: var(--warning-700); border-color: color-mix(in srgb, var(--warning-700) 35%, var(--border-400)); }
     .pill.approved { background: var(--success-100); color: var(--success-700); border-color: color-mix(in srgb, var(--success-700) 35%, var(--border-400)); }
     .pill.blocked { background: var(--danger-100); color: var(--danger-700); border-color: color-mix(in srgb, var(--danger-700) 35%, var(--border-400)); }
+    .pill.draft { background: var(--info-100); color: var(--info-700); border-color: color-mix(in srgb, var(--info-700) 35%, var(--border-400)); }
 
-    h1, h2, h3 {
-      line-height: 1.05;
-      letter-spacing: -.035em;
-      margin: 0;
-    }
+    h1, h2, h3 { margin: 0; line-height: 1.05; letter-spacing: -.035em; }
     h1 {
       max-width: 1120px;
       font-family: var(--serif);
@@ -189,20 +164,19 @@
       font-weight: 760;
     }
     .subtitle {
-      max-width: 880px;
+      max-width: 900px;
       margin: var(--space-4) 0 0;
       color: var(--text-700);
       font-size: clamp(1.05rem, 2vw, 1.35rem);
     }
 
-    .hero-grid {
+    .hero-grid, .content-grid, .component-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
       gap: var(--space-4);
-      margin-top: var(--space-8);
-      align-items: stretch;
     }
-    .hero-card, .section-card, .rail-card, .toc, .figure-card {
+    .hero-grid { margin-top: var(--space-8); align-items: stretch; }
+    .hero-card, .section-card, .rail-card, .toc, .figure-card, .component-card {
       min-width: 0;
       background: color-mix(in srgb, var(--surface-100) 94%, transparent);
       border: 1px solid var(--border-400);
@@ -210,103 +184,85 @@
       box-shadow: var(--shadow-card);
     }
     .hero-card { padding: var(--space-6); }
-    .hero-card h2, .rail-card h2, .toc h2 {
+    .label, .hero-card h2, .rail-card h2, .toc h2 {
+      margin: 0;
+      color: var(--accent-700);
       font-family: var(--sans);
       font-size: .78rem;
+      font-weight: 850;
       letter-spacing: .08em;
       text-transform: uppercase;
-      color: var(--accent-700);
     }
     .takeaways { display: grid; gap: var(--space-3); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
-    .takeaways li { display: grid; grid-template-columns: 1.2rem minmax(0, 1fr); gap: var(--space-2); align-items: start; }
+    .takeaways li { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); gap: var(--space-2); align-items: start; }
     .takeaways li::before { content: "✦"; color: var(--accent-700); font-weight: 900; }
-    .takeaways li > span { min-width: 0; }
 
-    .meta-grid {
+    .status-strip {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
       gap: var(--space-3);
+      margin-top: var(--space-3);
     }
-    .meta {
-      min-height: 84px;
+    .metric {
+      min-height: 92px;
       padding: var(--space-4);
       border: 1px solid var(--border-400);
       border-radius: var(--radius-lg);
-      background: color-mix(in srgb, var(--surface-200) 85%, transparent);
+      background: color-mix(in srgb, var(--surface-200) 86%, transparent);
     }
-    .meta span { display: block; color: var(--text-700); font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
-    .meta strong { display: block; margin-top: var(--space-2); font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; }
+    .metric span { display: block; color: var(--text-700); font-size: .72rem; font-weight: 850; text-transform: uppercase; letter-spacing: .06em; }
+    .metric strong { display: block; margin-top: var(--space-2); font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; }
 
     .report-layout {
       display: grid;
       grid-template-columns: minmax(220px, 16rem) minmax(0, 1fr) minmax(260px, 19rem);
       gap: clamp(var(--space-4), 2vw, var(--space-6));
-      width: 100%;
-      max-width: none;
-      margin: 0;
       padding: var(--space-4) clamp(var(--space-4), 3vw, var(--space-8)) var(--space-16);
       align-items: start;
     }
     .toc, .review-rail { position: sticky; top: var(--space-4); }
     .toc, .rail-card { padding: var(--space-4); }
-    .toc ol { list-style: none; padding: 0; margin: var(--space-3) 0 0; display: grid; gap: var(--space-1); }
-    .toc a {
-      display: block;
-      padding: .48rem .58rem;
-      border-radius: var(--radius-md);
-      color: var(--text-700);
-      text-decoration: none;
-      font-size: .92rem;
-    }
+    .toc ol { display: grid; gap: var(--space-1); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+    .toc a { display: block; padding: .48rem .58rem; border-radius: var(--radius-md); color: var(--text-700); text-decoration: none; font-size: .92rem; }
     .toc a:hover, .toc a:focus-visible { background: var(--accent-100); color: var(--accent-900); }
 
     main { display: grid; gap: var(--space-6); min-width: 0; }
-    .section-card {
-      padding: clamp(var(--space-6), 4vw, var(--space-10));
-      scroll-margin-top: var(--space-6);
-    }
-    .section-kicker {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      color: var(--accent-700);
-      font-weight: 900;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      font-size: .75rem;
-      margin-bottom: var(--space-3);
-    }
-    .section-card h2 { font-size: clamp(1.7rem, 3.4vw, 3rem); font-family: var(--serif); }
-    .section-card > p { max-width: var(--content); color: var(--text-700); font-size: 1.04rem; }
-    .section-card h3 { margin-top: var(--space-6); font-size: 1.15rem; letter-spacing: -.01em; }
+    .section-card { padding: clamp(var(--space-6), 4vw, var(--space-10)); scroll-margin-top: var(--space-6); }
+    .section-kicker { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); color: var(--accent-700); font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .section-card h2 { font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 3rem); }
+    .section-card > p, .section-summary { max-width: var(--content); color: var(--text-700); font-size: 1.04rem; }
+    .section-card h3 { margin-top: var(--space-6); font-size: 1.12rem; letter-spacing: -.01em; }
 
-    .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-4); margin-top: var(--space-6); }
-    .mini-card, .callout, .decision, .requirement {
+    .mini-card, .component-card, .callout, .decision-card, .requirement-card, .bdd-example {
       min-width: 0;
       border: 1px solid var(--border-400);
       border-radius: var(--radius-lg);
       background: color-mix(in srgb, var(--surface-200) 76%, transparent);
       padding: var(--space-4);
     }
-    .mini-card h3, .decision h3, .requirement h3 { margin: 0 0 var(--space-2); }
-    .mini-card p, .decision p, .requirement p { margin: var(--space-2) 0 0; color: var(--text-700); }
+    .component-grid { margin-top: var(--space-6); }
+    .component-card h3, .decision-card h3, .requirement-card h3 { margin: 0 0 var(--space-2); }
+    .component-card p, .decision-card p, .requirement-card p, .bdd-example p { margin: var(--space-2) 0 0; color: var(--text-700); }
+    .decision-card { border-left: 6px solid var(--info-700); }
+    .requirement-card { border-left: 6px solid var(--success-700); }
+    .bdd-example { border-left: 6px solid var(--accent-700); font-family: var(--sans); }
     .callout { border-left: 6px solid var(--accent-700); }
     .callout.warning { border-left-color: var(--warning-700); background: color-mix(in srgb, var(--warning-100) 66%, var(--surface-100)); }
     .callout.risk { border-left-color: var(--danger-700); background: color-mix(in srgb, var(--danger-100) 66%, var(--surface-100)); }
     .callout.success { border-left-color: var(--success-700); background: color-mix(in srgb, var(--success-100) 66%, var(--surface-100)); }
 
-    .id-chip {
+    .id-chip, .review-label {
       display: inline-flex;
-      margin-right: var(--space-1);
-      padding: .12rem .44rem;
+      align-items: center;
+      gap: .28rem;
       border-radius: var(--radius-full);
-      background: var(--accent-100);
-      color: var(--accent-900);
       font-family: var(--mono);
       font-size: .72rem;
       font-weight: 800;
       letter-spacing: .02em;
     }
+    .id-chip { padding: .12rem .44rem; background: var(--accent-100); color: var(--accent-900); }
+    .review-label { margin-top: var(--space-4); color: var(--text-700); }
 
     figure { margin: 0; }
     .figure-card { padding: var(--space-4); overflow: auto; }
@@ -316,62 +272,31 @@
     table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); font-size: .95rem; }
     caption { text-align: left; color: var(--text-700); margin-bottom: var(--space-2); }
     th, td { padding: .72rem .8rem; border-bottom: 1px solid var(--border-400); vertical-align: top; text-align: left; }
-    th { color: var(--accent-900); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+    th { color: var(--accent-900); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; }
 
-    details {
-      margin-top: var(--space-4);
-      border: 1px solid var(--border-400);
-      border-radius: var(--radius-lg);
-      padding: .9rem 1rem;
-      background: color-mix(in srgb, var(--surface-200) 70%, transparent);
-    }
-    summary { cursor: pointer; font-weight: 800; color: var(--accent-900); border-radius: var(--radius-sm); }
+    details { margin-top: var(--space-4); border: 1px solid var(--border-400); border-radius: var(--radius-lg); padding: .9rem 1rem; background: color-mix(in srgb, var(--surface-200) 70%, transparent); }
+    summary { cursor: pointer; color: var(--accent-900); font-weight: 850; border-radius: var(--radius-sm); }
 
+    .source-list { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+    .source-list li { overflow-wrap: anywhere; color: var(--text-700); }
     .review-rail { display: grid; gap: var(--space-4); }
     .rail-card ul { margin: var(--space-3) 0 0; padding-left: 1.1rem; color: var(--text-700); }
     .rail-card li + li { margin-top: var(--space-2); }
 
     [data-review-id] { position: relative; }
     [data-review-id]:target { outline: 3px solid var(--accent-700); outline-offset: 6px; }
-    .review-label {
-      display: inline-flex;
-      margin-top: var(--space-4);
-      color: var(--text-700);
-      font-family: var(--mono);
-      font-size: .72rem;
-    }
+    footer { max-width: 1180px; margin: 0 auto; padding: 0 var(--space-6) var(--space-10); color: var(--text-700); font-size: .9rem; }
 
-    footer {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 var(--space-6) var(--space-10);
-      color: var(--text-700);
-      font-size: .9rem;
-    }
-
-    /* Scroll appearance: progressive enhancement only. Without JS, content is visible. */
     .reveal { opacity: 1; transform: none; }
-    .js .reveal {
-      opacity: 0;
-      transform: translateY(14px);
-      transition:
-        opacity 220ms ease,
-        transform 260ms cubic-bezier(0.175, 0.885, 0.32, 1.1);
-      transition-delay: var(--reveal-delay, 0ms);
-    }
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 220ms ease, transform 260ms cubic-bezier(0.175, 0.885, 0.32, 1.1); transition-delay: var(--reveal-delay, 0ms); }
     .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
-    .js .reveal-group > * { --reveal-delay: 0ms; }
     .js .reveal-group > *:nth-child(2) { --reveal-delay: 45ms; }
     .js .reveal-group > *:nth-child(3) { --reveal-delay: 90ms; }
     .js .reveal-group > *:nth-child(4) { --reveal-delay: 135ms; }
 
     @media (max-width: 1500px) {
       .report-layout { grid-template-columns: minmax(210px, 250px) minmax(0, 1fr); }
-      .review-rail {
-        grid-column: 2;
-        position: static;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-      }
+      .review-rail { grid-column: 2; position: static; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
     }
     @media (max-width: 980px) {
       .report-layout { grid-template-columns: 1fr; }
@@ -381,16 +306,11 @@
     @media (max-width: 760px) {
       .hero { padding: var(--space-10) var(--space-4) var(--space-6); }
       .report-layout { padding-inline: var(--space-4); }
-      .section-card { border-radius: var(--radius-lg); }
+      .section-card, .hero-card { border-radius: var(--radius-lg); }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-      }
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
       .js .reveal { opacity: 1; transform: none; }
     }
     @media print {
@@ -398,7 +318,7 @@
       .skip-link, .toc, .review-rail { display: none; }
       .hero, .report-layout, footer { max-width: none; padding: 0; }
       .report-layout { display: block; }
-      .section-card, .hero-card, .figure-card { box-shadow: none; break-inside: avoid; }
+      .section-card, .hero-card, .figure-card, .component-card { box-shadow: none; break-inside: avoid; }
       a { color: black; text-decoration: none; }
       .reveal { opacity: 1 !important; transform: none !important; }
     }
@@ -413,7 +333,7 @@
       <span>{{DOCUMENT_TYPE}}</span>
       <span>Updated {{UPDATED_DATE}}</span>
     </div>
-    <h1>{{TITLE}}</h1>
+    <h1 id="title">{{TITLE}}</h1>
     <p class="subtitle">{{SUBTITLE}}</p>
 
     <div class="hero-grid reveal-group">
@@ -423,15 +343,16 @@
           <li><span>{{TAKEAWAY_1}}</span></li>
           <li><span>{{TAKEAWAY_2}}</span></li>
           <li><span>{{TAKEAWAY_3}}</span></li>
+          <li><span>{{TAKEAWAY_4}}</span></li>
         </ul>
       </section>
-      <section class="hero-card reveal" aria-labelledby="metadata-title" data-review-id="summary.metadata">
-        <h2 id="metadata-title">At A Glance</h2>
-        <div class="meta-grid">
-          <div class="meta"><span>Owner</span><strong>{{OWNER}}</strong></div>
-          <div class="meta"><span>Audience</span><strong>{{AUDIENCE}}</strong></div>
-          <div class="meta"><span>Source</span><strong>{{SOURCE_PATH}}</strong></div>
-          <div class="meta"><span>Next Action</span><strong>{{NEXT_ACTION}}</strong></div>
+      <section class="hero-card reveal" aria-labelledby="status-strip-title" data-review-id="summary.status-strip">
+        <h2 id="status-strip-title">At A Glance</h2>
+        <div class="status-strip">
+          <div class="metric"><span>Owner</span><strong>{{OWNER}}</strong></div>
+          <div class="metric"><span>Audience</span><strong>{{AUDIENCE}}</strong></div>
+          <div class="metric"><span>Readiness</span><strong>{{READINESS}}</strong></div>
+          <div class="metric"><span>Next Action</span><strong>{{NEXT_ACTION}}</strong></div>
         </div>
       </section>
     </div>
@@ -439,108 +360,159 @@
 
   <div class="report-layout">
     <nav class="toc" aria-label="Table of contents">
-      <h2>Contents</h2>
+      <h2 id="nav-title">Contents</h2>
       <ol>
-        <li><a href="#section-1">{{SECTION_1_TITLE}}</a></li>
-        <li><a href="#section-2">{{SECTION_2_TITLE}}</a></li>
-        <li><a href="#section-3">{{SECTION_3_TITLE}}</a></li>
-        <li><a href="#section-4">{{SECTION_4_TITLE}}</a></li>
+        <li><a href="#context">Context</a></li>
+        <li><a href="#decision">Decision</a></li>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#coverage">Coverage</a></li>
+        <li><a href="#questions">Questions</a></li>
       </ol>
     </nav>
 
     <main id="main">
-      <section class="section-card reveal" id="section-1" aria-labelledby="section-1-title" data-review-id="section-1">
-        <span class="section-kicker">01 · {{SECTION_1_KICKER}}</span>
-        <h2 id="section-1-title">{{SECTION_1_TITLE}}</h2>
-        <p>{{SECTION_1_SUMMARY}}</p>
-        <div class="content-grid reveal-group">
-          <article class="mini-card reveal" data-review-id="section-1.card-1">
-            <h3>{{CARD_1_TITLE}}</h3>
-            <p>{{CARD_1_BODY}}</p>
+      <section class="section-card reveal" id="context" aria-labelledby="context-title" data-review-id="context">
+        <span class="section-kicker">01 · Reader Context</span>
+        <h2 id="context-title">{{CONTEXT_TITLE}}</h2>
+        <p class="section-summary">{{CONTEXT_SUMMARY}}</p>
+        <div class="component-grid reveal-group">
+          <article class="component-card reveal" data-review-id="context.reader-goal">
+            <h3>Reader Goal</h3>
+            <p>{{READER_GOAL}}</p>
           </article>
-          <article class="mini-card reveal" data-review-id="section-1.card-2">
-            <h3>{{CARD_2_TITLE}}</h3>
-            <p>{{CARD_2_BODY}}</p>
+          <article class="component-card reveal" data-review-id="context.scope-signal">
+            <h3>Scope Signal</h3>
+            <p>{{SCOPE_SIGNAL}}</p>
           </article>
         </div>
-        <span class="review-label">review: section-1</span>
+        <span class="review-label">review: context</span>
       </section>
 
-      <section class="section-card reveal" id="section-2" aria-labelledby="section-2-title" data-review-id="section-2">
-        <span class="section-kicker">02 · {{SECTION_2_KICKER}}</span>
-        <h2 id="section-2-title">{{SECTION_2_TITLE}}</h2>
-        <p>{{SECTION_2_SUMMARY}}</p>
-        <div class="callout {{CALLOUT_KIND}}" data-review-id="section-2.callout">
-          <strong>{{CALLOUT_TITLE}}</strong>
-          <p>{{CALLOUT_BODY}}</p>
-        </div>
-        <span class="review-label">review: section-2</span>
+      <section class="section-card reveal" id="decision" aria-labelledby="decision-title" data-review-id="decision.primary">
+        <span class="section-kicker">02 · Decision Packet</span>
+        <h2 id="decision-title">{{DECISION_TITLE}}</h2>
+        <p class="section-summary">{{DECISION_SUMMARY}}</p>
+        <article class="decision-card" data-review-id="decision.primary-card">
+          <h3><span class="id-chip">DEC-001</span>{{DECISION_CARD_TITLE}}</h3>
+          <p><strong>Chosen direction:</strong> {{DECISION_CHOSEN}}</p>
+          <p><strong>Why this fits:</strong> {{DECISION_WHY}}</p>
+          <p><strong>Rejected alternatives:</strong> {{DECISION_REJECTED}}</p>
+          <p><strong>Tradeoffs:</strong> {{DECISION_TRADEOFFS}}</p>
+        </article>
+        <span class="review-label">review: decision.primary</span>
       </section>
 
-      <section class="section-card reveal" id="section-3" aria-labelledby="section-3-title" data-review-id="section-3">
-        <span class="section-kicker">03 · {{SECTION_3_KICKER}}</span>
-        <h2 id="section-3-title">{{SECTION_3_TITLE}}</h2>
-        <p>{{SECTION_3_SUMMARY}}</p>
-        <figure class="figure-card reveal" data-review-id="section-3.figure">
-          <!-- Replace with inline SVG from system-diagram when needed. -->
-          <svg viewBox="0 0 900 260" role="img" aria-labelledby="template-diagram-title template-diagram-desc" xmlns="http://www.w3.org/2000/svg">
-            <title id="template-diagram-title">{{DIAGRAM_TITLE}}</title>
-            <desc id="template-diagram-desc">{{DIAGRAM_DESC}}</desc>
+      <section class="section-card reveal" id="requirements" aria-labelledby="requirement-title" data-review-id="requirements.story-001">
+        <span class="section-kicker">03 · Requirement Card</span>
+        <h2 id="requirement-title">{{REQUIREMENT_SECTION_TITLE}}</h2>
+        <p class="section-summary">{{REQUIREMENT_SECTION_SUMMARY}}</p>
+        <article class="requirement-card" data-review-id="requirements.story-001.card">
+          <h3><span class="id-chip">STORY-001</span>{{STORY_TITLE}}</h3>
+          <p>As a {{ACTOR}}, I want {{CAPABILITY}}, so that {{OUTCOME}}.</p>
+          <table>
+            <caption>Observable rules for STORY-001</caption>
+            <thead>
+              <tr><th scope="col">ID</th><th scope="col">Rule</th><th scope="col">Acceptance</th></tr>
+            </thead>
+            <tbody>
+              <tr data-review-id="requirements.req-001"><td><span class="id-chip">REQ-001</span></td><td>{{REQ_001}}</td><td>{{ACCEPTANCE_001}}</td></tr>
+              <tr data-review-id="requirements.req-002"><td><span class="id-chip">REQ-002</span></td><td>{{REQ_002}}</td><td>{{ACCEPTANCE_002}}</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <details data-review-id="examples.main">
+          <summary>Main BDD Example</summary>
+          <div class="bdd-example">
+            <p><strong>Given</strong> {{GIVEN}}</p>
+            <p><strong>When</strong> {{WHEN}}</p>
+            <p><strong>Then</strong> {{THEN}}</p>
+          </div>
+        </details>
+        <span class="review-label">review: requirements.story-001</span>
+      </section>
+
+      <section class="section-card reveal" id="coverage" aria-labelledby="coverage-title" data-review-id="coverage.matrix">
+        <span class="section-kicker">04 · Coverage Matrix</span>
+        <h2 id="coverage-title">{{COVERAGE_TITLE}}</h2>
+        <p class="section-summary">{{COVERAGE_SUMMARY}}</p>
+        <figure class="figure-card reveal" data-review-id="coverage.figure">
+          <svg viewBox="0 0 900 260" role="img" aria-labelledby="diagram-title diagram-desc" xmlns="http://www.w3.org/2000/svg">
+            <title id="diagram-title">{{DIAGRAM_TITLE}}</title>
+            <desc id="diagram-desc">{{DIAGRAM_DESC}}</desc>
             <defs>
               <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-700)" />
               </marker>
             </defs>
-            <rect x="24" y="34" width="230" height="150" rx="16" fill="var(--info-100)" stroke="var(--info-700)" stroke-width="3" />
-            <text x="139" y="112" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_A}}</text>
-            <path d="M270 109 C360 60 430 60 520 109" fill="none" stroke="var(--accent-700)" stroke-width="4" marker-end="url(#arrow)" />
-            <rect x="540" y="34" width="230" height="150" rx="16" fill="var(--success-100)" stroke="var(--success-700)" stroke-width="3" />
-            <text x="655" y="112" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_B}}</text>
+            <g data-review-id="diagram.source-node">
+              <rect x="24" y="44" width="230" height="140" rx="18" fill="var(--info-100)" stroke="var(--info-700)" stroke-width="3" />
+              <text x="139" y="120" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_A}}</text>
+            </g>
+            <path d="M270 114 C360 64 430 64 520 114" fill="none" stroke="var(--accent-700)" stroke-width="4" marker-end="url(#arrow)" data-review-id="diagram.handoff" />
+            <g data-review-id="diagram.target-node">
+              <rect x="540" y="44" width="230" height="140" rx="18" fill="var(--success-100)" stroke="var(--success-700)" stroke-width="3" />
+              <text x="655" y="120" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_B}}</text>
+            </g>
           </svg>
           <figcaption>{{DIAGRAM_CAPTION}}</figcaption>
         </figure>
-        <span class="review-label">review: section-3</span>
-      </section>
-
-      <section class="section-card reveal" id="section-4" aria-labelledby="section-4-title" data-review-id="section-4">
-        <span class="section-kicker">04 · {{SECTION_4_KICKER}}</span>
-        <h2 id="section-4-title">{{SECTION_4_TITLE}}</h2>
-        <p>{{SECTION_4_SUMMARY}}</p>
         <table>
-          <caption>{{TABLE_CAPTION}}</caption>
+          <caption>{{COVERAGE_TABLE_CAPTION}}</caption>
           <thead>
-            <tr><th scope="col">ID</th><th scope="col">Item</th><th scope="col">Status</th></tr>
+            <tr><th scope="col">Requirement</th><th scope="col">Design / Evidence</th><th scope="col">Status</th></tr>
           </thead>
           <tbody>
-            <tr data-review-id="section-4.row-1"><td><span class="id-chip">{{ROW_1_ID}}</span></td><td>{{ROW_1_ITEM}}</td><td>{{ROW_1_STATUS}}</td></tr>
-            <tr data-review-id="section-4.row-2"><td><span class="id-chip">{{ROW_2_ID}}</span></td><td>{{ROW_2_ITEM}}</td><td>{{ROW_2_STATUS}}</td></tr>
+            <tr data-review-id="coverage.req-001"><td><span class="id-chip">REQ-001</span></td><td>{{COVERAGE_001}}</td><td>{{COVERAGE_STATUS_001}}</td></tr>
+            <tr data-review-id="coverage.req-002"><td><span class="id-chip">REQ-002</span></td><td>{{COVERAGE_002}}</td><td>{{COVERAGE_STATUS_002}}</td></tr>
           </tbody>
         </table>
-        <span class="review-label">review: section-4</span>
+        <span class="review-label">review: coverage.matrix</span>
+      </section>
+
+      <section class="section-card reveal" id="questions" aria-labelledby="questions-title" data-review-id="questions.open">
+        <span class="section-kicker">05 · Trust Layer</span>
+        <h2 id="questions-title">{{QUESTIONS_TITLE}}</h2>
+        <p class="section-summary">{{QUESTIONS_SUMMARY}}</p>
+        <div class="callout warning" data-review-id="questions.review-action">
+          <strong>{{REVIEW_ACTION_TITLE}}</strong>
+          <p>{{REVIEW_ACTION_BODY}}</p>
+        </div>
+        <table>
+          <caption>{{OPEN_QUESTIONS_CAPTION}}</caption>
+          <thead>
+            <tr><th scope="col">Question</th><th scope="col">Owner</th><th scope="col">Blocks</th></tr>
+          </thead>
+          <tbody>
+            <tr data-review-id="questions.open-001"><td>{{OPEN_QUESTION_1}}</td><td>{{OPEN_QUESTION_OWNER_1}}</td><td>{{OPEN_QUESTION_BLOCKS_1}}</td></tr>
+            <tr data-review-id="questions.open-002"><td>{{OPEN_QUESTION_2}}</td><td>{{OPEN_QUESTION_OWNER_2}}</td><td>{{OPEN_QUESTION_BLOCKS_2}}</td></tr>
+          </tbody>
+        </table>
+        <span class="review-label">review: questions.open</span>
       </section>
     </main>
 
     <aside class="review-rail" aria-label="Review guide">
-      <section class="rail-card reveal" data-review-id="review-guide">
-        <h2>Review Guide</h2>
+      <section class="rail-card reveal" aria-labelledby="review-guide-title" data-review-id="review-guide">
+        <h2 id="review-guide-title">Review Guide</h2>
         <ul>
           <li>{{REVIEW_GUIDE_1}}</li>
           <li>{{REVIEW_GUIDE_2}}</li>
           <li>{{REVIEW_GUIDE_3}}</li>
         </ul>
       </section>
-      <section class="rail-card reveal" data-review-id="open-questions-summary">
-        <h2>Open Questions</h2>
-        <ul>
-          <li>{{OPEN_QUESTION_1}}</li>
-          <li>{{OPEN_QUESTION_2}}</li>
+      <section class="rail-card reveal" aria-labelledby="sources-title" data-review-id="source-links">
+        <h2 id="sources-title">Source Links</h2>
+        <ul class="source-list">
+          <li><code>{{SOURCE_PATH}}</code></li>
+          <li><code>{{RELATED_DOC_PATH}}</code></li>
+          <li><code>{{ADR_OR_TASK_PATH}}</code></li>
         </ul>
       </section>
     </aside>
   </div>
 
-  <footer>
-    Generated as a self-contained HTML report. Preserve <code>data-review-id</code> anchors when editing so review comments remain meaningful.
+  <footer data-review-id="provenance">
+    <p>Generated as a self-contained HTML report from <code>{{SOURCE_PATH}}</code>. Preserve <code>data-review-id</code> anchors when editing so review comments remain meaningful.</p>
   </footer>
 
   <script>

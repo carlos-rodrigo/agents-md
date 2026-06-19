@@ -276,6 +276,21 @@ When the user says a layer, responsibility, domain relationship, or call arrow f
 - Include accessible SVG `<title>` and `<desc>` or an equivalent surrounding figure caption.
 - Avoid decorative complexity that makes the system harder to understand.
 
+## Diagram quality gate
+
+Before handoff, check:
+
+- the diagram answers one explicit question, not a vague topic;
+- source evidence was inspected for real actors, calls, state, and boundaries;
+- every color has a responsibility meaning documented in the legend;
+- every meaningful arrow is labeled with call/event/protocol/payload;
+- key SVG groups/nodes have stable `data-review-id` anchors;
+- SVG has `<title>` and `<desc>` and a visible caption/how-to-read note;
+- text remains readable at the expected viewport and is at least 12px effective size;
+- uncertainty, removed paths, recovery, or decision-needed paths are visible instead of implied;
+- progressive motion is optional and respects `prefers-reduced-motion`;
+- diagram-only pages pass `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs --allow-placeholders resources/system-diagram-template.html` when validating templates, and finished diagrams pass without `--allow-placeholders`.
+
 ## Output Format
 
 When done, report:

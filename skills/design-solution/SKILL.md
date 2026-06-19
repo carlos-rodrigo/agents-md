@@ -111,7 +111,7 @@ Do not create exhaustive file inventories. Capture only anchors that matter for 
 
 ### 4. Create `design.html`
 
-Use `html-report-designer` for the report shell, visual hierarchy, accessibility, and review UX. Use the `system-diagram` skill for inline SVG diagrams inside the report.
+Use `html-report-designer` for the report shell, visual hierarchy, accessibility, and review UX. Start from `resources/design-template.html` when creating or significantly refreshing a feature design. Use the `system-diagram` skill for inline SVG diagrams inside the report.
 
 Create a self-contained HTML/SVG artifact:
 
@@ -146,6 +146,25 @@ Add stable review anchors to meaningful sections and diagram elements so HTML re
 <div data-review-id="decision.cache-strategy">
 ```
 
+Design narrative pattern:
+
+```text
+PRD need → current reality → design thesis → intended workflow → boundaries → domain model → decisions → operations → requirement coverage → task feedback hooks
+```
+
+Required design review components:
+
+- executive dashboard with PRD link, owner, architecture risk, readiness, next action, and 3-5 thesis takeaways;
+- pattern research table showing source, insight, and design impact;
+- current-flow and intended-flow figures with legends and `data-review-id` anchors on meaningful SVG groups;
+- component communication table showing owner, handoff, and boundary;
+- domain model table showing concepts, states, lifecycle, and invariants;
+- decision cards with chosen direction, why it fits, alternatives rejected, tradeoffs, and risks;
+- operational concerns table for rollout, rollback, observability, migration, and failure handling;
+- requirement coverage matrix mapping PRD `REQ-*` IDs to design mechanisms and feedback-loop hooks;
+- task boundary hints that defer low-level implementation design to task briefs;
+- open-question table with owner and blocker status.
+
 Recommended page structure:
 
 ```html
@@ -161,6 +180,27 @@ Recommended page structure:
 <section data-review-id="requirement-coverage">...</section>
 <section data-review-id="tasks-and-feedback">...</section>
 ```
+
+Design quality and smell check:
+
+- every major PRD requirement maps to a design mechanism or explicit gap;
+- current and intended flows are both described when existing behavior matters;
+- component boundaries say who owns state, who calls whom, and what crosses boundaries;
+- decisions show alternatives and tradeoffs instead of only the final answer;
+- operational concerns cover rollout/rollback/observability when relevant;
+- architecture-significant choices identify whether an ADR is needed;
+- no unresolved `{{PLACEHOLDER}}` tokens remain;
+- `data-review-id` anchors are unique and stable;
+- generated report passes `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/design.html` when available.
+
+Smells to fix before handoff:
+
+- design invents product behavior not present in the PRD;
+- diagrams are decorative, unlabeled, or too dense to explain a workflow;
+- decisions hide alternatives, risks, or rejected paths;
+- task-level mechanics crowd out high-level architecture;
+- verification evidence is duplicated in design instead of deferred to task feedback loops;
+- cross-boundary/API/schema/auth/migration choices appear without ADR consideration.
 
 Open the HTML when local browser access is available:
 
@@ -232,6 +272,7 @@ Design gate: {satisfied | blocked pending PRD/architecture clarification}
 Research: {sources reviewed | skipped with reason}
 Design mode: single HTML design artifact; task-level design and feedback loops deferred to tasks
 Design updated: docs/features/{feature}/design.html {opened/reviewed | not opened + reason}
+Validation: {passed | not run + reason | failed + key issue}
 ADRs: {none | docs/adrs/architecture.md | docs/adrs/api.md | docs/adrs/web.md}
 Tasks: {none | .features/{feature}/tasks/...}
 Next: {review design.html | execute directly | create/review tasks | resolve PRD/architecture questions | define task feedback loops}

@@ -72,14 +72,15 @@ Prefer concrete examples over generic prose. Use Gherkin to express behavior, no
    - `[TBD]` — not decided yet.
    - `[ASSUMED]` — agent inferred this; user should verify before sharing/implementation.
    - Open question — owner and whether it blocks design/task execution.
-6. Use `html-report-designer` to write/update `docs/features/{feature}/prd.html`.
-7. Open the PRD in a browser when possible:
+6. Use `html-report-designer` and start from `resources/prd-template.html` when creating or significantly refreshing `docs/features/{feature}/prd.html`.
+7. Run the HTML report validator when available; finished PRDs should not require `--allow-placeholders`.
+8. Open the PRD in a browser when possible:
 
 ```bash
 open docs/features/{feature}/prd.html
 ```
 
-8. Hand off to `design-solution` or `simple-tasks` when behavior is clear enough.
+9. Hand off to `design-solution` or `simple-tasks` when behavior is clear enough.
 
 ## HTML PRD structure
 
@@ -119,6 +120,25 @@ Recommended top viewport:
 - 3-5 key takeaways.
 - Next review action.
 - Open question count.
+- Source path and related `design.html` path when it exists.
+
+## PRD visual/report pattern
+
+Generate the PRD as a product review packet, not styled Markdown:
+
+```text
+executive dashboard → problem → users/jobs → scope → constraints → stories/rules → BDD examples → acceptance matrix → assumptions/questions → ready-for-design
+```
+
+Use these visual components from `html-report-designer`:
+
+- executive dashboard for status, owner, audience, readiness, source, next action;
+- story cards for `STORY-*` behavior;
+- requirement tables for `REQ-*` rules and acceptance signals;
+- `<details>` panels for long BDD examples;
+- acceptance matrix for `AC-*` criteria mapped to stories;
+- assumption and open-question tables with owner, impact, blocker status, and resolution path;
+- review rail that says exactly what reviewers should inspect first.
 
 ## Requirement content pattern
 
@@ -181,6 +201,29 @@ A PRD is ready for implementation planning when:
 - open questions have owners and blocker status,
 - non-goals prevent obvious scope creep.
 
+## PRD quality and smell check
+
+Before finalizing, explicitly check:
+
+- every story has actor, capability, outcome, and priority;
+- every `REQ-*` is observable, necessary, and product-level;
+- every `AC-*` maps to a story or requirement and can be verified without guessing;
+- open questions have an owner and `blocks design`, `blocks task`, or `does not block` status;
+- assumptions say impact if wrong and how to verify;
+- main, edge/error, empty/loading, and permission states are covered or explicitly not applicable;
+- no unresolved `{{PLACEHOLDER}}` tokens remain;
+- `data-review-id` anchors are unique and stable;
+- `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/prd.html` passes when available.
+
+Smells to fix before handoff:
+
+- vague verbs: “support”, “handle”, “manage”, “improve” without observable behavior;
+- subjective acceptance: “intuitive”, “robust”, “seamless”, “clean”;
+- loopholes: “if possible”, “as needed”, “where applicable”;
+- architecture leakage: APIs, schemas, files, class names, storage mechanics, or rollout details;
+- hidden assumptions presented as product decisions;
+- beautiful HTML that makes uncertainty harder to see.
+
 ## Anti-patterns
 
 Avoid:
@@ -212,6 +255,7 @@ End with:
 PRD updated: docs/features/{feature}/prd.html {opened/reviewed | not opened + reason}
 Status: {Draft | Review | Approved | Blocked}
 Review anchors: {yes | no + reason}
+Validation: {passed | not run + reason | failed + key issue}
 Ready for design: {yes | no + blockers}
 Next: {review prd.html | create design.html | create tasks | resolve questions}
 ```

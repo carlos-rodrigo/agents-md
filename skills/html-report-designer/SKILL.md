@@ -109,6 +109,30 @@ Every HTML report should be:
 7. **Portable** — one self-contained `.html` file with inline CSS/SVG and no required external network assets.
 8. **Accessible** — semantic HTML, contrast-safe colors, keyboard navigation, reduced-motion respect, and no text trapped only in images.
 
+## Generation quality contract
+
+Every generated report must pass this definition of done before handoff:
+
+- first viewport states the reader goal, status, owner, audience, readiness, source path, and next review action;
+- no unresolved `{{PLACEHOLDER}}` tokens remain in generated docs;
+- exactly one `<h1>`, a skip link to `<main id="main">`, semantic landmarks, and non-skipping heading order;
+- stable, unique `data-review-id` anchors on sections, cards, tables rows, and important diagram groups;
+- no external network assets are required to read or print the report;
+- tables have captions and scoped headers; SVG diagrams have `<title>`/`<desc>` or a surrounding figure caption;
+- assumptions, facts, decisions, risks, and open questions are visually separated;
+- motion is optional progressive enhancement and respects `prefers-reduced-motion`;
+- print view is usable;
+- PRDs do not leak architecture and designs do not invent product behavior.
+
+When available, run the validator on generated reports:
+
+```bash
+node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/prd.html
+node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/design.html
+```
+
+Use `--allow-placeholders` only for validating templates, never for finished reports.
+
 ## When to use
 
 Use for:
@@ -147,7 +171,15 @@ Required landmarks:
 - meaningful `<section aria-labelledby="..." data-review-id="...">` blocks,
 - one `<footer>` for provenance/update info when useful.
 
-Use `resources/report-template.html` as the starting shell when helpful.
+Template starting points:
+
+```text
+resources/report-template.html # shared component system and generic review packet
+resources/prd-template.html    # PRD-specific product review packet
+resources/design-template.html # design-specific architecture review packet
+```
+
+Start from the most specific template. Use `report-template.html` when creating research, ADR, decision, or custom review packets.
 
 ## Information design pattern
 
@@ -167,16 +199,34 @@ The first screen should include:
 
 Prefer sections with a one-sentence point at the top, then details.
 
-Use these components:
+Use these named components instead of inventing one-off containers:
 
-- **Summary cards** for status, scope, risks, readiness, next action.
-- **Decision cards** for chosen direction, rejected alternatives, tradeoffs.
-- **Requirement/story cards** for PRD behavior.
-- **Flow panels** for current/intended behavior.
-- **Callouts** for assumption, risk, blocker, note, open question.
-- **Tables** for structured comparisons, acceptance criteria, assumptions, questions.
+- **Executive dashboard / status strip** for status, owner, audience, readiness, source path, and next action.
+- **Takeaway list** for 3-5 review-critical points in the first viewport.
+- **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
+- **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
+- **BDD example panels** for main, edge, error, empty, loading, and permission examples.
+- **Coverage matrices** for PRD requirement → design mechanism → verification hook.
+- **Open-question and assumption tables** with owner, blocker status, impact, and resolution path.
+- **Flow panels / figure cards** for current/intended behavior and component communication.
+- **Callouts** for assumption, risk, blocker, note, open question, and readiness.
 - **Details disclosures** for long examples, raw evidence, or lower-priority scenarios.
-- **Inline SVG diagrams** for relationships and workflows.
+- **Source/provenance lists** for paths, ADRs, tasks, and verification state.
+
+### Visual/UX patterns from research
+
+Bake these patterns into every future generated report:
+
+- **Executive dashboard first viewport** — status, owner, audience, readiness, sources, next action, and key takeaways before long-form content.
+- **Layer-cake scanning** — heading → one-sentence summary → cards/tables/callouts → optional details. Do not bury the point in prose.
+- **Diátaxis-specific shapes** — PRDs are product explanation/acceptance packets; designs are architecture decision/communication packets.
+- **Review-first anchors** — review IDs are visible enough for humans to reference and stable enough for `/review` comments.
+- **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
+- **Matrices for trust** — acceptance, coverage, assumptions, and questions belong in tables when structure matters.
+- **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, and uncertainty if relevant.
+- **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
+- **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
+- **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
 
 ### Review rail
 
@@ -365,6 +415,7 @@ Before finishing, check:
 - Prefer native HTML components over custom widgets.
 - Keep CSS organized with variables, components, and print styles.
 - Include provenance: generated/updated date and source paths.
+- Validate finished reports with `scripts/validate-html-report.mjs` when available.
 - Open the file in a browser when possible:
 
 ```bash
@@ -381,6 +432,7 @@ HTML report: {path}
 Mode: {PRD | design | diagram | research | decision}
 Status: {Draft | Review | Approved | Blocked}
 Review anchors: {yes | no + reason}
+Validation: {passed | not run + reason | failed + key issue}
 Opened: {yes | no + reason}
 Next review action: {what the user should inspect first}
 ```
