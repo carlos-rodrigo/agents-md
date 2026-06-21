@@ -81,6 +81,49 @@ for (const file of files) {
     errors.push(`duplicate data-review-id "${id}"`);
   }
 
+  const isPrdReport = /^(prd|prd-template)\.html$/i.test(basename(file));
+  if (isPrdReport) {
+    const requiredPrdReviewIds = [
+      ['summary', 'executive summary'],
+      ['what', 'What section'],
+      ['what.capability-001', 'first feature capability'],
+      ['why', 'Why section'],
+      ['why.success-signals', 'success signals'],
+      ['how', 'How section'],
+      ['how.story-001', 'first product story'],
+      ['how.workflow-001', 'first product workflow'],
+      ['acceptance', 'acceptance criteria'],
+      ['acceptance.ac-001', 'first acceptance criterion'],
+      ['open-questions', 'open questions'],
+      ['ready-for-design', 'ready-for-design handoff'],
+    ];
+    for (const [id, label] of requiredPrdReviewIds) {
+      if (!seenReviewIds.has(id)) {
+        errors.push(`PRD report missing ${label} data-review-id "${id}"`);
+      }
+    }
+  }
+
+  const isDesignReport = /^(design|design-template)\.html$/i.test(basename(file));
+  if (isDesignReport) {
+    const requiredDesignReviewIds = [
+      ['prd-story-inventory', 'PRD story/BDD inventory'],
+      ['architecture-overview', 'high-level architecture overview'],
+      ['architecture-overview.figure', 'high-level architecture diagram'],
+      ['architecture-delta', 'new/changed component delta'],
+      ['slice-plan', 'PRD-derived slice plan'],
+      ['slice-designs.slice-001', 'first per-slice outside-in design'],
+      ['slice-designs.slice-001.diagram', 'first per-slice architecture mini diagram'],
+      ['story-coverage', 'story/spec coverage matrix'],
+      ['tasks-and-feedback', 'task feedback hooks'],
+    ];
+    for (const [id, label] of requiredDesignReviewIds) {
+      if (!seenReviewIds.has(id)) {
+        errors.push(`design report missing ${label} data-review-id "${id}"`);
+      }
+    }
+  }
+
   const htmlIds = [...html.matchAll(/\sid\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]);
   const seenHtmlIds = new Set();
   const duplicateHtmlIds = new Set();
@@ -120,8 +163,24 @@ for (const file of files) {
     warnings.push('missing labelled table-of-contents nav; acceptable only for tiny/diagram-only pages');
   }
 
+  if (has(/class=["'][^"']*on-this-page[^"']*["']/i)) {
+    errors.push('right-side on-this-page rail is not allowed; use the collapsible left index instead');
+  }
+
   if (!has(/<footer\b/i)) {
     warnings.push('missing provenance/footer region');
+  }
+
+  if (has(/class=["'][^"']*topbar/i)) {
+    errors.push('top navigation menu is not allowed; use the collapsible left sidebar instead');
+  }
+
+  if (!has(/class=["'][^"']*breadcrumbs/i)) {
+    warnings.push('missing breadcrumbs; acceptable for tiny/diagram-only pages');
+  }
+
+  if (!has(/class=["'][^"']*feedback-widget/i)) {
+    warnings.push('missing feedback widget; acceptable for tiny/diagram-only pages');
   }
 
   if (errors.length > 0) {

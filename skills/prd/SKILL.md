@@ -1,250 +1,194 @@
 ---
 name: prd
-description: "Create or update a feature PRD as a reviewable HTML product source of truth with why, what, scope, BDD-style requirements, and acceptance criteria. Triggers on: create a prd, write prd, prd.html, plan feature, requirements for, user stories, acceptance criteria."
+description: "Create or update a feature PRD as a reviewable HTML product story with What, Why, How, workflows, and acceptance criteria. Triggers on: create a prd, write prd, prd.html, plan feature, requirements for, user stories, acceptance criteria."
 ---
 
 # Product Requirements Document
 
-Use this skill when the user needs feature-level product intent clarified before design or implementation.
+Use this skill when a feature needs product intent clarified before design or implementation.
 
-Default durable artifact:
+Default artifact:
 
 ```text
 docs/features/{feature}/prd.html
 ```
 
-A PRD is the product source of truth for a feature: **why it matters, what should change, who it serves, what is in/out, and how the desired behavior will be accepted**.
+A PRD is a product story about **what we want to build, why it matters, and how the requirements/workflows make the feature achieve the goal**.
 
-Generate the PRD as a self-contained, reviewable HTML report. Use `html-report-designer` for the page shell, visual hierarchy, accessibility, and review anchors.
+Generate the PRD as a self-contained, reviewable HTML document. Use `html-report-designer` for the shell, accessibility, stable review anchors, and progressive motion.
 
-Markdown PRDs are legacy/compatibility outputs. Do not create a separate Markdown PRD by default unless the user asks or the repo requires it.
+Markdown PRDs are legacy/compatibility outputs. Do not create a Markdown PRD unless the user asks or the repo requires it.
 
-Downstream artifacts derive from the PRD:
+## The job
 
-| Layer | Artifact | Owns |
-| --- | --- | --- |
-| Product definition | `prd.html` | why, target user, outcome, scope, constraints, observable behavior, BDD scenarios, acceptance criteria |
-| Design | `design.html` | high-level solution/design, diagrams, workflows, boundaries, invariants, tradeoffs, rollout |
-| ADRs | `docs/adrs/{architecture,api,web}.md` | system-level architecture rationale |
-| Execution | `.features/.../tasks/*.md` | one vertical slice, local implementation choices, task feedback loop, evidence |
+1. Receive the feature idea or product request.
+2. Read just enough repo/product context to avoid invented requirements.
+3. Self-clarify the What / Why / How before writing.
+4. Create or update `docs/features/{feature}/prd.html`.
+5. Stop at product requirements. Do not design architecture, create tasks, or implement.
 
-Default flow:
+## Self-clarification
 
-```text
-raw idea → prd.html → design.html when needed → optional ADR update → compact tasks with feedback loops
-```
-
-Do not create extra feature-level product documents by default. If the idea is too broad for a PRD, ask the few product questions needed to make the PRD coherent rather than creating a separate artifact.
-
-## Mode selection
-
-Choose the lightest mode that preserves product clarity:
-
-- **Draft-first PRD** — for single-surface or bounded features. Write a useful draft, mark gaps clearly, then invite review.
-- **Question-first PRD** — for broad, risky, cross-functional, business-model, auth/permission, billing, API contract, migration, or compliance work. Ask 2-4 blocking questions before drafting.
-- **Review/update PRD** — when a PRD already exists. Tighten ambiguity, remove implementation leakage, add missing examples/acceptance, and preserve existing decisions unless the user changes them.
-
-Ask only questions that affect scope, constraints, acceptance behavior, risk, or downstream design. Do not interrogate for details the agent can safely mark as open or assumed.
-
-## Discovery loop
-
-Before finalizing requirements, use a compact Example Mapping pass when useful:
+Before writing the PRD, answer these internally and use the answers to shape the document:
 
 ```text
-Story → Rules → Examples → Questions → Deferred stories
+What: What feature are we building, for whom, and what is explicitly in/out?
+Why: What need, pain, or opportunity makes this worth doing now?
+How: Which product requirements and user workflows will make the feature achieve the goal?
+Acceptance: What observable results prove the workflows satisfy the need?
+Open questions: What decisions still block design or implementation?
 ```
 
-- **Story**: actor, capability, outcome.
-- **Rules**: product rules, permissions, boundaries, constraints.
-- **Examples**: concrete main/edge/error/empty-state examples.
-- **Questions**: owner and whether each blocks design or tasks.
-- **Deferred stories**: adjacent behavior explicitly out of scope.
+Default to self-clarifying from the request, existing docs, source context, and examples. Ask the user only when a missing answer changes scope, acceptance, legal/security/billing risk, or downstream design. Ask at most 3 blocking questions.
 
-Prefer concrete examples over generic prose. Use Gherkin to express behavior, not UI click scripts or implementation procedures.
+## PRD structure
 
-## Process
+Write the PRD as a narrative, not a dashboard. Prefer prose, bullets, cards, and concrete workflows over tables. Use tables only when comparison or traceability is the point.
 
-1. Read/search enough reality to avoid invented requirements when working in an existing repo.
-2. Identify user-owned product decisions versus agent-owned implementation choices.
-3. Capture product context: target user, problem, desired outcome, success signal, scope, non-goals, constraints, risks.
-4. Convert desired behavior into stories, rules, examples, and acceptance criteria with stable IDs.
-5. Mark uncertainty explicitly:
-   - `[TBD]` — not decided yet.
-   - `[ASSUMED]` — agent inferred this; user should verify before sharing/implementation.
-   - Open question — owner and whether it blocks design/task execution.
-6. Use `html-report-designer` and start from `resources/prd-template.html` when creating or significantly refreshing `docs/features/{feature}/prd.html`.
-7. Run the HTML report validator when available; finished PRDs should not require `--allow-placeholders`.
-8. Open the PRD in a browser when possible:
-
-```bash
-open docs/features/{feature}/prd.html
-```
-
-9. Hand off to `design-solution` or `simple-tasks` when behavior is clear enough.
-
-## HTML PRD structure
-
-Use this reviewable structure inside `prd.html`:
+Required sections:
 
 ```text
-summary                  # status, user, capability, outcome, success signal
-problem                  # why now, pain, opportunity
-users-and-jobs           # users/actors and desired jobs/outcomes
-scope                    # in, out, non-goals
-constraints              # product/UX/API/security/performance/migration constraints
-requirements             # story cards with stable STORY/REQ IDs
-examples                 # BDD examples, main/edge/error/empty/permission
-acceptance               # AC checklist grouped by story
-assumptions              # explicit assumptions with impact if wrong
-open-questions           # owner, blocks design/task/none, resolution
-ready-for-design         # readiness checklist and next action
+summary            # title, concise product story, status metadata, key takeaways
+what               # what feature we are building, who it serves, and scope boundaries
+why                # need, current pain, opportunity, and success signals
+how                # requirements, user stories, product rules, and workflows
+acceptance         # verifiable acceptance criteria tied to workflows
+open-questions     # only unresolved decisions with owner/blocker state
+ready-for-design   # readiness checklist and recommended next step
 ```
 
-Required review anchors:
-
-```html
-<section data-review-id="summary">
-<section data-review-id="problem">
-<section data-review-id="scope">
-<article data-review-id="requirements.story-001">
-<tr data-review-id="requirements.req-001">
-<tr data-review-id="acceptance.ac-001">
-<section data-review-id="open-questions">
-<section data-review-id="ready-for-design">
-```
-
-Recommended top viewport:
-
-- Status: Draft / Review / Approved / Blocked.
-- User, capability, outcome, success signal.
-- 3-5 key takeaways.
-- Next review action.
-- Open question count.
-- Source path and related `design.html` path when it exists.
-
-## PRD visual/report pattern
-
-Generate the PRD as a product review packet, not styled Markdown:
+Optional content when useful:
 
 ```text
-executive dashboard → problem → users/jobs → scope → constraints → stories/rules → BDD examples → acceptance matrix → assumptions/questions → ready-for-design
+assumptions        # inferred facts the user should verify
+deferred-stories   # adjacent behavior intentionally out of scope
+constraints        # product-level constraints that do not fit the What/How prose
 ```
 
-Use these visual components from `html-report-designer`:
+## Writing pattern
 
-- executive dashboard for status, owner, audience, readiness, source, next action;
-- story cards for `STORY-*` behavior;
-- requirement tables for `REQ-*` rules and acceptance signals;
-- `<details>` panels for long BDD examples;
-- acceptance matrix for `AC-*` criteria mapped to stories;
-- assumption and open-question tables with owner, impact, blocker status, and resolution path;
-- review rail that says exactly what reviewers should inspect first.
+### Summary
 
-## Requirement content pattern
+Open with a short product story: what changes for the user, why it is valuable, and how reviewers should read the PRD. Keep status/date/type as compact metadata; do not add owner/outcome/next-action metric cards by default.
 
-Each story card should include:
+### What
+
+Explain the feature in plain product language:
+
+```text
+We want to build {feature} so {actor/user} can {new capability} without {current friction}.
+```
+
+Include:
+
+- primary users or jobs-to-be-done,
+- 2-3 capabilities that describe the feature shape,
+- in-scope behavior,
+- out-of-scope/non-goals,
+- product constraints that affect the user experience.
+
+Do not prescribe files, classes, schemas, APIs, or rollout mechanics.
+
+### Why
+
+Explain the need and opportunity:
+
+- current pain or missed opportunity,
+- why this matters now,
+- expected user/business outcome,
+- success signals that show the need was met.
+
+Avoid implementation mechanics unless they are product-visible.
+
+### How
+
+Explain how the feature achieves the goal through requirements and workflows.
+
+Use a small set of numbered stories and rules:
 
 ```text
 STORY-001 — {Capability}
 As a {actor}, I want {capability}, so that {outcome}.
-Priority: P1 / P2 / P3
 
 Rules:
-- REQ-001: System MUST ...
-- REQ-002: System MUST ...
-
-Examples:
-- Main: Given ..., when ..., then ...
-- Edge/error/empty/permission: Given ..., when ..., then ...
-
-Gherkin:
-Scenario: Main path
-  Given ...
-  When ...
-  Then ...
-
-Acceptance:
-- AC-001: Observable result:
-- AC-002: Boundary/error result:
-- AC-003: Permission/empty/loading state, if relevant:
+- REQ-001: The system must {observable behavior}.
+- REQ-002: When {condition}, the user sees/gets {observable result}.
 ```
 
-Use cards/tables/details in HTML to keep this scannable:
+Then add concrete workflows:
 
-- story summary visible by default,
-- rules and acceptance in compact tables,
-- longer Gherkin examples in `<details>` blocks,
-- assumptions/questions as callouts or tables.
+```text
+WF-001 Main workflow
+Given ...
+When ...
+Then ...
 
-## Ready for design checklist
+WF-002 Edge/error/empty/permission workflow
+Given ...
+When ...
+Then ...
+```
 
-A PRD is ready for design when:
+Use workflows to express behavior, not UI click scripts or implementation procedures.
 
-- [ ] Target user, problem, outcome, and success signal are clear.
-- [ ] Scope and non-goals are explicit.
-- [ ] Each story has observable acceptance criteria.
-- [ ] Main, edge/error, empty/loading, and permission states are covered when relevant.
-- [ ] Product constraints and dependencies are explicit.
-- [ ] Open questions identify whether they block design or tasks.
-- [ ] `prd.html` has stable `data-review-id` anchors for review.
+### Acceptance
 
-## Requirement quality checklist
+Acceptance criteria must be verifiable without guessing:
 
-A PRD is ready for implementation planning when:
+```text
+AC-001: Given WF-001, the user can observe ...
+AC-002: Given WF-002, the system shows/prevents/allows ...
+AC-003: Quality checks pass and the PRD has no unresolved placeholders.
+```
 
-- every story has an actor, capability, and outcome,
-- every requirement is observable, necessary, and not implementation-specific,
-- acceptance criteria can be verified by a human or automated check without guessing,
-- BDD scenarios describe behavior, not UI procedure or code structure,
-- edge/error/empty/loading/permission states are covered or explicitly not applicable,
-- constraints and dependencies are product-relevant, not hidden architecture assumptions,
-- open questions have owners and blocker status,
-- non-goals prevent obvious scope creep.
+A simple checklist is usually better than a large matrix. Use a matrix only when many stories need traceability.
 
-## PRD quality and smell check
+### Open questions
 
-Before finalizing, explicitly check:
+Only include questions that still need a decision. Each question should say owner and blocker state:
 
-- every story has actor, capability, outcome, and priority;
-- every `REQ-*` is observable, necessary, and product-level;
-- every `AC-*` maps to a story or requirement and can be verified without guessing;
-- open questions have an owner and `blocks design`, `blocks task`, or `does not block` status;
-- assumptions say impact if wrong and how to verify;
-- main, edge/error, empty/loading, and permission states are covered or explicitly not applicable;
-- no unresolved `{{PLACEHOLDER}}` tokens remain;
-- `data-review-id` anchors are unique and stable;
-- `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/prd.html` passes when available.
+```text
+Q-001: {question}
+Owner: {person/team}
+Blocks: design | task | none
+Resolution path: {how to answer}
+```
 
-Smells to fix before handoff:
+## Quality checklist
 
-- vague verbs: “support”, “handle”, “manage”, “improve” without observable behavior;
-- subjective acceptance: “intuitive”, “robust”, “seamless”, “clean”;
-- loopholes: “if possible”, “as needed”, “where applicable”;
-- architecture leakage: APIs, schemas, files, class names, storage mechanics, or rollout details;
-- hidden assumptions presented as product decisions;
-- beautiful HTML that makes uncertainty harder to see.
+Before finishing, check:
 
-## Anti-patterns
+- [ ] The PRD reads as a What / Why / How product story.
+- [ ] What clearly explains the feature, users/jobs, scope, and non-goals.
+- [ ] Why clearly explains the need, opportunity, and success signals.
+- [ ] How connects stories, requirements, and workflows to the goal.
+- [ ] Each story has actor, capability, and outcome.
+- [ ] Requirements are observable and product-level.
+- [ ] Workflows cover main behavior plus relevant edge/error/empty/permission behavior.
+- [ ] Acceptance criteria are verifiable and tied to workflows.
+- [ ] Open questions have owner and blocker state.
+- [ ] No architecture or implementation details leaked into the PRD.
+- [ ] `data-review-id` anchors are stable and unique.
+- [ ] HTML validation passes when available.
 
-Avoid:
+## Smells to fix
 
-- creating a monolithic PRD for a tiny obvious change,
-- vague requirements like “support/manage/handle X” without observable behavior,
-- subjective acceptance like “intuitive”, “seamless”, “robust”, or “clean”,
-- loopholes like “if possible”, “as needed”, or “where applicable”,
-- hidden assumptions that look like product decisions,
-- Gherkin written as UI automation steps when behavior would be clearer,
-- prescribing architecture, file structure, data models, APIs, or implementation details that belong in `design.html`, ADRs, or tasks,
-- duplicating task feedback loops inside the PRD,
-- beautiful HTML that hides product uncertainty instead of making it reviewable.
+- A PRD that reads like a table of facts instead of a product story.
+- Vague verbs: “support”, “handle”, “manage”, “improve” without observable behavior.
+- Subjective acceptance: “intuitive”, “robust”, “seamless”, “clean”.
+- Loopholes: “if possible”, “as needed”, “where applicable”.
+- Too many tables where prose would be clearer.
+- Hidden assumptions presented as decisions.
+- Architecture leakage: APIs, schemas, files, class names, storage mechanics, rollout details.
+- Task lists or implementation steps inside the PRD.
 
-## Next step
+## Handoff
 
 After approval:
 
-- use `design-solution` to create `design.html` for high-level solution/design, diagrams, workflows, boundaries, and ADR-worthy tradeoffs,
-- update `docs/adrs/` if system-level architecture rationale changes,
-- use `simple-tasks` for compact agent-readable tasks with feedback loops,
+- use `design-solution` for architecture/design when needed,
+- update ADRs only for durable architecture rationale,
+- use `simple-tasks` for compact implementation task briefs,
 - execute only ready tasks.
 
 ## Output

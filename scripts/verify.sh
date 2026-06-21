@@ -3,6 +3,8 @@ set -euo pipefail
 
 ROOT="/Users/carlosrodrigo/agents"
 
+node "$ROOT/scripts/build-html-report-css.mjs" --check
+
 node "$ROOT/scripts/validate-html-report.mjs" --allow-placeholders \
   "$ROOT/skills/html-report-designer/resources/report-template.html" \
   "$ROOT/skills/html-report-designer/resources/prd-template.html" \

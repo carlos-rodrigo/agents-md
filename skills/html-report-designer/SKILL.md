@@ -29,6 +29,10 @@ This skill is grounded in these patterns:
 - Tailwind Typography / utility layout patterns: use constrained prose where reading matters, responsive `minmax()` grids where cards matter, `overflow-wrap:anywhere` for paths/code, and utilities as a discipline for predictable spacing rather than random one-off CSS.
 - Primer, Carbon, Atlassian, and Radix Themes: production documentation UIs rely on tokens, accessible primitives, concise content labels, clear action states, and themeable components rather than decorative containers.
 - NN/g layer-cake scanning: strong descriptive headings, visible subheads, chunks, labels, and summaries help readers scan long technical documents without reading every word.
+- Mintlify / Stripe / Twilio / Pinecone-style developer docs: organize around real user journeys, make examples and errors first-class, keep search/navigation obvious, and optimize time-to-confidence.
+- Vercel Docs / Primer / Docusaurus / MkDocs Material: use a docs-app shell with collapsible side navigation, breadcrumbs, explicit heading IDs, prev/next links, admonitions, tabs, and feedback affordances. Keep page content clean, default to a Vercel-like light neutral documentation surface, and avoid a top menu or right rail for this template family unless explicitly requested.
+- GitHub Docs content model: keep “get started” content minimal, separate concepts/how-tos/reference, use reusable content patterns, and make next steps obvious.
+- Atlassian Design System: use page headers, breadcrumbs, badges/lozenges, section messages, tables, tabs, focus primitives, and design tokens as composable primitives.
 
 ## Report design system
 
@@ -100,7 +104,7 @@ Hierarchy rules:
 
 Every HTML report should be:
 
-1. **Glanceable** — the first viewport answers: what is this, status, decision needed, and next action.
+1. **Glanceable** — the first viewport answers: what is this, why it matters, and what decision/review is needed.
 2. **Navigable** — sticky table of contents, semantic headings, stable anchors, and skip link.
 3. **Scannable** — short sections, bullets, cards, labels, tables, and callouts instead of walls of text.
 4. **Reviewable** — stable `data-review-id` anchors on sections/cards/diagram nodes; visible anchor labels when helpful.
@@ -113,7 +117,8 @@ Every HTML report should be:
 
 Every generated report must pass this definition of done before handoff:
 
-- first viewport states the reader goal, status, owner, audience, readiness, source path, and next review action;
+- first viewport states the reader goal, current review state, and what the reviewer should focus on without using a dashboard-style metric strip;
+- Vercel-like docs shell exists: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, prev/next, related links, feedback widget, and back-to-top affordance;
 - no unresolved `{{PLACEHOLDER}}` tokens remain in generated docs;
 - exactly one `<h1>`, a skip link to `<main id="main">`, semantic landmarks, and non-skipping heading order;
 - stable, unique `data-review-id` anchors on sections, cards, tables rows, and important diagram groups;
@@ -148,27 +153,36 @@ Do not use for tiny notes, task briefs, or throwaway logs. Task briefs stay Mark
 
 ## Page architecture
 
-Use a self-contained HTML report shell:
+Use a self-contained Vercel-like docs shell:
 
 ```html
-<body>
+<body data-visual-mode="vercel-docs-packet">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="hero" data-review-id="summary">...</header>
-  <div class="report-layout">
-    <nav class="toc" aria-label="Table of contents">...</nav>
+  <div class="doc-shell">
+    <aside class="side-nav" aria-label="Document navigation">
+      <details class="index-details" open>
+        <summary><span class="nav-title">Document</span></summary>
+        <nav aria-label="Table of contents">...</nav>
+      </details>
+    </aside>
     <main id="main">...</main>
-    <aside class="review-rail" aria-label="Review guide">...</aside>
   </div>
+  <a class="back-to-top" href="#main">...</a>
 </body>
 ```
 
-Required landmarks:
+Required landmarks and shell components:
 
-- one `<header>` for title/summary/status,
-- one `<nav aria-label="Table of contents">`,
+- no top navigation menu unless the user explicitly asks for one,
+- breadcrumbs before the article header,
+- one collapsible left sidebar/document index grouped by reader journey,
+- one `<nav aria-label="Table of contents">` inside the left index for active in-page headings,
 - one `<main id="main">`,
-- optional `<aside>` for review guide/metadata,
+- one article header for title/summary/status/meta,
 - meaningful `<section aria-labelledby="..." data-review-id="...">` blocks,
+- previous/next document links,
+- related links/artifacts block,
+- feedback widget,
 - one `<footer>` for provenance/update info when useful.
 
 Template starting points:
@@ -201,62 +215,74 @@ Prefer sections with a one-sentence point at the top, then details.
 
 Use these named components instead of inventing one-off containers:
 
-- **Executive dashboard / status strip** for status, owner, audience, readiness, source path, and next action.
+- **Docs shell**: `.breadcrumbs`, `.doc-shell`, `.side-nav`, `.index-details`, `.prev-next`, `.related-links`, `.feedback-widget`, `.back-to-top`.
+- **Article metadata** for status/date/type as compact pills; avoid owner/outcome/next-action metric-card strips unless explicitly requested.
 - **Takeaway list** for 3-5 review-critical points in the first viewport.
+- **Step lists** for review paths, setup/review sequence, and approval flow.
+- **Tabs** for paired perspectives such as scenario/evidence, current/intended, or decision/alternative.
+- **Copyable code/evidence blocks** for prompts, commands, API examples, or exact source snippets.
 - **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
 - **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
-- **BDD example panels** for main, edge, error, empty, loading, and permission examples.
-- **Coverage matrices** for PRD requirement → design mechanism → verification hook.
-- **Open-question and assumption tables** with owner, blocker status, impact, and resolution path.
+- **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
+- **Example pairs / before-after panels** for concrete behavioral or system changes.
+- **Acceptance checklists** for concise `AC-*` criteria; use matrices only when traceability would otherwise be unclear.
+- **Design coverage matrices** for PRD story/BDD/acceptance → slice → architecture delta → feedback hook.
+- **Approval checklists** for review readiness and release confidence.
+- **Architecture overview figures** for existing/new/changed components, boundaries, and communication direction.
+- **Architecture delta tables** for added/changed packages, controllers, APIs, jobs, events, ports, adapters, and data stores.
+- **Outside-in slice design tables and mini diagrams** for `SLICE-*` narratives: external need → delivery entrypoint/API contract → acceptance boundary → application seam → domain behavior pulled by need → ports/adapters/data → feedback hook → spike/escalation condition.
+- **Scope/non-goal lists** for adjacent behavior intentionally out of scope.
+- **Open-question lists or compact tables** with owner, blocker status, impact, and resolution path.
+- **Evidence cards** for source anchors, examples, logs, tests, or research observations.
 - **Flow panels / figure cards** for current/intended behavior and component communication.
-- **Callouts** for assumption, risk, blocker, note, open question, and readiness.
+- **Callouts/admonitions** for note, tip, warning, danger, success, assumption, risk, blocker, and readiness.
 - **Details disclosures** for long examples, raw evidence, or lower-priority scenarios.
-- **Source/provenance lists** for paths, ADRs, tasks, and verification state.
+- **Source/provenance lists** for paths, ADRs, tasks, changelog/update state, and validation state.
 
 ### Visual/UX patterns from research
 
 Bake these patterns into every future generated report:
 
-- **Executive dashboard first viewport** — status, owner, audience, readiness, sources, next action, and key takeaways before long-form content.
-- **Layer-cake scanning** — heading → one-sentence summary → cards/tables/callouts → optional details. Do not bury the point in prose.
+- **Focused first viewport** — title, concise summary, compact status metadata, and key takeaways before long-form content; do not add a dashboard/status-strip row by default.
+- **Layer-cake scanning** — heading → one-sentence summary → prose/bullets/examples → optional details. Do not bury the point in large tables.
 - **Diátaxis-specific shapes** — PRDs are product explanation/acceptance packets; designs are architecture decision/communication packets.
 - **Review-first anchors** — review IDs are visible enough for humans to reference and stable enough for `/review` comments.
 - **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
-- **Matrices for trust** — acceptance, coverage, assumptions, and questions belong in tables when structure matters.
+- **Tables only for structure** — use tables for comparison/traceability; use prose, bullets, cards, and examples for explanation.
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, and uncertainty if relevant.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
 
-### Review rail
+### Example-first requirement
 
-The optional right rail should guide review instead of duplicating content:
+Every PRD or design report must include these concrete review aids before abstract detail:
 
-- “Review these first” list,
-- open questions count,
-- anchor IDs that reviewers can mention,
-- readiness checklist,
-- links to PRD/design/ADRs/tasks.
+- one main scenario showing the happy path;
+- one edge/error/empty/loading/permission scenario, or an explicit “not applicable” note;
+- a before/after panel describing what changes for the user or system;
+- a “what reviewers should decide” review path;
+- an evidence/source-anchor block tying claims to code, research, tests, screenshots, logs, or source docs.
+
+### Navigation rail
+
+Use one navigation rail only: the collapsible left index. Do not add a right sidebar. Put review guidance, readiness checks, open-question counts, and related artifacts in the main content flow where they can be reviewed and commented on directly.
 
 ## PRD report pattern
 
-For `docs/features/{feature}/prd.html`, include:
+For `docs/features/{feature}/prd.html`, present the PRD as a What / Why / How product story:
 
 ```text
-summary                  # status, user, capability, outcome, success signal
-problem                  # why now, pain, opportunity
-users-and-jobs           # users/actors and desired jobs/outcomes
-scope                    # in, out, non-goals
-constraints              # product/UX/API/security/performance/migration constraints
-requirements             # story cards with stable STORY/REQ IDs
-examples                 # BDD examples, main/edge/error/empty/permission
-acceptance               # AC checklist grouped by story
-assumptions              # explicit assumptions with impact if wrong
-open-questions           # owner, blocks design/task/none, resolution
+summary                  # title, concise product story, status metadata, key takeaways
+what                     # what feature we are building, who it serves, scope, non-goals
+why                      # need, current pain, opportunity, success signals
+how                      # requirements, user stories, product rules, and workflows
+acceptance               # verifiable acceptance checklist tied to workflows
+open-questions           # unresolved decisions with owner/blocker state
 ready-for-design         # readiness checklist and next action
 ```
 
-PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`.
+PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`. Keep motion as progressive enhancement: subtle reveal/hover effects are welcome, but they must work without external assets and respect `prefers-reduced-motion`.
 
 ## Design report pattern
 
@@ -264,43 +290,57 @@ For `docs/features/{feature}/design.html`, include:
 
 ```text
 summary                  # feature, PRD link, status, review action
+prd-story-inventory      # extracted PRD stories, BDD scenarios, AC/REQ IDs, non-goals
 pattern-research         # sources and design-shaping insights
 design-thesis            # chosen solution shape and why it fits
-current-flow             # current behavior/system map
-intended-flow            # intended behavior/system map
+architecture-overview    # high-level diagram: existing/new/changed components and boundaries
+architecture-delta       # added/changed packages, controllers, APIs, jobs/events, ports/adapters/data
+slice-plan               # PRD-derived vertical slices and why each is thin
+current-flow             # current behavior/system map when useful
+intended-flow            # intended behavior/system map when useful
 component-communication  # boundaries and handoffs
 domain-model             # concepts, states, lifecycle
 design-decisions         # decisions, alternatives, tradeoffs
 operational-concerns     # rollout, rollback, observability, migration
-requirement-coverage     # how PRD requirements map to design
-tasks-and-feedback       # task boundary hints and feedback-loop hooks
+story-coverage           # story/BDD/AC → slice → architecture delta → feedback hook
+tasks-and-feedback       # per-slice outside-in designs, mini diagrams, task boundaries, feedback hooks
 open-questions           # blockers and owner
 ```
 
-Use the `system-diagram` skill for diagrams inside the design report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
+Design reports must be built in this order: extract the PRD story/spec inventory, draw the high-level architecture, list the architecture delta, derive vertical slices from PRD stories/BDD, then give each slice a small outside-in design and mini diagram. Use the `system-diagram` skill for diagrams inside the design report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
 
-## Visual direction
+## Visual modes
 
-Default aesthetic: **editorial technical atlas**.
+Default mode: **Vercel docs packet**.
 
-Characteristics:
+Use this for PRDs, feature designs, decision packets, and most durable docs. It should feel closer to Vercel Docs than a slide/report export:
 
-- warm paper background and high-contrast ink,
-- one strong accent plus semantic colors,
-- generous spacing and calm density,
-- cards with subtle borders/shadows,
-- readable type scale,
-- diagrams treated as first-class figures with captions,
-- code/IDs as small chips, not noisy monospace everywhere,
-- restrained motion; scroll appearance may guide reading, but never hide meaning or distract from review.
+- breadcrumbs,
+- collapsible sticky left sidebar with active heading state,
+- no right-side rail,
+- Vercel-like content area: black/gray neutral palette, Geist/system typography, tight page header, spacious prose, clean section dividers, and almost no shadows,
+- restrained monochrome accent by default; use blue only for links/focus or status when useful,
+- subtle CSS/IntersectionObserver motion for section reveal and hover affordances, always disabled under `prefers-reduced-motion`,
+- fewer heavy cards and lighter borders,
+- examples, steps, callouts, tabs, and matrices as first-class components only when they clarify the content,
+- prev/next links, related artifacts, feedback, and provenance.
+
+Secondary mode: **editorial technical atlas**.
+
+Use only when the user asks for an intentionally visual narrative or when diagrams are the primary artifact. It may use warmer paper, larger headings, and richer figure treatment, but it must keep accessible docs navigation and review anchors.
 
 Avoid:
 
 - generic purple/blue gradient SaaS look,
+- automatic dark-mode pages unless the user explicitly asks,
+- oversized hero sections that push useful content below the fold,
+- card-heavy report dashboards when prose would read better,
+- too many bordered cards per section,
 - tiny SVG text,
 - giant walls of text,
 - low-contrast pastel labels,
 - decorative visuals that do not explain anything,
+- top navigation menus with unclear purpose,
 - hidden navigation,
 - remote fonts/images required to read the doc,
 - JavaScript-only content.
@@ -375,7 +415,7 @@ Copy is part of the interface. Keep report text precise and review-oriented.
 Add stable anchors to all review-worthy units:
 
 ```html
-<section data-review-id="requirements.story-001" aria-labelledby="story-001-title">
+<section data-review-id="how.story-001" aria-labelledby="story-001-title">
 <article data-review-id="decision.cache-strategy">
 <g data-review-id="diagram.worker-retry-boundary">
 <tr data-review-id="acceptance.ac-003">
@@ -408,14 +448,15 @@ Before finishing, check:
 
 ## Build rules
 
-- Use one `.html` file with inline CSS.
+- Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- Avoid external dependencies unless the user explicitly wants a richer app. For self-contained reports, borrow proven patterns from Tailwind/Radix/Primer/Carbon but implement them as local tokens and CSS.
+- Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
+- Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.
 - Prefer native HTML components over custom widgets.
-- Keep CSS organized with variables, components, and print styles.
+- Keep source CSS organized with variables, components, motion, and print styles.
 - Include provenance: generated/updated date and source paths.
-- Validate finished reports with `scripts/validate-html-report.mjs` when available.
+- Validate finished reports with `npm run check:report-css` and `scripts/validate-html-report.mjs` when available.
 - Open the file in a browser when possible:
 
 ```bash

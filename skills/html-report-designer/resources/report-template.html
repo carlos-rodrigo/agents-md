@@ -4,522 +4,199 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{TITLE}}</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --page-100: #f4ecdf;
-      --surface-100: #fffaf1;
-      --surface-200: #fff6e6;
-      --surface-300: #f8ead5;
-      --text-1000: #16211d;
-      --text-900: #48554f;
-      --text-700: #68746e;
-      --border-400: #d8cbb8;
-      --border-500: #c7b7a1;
-      --alpha-100: rgba(22, 33, 29, .05);
-      --alpha-200: rgba(22, 33, 29, .09);
-      --alpha-300: rgba(22, 33, 29, .14);
-      --accent-100: #f3dccb;
-      --accent-700: #a8572a;
-      --accent-900: #5b2712;
-      --info-100: #dbeff3;
-      --info-700: #1d6174;
-      --success-100: #e1f0df;
-      --success-700: #3f7d4c;
-      --warning-100: #f5e7bf;
-      --warning-700: #946b1f;
-      --danger-100: #f4d9d6;
-      --danger-700: #a33b32;
-      --space-1: 4px;
-      --space-2: 8px;
-      --space-3: 12px;
-      --space-4: 16px;
-      --space-6: 24px;
-      --space-8: 32px;
-      --space-10: 40px;
-      --space-16: 64px;
-      --space-24: 96px;
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
-      --radius-full: 9999px;
-      --shadow-card: 0 2px 2px rgba(61, 45, 31, .04), 0 14px 30px -24px rgba(61, 45, 31, .32);
-      --shadow-pop: 0 18px 52px -30px rgba(61, 45, 31, .38);
-      --focus-ring: 0 0 0 2px var(--surface-100), 0 0 0 4px var(--info-700);
-      --content: 76ch;
-      --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-      --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --serif: "Iowan Old Style", "New York", Charter, Georgia, serif;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        color-scheme: dark;
-        --page-100: #151714;
-        --surface-100: #20241f;
-        --surface-200: #292d27;
-        --surface-300: #33372f;
-        --text-1000: #f7f0e4;
-        --text-900: #d5dacd;
-        --text-700: #aeb8ad;
-        --border-400: #42483f;
-        --border-500: #555d52;
-        --alpha-100: rgba(255, 255, 255, .06);
-        --alpha-200: rgba(255, 255, 255, .10);
-        --alpha-300: rgba(255, 255, 255, .16);
-        --accent-100: #4b3329;
-        --accent-700: #f0a36f;
-        --accent-900: #ffd7bf;
-        --info-100: #1d3b42;
-        --info-700: #8dd6e8;
-        --success-100: #233d29;
-        --success-700: #a7d9a6;
-        --warning-100: #453a22;
-        --warning-700: #f0d37a;
-        --danger-100: #4a2928;
-        --danger-700: #ffaaa2;
-        --shadow-card: 0 1px 2px rgba(0, 0, 0, .22), 0 18px 36px -28px rgba(0, 0, 0, .78);
-        --shadow-pop: 0 22px 60px -34px rgba(0, 0, 0, .88);
-      }
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-width: 320px;
-      background:
-        radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--accent-700) 16%, transparent), transparent 34rem),
-        linear-gradient(180deg, var(--page-100), color-mix(in srgb, var(--page-100) 88%, var(--text-1000)));
-      color: var(--text-1000);
-      font-family: var(--sans);
-      line-height: 1.6;
-      text-rendering: optimizeLegibility;
-    }
-    a { color: var(--info-700); text-underline-offset: .18em; }
-    code, kbd { font-family: var(--mono); font-size: .92em; }
-    code {
-      padding: .12rem .32rem;
-      border-radius: var(--radius-sm);
-      background: color-mix(in srgb, var(--accent-100) 58%, transparent);
-      overflow-wrap: anywhere;
-      white-space: normal;
-    }
-    :where(a, button, summary, [tabindex]):focus-visible { outline: none; box-shadow: var(--focus-ring); }
-
-    .skip-link {
-      position: fixed;
-      left: var(--space-4);
-      top: var(--space-4);
-      transform: translateY(-180%);
-      background: var(--text-1000);
-      color: var(--surface-100);
-      padding: .7rem 1rem;
-      border-radius: var(--radius-full);
-      z-index: 20;
-    }
-    .skip-link:focus { transform: translateY(0); }
-
-    .hero {
-      padding: clamp(var(--space-8), 5vw, var(--space-16)) clamp(var(--space-4), 4vw, var(--space-10)) var(--space-8);
-    }
-    .eyebrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-2);
-      align-items: center;
-      margin-bottom: var(--space-4);
-      color: var(--text-700);
-      font-size: .78rem;
-      font-weight: 820;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      min-height: 28px;
-      padding: .18rem .62rem;
-      border: 1px solid var(--border-400);
-      border-radius: var(--radius-full);
-      background: color-mix(in srgb, var(--surface-100) 84%, transparent);
-      color: var(--text-700);
-      font-size: .72rem;
-      font-weight: 850;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-    .pill.review { background: var(--warning-100); color: var(--warning-700); border-color: color-mix(in srgb, var(--warning-700) 35%, var(--border-400)); }
-    .pill.approved { background: var(--success-100); color: var(--success-700); border-color: color-mix(in srgb, var(--success-700) 35%, var(--border-400)); }
-    .pill.blocked { background: var(--danger-100); color: var(--danger-700); border-color: color-mix(in srgb, var(--danger-700) 35%, var(--border-400)); }
-    .pill.draft { background: var(--info-100); color: var(--info-700); border-color: color-mix(in srgb, var(--info-700) 35%, var(--border-400)); }
-
-    h1, h2, h3 { margin: 0; line-height: 1.05; letter-spacing: -.035em; }
-    h1 {
-      max-width: 1120px;
-      font-family: var(--serif);
-      font-size: clamp(2.4rem, 6vw, 5.25rem);
-      font-weight: 760;
-    }
-    .subtitle {
-      max-width: 900px;
-      margin: var(--space-4) 0 0;
-      color: var(--text-700);
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-    }
-
-    .hero-grid, .content-grid, .component-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-      gap: var(--space-4);
-    }
-    .hero-grid { margin-top: var(--space-8); align-items: stretch; }
-    .hero-card, .section-card, .rail-card, .toc, .figure-card, .component-card {
-      min-width: 0;
-      background: color-mix(in srgb, var(--surface-100) 94%, transparent);
-      border: 1px solid var(--border-400);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-card);
-    }
-    .hero-card { padding: var(--space-6); }
-    .label, .hero-card h2, .rail-card h2, .toc h2 {
-      margin: 0;
-      color: var(--accent-700);
-      font-family: var(--sans);
-      font-size: .78rem;
-      font-weight: 850;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .takeaways { display: grid; gap: var(--space-3); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
-    .takeaways li { display: grid; grid-template-columns: 1.25rem minmax(0, 1fr); gap: var(--space-2); align-items: start; }
-    .takeaways li::before { content: "✦"; color: var(--accent-700); font-weight: 900; }
-
-    .status-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
-      gap: var(--space-3);
-      margin-top: var(--space-3);
-    }
-    .metric {
-      min-height: 92px;
-      padding: var(--space-4);
-      border: 1px solid var(--border-400);
-      border-radius: var(--radius-lg);
-      background: color-mix(in srgb, var(--surface-200) 86%, transparent);
-    }
-    .metric span { display: block; color: var(--text-700); font-size: .72rem; font-weight: 850; text-transform: uppercase; letter-spacing: .06em; }
-    .metric strong { display: block; margin-top: var(--space-2); font-size: 1rem; line-height: 1.25; overflow-wrap: anywhere; }
-
-    .report-layout {
-      display: grid;
-      grid-template-columns: minmax(220px, 16rem) minmax(0, 1fr) minmax(260px, 19rem);
-      gap: clamp(var(--space-4), 2vw, var(--space-6));
-      padding: var(--space-4) clamp(var(--space-4), 3vw, var(--space-8)) var(--space-16);
-      align-items: start;
-    }
-    .toc, .review-rail { position: sticky; top: var(--space-4); }
-    .toc, .rail-card { padding: var(--space-4); }
-    .toc ol { display: grid; gap: var(--space-1); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
-    .toc a { display: block; padding: .48rem .58rem; border-radius: var(--radius-md); color: var(--text-700); text-decoration: none; font-size: .92rem; }
-    .toc a:hover, .toc a:focus-visible { background: var(--accent-100); color: var(--accent-900); }
-
-    main { display: grid; gap: var(--space-6); min-width: 0; }
-    .section-card { padding: clamp(var(--space-6), 4vw, var(--space-10)); scroll-margin-top: var(--space-6); }
-    .section-kicker { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); color: var(--accent-700); font-size: .75rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-    .section-card h2 { font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 3rem); }
-    .section-card > p, .section-summary { max-width: var(--content); color: var(--text-700); font-size: 1.04rem; }
-    .section-card h3 { margin-top: var(--space-6); font-size: 1.12rem; letter-spacing: -.01em; }
-
-    .mini-card, .component-card, .callout, .decision-card, .requirement-card, .bdd-example {
-      min-width: 0;
-      border: 1px solid var(--border-400);
-      border-radius: var(--radius-lg);
-      background: color-mix(in srgb, var(--surface-200) 76%, transparent);
-      padding: var(--space-4);
-    }
-    .component-grid { margin-top: var(--space-6); }
-    .component-card h3, .decision-card h3, .requirement-card h3 { margin: 0 0 var(--space-2); }
-    .component-card p, .decision-card p, .requirement-card p, .bdd-example p { margin: var(--space-2) 0 0; color: var(--text-700); }
-    .decision-card { border-left: 6px solid var(--info-700); }
-    .requirement-card { border-left: 6px solid var(--success-700); }
-    .bdd-example { border-left: 6px solid var(--accent-700); font-family: var(--sans); }
-    .callout { border-left: 6px solid var(--accent-700); }
-    .callout.warning { border-left-color: var(--warning-700); background: color-mix(in srgb, var(--warning-100) 66%, var(--surface-100)); }
-    .callout.risk { border-left-color: var(--danger-700); background: color-mix(in srgb, var(--danger-100) 66%, var(--surface-100)); }
-    .callout.success { border-left-color: var(--success-700); background: color-mix(in srgb, var(--success-100) 66%, var(--surface-100)); }
-
-    .id-chip, .review-label {
-      display: inline-flex;
-      align-items: center;
-      gap: .28rem;
-      border-radius: var(--radius-full);
-      font-family: var(--mono);
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .02em;
-    }
-    .id-chip { padding: .12rem .44rem; background: var(--accent-100); color: var(--accent-900); }
-    .review-label { margin-top: var(--space-4); color: var(--text-700); }
-
-    figure { margin: 0; }
-    .figure-card { padding: var(--space-4); overflow: auto; }
-    .figure-card svg { display: block; width: 100%; min-width: min(860px, 100%); height: auto; }
-    figcaption { margin-top: var(--space-3); color: var(--text-700); font-size: .92rem; }
-
-    table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); font-size: .95rem; }
-    caption { text-align: left; color: var(--text-700); margin-bottom: var(--space-2); }
-    th, td { padding: .72rem .8rem; border-bottom: 1px solid var(--border-400); vertical-align: top; text-align: left; }
-    th { color: var(--accent-900); font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; }
-
-    details { margin-top: var(--space-4); border: 1px solid var(--border-400); border-radius: var(--radius-lg); padding: .9rem 1rem; background: color-mix(in srgb, var(--surface-200) 70%, transparent); }
-    summary { cursor: pointer; color: var(--accent-900); font-weight: 850; border-radius: var(--radius-sm); }
-
-    .source-list { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
-    .source-list li { overflow-wrap: anywhere; color: var(--text-700); }
-    .review-rail { display: grid; gap: var(--space-4); }
-    .rail-card ul { margin: var(--space-3) 0 0; padding-left: 1.1rem; color: var(--text-700); }
-    .rail-card li + li { margin-top: var(--space-2); }
-
-    [data-review-id] { position: relative; }
-    [data-review-id]:target { outline: 3px solid var(--accent-700); outline-offset: 6px; }
-    footer { max-width: 1180px; margin: 0 auto; padding: 0 var(--space-6) var(--space-10); color: var(--text-700); font-size: .9rem; }
-
-    .reveal { opacity: 1; transform: none; }
-    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 220ms ease, transform 260ms cubic-bezier(0.175, 0.885, 0.32, 1.1); transition-delay: var(--reveal-delay, 0ms); }
-    .js .reveal.is-visible { opacity: 1; transform: translateY(0); }
-    .js .reveal-group > *:nth-child(2) { --reveal-delay: 45ms; }
-    .js .reveal-group > *:nth-child(3) { --reveal-delay: 90ms; }
-    .js .reveal-group > *:nth-child(4) { --reveal-delay: 135ms; }
-
-    @media (max-width: 1500px) {
-      .report-layout { grid-template-columns: minmax(210px, 250px) minmax(0, 1fr); }
-      .review-rail { grid-column: 2; position: static; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
-    }
-    @media (max-width: 980px) {
-      .report-layout { grid-template-columns: 1fr; }
-      .toc, .review-rail { position: static; grid-column: auto; }
-      .toc ol { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    }
-    @media (max-width: 760px) {
-      .hero { padding: var(--space-10) var(--space-4) var(--space-6); }
-      .report-layout { padding-inline: var(--space-4); }
-      .section-card, .hero-card { border-radius: var(--radius-lg); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
-      .js .reveal { opacity: 1; transform: none; }
-    }
-    @media print {
-      body { background: white; color: black; }
-      .skip-link, .toc, .review-rail { display: none; }
-      .hero, .report-layout, footer { max-width: none; padding: 0; }
-      .report-layout { display: block; }
-      .section-card, .hero-card, .figure-card, .component-card { box-shadow: none; break-inside: avoid; }
-      a { color: black; text-decoration: none; }
-      .reveal { opacity: 1 !important; transform: none !important; }
-    }
+  <style data-tailwind-build="report.tailwind.css">
+/* tailwind-report-css:start */
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Geist,Geist Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.prose{color:var(--tw-prose-body);max-width:65ch}.prose :where(p):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:1.25em;margin-bottom:1.25em}.prose :where([class~=lead]):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-lead);font-size:1.25em;line-height:1.6;margin-top:1.2em;margin-bottom:1.2em}.prose :where(a):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-links);text-decoration:underline;font-weight:500}.prose :where(strong):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-bold);font-weight:600}.prose :where(a strong):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(blockquote strong):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(thead th strong):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(ol):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:decimal;margin-top:1.25em;margin-bottom:1.25em;padding-inline-start:1.625em}.prose :where(ol[type=A]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:upper-alpha}.prose :where(ol[type=a]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:lower-alpha}.prose :where(ol[type=A s]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:upper-alpha}.prose :where(ol[type=a s]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:lower-alpha}.prose :where(ol[type=I]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:upper-roman}.prose :where(ol[type=i]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:lower-roman}.prose :where(ol[type=I s]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:upper-roman}.prose :where(ol[type=i s]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:lower-roman}.prose :where(ol[type="1"]):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:decimal}.prose :where(ul):not(:where([class~=not-prose],[class~=not-prose] *)){list-style-type:disc;margin-top:1.25em;margin-bottom:1.25em;padding-inline-start:1.625em}.prose :where(ol>li):not(:where([class~=not-prose],[class~=not-prose] *))::marker{font-weight:400;color:var(--tw-prose-counters)}.prose :where(ul>li):not(:where([class~=not-prose],[class~=not-prose] *))::marker{color:var(--tw-prose-bullets)}.prose :where(dt):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:600;margin-top:1.25em}.prose :where(hr):not(:where([class~=not-prose],[class~=not-prose] *)){border-color:var(--tw-prose-hr);border-top-width:1px;margin-top:3em;margin-bottom:3em}.prose :where(blockquote):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:500;font-style:italic;color:var(--tw-prose-quotes);border-inline-start-width:.25rem;border-inline-start-color:var(--tw-prose-quote-borders);quotes:"\201C""\201D""\2018""\2019";margin-top:1.6em;margin-bottom:1.6em;padding-inline-start:1em}.prose :where(blockquote p:first-of-type):not(:where([class~=not-prose],[class~=not-prose] *)):before{content:open-quote}.prose :where(blockquote p:last-of-type):not(:where([class~=not-prose],[class~=not-prose] *)):after{content:close-quote}.prose :where(h1):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:800;font-size:2.25em;margin-top:0;margin-bottom:.8888889em;line-height:1.1111111}.prose :where(h1 strong):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:900;color:inherit}.prose :where(h2):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:700;font-size:1.5em;margin-top:2em;margin-bottom:1em;line-height:1.3333333}.prose :where(h2 strong):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:800;color:inherit}.prose :where(h3):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:600;font-size:1.25em;margin-top:1.6em;margin-bottom:.6em;line-height:1.6}.prose :where(h3 strong):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:700;color:inherit}.prose :where(h4):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:600;margin-top:1.5em;margin-bottom:.5em;line-height:1.5}.prose :where(h4 strong):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:700;color:inherit}.prose :where(img):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:2em;margin-bottom:2em}.prose :where(picture):not(:where([class~=not-prose],[class~=not-prose] *)){display:block;margin-top:2em;margin-bottom:2em}.prose :where(video):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:2em;margin-bottom:2em}.prose :where(kbd):not(:where([class~=not-prose],[class~=not-prose] *)){font-weight:500;font-family:inherit;color:var(--tw-prose-kbd);box-shadow:0 0 0 1px var(--tw-prose-kbd-shadows),0 3px 0 var(--tw-prose-kbd-shadows);font-size:.875em;border-radius:.3125rem;padding-top:.1875em;padding-inline-end:.375em;padding-bottom:.1875em;padding-inline-start:.375em}.prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-code);font-weight:600;font-size:.875em}.prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)):before{content:"`"}.prose :where(code):not(:where([class~=not-prose],[class~=not-prose] *)):after{content:"`"}.prose :where(a code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(h1 code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(h2 code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit;font-size:.875em}.prose :where(h3 code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit;font-size:.9em}.prose :where(h4 code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(blockquote code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(thead th code):not(:where([class~=not-prose],[class~=not-prose] *)){color:inherit}.prose :where(pre):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-pre-code);background-color:var(--tw-prose-pre-bg);overflow-x:auto;font-weight:400;font-size:.875em;line-height:1.7142857;margin-top:1.7142857em;margin-bottom:1.7142857em;border-radius:.375rem;padding-top:.8571429em;padding-inline-end:1.1428571em;padding-bottom:.8571429em;padding-inline-start:1.1428571em}.prose :where(pre code):not(:where([class~=not-prose],[class~=not-prose] *)){background-color:transparent;border-width:0;border-radius:0;padding:0;font-weight:inherit;color:inherit;font-size:inherit;font-family:inherit;line-height:inherit}.prose :where(pre code):not(:where([class~=not-prose],[class~=not-prose] *)):before{content:none}.prose :where(pre code):not(:where([class~=not-prose],[class~=not-prose] *)):after{content:none}.prose :where(table):not(:where([class~=not-prose],[class~=not-prose] *)){width:100%;table-layout:auto;margin-top:2em;margin-bottom:2em;font-size:.875em;line-height:1.7142857}.prose :where(thead):not(:where([class~=not-prose],[class~=not-prose] *)){border-bottom-width:1px;border-bottom-color:var(--tw-prose-th-borders)}.prose :where(thead th):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-headings);font-weight:600;vertical-align:bottom;padding-inline-end:.5714286em;padding-bottom:.5714286em;padding-inline-start:.5714286em}.prose :where(tbody tr):not(:where([class~=not-prose],[class~=not-prose] *)){border-bottom-width:1px;border-bottom-color:var(--tw-prose-td-borders)}.prose :where(tbody tr:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){border-bottom-width:0}.prose :where(tbody td):not(:where([class~=not-prose],[class~=not-prose] *)){vertical-align:baseline}.prose :where(tfoot):not(:where([class~=not-prose],[class~=not-prose] *)){border-top-width:1px;border-top-color:var(--tw-prose-th-borders)}.prose :where(tfoot td):not(:where([class~=not-prose],[class~=not-prose] *)){vertical-align:top}.prose :where(th,td):not(:where([class~=not-prose],[class~=not-prose] *)){text-align:start}.prose :where(figure>*):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0;margin-bottom:0}.prose :where(figcaption):not(:where([class~=not-prose],[class~=not-prose] *)){color:var(--tw-prose-captions);font-size:.875em;line-height:1.4285714;margin-top:.8571429em}.prose{--tw-prose-body:#374151;--tw-prose-headings:#111827;--tw-prose-lead:#4b5563;--tw-prose-links:#111827;--tw-prose-bold:#111827;--tw-prose-counters:#6b7280;--tw-prose-bullets:#d1d5db;--tw-prose-hr:#e5e7eb;--tw-prose-quotes:#111827;--tw-prose-quote-borders:#e5e7eb;--tw-prose-captions:#6b7280;--tw-prose-kbd:#111827;--tw-prose-kbd-shadows:rgba(17,24,39,.1);--tw-prose-code:#111827;--tw-prose-pre-code:#e5e7eb;--tw-prose-pre-bg:#1f2937;--tw-prose-th-borders:#d1d5db;--tw-prose-td-borders:#e5e7eb;--tw-prose-invert-body:#d1d5db;--tw-prose-invert-headings:#fff;--tw-prose-invert-lead:#9ca3af;--tw-prose-invert-links:#fff;--tw-prose-invert-bold:#fff;--tw-prose-invert-counters:#9ca3af;--tw-prose-invert-bullets:#4b5563;--tw-prose-invert-hr:#374151;--tw-prose-invert-quotes:#f3f4f6;--tw-prose-invert-quote-borders:#374151;--tw-prose-invert-captions:#9ca3af;--tw-prose-invert-kbd:#fff;--tw-prose-invert-kbd-shadows:hsla(0,0%,100%,.1);--tw-prose-invert-code:#fff;--tw-prose-invert-pre-code:#d1d5db;--tw-prose-invert-pre-bg:rgba(0,0,0,.5);--tw-prose-invert-th-borders:#4b5563;--tw-prose-invert-td-borders:#374151;font-size:1rem;line-height:1.75}.prose :where(picture>img):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0;margin-bottom:0}.prose :where(li):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:.5em;margin-bottom:.5em}.prose :where(ol>li):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-start:.375em}.prose :where(ul>li):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-start:.375em}.prose :where(.prose>ul>li p):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:.75em;margin-bottom:.75em}.prose :where(.prose>ul>li>p:first-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:1.25em}.prose :where(.prose>ul>li>p:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-bottom:1.25em}.prose :where(.prose>ol>li>p:first-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:1.25em}.prose :where(.prose>ol>li>p:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-bottom:1.25em}.prose :where(ul ul,ul ol,ol ul,ol ol):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:.75em;margin-bottom:.75em}.prose :where(dl):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:1.25em;margin-bottom:1.25em}.prose :where(dd):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:.5em;padding-inline-start:1.625em}.prose :where(hr+*):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0}.prose :where(h2+*):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0}.prose :where(h3+*):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0}.prose :where(h4+*):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0}.prose :where(thead th:first-child):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-start:0}.prose :where(thead th:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-end:0}.prose :where(tbody td,tfoot td):not(:where([class~=not-prose],[class~=not-prose] *)){padding-top:.5714286em;padding-inline-end:.5714286em;padding-bottom:.5714286em;padding-inline-start:.5714286em}.prose :where(tbody td:first-child,tfoot td:first-child):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-start:0}.prose :where(tbody td:last-child,tfoot td:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){padding-inline-end:0}.prose :where(figure):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:2em;margin-bottom:2em}.prose :where(.prose>:first-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-top:0}.prose :where(.prose>:last-child):not(:where([class~=not-prose],[class~=not-prose] *)){margin-bottom:0}.prose-neutral{--tw-prose-body:#404040;--tw-prose-headings:#171717;--tw-prose-lead:#525252;--tw-prose-links:#171717;--tw-prose-bold:#171717;--tw-prose-counters:#737373;--tw-prose-bullets:#d4d4d4;--tw-prose-hr:#e5e5e5;--tw-prose-quotes:#171717;--tw-prose-quote-borders:#e5e5e5;--tw-prose-captions:#737373;--tw-prose-kbd:#171717;--tw-prose-kbd-shadows:hsla(0,0%,9%,.1);--tw-prose-code:#171717;--tw-prose-pre-code:#e5e5e5;--tw-prose-pre-bg:#262626;--tw-prose-th-borders:#d4d4d4;--tw-prose-td-borders:#e5e5e5;--tw-prose-invert-body:#d4d4d4;--tw-prose-invert-headings:#fff;--tw-prose-invert-lead:#a3a3a3;--tw-prose-invert-links:#fff;--tw-prose-invert-bold:#fff;--tw-prose-invert-counters:#a3a3a3;--tw-prose-invert-bullets:#525252;--tw-prose-invert-hr:#404040;--tw-prose-invert-quotes:#f5f5f5;--tw-prose-invert-quote-borders:#404040;--tw-prose-invert-captions:#a3a3a3;--tw-prose-invert-kbd:#fff;--tw-prose-invert-kbd-shadows:hsla(0,0%,100%,.1);--tw-prose-invert-code:#fff;--tw-prose-invert-pre-code:#d4d4d4;--tw-prose-invert-pre-bg:rgba(0,0,0,.5);--tw-prose-invert-th-borders:#525252;--tw-prose-invert-td-borders:#404040}.\!visible{visibility:visible!important}.visible{visibility:visible}.collapse{visibility:collapse}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.block{display:block}.flex{display:flex}.table{display:table}.grid{display:grid}.contents{display:contents}.hidden{display:none}.max-w-none{max-width:none}.border-collapse{border-collapse:collapse}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.flex-wrap{flex-wrap:wrap}.text-wrap{text-wrap:wrap}.border{border-width:1px}.uppercase{text-transform:uppercase}.outline{outline-style:solid}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}:root{color-scheme:light;--page:#fff;--surface:#fff;--surface-subtle:#fafafa;--surface-raised:#fff;--text:#000;--text-muted:#666;--text-subtle:#8a8a8a;--border:#eaeaea;--border-strong:#dedede;--accent:#000;--accent-strong:#000;--accent-soft:#f5f5f5;--success:#0070f3;--success-soft:#eef6ff;--warning:#a35200;--warning-soft:#fff7ed;--danger:#e00;--danger-soft:#fff1f1;--info:#0070f3;--info-soft:#eef6ff;--shadow-soft:none;--focus:0 0 0 3px rgba(0,112,243,.24);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--radius-sm:6px;--radius-md:6px;--radius-lg:8px;--radius-xl:12px;--content:76ch;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--sans:"Geist","Geist Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);line-height:1.58;text-rendering:optimizeLegibility}a{color:var(--accent-strong);text-underline-offset:.18em}code,kbd{font-family:var(--mono);font-size:.92em}code{padding:.12rem .32rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-subtle);overflow-wrap:anywhere}:where(a,button,summary,input):focus-visible{outline:none;box-shadow:var(--focus)}.skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:30;transform:translateY(-180%);padding:.65rem .9rem;border-radius:999px;background:var(--text);color:var(--surface);text-decoration:none}.skip-link:focus{transform:translateY(0)}.doc-shell{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:clamp(var(--space-6),4vw,var(--space-10));max-width:1280px;margin:0 auto;padding:var(--space-8) clamp(var(--space-4),3vw,var(--space-8)) var(--space-10);align-items:start}.side-nav{position:sticky;top:var(--space-6);max-height:calc(100vh - var(--space-8));overflow:auto;padding-right:var(--space-4)}.index-details{margin-top:0;padding:0;border:0;border-radius:0;background:transparent}.index-details>summary{display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-3);padding:.4rem .5rem;border:0;border-radius:var(--radius-md);background:transparent;color:var(--text);cursor:pointer;list-style:none}.index-details>summary:hover{background:var(--surface-subtle)}.index-details>summary::-webkit-details-marker{display:none}.index-details>summary:after{content:"⌄";margin-left:auto;color:var(--text-subtle);transition:transform .18s ease}.index-details[open]>summary:after{transform:rotate(180deg)}.panel-title,.side-nav .nav-title,.side-nav h2{margin:0 0 var(--space-3);color:var(--text-subtle);font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.index-details>summary .nav-title{margin:0;color:var(--text)}.side-nav ol,.side-nav ul{display:grid;gap:2px;margin:0;padding:0;list-style:none}.side-nav a{display:block;padding:.38rem .5rem;border:0;border-radius:var(--radius-md);color:var(--text-muted);font-size:.9rem;text-decoration:none;box-shadow:none}.side-nav a.is-active,.side-nav a:hover{background:var(--surface-subtle);color:var(--text);border:0;box-shadow:none}.side-nav a.is-active{font-weight:700}.side-nav .nav-group{margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--border)}.doc-main{min-width:0}.breadcrumbs{margin-bottom:var(--space-4);color:var(--text-subtle);font-size:.9rem}.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0;padding:0;list-style:none}.breadcrumbs li:not(:last-child):after{content:"/";margin-left:var(--space-2);color:var(--text-subtle)}.breadcrumbs a{color:var(--text-muted);text-decoration:none}.article-header{margin-bottom:var(--space-8);padding:var(--space-6) 0 var(--space-6);border-bottom:1px solid var(--border)}.article-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4)}.pill{display:inline-flex;align-items:center;min-height:26px;padding:.16rem .56rem;border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text-muted);font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.pill.review{background:var(--warning-soft);color:var(--warning);border-color:color-mix(in srgb,var(--warning) 28%,var(--border))}.pill.approved{background:var(--success-soft);color:var(--success);border-color:color-mix(in srgb,var(--success) 28%,var(--border))}.pill.blocked{background:var(--danger-soft);color:var(--danger);border-color:color-mix(in srgb,var(--danger) 28%,var(--border))}.pill.draft{background:var(--info-soft);color:var(--info);border-color:color-mix(in srgb,var(--info) 28%,var(--border))}h1{margin:0;max-width:880px;font-size:clamp(2rem,4vw,3.25rem);line-height:1.05;letter-spacing:-.035em}h1,h2,h3{text-wrap:balance}h2,h3{color:var(--text);line-height:1.22;letter-spacing:-.015em}.subtitle{max-width:760px;margin:var(--space-4) 0 0;color:var(--text-muted);font-size:clamp(1rem,1.2vw,1.14rem)}.before-after,.card-grid,.example-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:var(--space-4)}.approval-checklist,.callout,.component-card,.decision-record-card,.evidence-card,.example-panel,.feedback-widget,.prev-next,.related-artifacts,.related-links{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.section-card{margin-bottom:var(--space-8);padding:0 0 var(--space-8);scroll-margin-top:var(--space-4);border-bottom:1px solid var(--border)}.section-kicker{display:inline-flex;margin-bottom:var(--space-2);color:var(--accent-strong);font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.section-card h2{margin:0;font-size:clamp(1.45rem,2.5vw,2.25rem)}.section-summary{max-width:var(--content);margin:var(--space-3) 0 0;color:var(--text-muted)}.approval-checklist,.callout,.component-card,.decision-record-card,.evidence-card,.example-panel{padding:var(--space-4);transition:transform .18s cubic-bezier(.2,.8,.2,1),border-color .18s ease,background .18s ease}@media (hover:hover){.approval-checklist:hover,.callout:hover,.component-card:hover,.decision-record-card:hover,.evidence-card:hover,.example-panel:hover{transform:translateY(-2px);border-color:var(--border-strong)}}.component-card h3,.decision-record-card h3,.evidence-card h3,.example-panel h3{margin:0 0 var(--space-2);font-size:1rem}.component-card p,.decision-record-card p,.evidence-card p,.example-panel p{margin:var(--space-2) 0 0;color:var(--text-muted)}.before-after,.callout,.card-grid,.example-pair{margin-top:var(--space-4)}.callout{border-left:4px solid var(--info);background:var(--info-soft)}.callout.success,.callout.tip{border-left-color:var(--success);background:var(--success-soft)}.callout.warning{border-left-color:var(--warning);background:var(--warning-soft)}.callout.danger,.callout.risk{border-left-color:var(--danger);background:var(--danger-soft)}.callout strong{display:block;margin-bottom:var(--space-1)}.step-list{display:grid;gap:var(--space-3);margin:var(--space-4) 0 0;padding:0;counter-reset:step;list-style:none}.step-list li{position:relative;padding:var(--space-4) var(--space-4) var(--space-4) 3.2rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.step-list li:before{counter-increment:step;content:counter(step);position:absolute;left:var(--space-4);top:var(--space-4);display:grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:999px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:800}.tabs{margin-top:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);overflow:hidden}.tabs input{position:absolute;opacity:0;pointer-events:none}.tab-list{display:flex;flex-wrap:wrap;gap:var(--space-2);padding:var(--space-2);border-bottom:1px solid var(--border);background:var(--surface-subtle)}.tab-list label{cursor:pointer;padding:.45rem .7rem;border-radius:var(--radius-md);color:var(--text-muted);font-size:.9rem;font-weight:650}.tab-panel{display:none;padding:var(--space-4)}#report-tab-evidence:checked~.tab-list label[for=report-tab-evidence],#report-tab-overview:checked~.tab-list label[for=report-tab-overview]{background:var(--surface);color:var(--accent-strong);box-shadow:inset 0 0 0 1px var(--border)}#report-tab-evidence:checked~#report-panel-evidence,#report-tab-overview:checked~#report-panel-overview{display:block}.copyable-code{position:relative;margin-top:var(--space-4)}.copy-button{position:absolute;top:var(--space-2);right:var(--space-2);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);color:var(--text-muted);padding:.32rem .55rem;font-size:.78rem;font-weight:700;cursor:pointer}pre{margin:0;padding:var(--space-4);overflow:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:#0f172a;color:#e5eefc}pre code{border:0;background:transparent;color:inherit;padding:0}.id-chip,.review-label{display:inline-flex;align-items:center;border-radius:999px;font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.02em}.id-chip{margin-right:.35rem;padding:.12rem .44rem;background:var(--accent-soft);color:var(--accent-strong)}.review-label{color:var(--text-subtle)}.review-label,table{margin-top:var(--space-4)}table{width:100%;border-collapse:collapse;font-size:.94rem}caption{margin-bottom:var(--space-2);color:var(--text-muted)}caption,td,th{text-align:left}td,th{padding:.72rem .75rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--text-muted);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}figure{margin:var(--space-4) 0 0}.figure-card{padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle);overflow:auto}.figure-card svg{display:block;width:100%;min-width:min(760px,100%);height:auto}figcaption{margin-top:var(--space-3);color:var(--text-muted);font-size:.92rem}details{margin-top:var(--space-4);padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}summary{cursor:pointer;color:var(--text);font-weight:700}.feedback-widget,.prev-next,.related-artifacts,.related-links{margin-top:var(--space-5);padding:var(--space-4)}.related-artifacts ul,.related-links ul{padding-left:1.1rem}.approval-checklist ul,.related-artifacts ul,.related-links ul{display:grid;gap:var(--space-2);margin:var(--space-3) 0 0;color:var(--text-muted)}.approval-checklist ul{padding-left:1.2rem}.prev-next{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}.prev-next a{padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);text-decoration:none}.feedback-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}.feedback-actions button{border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text);padding:.42rem .72rem;cursor:pointer}.feedback-note{color:var(--text-muted);font-size:.9rem}[data-review-id]{position:relative}[data-review-id]:target{outline:3px solid var(--accent);outline-offset:5px}.back-to-top{position:fixed;right:var(--space-5);bottom:var(--space-5);display:grid;place-items:center;width:2.4rem;height:2.4rem;border:1px solid var(--border);border-radius:999px;background:var(--surface);box-shadow:var(--shadow-soft);text-decoration:none}footer{max-width:1580px;margin:0 auto;padding:0 clamp(var(--space-4),3vw,var(--space-8)) var(--space-8);color:var(--text-muted);font-size:.9rem}.reveal{opacity:1;transform:none;filter:none}.js .reveal{opacity:0;transform:translateY(14px);filter:blur(3px);transition:opacity .36s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1),filter .42s ease}.js .reveal.is-visible{opacity:1;transform:translateY(0);filter:blur(0)}@media (max-width:960px){.doc-shell{grid-template-columns:1fr}.side-nav{position:static;max-height:none;padding-right:0}.prev-next{grid-template-columns:1fr}}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.js .reveal{opacity:1;transform:none;filter:none}}@media print{body{background:#fff;color:#000}.back-to-top,.copy-button,.feedback-widget,.side-nav{display:none}.doc-shell{display:block;max-width:none;padding:0}.article-header,.callout,.component-card,.decision-record-card,.evidence-card,.prev-next,.related-links,.section-card{box-shadow:none;-moz-column-break-inside:avoid;break-inside:avoid}a{color:#000;text-decoration:none}.reveal{opacity:1!important;transform:none!important}}
+/* tailwind-report-css:end */
   </style>
 </head>
-<body>
+<body data-visual-mode="vercel-docs-packet">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="hero" data-review-id="summary">
-    <div class="eyebrow">
-      <span class="pill {{STATUS_CLASS}}">{{STATUS}}</span>
-      <span>{{DOCUMENT_TYPE}}</span>
-      <span>Updated {{UPDATED_DATE}}</span>
-    </div>
-    <h1 id="title">{{TITLE}}</h1>
-    <p class="subtitle">{{SUBTITLE}}</p>
-
-    <div class="hero-grid reveal-group">
-      <section class="hero-card reveal" aria-labelledby="takeaways-title" data-review-id="summary.takeaways">
-        <h2 id="takeaways-title">Key Takeaways</h2>
-        <ul class="takeaways">
-          <li><span>{{TAKEAWAY_1}}</span></li>
-          <li><span>{{TAKEAWAY_2}}</span></li>
-          <li><span>{{TAKEAWAY_3}}</span></li>
-          <li><span>{{TAKEAWAY_4}}</span></li>
-        </ul>
-      </section>
-      <section class="hero-card reveal" aria-labelledby="status-strip-title" data-review-id="summary.status-strip">
-        <h2 id="status-strip-title">At A Glance</h2>
-        <div class="status-strip">
-          <div class="metric"><span>Owner</span><strong>{{OWNER}}</strong></div>
-          <div class="metric"><span>Audience</span><strong>{{AUDIENCE}}</strong></div>
-          <div class="metric"><span>Readiness</span><strong>{{READINESS}}</strong></div>
-          <div class="metric"><span>Next Action</span><strong>{{NEXT_ACTION}}</strong></div>
+  <div class="doc-shell">
+    <aside class="side-nav" aria-label="Document navigation" data-review-id="chrome.side-nav">
+      <details class="index-details" open>
+        <summary><span class="nav-title">Document</span></summary>
+        <nav aria-label="Table of contents" data-review-id="chrome.index">
+          <ol>
+            <li><a href="#summary">Overview</a></li>
+            <li><a href="#review-path">Review path</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#decision-record">Decision record</a></li>
+            <li><a href="#evidence">Evidence</a></li>
+            <li><a href="#questions">Questions</a></li>
+          </ol>
+        </nav>
+        <div class="nav-group">
+          <h2>Related artifacts</h2>
+          <ul>
+            <li><a href="{{SOURCE_PATH}}">Source</a></li>
+            <li><a href="{{RELATED_DOC_PATH}}">Related doc</a></li>
+            <li><a href="{{ADR_OR_TASK_PATH}}">ADR/task</a></li>
+          </ul>
         </div>
-      </section>
-    </div>
-  </header>
+      </details>
+    </aside>
 
-  <div class="report-layout">
-    <nav class="toc" aria-label="Table of contents">
-      <h2 id="nav-title">Contents</h2>
-      <ol>
-        <li><a href="#context">Context</a></li>
-        <li><a href="#decision">Decision</a></li>
-        <li><a href="#requirements">Requirements</a></li>
-        <li><a href="#coverage">Coverage</a></li>
-        <li><a href="#questions">Questions</a></li>
-      </ol>
-    </nav>
+    <main id="main" class="doc-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs" data-review-id="summary.breadcrumbs">
+        <ol>
+          <li><a href="{{DOCS_HOME_PATH}}">Docs</a></li>
+          <li><a href="{{FEATURE_HOME_PATH}}">{{FEATURE_OR_AREA}}</a></li>
+          <li aria-current="page">{{DOCUMENT_TYPE}}</li>
+        </ol>
+      </nav>
 
-    <main id="main">
-      <section class="section-card reveal" id="context" aria-labelledby="context-title" data-review-id="context">
-        <span class="section-kicker">01 · Reader Context</span>
-        <h2 id="context-title">{{CONTEXT_TITLE}}</h2>
-        <p class="section-summary">{{CONTEXT_SUMMARY}}</p>
-        <div class="component-grid reveal-group">
-          <article class="component-card reveal" data-review-id="context.reader-goal">
-            <h3>Reader Goal</h3>
-            <p>{{READER_GOAL}}</p>
+      <article class="prose prose-neutral max-w-none">
+        <header class="article-header" id="summary" data-review-id="summary">
+          <div class="article-meta">
+            <span class="pill {{STATUS_CLASS}}">{{STATUS}}</span>
+            <span class="pill">{{DOCUMENT_TYPE}}</span>
+            <span class="pill">Updated {{UPDATED_DATE}}</span>
+          </div>
+          <h1>{{TITLE}}</h1>
+          <p class="subtitle">{{SUBTITLE}}</p>
+        </header>
+
+        <section class="section-card reveal" id="review-path" aria-labelledby="review-path-title" data-review-id="review-path">
+          <span class="section-kicker">Start here</span>
+          <h2 id="review-path-title">Review Path</h2>
+          <p class="section-summary">{{REVIEW_PATH_SUMMARY}}</p>
+          <ol class="step-list">
+            <li data-review-id="review-path.step-1"><strong>{{REVIEW_STEP_1_TITLE}}</strong><br />{{REVIEW_STEP_1_BODY}}</li>
+            <li data-review-id="review-path.step-2"><strong>{{REVIEW_STEP_2_TITLE}}</strong><br />{{REVIEW_STEP_2_BODY}}</li>
+            <li data-review-id="review-path.step-3"><strong>{{REVIEW_STEP_3_TITLE}}</strong><br />{{REVIEW_STEP_3_BODY}}</li>
+          </ol>
+          <div class="callout warning" data-review-id="review-path.decision-needed">
+            <strong>{{DECISION_NEEDED_TITLE}}</strong>
+            <p>{{DECISION_NEEDED_BODY}}</p>
+          </div>
+          <span class="review-label">review: review-path</span>
+        </section>
+
+        <section class="section-card reveal" id="examples" aria-labelledby="examples-title" data-review-id="examples">
+          <span class="section-kicker">Example-first</span>
+          <h2 id="examples-title">Examples And Expected Outcomes</h2>
+          <p class="section-summary">{{EXAMPLES_SUMMARY}}</p>
+          <div class="example-pair">
+            <article class="example-panel" data-review-id="examples.main">
+              <h3>Main scenario</h3>
+              <p>{{MAIN_SCENARIO}}</p>
+            </article>
+            <article class="example-panel" data-review-id="examples.edge">
+              <h3>Edge / error scenario</h3>
+              <p>{{EDGE_SCENARIO}}</p>
+            </article>
+          </div>
+          <div class="before-after" data-review-id="examples.before-after">
+            <article class="example-panel"><h3>Before</h3><p>{{BEFORE_STATE}}</p></article>
+            <article class="example-panel"><h3>After</h3><p>{{AFTER_STATE}}</p></article>
+          </div>
+          <div class="tabs" data-review-id="examples.tabs">
+            <input type="radio" id="report-tab-overview" name="report-tabs" checked />
+            <input type="radio" id="report-tab-evidence" name="report-tabs" />
+            <div class="tab-list" role="tablist" aria-label="Example details">
+              <label for="report-tab-overview" role="tab">Scenario</label>
+              <label for="report-tab-evidence" role="tab">Evidence</label>
+            </div>
+            <div class="tab-panel" id="report-panel-overview" role="tabpanel">
+              <p>{{SCENARIO_DETAILS}}</p>
+            </div>
+            <div class="tab-panel" id="report-panel-evidence" role="tabpanel">
+              <p>{{SCENARIO_EVIDENCE}}</p>
+            </div>
+          </div>
+          <span class="review-label">review: examples</span>
+        </section>
+
+        <section class="section-card reveal" id="decision-record" aria-labelledby="decision-title" data-review-id="decision-record">
+          <span class="section-kicker">Decision</span>
+          <h2 id="decision-title">Decision Record</h2>
+          <p class="section-summary">{{DECISION_SUMMARY}}</p>
+          <article class="decision-record-card" data-review-id="decision-record.primary">
+            <h3><span class="id-chip">DEC-001</span>{{DECISION_CARD_TITLE}}</h3>
+            <p><strong>Chosen direction:</strong> {{DECISION_CHOSEN}}</p>
+            <p><strong>Why this fits:</strong> {{DECISION_WHY}}</p>
+            <p><strong>Alternatives rejected:</strong> {{DECISION_REJECTED}}</p>
+            <p><strong>Tradeoffs:</strong> {{DECISION_TRADEOFFS}}</p>
           </article>
-          <article class="component-card reveal" data-review-id="context.scope-signal">
-            <h3>Scope Signal</h3>
-            <p>{{SCOPE_SIGNAL}}</p>
-          </article>
-        </div>
-        <span class="review-label">review: context</span>
-      </section>
+          <div class="copyable-code" data-review-id="decision-record.copyable-example">
+            <button class="copy-button" type="button" data-copy-target="report-code-example">Copy</button>
+            <pre><code id="report-code-example">{{COPYABLE_EXAMPLE}}</code></pre>
+          </div>
+          <span class="review-label">review: decision-record</span>
+        </section>
 
-      <section class="section-card reveal" id="decision" aria-labelledby="decision-title" data-review-id="decision.primary">
-        <span class="section-kicker">02 · Decision Packet</span>
-        <h2 id="decision-title">{{DECISION_TITLE}}</h2>
-        <p class="section-summary">{{DECISION_SUMMARY}}</p>
-        <article class="decision-card" data-review-id="decision.primary-card">
-          <h3><span class="id-chip">DEC-001</span>{{DECISION_CARD_TITLE}}</h3>
-          <p><strong>Chosen direction:</strong> {{DECISION_CHOSEN}}</p>
-          <p><strong>Why this fits:</strong> {{DECISION_WHY}}</p>
-          <p><strong>Rejected alternatives:</strong> {{DECISION_REJECTED}}</p>
-          <p><strong>Tradeoffs:</strong> {{DECISION_TRADEOFFS}}</p>
-        </article>
-        <span class="review-label">review: decision.primary</span>
-      </section>
-
-      <section class="section-card reveal" id="requirements" aria-labelledby="requirement-title" data-review-id="requirements.story-001">
-        <span class="section-kicker">03 · Requirement Card</span>
-        <h2 id="requirement-title">{{REQUIREMENT_SECTION_TITLE}}</h2>
-        <p class="section-summary">{{REQUIREMENT_SECTION_SUMMARY}}</p>
-        <article class="requirement-card" data-review-id="requirements.story-001.card">
-          <h3><span class="id-chip">STORY-001</span>{{STORY_TITLE}}</h3>
-          <p>As a {{ACTOR}}, I want {{CAPABILITY}}, so that {{OUTCOME}}.</p>
+        <section class="section-card reveal" id="evidence" aria-labelledby="evidence-title" data-review-id="evidence">
+          <span class="section-kicker">Trust</span>
+          <h2 id="evidence-title">Evidence And Source Anchors</h2>
+          <p class="section-summary">{{EVIDENCE_SUMMARY}}</p>
+          <div class="card-grid">
+            <article class="evidence-card" data-review-id="evidence.source-1"><h3>{{EVIDENCE_1_TITLE}}</h3><p>{{EVIDENCE_1_BODY}}</p></article>
+            <article class="evidence-card" data-review-id="evidence.source-2"><h3>{{EVIDENCE_2_TITLE}}</h3><p>{{EVIDENCE_2_BODY}}</p></article>
+          </div>
           <table>
-            <caption>Observable rules for STORY-001</caption>
-            <thead>
-              <tr><th scope="col">ID</th><th scope="col">Rule</th><th scope="col">Acceptance</th></tr>
-            </thead>
+            <caption>{{EVIDENCE_TABLE_CAPTION}}</caption>
+            <thead><tr><th scope="col">Anchor</th><th scope="col">What it proves</th><th scope="col">Status</th></tr></thead>
             <tbody>
-              <tr data-review-id="requirements.req-001"><td><span class="id-chip">REQ-001</span></td><td>{{REQ_001}}</td><td>{{ACCEPTANCE_001}}</td></tr>
-              <tr data-review-id="requirements.req-002"><td><span class="id-chip">REQ-002</span></td><td>{{REQ_002}}</td><td>{{ACCEPTANCE_002}}</td></tr>
+              <tr data-review-id="evidence.row-1"><td><code>{{SOURCE_ANCHOR_1}}</code></td><td>{{SOURCE_PROOF_1}}</td><td>{{SOURCE_STATUS_1}}</td></tr>
+              <tr data-review-id="evidence.row-2"><td><code>{{SOURCE_ANCHOR_2}}</code></td><td>{{SOURCE_PROOF_2}}</td><td>{{SOURCE_STATUS_2}}</td></tr>
             </tbody>
           </table>
-        </article>
-        <details data-review-id="examples.main">
-          <summary>Main BDD Example</summary>
-          <div class="bdd-example">
-            <p><strong>Given</strong> {{GIVEN}}</p>
-            <p><strong>When</strong> {{WHEN}}</p>
-            <p><strong>Then</strong> {{THEN}}</p>
+          <span class="review-label">review: evidence</span>
+        </section>
+
+        <section class="section-card reveal" id="questions" aria-labelledby="questions-title" data-review-id="questions">
+          <span class="section-kicker">Open items</span>
+          <h2 id="questions-title">Questions And Risks</h2>
+          <p class="section-summary">{{QUESTIONS_SUMMARY}}</p>
+          <table>
+            <caption>{{OPEN_QUESTIONS_CAPTION}}</caption>
+            <thead><tr><th scope="col">Question</th><th scope="col">Owner</th><th scope="col">Blocks</th></tr></thead>
+            <tbody>
+              <tr data-review-id="questions.open-1"><td>{{OPEN_QUESTION_1}}</td><td>{{OPEN_QUESTION_OWNER_1}}</td><td>{{OPEN_QUESTION_BLOCKS_1}}</td></tr>
+              <tr data-review-id="questions.open-2"><td>{{OPEN_QUESTION_2}}</td><td>{{OPEN_QUESTION_OWNER_2}}</td><td>{{OPEN_QUESTION_BLOCKS_2}}</td></tr>
+            </tbody>
+          </table>
+          <span class="review-label">review: questions</span>
+        </section>
+
+        <nav class="prev-next" aria-label="Previous and next documents" data-review-id="related.prev-next">
+          <a href="{{PREVIOUS_DOC_PATH}}"><span class="panel-title">Previous</span><br />{{PREVIOUS_DOC_TITLE}}</a>
+          <a href="{{NEXT_DOC_PATH}}"><span class="panel-title">Next</span><br />{{NEXT_DOC_TITLE}}</a>
+        </nav>
+
+        <section class="related-links" aria-labelledby="related-title" data-review-id="related-links">
+          <h2 id="related-title" class="panel-title">Related Links</h2>
+          <ul>
+            <li><a href="{{RELATED_LINK_1}}">{{RELATED_LINK_1_LABEL}}</a></li>
+            <li><a href="{{RELATED_LINK_2}}">{{RELATED_LINK_2_LABEL}}</a></li>
+            <li><a href="{{RELATED_LINK_3}}">{{RELATED_LINK_3_LABEL}}</a></li>
+          </ul>
+        </section>
+
+        <section class="feedback-widget" id="feedback" aria-labelledby="feedback-title" data-review-id="feedback">
+          <h2 id="feedback-title" class="panel-title">Was this useful?</h2>
+          <p class="feedback-note">{{FEEDBACK_PROMPT}}</p>
+          <div class="feedback-actions">
+            <button type="button" data-feedback="yes">Yes</button>
+            <button type="button" data-feedback="no">No</button>
           </div>
-        </details>
-        <span class="review-label">review: requirements.story-001</span>
-      </section>
-
-      <section class="section-card reveal" id="coverage" aria-labelledby="coverage-title" data-review-id="coverage.matrix">
-        <span class="section-kicker">04 · Coverage Matrix</span>
-        <h2 id="coverage-title">{{COVERAGE_TITLE}}</h2>
-        <p class="section-summary">{{COVERAGE_SUMMARY}}</p>
-        <figure class="figure-card reveal" data-review-id="coverage.figure">
-          <svg viewBox="0 0 900 260" role="img" aria-labelledby="diagram-title diagram-desc" xmlns="http://www.w3.org/2000/svg">
-            <title id="diagram-title">{{DIAGRAM_TITLE}}</title>
-            <desc id="diagram-desc">{{DIAGRAM_DESC}}</desc>
-            <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-700)" />
-              </marker>
-            </defs>
-            <g data-review-id="diagram.source-node">
-              <rect x="24" y="44" width="230" height="140" rx="18" fill="var(--info-100)" stroke="var(--info-700)" stroke-width="3" />
-              <text x="139" y="120" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_A}}</text>
-            </g>
-            <path d="M270 114 C360 64 430 64 520 114" fill="none" stroke="var(--accent-700)" stroke-width="4" marker-end="url(#arrow)" data-review-id="diagram.handoff" />
-            <g data-review-id="diagram.target-node">
-              <rect x="540" y="44" width="230" height="140" rx="18" fill="var(--success-100)" stroke="var(--success-700)" stroke-width="3" />
-              <text x="655" y="120" text-anchor="middle" fill="var(--text-1000)" font-size="22" font-weight="800">{{NODE_B}}</text>
-            </g>
-          </svg>
-          <figcaption>{{DIAGRAM_CAPTION}}</figcaption>
-        </figure>
-        <table>
-          <caption>{{COVERAGE_TABLE_CAPTION}}</caption>
-          <thead>
-            <tr><th scope="col">Requirement</th><th scope="col">Design / Evidence</th><th scope="col">Status</th></tr>
-          </thead>
-          <tbody>
-            <tr data-review-id="coverage.req-001"><td><span class="id-chip">REQ-001</span></td><td>{{COVERAGE_001}}</td><td>{{COVERAGE_STATUS_001}}</td></tr>
-            <tr data-review-id="coverage.req-002"><td><span class="id-chip">REQ-002</span></td><td>{{COVERAGE_002}}</td><td>{{COVERAGE_STATUS_002}}</td></tr>
-          </tbody>
-        </table>
-        <span class="review-label">review: coverage.matrix</span>
-      </section>
-
-      <section class="section-card reveal" id="questions" aria-labelledby="questions-title" data-review-id="questions.open">
-        <span class="section-kicker">05 · Trust Layer</span>
-        <h2 id="questions-title">{{QUESTIONS_TITLE}}</h2>
-        <p class="section-summary">{{QUESTIONS_SUMMARY}}</p>
-        <div class="callout warning" data-review-id="questions.review-action">
-          <strong>{{REVIEW_ACTION_TITLE}}</strong>
-          <p>{{REVIEW_ACTION_BODY}}</p>
-        </div>
-        <table>
-          <caption>{{OPEN_QUESTIONS_CAPTION}}</caption>
-          <thead>
-            <tr><th scope="col">Question</th><th scope="col">Owner</th><th scope="col">Blocks</th></tr>
-          </thead>
-          <tbody>
-            <tr data-review-id="questions.open-001"><td>{{OPEN_QUESTION_1}}</td><td>{{OPEN_QUESTION_OWNER_1}}</td><td>{{OPEN_QUESTION_BLOCKS_1}}</td></tr>
-            <tr data-review-id="questions.open-002"><td>{{OPEN_QUESTION_2}}</td><td>{{OPEN_QUESTION_OWNER_2}}</td><td>{{OPEN_QUESTION_BLOCKS_2}}</td></tr>
-          </tbody>
-        </table>
-        <span class="review-label">review: questions.open</span>
-      </section>
+        </section>
+      </article>
     </main>
 
-    <aside class="review-rail" aria-label="Review guide">
-      <section class="rail-card reveal" aria-labelledby="review-guide-title" data-review-id="review-guide">
-        <h2 id="review-guide-title">Review Guide</h2>
-        <ul>
-          <li>{{REVIEW_GUIDE_1}}</li>
-          <li>{{REVIEW_GUIDE_2}}</li>
-          <li>{{REVIEW_GUIDE_3}}</li>
-        </ul>
-      </section>
-      <section class="rail-card reveal" aria-labelledby="sources-title" data-review-id="source-links">
-        <h2 id="sources-title">Source Links</h2>
-        <ul class="source-list">
-          <li><code>{{SOURCE_PATH}}</code></li>
-          <li><code>{{RELATED_DOC_PATH}}</code></li>
-          <li><code>{{ADR_OR_TASK_PATH}}</code></li>
-        </ul>
-      </section>
-    </aside>
   </div>
 
+  <a class="back-to-top" href="#main" aria-label="Back to top">↑</a>
   <footer data-review-id="provenance">
-    <p>Generated as a self-contained HTML report from <code>{{SOURCE_PATH}}</code>. Preserve <code>data-review-id</code> anchors when editing so review comments remain meaningful.</p>
+    <p>Generated as a self-contained Vercel-style docs packet from <code>{{SOURCE_PATH}}</code>. Preserve <code>data-review-id</code> anchors for review comments.</p>
   </footer>
 
   <script>
     document.documentElement.classList.add('js');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const revealItems = Array.from(document.querySelectorAll('.reveal'));
-
     if (reduceMotion || !('IntersectionObserver' in window)) {
       revealItems.forEach((item) => item.classList.add('is-visible'));
     } else {
@@ -529,10 +206,39 @@
           entry.target.classList.add('is-visible');
           observer.unobserve(entry.target);
         });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-
+      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
       revealItems.forEach((item) => observer.observe(item));
     }
+
+    const tocLinks = Array.from(document.querySelectorAll('nav[aria-label="Table of contents"] a[href^="#"]'));
+    const tocTargets = tocLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    if (!reduceMotion && 'IntersectionObserver' in window && tocTargets.length > 0) {
+      const tocObserver = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        tocLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === '#' + visible.target.id));
+      }, { rootMargin: '-20% 0px -65% 0px', threshold: [0.1, 0.4, 0.8] });
+      tocTargets.forEach((target) => tocObserver.observe(target));
+    }
+
+    document.querySelectorAll('[data-copy-target]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        try {
+          await navigator.clipboard.writeText(target.textContent || '');
+          button.textContent = 'Copied';
+        } catch {
+          button.textContent = 'Copy failed';
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-feedback]').forEach((button) => {
+      button.addEventListener('click', () => {
+        button.closest('.feedback-widget')?.setAttribute('data-feedback', button.dataset.feedback);
+      });
+    });
   </script>
 </body>
 </html>

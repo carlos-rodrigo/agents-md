@@ -1,0 +1,16 @@
+{
+  "name": "@carlosrodrigo/agents",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Personal agent skills and self-contained report templates",
+  "license": "MIT",
+  "scripts": {
+    "build:report-css": "node scripts/build-html-report-css.mjs",
+    "check:report-css": "node scripts/build-html-report-css.mjs --check",
+    "verify": "bash scripts/verify.sh"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
+    "tailwindcss": "^3.4.17"
+  }
+}
