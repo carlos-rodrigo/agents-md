@@ -150,7 +150,9 @@ Retry rules:
 
 Self-review small/local changes. Use oracle/deep review for large, risky, auth/security/payment, schema/API, persistence, repeated loop failure, or cross-cutting changes.
 
-Check: scope, architecture/ADR consistency, Outside-In TDD evidence, edge cases, tests, feedback-loop results, and whether the final gate passed after the last fix.
+Before finalizing a completed implementation, run an Oracle **Are You Proud?** validation unless the change is docs-only, task-only, or explicitly too small to justify a background review. Ask Oracle to use the five-topic validation: correctness/intent, simplicity/YAGNI/overengineering, naming/readability, SOLID/design fit, and tests/verification. Resolve must-fix findings before marking the task done; record skipped Oracle validation with the reason.
+
+Check: scope, architecture/ADR consistency, Outside-In TDD evidence, edge cases, tests, feedback-loop results, Oracle findings when used, and whether the final gate passed after the last fix.
 
 ## 6. Result / finalize
 
@@ -168,7 +170,7 @@ Minimum complete result:
 - TDD: acceptance/feature/contract red → inner-loop unit red/green/refactor → acceptance green, or explicit exception
 - Feedback loop: `command/action` → result, including failed attempts/fixes when relevant
 - Gate: `command` → passed
-- Review: self/oracle; findings resolved
+- Review: self/oracle/Are You Proud validation; findings resolved or skipped with reason
 - Follow-up applied to next task: none | `TASK-002`
 ```
 
@@ -216,7 +218,7 @@ Refresh semantic index after code/doc changes when available; record skipped/run
 - Result: task file updated
 - Next task context: updated TASK-YYY | none
 - Active board: .features/.../tasks/_active.md updated | not used
-- Review: ...
+- Review: self/oracle/Are You Proud validation; findings resolved or skipped with reason
 - Semantic index: ...
 - Follow-up: ...
 ```
