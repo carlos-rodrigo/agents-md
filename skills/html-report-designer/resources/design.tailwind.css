@@ -169,8 +169,26 @@ h1 { margin: 0; max-width: 880px; font-size: clamp(2rem, 4vw, 3.25rem); line-hei
 h2, h3 { color: var(--text); line-height: 1.22; letter-spacing: -.015em; text-wrap: balance; }
 .subtitle { max-width: 760px; margin: var(--space-4) 0 0; color: var(--text-muted); font-size: clamp(1rem, 1.2vw, 1.14rem); }
 
-.card-grid, .example-pair, .before-after { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-4); }
-.component-card, .decision-record-card, .evidence-card, .approval-checklist, .callout, .related-links, .related-artifacts, .feedback-widget, .prev-next, .example-panel {
+.card-grid, .example-pair, .before-after, .story-list, .example-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-4); }
+.decision-grid, .slice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: var(--space-4); }
+.contract-list { display: grid; grid-template-columns: 1fr; gap: var(--space-3); margin-top: var(--space-4); }
+.contract-list .example-card { display: grid; grid-template-columns: 1fr; grid-template-rows: auto auto; gap: var(--space-3); align-items: stretch; }
+.contract-list .example-card h3 { margin: 0; }
+.contract-list .example-card pre { margin: 0; width: 100%; }
+.schema-code {
+  background: #0b1020;
+  color: #e5eefc;
+  border-color: #1f2a44;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+.schema-code code { color: inherit; }
+.code-key { color: #93c5fd; }
+.code-type { color: #c4b5fd; }
+.code-enum { color: #86efac; }
+.code-string { color: #fbbf24; }
+.code-punctuation { color: #94a3b8; }
+.code-comment { color: #64748b; font-style: italic; }
+.component-card, .decision-record-card, .decision-card, .slice-card, .story-card, .evidence-card, .approval-checklist, .callout, .related-links, .related-artifacts, .feedback-widget, .prev-next, .example-panel, .example-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -180,11 +198,11 @@ h2, h3 { color: var(--text); line-height: 1.22; letter-spacing: -.015em; text-wr
 .section-kicker { display: inline-flex; margin-bottom: var(--space-2); color: var(--accent-strong); font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .section-card h2 { margin: 0; font-size: clamp(1.45rem, 2.5vw, 2.25rem); }
 .section-summary { max-width: var(--content); margin: var(--space-3) 0 0; color: var(--text-muted); }
-.component-card, .decision-record-card, .evidence-card, .approval-checklist, .callout, .example-panel { padding: var(--space-4); transition: transform 180ms cubic-bezier(.2, .8, .2, 1), border-color 180ms ease, background 180ms ease; }
-@media (hover: hover) { .component-card:hover, .decision-record-card:hover, .evidence-card:hover, .approval-checklist:hover, .callout:hover, .example-panel:hover { transform: translateY(-2px); border-color: var(--border-strong); } }
-.component-card h3, .decision-record-card h3, .evidence-card h3, .example-panel h3 { margin: 0 0 var(--space-2); font-size: 1rem; }
-.component-card p, .decision-record-card p, .evidence-card p, .example-panel p { margin: var(--space-2) 0 0; color: var(--text-muted); }
-.card-grid, .example-pair, .before-after { margin-top: var(--space-4); }
+.component-card, .decision-record-card, .decision-card, .slice-card, .story-card, .evidence-card, .approval-checklist, .callout, .example-panel, .example-card { padding: var(--space-4); transition: transform 180ms cubic-bezier(.2, .8, .2, 1), border-color 180ms ease, background 180ms ease; }
+@media (hover: hover) { .component-card:hover, .decision-record-card:hover, .decision-card:hover, .slice-card:hover, .story-card:hover, .evidence-card:hover, .approval-checklist:hover, .callout:hover, .example-panel:hover, .example-card:hover { transform: translateY(-2px); border-color: var(--border-strong); } }
+.component-card h3, .decision-record-card h3, .decision-card h3, .slice-card h3, .story-card h3, .evidence-card h3, .example-panel h3, .example-card h3 { margin: 0 0 var(--space-2); font-size: 1rem; }
+.component-card p, .decision-record-card p, .decision-card p, .slice-card p, .story-card p, .evidence-card p, .example-panel p, .example-card p { margin: var(--space-2) 0 0; color: var(--text-muted); }
+.card-grid, .example-pair, .before-after, .story-list, .example-list, .decision-grid, .slice-grid { margin-top: var(--space-4); }
 
 .callout { margin-top: var(--space-4); border-left: 4px solid var(--info); background: var(--info-soft); }
 .callout.tip, .callout.success { border-left-color: var(--success); background: var(--success-soft); }
@@ -209,11 +227,15 @@ h2, h3 { color: var(--text); line-height: 1.22; letter-spacing: -.015em; text-wr
 pre { margin: 0; padding: var(--space-4); overflow: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); background: #0f172a; color: #e5eefc; }
 pre code { border: 0; background: transparent; color: inherit; padding: 0; }
 
-.id-chip, .review-label { display: inline-flex; align-items: center; border-radius: 999px; font-family: var(--mono); font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
+.id-chip, .review-label, .status-chip { display: inline-flex; align-items: center; border-radius: 999px; font-family: var(--mono); font-size: .72rem; font-weight: 800; letter-spacing: .02em; }
 .id-chip { margin-right: .35rem; padding: .12rem .44rem; background: var(--accent-soft); color: var(--accent-strong); }
+.status-chip { margin-left: .35rem; padding: .1rem .42rem; border: 1px solid var(--border); color: var(--text-muted); }
 .review-label { margin-top: var(--space-4); color: var(--text-subtle); }
+.takeaway-list, .checklist, .question-list, .source-list { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding-left: 1.15rem; color: var(--text-muted); }
 
 table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); font-size: .94rem; }
+.table-wrap { overflow-x: auto; margin-top: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.table-wrap table { margin-top: 0; min-width: 790px; }
 caption { margin-bottom: var(--space-2); color: var(--text-muted); text-align: left; }
 th, td { padding: .72rem .75rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
 th { color: var(--text-muted); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
@@ -221,7 +243,40 @@ th { color: var(--text-muted); font-size: .74rem; letter-spacing: .06em; text-tr
 figure { margin: var(--space-4) 0 0; }
 .figure-card { padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-subtle); overflow: auto; }
 .figure-card svg { display: block; width: 100%; min-width: min(760px, 100%); height: auto; }
-figcaption { margin-top: var(--space-3); color: var(--text-muted); font-size: .92rem; }
+figcaption, .figure-caption { margin-top: var(--space-3); color: var(--text-muted); font-size: .92rem; }
+.figure-caption { padding: var(--space-4); border-top: 1px solid var(--border); }
+.slice-design-card + .slice-design-card, .slice-card + .slice-card { margin-top: var(--space-8); }
+.diagram-figure { background: var(--surface); }
+.diagram-caption { display: flex; flex-wrap: wrap; gap: var(--space-3); padding: var(--space-4); border-top: 1px solid var(--border); color: var(--text-muted); font-size: .88rem; background: var(--surface-subtle); }
+.legend, .diagram-caption { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.legend-item, .legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+.swatch { width: 1.2rem; height: .72rem; border-radius: var(--radius-sm); border: 2px solid currentColor; display: inline-block; background: color-mix(in srgb, currentColor 12%, transparent); }
+.mini-flow { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-3); color: var(--text-muted); }
+.mini-flow span { padding: .35rem .5rem; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-subtle); font-size: .86rem; }
+.mini-flow b { color: var(--text-subtle); }
+.diagram-bg { fill: #fff; }
+.diagram-boundary { fill: transparent; stroke-width: 2; stroke-dasharray: 9 7; }
+.diagram-node-card { stroke-width: 2; transition: stroke 180ms ease, filter 180ms ease, transform 180ms ease; }
+.diagram-node-title { font-size: 15px; font-weight: 850; fill: var(--text); }
+.diagram-node-subtitle { font-size: 13px; fill: var(--text-muted); }
+.diagram-node-meta { font-size: 12px; fill: var(--text); font-family: var(--mono); opacity: .84; }
+.diagram-lane-title { font-size: 15px; font-weight: 850; fill: var(--text); }
+.diagram-arrow { fill: none; stroke: var(--text); stroke-width: 2.5; }
+.diagram-arrow-boundary { fill: none; stroke: var(--info); stroke-width: 2.7; stroke-dasharray: 7 6; }
+.diagram-edge-label { pointer-events: none; }
+.diagram-label-bg { fill: color-mix(in srgb, var(--surface) 94%, transparent); stroke: var(--border-strong); stroke-width: 1.4; filter: drop-shadow(0 6px 12px rgba(0,0,0,.06)); }
+.diagram-arrow-label { font-size: 12px; fill: var(--text); font-weight: 780; }
+.diagram-label-detail { font-size: 12px; fill: var(--text-muted); font-weight: 650; }
+@media (hover: hover) {
+  .diagram-node:hover .diagram-node-card { stroke: var(--info); filter: drop-shadow(0 8px 16px rgba(0,0,0,.08)); }
+  .diagram-edge:hover path { stroke-width: 3.4; }
+}
+.path-draw { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .path-draw { stroke-dashoffset: 1; transition: stroke-dashoffset 700ms cubic-bezier(.2, .8, .2, 1); transition-delay: var(--reveal-delay, 0ms); }
+.js .reveal.is-visible .path-draw, .js .is-visible .path-draw { stroke-dashoffset: 0; }
+.diagram-reveal { opacity: 1; transform: none; filter: none; }
+.js .diagram-reveal { opacity: 0; transform: translateY(12px); filter: blur(2px); transform-box: fill-box; transform-origin: center; transition: opacity 360ms cubic-bezier(.2, .8, .2, 1), transform 420ms cubic-bezier(.2, .8, .2, 1), filter 420ms ease; transition-delay: var(--reveal-delay, 0ms); }
+.js .reveal.is-visible .diagram-reveal, .js .is-visible .diagram-reveal { opacity: 1; transform: translateY(0); filter: blur(0); }
 
 details { margin-top: var(--space-4); padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-subtle); }
 summary { cursor: pointer; color: var(--text); font-weight: 700; }

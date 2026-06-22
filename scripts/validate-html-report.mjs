@@ -25,6 +25,13 @@ for (const file of files) {
 
   const count = (pattern) => (html.match(pattern) || []).length;
   const has = (pattern) => pattern.test(html);
+  const stripHtml = (value) => value
+    .replace(/<[^>]*>/g, '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
 
   if (!/^\s*<!doctype html>/i.test(html)) {
     errors.push('missing <!doctype html>');
@@ -108,18 +115,80 @@ for (const file of files) {
   if (isDesignReport) {
     const requiredDesignReviewIds = [
       ['prd-story-inventory', 'PRD story/BDD inventory'],
+      ['proposed-architecture', 'architecture proposal'],
+      ['proposed-architecture.monorepo', 'monorepo/package architecture proposal'],
+      ['technology-stack', 'technology stack proposal'],
       ['architecture-overview', 'high-level architecture overview'],
       ['architecture-overview.figure', 'high-level architecture diagram'],
+      ['architecture-overview.svg', 'reviewable high-level architecture SVG'],
+      ['architecture-overview.edge-label.route-to-endpoint', 'foreground architecture edge label'],
       ['architecture-delta', 'new/changed component delta'],
       ['slice-plan', 'PRD-derived slice plan'],
+      ['data-contracts', 'conceptual data contracts'],
+      ['data-contracts.list', 'single-column conceptual data contract list'],
       ['slice-designs.slice-001', 'first per-slice outside-in design'],
       ['slice-designs.slice-001.diagram', 'first per-slice architecture mini diagram'],
+      ['slice-designs.slice-001.svg', 'first per-slice reviewable SVG diagram'],
+      ['slice-designs.slice-001.node-endpoint', 'first per-slice endpoint node'],
+      ['slice-designs.slice-001.node-service', 'first per-slice service node'],
+      ['slice-designs.slice-001.node-domain', 'first per-slice domain node'],
+      ['slice-designs.slice-001.node-repository', 'first per-slice repository/DB node'],
+      ['slice-designs.slice-001.edge-label-api', 'first per-slice foreground edge label'],
+      ['slice-designs.slice-001.delivery-surface', 'first per-slice route/endpoint details'],
+      ['slice-designs.slice-001.service-domain', 'first per-slice service/domain details'],
+      ['slice-designs.slice-001.persistence-model', 'first per-slice repository/DB details'],
       ['story-coverage', 'story/spec coverage matrix'],
       ['tasks-and-feedback', 'task feedback hooks'],
     ];
     for (const [id, label] of requiredDesignReviewIds) {
       if (!seenReviewIds.has(id)) {
         errors.push(`design report missing ${label} data-review-id "${id}"`);
+      }
+    }
+    if (!has(/<style\b[^>]*data-tailwind-build=["']design\.tailwind\.css["']/i)) {
+      errors.push('design report must inline CSS compiled from design.tailwind.css');
+    }
+    if (!has(/class=["'][^"']*diagram-edge-label[^"']*["']/i)) {
+      errors.push('design report diagrams need foreground diagram-edge-label groups');
+    }
+    if (!has(/class=["'][^"']*diagram-label-bg[^"']*["']/i)) {
+      errors.push('design report diagrams need foreground label background pills');
+    }
+    if (!has(/class=["'][^"']*diagram-node[^"']*["']/i)) {
+      errors.push('design report diagrams need reusable diagram-node primitives');
+    }
+
+    const dataContractsSection = html.match(/<section\b[^>]*id=["']data-contracts["'][\s\S]*?<\/section>/i)?.[0] ?? '';
+    if (dataContractsSection) {
+      if (!/class=["'][^"']*contract-list[^"']*["']/i.test(dataContractsSection)) {
+        errors.push('conceptual data contracts must use the single-column contract-list layout');
+      }
+      if (/class=["'][^"']*card-grid[^"']*["']/i.test(dataContractsSection)) {
+        errors.push('conceptual data contracts must not use card-grid; code-like blocks should be stacked in a list');
+      }
+      const contractArticles = [...dataContractsSection.matchAll(/<article\b[\s\S]*?<\/article>/gi)].map((match) => match[0]);
+      for (const [index, article] of contractArticles.entries()) {
+        if (!/<h3\b[\s\S]*?<\/h3>\s*<pre\b/i.test(article)) {
+          errors.push(`conceptual data contract ${index + 1} should use two rows: entity name in <h3>, then one full-width code block`);
+        }
+        if (!/<pre\b[^>]*class=["'][^"']*schema-code[^"']*["'][^>]*>/i.test(article)) {
+          errors.push(`conceptual data contract ${index + 1} should use the colored schema-code block style`);
+        }
+        if (!/class=["'][^"']*code-key[^"']*["']/i.test(article)) {
+          errors.push(`conceptual data contract ${index + 1} should color property names with code-key spans`);
+        }
+      }
+      const contractCodeBlocks = [...dataContractsSection.matchAll(/<pre\b[^>]*>\s*<code\b[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/gi)].map((match) => match[1]);
+      for (const [blockIndex, code] of contractCodeBlocks.entries()) {
+        const plainCode = stripHtml(code);
+        for (const rawLine of plainCode.split(/\r?\n/)) {
+          const line = rawLine.trim();
+          if (!line || /^[{}\[\]]$/.test(line)) continue;
+          const commaCount = (line.match(/,/g) || []).length;
+          if (commaCount > 1 || (commaCount === 1 && !/,\s*$/.test(line))) {
+            errors.push(`conceptual data contract ${blockIndex + 1} groups multiple properties on one line: "${line.slice(0, 80)}"`);
+          }
+        }
       }
     }
   }

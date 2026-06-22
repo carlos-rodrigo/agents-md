@@ -221,6 +221,7 @@ Use these named components instead of inventing one-off containers:
 - **Step lists** for review paths, setup/review sequence, and approval flow.
 - **Tabs** for paired perspectives such as scenario/evidence, current/intended, or decision/alternative.
 - **Copyable code/evidence blocks** for prompts, commands, API examples, or exact source snippets.
+- **Conceptual contract lists** for multiple code-like data shapes; stack them in a single column with `contract-list` instead of a multi-column card grid. Each item is two rows: entity name, then one full-width colored `schema-code` block.
 - **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
 - **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
@@ -230,7 +231,7 @@ Use these named components instead of inventing one-off containers:
 - **Approval checklists** for review readiness and release confidence.
 - **Architecture overview figures** for existing/new/changed components, boundaries, and communication direction.
 - **Architecture delta tables** for added/changed packages, controllers, APIs, jobs, events, ports, adapters, and data stores.
-- **Outside-in slice design tables and mini diagrams** for `SLICE-*` narratives: external need → delivery entrypoint/API contract → acceptance boundary → application seam → domain behavior pulled by need → ports/adapters/data → feedback hook → spike/escalation condition.
+- **Outside-in slice design tables and SVG diagrams** for `SLICE-*` narratives: external need → route/endpoint/API contract → application service/use case → domain model/service/rule → repository/DB model/table → observable feedback hook → spike/escalation condition.
 - **Scope/non-goal lists** for adjacent behavior intentionally out of scope.
 - **Open-question lists or compact tables** with owner, blocker status, impact, and resolution path.
 - **Evidence cards** for source anchors, examples, logs, tests, or research observations.
@@ -249,6 +250,7 @@ Bake these patterns into every future generated report:
 - **Review-first anchors** — review IDs are visible enough for humans to reference and stable enough for `/review` comments.
 - **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
 - **Tables only for structure** — use tables for comparison/traceability; use prose, bullets, cards, and examples for explanation.
+- **Code blocks follow code-block convention** — code-like snippets need enough horizontal room, should not be clipped, and should not be placed in responsive multi-column grids. If a section has several code/data shapes, render them as a vertical list (`contract-list`): first row is the entity name, second row is a colored `schema-code` block, and each property appears on its own line. Use restrained spans: `code-key` for properties, `code-enum` for enum/status values, and `code-punctuation` for braces, commas, colons, and union bars.
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, and uncertainty if relevant.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
@@ -293,21 +295,24 @@ summary                  # feature, PRD link, status, review action
 prd-story-inventory      # extracted PRD stories, BDD scenarios, AC/REQ IDs, non-goals
 pattern-research         # sources and design-shaping insights
 design-thesis            # chosen solution shape and why it fits
-architecture-overview    # high-level diagram: existing/new/changed components and boundaries
+proposed-architecture    # monorepo/package shape, layers, runtime boundaries, data ownership
+technology-stack         # frontend/API/domain/persistence/testing choices and tradeoffs
+architecture-overview    # high-level diagram: existing/new/changed components and boundaries with foreground edge labels
 architecture-delta       # added/changed packages, controllers, APIs, jobs/events, ports/adapters/data
 slice-plan               # PRD-derived vertical slices and why each is thin
 current-flow             # current behavior/system map when useful
 intended-flow            # intended behavior/system map when useful
 component-communication  # boundaries and handoffs
 domain-model             # concepts, states, lifecycle
+data-contracts           # conceptual data/API/domain contracts as a single-column two-row colored schema-code list
 design-decisions         # decisions, alternatives, tradeoffs
 operational-concerns     # rollout, rollback, observability, migration
 story-coverage           # story/BDD/AC → slice → architecture delta → feedback hook
-tasks-and-feedback       # per-slice outside-in designs, mini diagrams, task boundaries, feedback hooks
+tasks-and-feedback       # per-slice outside-in designs, detailed mini diagrams, endpoints/routes/services/domain/db models, task boundaries, feedback hooks
 open-questions           # blockers and owner
 ```
 
-Design reports must be built in this order: extract the PRD story/spec inventory, draw the high-level architecture, list the architecture delta, derive vertical slices from PRD stories/BDD, then give each slice a small outside-in design and mini diagram. Use the `system-diagram` skill for diagrams inside the design report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
+Design reports must be built in this order: extract the PRD story/spec inventory, propose the monorepo/layer/runtime/data architecture and tech stack, draw the high-level architecture, list the architecture delta, derive vertical slices from PRD stories/BDD, then give each slice a small outside-in design and detailed SVG diagram. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, and review anchors. Use this skill for the report shell, layout, visual hierarchy, and review UX.
 
 ## Visual modes
 

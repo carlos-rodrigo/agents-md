@@ -131,13 +131,15 @@ The page should be understandable without chat history and should include:
 - how to read the diagrams and color/ownership legend,
 - pattern research influences and success cases that shaped the design,
 - design thesis: the high-level solution shape and why it fits the PRD, constraints, and existing system,
-- high-level architecture overview diagram with existing/new/changed components and communication boundaries,
+- architecture proposal: monorepo/package shape, layers, runtime boundaries, data ownership, dependency rules, and tech stack tradeoffs,
+- high-level architecture overview diagram with existing/new/changed components, communication boundaries, and foreground edge-label pills,
 - architecture delta: new packages/modules/controllers/APIs/jobs/events plus changed components,
 - PRD-derived slice plan,
-- per-slice mini diagrams showing architecture additions/changes and how they satisfy stories,
+- per-slice SVG diagrams showing architecture additions/changes and how they satisfy stories, including concrete endpoint/route names, application services, domain models/services, repositories, DB models/tables, request/response shapes, and feedback checks,
 - current flow and intended flow,
 - component/service/module communication and boundaries,
 - domain concepts and important states/lifecycle,
+- conceptual data/API/domain contracts rendered as a single-column `contract-list`: entity name row first, then one full-width colored `schema-code` block with one property per line,
 - invariants and operational concerns,
 - major design decisions and tradeoffs,
 - architecture alternatives considered,
@@ -160,7 +162,7 @@ Add stable review anchors to meaningful sections and diagram elements so HTML re
 Design narrative pattern:
 
 ```text
-PRD → story/BDD inventory → high-level architecture overview → architecture delta → PRD-derived slice plan → per-slice outside-in design + diagram → story coverage matrix → task feedback hooks
+PRD → story/BDD inventory → architecture proposal + tech stack → high-level architecture overview → architecture delta → PRD-derived slice plan → per-slice outside-in design + detailed diagram → story coverage matrix → task feedback hooks
 ```
 
 Required design review components:
@@ -170,15 +172,18 @@ Required design review components:
 - PRD story/BDD inventory extracted from `prd.html`: stories, BDD scenarios, acceptance IDs, product constraints, and non-goals that shape design;
 - review path step list that says what reviewers should decide;
 - concrete main scenario and edge/failure scenario before abstract architecture detail;
+- architecture proposal cards/table covering monorepo/package layout, layers/dependency rules, tech stack, runtime boundaries, and data ownership so reviewers can make architectural decisions;
 - high-level architecture overview diagram showing existing components, new packages/modules/controllers/APIs/jobs/events, changed components, and communication boundaries;
+- all SVG diagram edge labels use foreground label pills (`diagram-edge-label` + `diagram-label-bg`) so labels are never hidden behind components;
 - architecture delta table: add/change/remove, component/package/API/controller/job/event, owner, reason, stories served;
 - PRD-derived slice plan: each slice maps to specific stories/BDD/acceptance criteria, not arbitrary technical layers;
-- per-slice architecture delta and mini diagram: external trigger → new/changed delivery component → application seam → domain behavior → ports/adapters/persistence/external system;
+- per-slice architecture delta and SVG diagram: external trigger → route/endpoint → application service/use case → domain model/service/rule → repository/DB model/table → observable feedback;
 - before/after user/system flow panel;
 - tabs for thesis versus evidence/source anchors;
 - pattern research table showing source, insight, and design impact;
 - component communication table showing owner, handoff, and boundary;
 - domain model table showing concepts, states, lifecycle, and invariants;
+- conceptual data contracts in a vertical `contract-list` where each item has two rows: entity name, then a colored `schema-code` block with one property per line and restrained `code-key` / `code-enum` / `code-punctuation` spans;
 - decision cards with chosen direction, why it fits, alternatives rejected, tradeoffs, and risks;
 - operational concerns table for rollout, rollback, observability, migration, and failure handling;
 - story coverage matrix mapping PRD `STORY-*` / BDD / `REQ-*` / `AC-*` IDs to slices, architecture changes, and feedback-loop hooks;
@@ -232,6 +237,7 @@ Recommended page structure:
 <section data-review-id="slice-plan">...</section>
 <section data-review-id="component-communication">...</section>
 <section data-review-id="domain-model">...</section>
+<section data-review-id="data-contracts">...</section>
 <section data-review-id="design-decisions">...</section>
 <section data-review-id="operational-concerns">...</section>
 <section data-review-id="tasks-and-feedback">...</section>
@@ -246,10 +252,11 @@ Design quality and smell check:
 - high-level architecture diagram is clear enough to follow component communication and shows what is existing, new, and changed;
 - every new package/module/controller/API/job/event is named in the architecture delta table with the PRD story it supports;
 - every slice is derived from specific PRD stories/BDD/AC IDs;
-- every likely execution slice has a small outside-in design with external need, entry point, acceptance boundary, delivery contract, application seam, domain behavior, ports/adapters, persistence/data note, feedback hook, and spike/escalation condition;
-- every slice has a mini diagram showing how added/changed architecture components satisfy its stories;
+- every likely execution slice has a small outside-in design with external need, entry point, acceptance boundary, delivery contract, concrete route/endpoint, application service/use case, domain model/service/rule, repository/DB model/table, feedback hook, and spike/escalation condition;
+- every slice has an SVG diagram showing how added/changed architecture components satisfy its stories, with foreground edge labels and named endpoints/services/models rather than generic boxes;
 - no slice starts from the database/domain model unless the external caller and acceptance boundary are already defined;
 - current and intended flows are both described when existing behavior matters;
+- conceptual data/API/domain contracts are stacked as a vertical code-block list, not shown as multi-column cards; each contract item has an entity-name row followed by a full-width colored `schema-code` block with one property per line;
 - at least one main scenario and one edge/failure scenario are concrete enough to test the design mentally;
 - before/after panels explain what changes for the user or system;
 - evidence/source anchors back non-obvious architecture claims;
