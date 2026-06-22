@@ -7,12 +7,12 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const checkOnly = process.argv.includes('--check');
-const resourcesDir = join(root, 'skills/html-report-designer/resources');
 const tailwindBin = join(root, 'node_modules/.bin/tailwindcss');
 const templates = [
-  { css: 'report.tailwind.css', html: 'report-template.html' },
-  { css: 'prd.tailwind.css', html: 'prd-template.html' },
-  { css: 'design.tailwind.css', html: 'design-template.html' },
+  { dir: 'skills/html-report-designer/resources', css: 'report.tailwind.css', html: 'report-template.html' },
+  { dir: 'skills/html-report-designer/resources', css: 'prd.tailwind.css', html: 'prd-template.html' },
+  { dir: 'skills/html-report-designer/resources', css: 'design.tailwind.css', html: 'design-template.html' },
+  { dir: 'skills/system-diagram/resources', css: 'system-diagram.tailwind.css', html: 'system-diagram-template.html' },
 ];
 
 function fail(message) {
@@ -49,6 +49,7 @@ function buildStyleBlock(css, sourceName) {
 
 let changed = false;
 for (const template of templates) {
+  const resourcesDir = join(root, template.dir);
   const cssPath = join(resourcesDir, template.css);
   const htmlPath = join(resourcesDir, template.html);
   const css = compileCss(cssPath);

@@ -3,6 +3,8 @@ module.exports = {
   content: [
     './skills/html-report-designer/resources/*-template.html',
     './skills/html-report-designer/resources/*.tailwind.css',
+    './skills/system-diagram/resources/*-template.html',
+    './skills/system-diagram/resources/*.tailwind.css',
   ],
   theme: {
     extend: {

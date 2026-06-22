@@ -124,6 +124,43 @@ for (const file of files) {
     }
   }
 
+  const isSystemDiagramReport = /^system-diagram-template\.html$/i.test(basename(file)) || has(/data-visual-mode=["']system-diagram-packet["']/i);
+  if (isSystemDiagramReport) {
+    const requiredDiagramReviewIds = [
+      ['diagram.brief', 'diagram brief'],
+      ['diagram.brief.question', 'diagram question'],
+      ['diagram.figure', 'diagram figure'],
+      ['diagram.svg', 'reviewable SVG'],
+      ['diagram.legend', 'semantic legend'],
+      ['diagram.evidence', 'source evidence'],
+      ['diagram.quality-gate', 'diagram quality gate'],
+    ];
+    for (const [id, label] of requiredDiagramReviewIds) {
+      if (!seenReviewIds.has(id)) {
+        errors.push(`system diagram missing ${label} data-review-id "${id}"`);
+      }
+    }
+
+    if (!has(/<style\b[^>]*data-tailwind-build=["']system-diagram\.tailwind\.css["']/i)) {
+      errors.push('system diagram template must inline CSS compiled from system-diagram.tailwind.css');
+    }
+    if (!has(/<svg\b[^>]*viewBox=["'][^"']+["'][^>]*role=["']img["']/i)) {
+      errors.push('system diagram SVG must include viewBox and role="img"');
+    }
+    if (!has(/class=["'][^"']*diagram-arrow-label[^"']*["']/i)) {
+      errors.push('system diagram arrows need visible labels');
+    }
+    if (!has(/data-review-id=["']diagram\.edge-label\.[^"']+["']/i)) {
+      errors.push('system diagram arrow labels must be foreground reviewable edge-label groups');
+    }
+    if (!has(/class=["'][^"']*diagram-label-bg[^"']*["']/i)) {
+      errors.push('system diagram arrow labels need a background pill to avoid overlap with components');
+    }
+    if (!has(/class=["'][^"']*diagram-reveal[^"']*["']/i)) {
+      warnings.push('system diagram has no staged diagram node/path reveal motion');
+    }
+  }
+
   const htmlIds = [...html.matchAll(/\sid\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]);
   const seenHtmlIds = new Set();
   const duplicateHtmlIds = new Set();
@@ -147,6 +184,20 @@ for (const file of files) {
     const hasFigureCaption = /<figure\b[\s\S]*?<figcaption\b/i.test(html);
     if (!hasTitleAndDesc && !hasFigureCaption) {
       errors.push(`svg ${index + 1} needs <title>/<desc> or a surrounding figure caption`);
+    }
+    if (isSystemDiagramReport) {
+      if (!/<svg\b[^>]*viewBox=["'][^"']+["']/i.test(svg)) {
+        errors.push(`system diagram svg ${index + 1} is missing a viewBox`);
+      }
+      if (!/data-review-id\s*=\s*["'][^"']+["']/i.test(svg)) {
+        errors.push(`system diagram svg ${index + 1} needs reviewable node/group anchors`);
+      }
+      const tinyText = [...svg.matchAll(/font-size\s*=\s*["']?([0-9.]+)(?:px)?["']?/gi)]
+        .map((match) => Number(match[1]))
+        .filter((size) => Number.isFinite(size) && size < 12);
+      if (tinyText.length > 0) {
+        errors.push(`system diagram svg ${index + 1} has text smaller than 12px`);
+      }
     }
   }
 
