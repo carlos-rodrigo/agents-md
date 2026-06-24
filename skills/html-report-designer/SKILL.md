@@ -252,6 +252,7 @@ Bake these patterns into every future generated report:
 - **Tables only for structure** — use tables for comparison/traceability; use prose, bullets, cards, and examples for explanation.
 - **Code blocks follow code-block convention** — code-like snippets need enough horizontal room, should not be clipped, and should not be placed in responsive multi-column grids. If a section has several code/data shapes, render them as a vertical list (`contract-list`): first row is the entity name, second row is a colored `schema-code` block, and each property appears on its own line. Use restrained spans: `code-key` for properties, `code-enum` for enum/status values, and `code-punctuation` for braces, commas, colons, and union bars.
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, and uncertainty if relevant.
+- **ELK-laid-out architecture diagrams** — for multi-node architecture/slice diagrams, prefer the build-time ELK renderer (`scripts/render-elk-diagram.mjs`) over hand-positioning. It produces inline SVG with automatic spacing, orthogonal routed arrows, foreground edge-label pills, and the shared diagram CSS primitives.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
@@ -312,7 +313,7 @@ tasks-and-feedback       # per-slice outside-in designs, detailed mini diagrams,
 open-questions           # blockers and owner
 ```
 
-Design reports must be built in this order: extract the PRD story/spec inventory, propose the monorepo/layer/runtime/data architecture and tech stack, draw the high-level architecture, list the architecture delta, derive vertical slices from PRD stories/BDD, then give each slice a small outside-in design and detailed SVG diagram. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, and review anchors. Use this skill for the report shell, layout, visual hierarchy, and review UX.
+Design reports must be built in this order: extract the PRD story/spec inventory, propose the monorepo/layer/runtime/data architecture and tech stack, draw the high-level architecture, list the architecture delta, derive vertical slices from PRD stories/BDD, then give each slice a small outside-in design and detailed SVG diagram. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, and review anchors. For diagrams with 4+ nodes or any routed arrows, generate the SVG with `node scripts/render-elk-diagram.mjs <spec.json> <output.svg>` and then inline the SVG into the report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
 
 ## Visual modes
 
@@ -455,6 +456,7 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
+- For architecture/slice diagrams, prefer build-time ELK layout: create a JSON spec, run `node scripts/render-elk-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the JSON spec near the feature/task when it should be regenerated.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.

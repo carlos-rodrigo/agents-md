@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT="/Users/carlosrodrigo/agents"
 
 node "$ROOT/scripts/build-html-report-css.mjs" --check
+node "$ROOT/scripts/render-elk-diagram.mjs" --check \
+  "$ROOT/skills/html-report-designer/resources/elk-slice-example.json" \
+  "$ROOT/skills/html-report-designer/resources/elk-slice-example.svg"
 
 node "$ROOT/scripts/validate-html-report.mjs" --allow-placeholders \
   "$ROOT/skills/html-report-designer/resources/report-template.html" \

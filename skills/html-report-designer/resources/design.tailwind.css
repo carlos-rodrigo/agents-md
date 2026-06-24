@@ -234,11 +234,14 @@ pre code { border: 0; background: transparent; color: inherit; padding: 0; }
 .takeaway-list, .checklist, .question-list, .source-list { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding-left: 1.15rem; color: var(--text-muted); }
 
 table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); font-size: .94rem; }
-.table-wrap { overflow-x: auto; margin-top: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+.table-wrap { overflow-x: auto; margin-top: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
 .table-wrap table { margin-top: 0; min-width: 790px; }
-caption { margin-bottom: var(--space-2); color: var(--text-muted); text-align: left; }
-th, td { padding: .72rem .75rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
-th { color: var(--text-muted); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
+caption { color: var(--text-muted); text-align: left; }
+.table-wrap caption { margin: 0; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); background: var(--surface-subtle); color: var(--text); font-size: .88rem; font-weight: 760; letter-spacing: -.01em; caption-side: top; }
+th, td, .prose th, .prose td, .table-wrap th, .table-wrap td { padding: .9rem 1rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th, .prose th, .table-wrap th { color: var(--text-muted); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; }
+thead th, .prose thead th, .table-wrap thead th { background: color-mix(in srgb, var(--surface-subtle) 72%, var(--surface)); }
+tbody tr:last-child th, tbody tr:last-child td, .prose tbody tr:last-child th, .prose tbody tr:last-child td, .table-wrap tbody tr:last-child th, .table-wrap tbody tr:last-child td { border-bottom: 0; }
 
 figure { margin: var(--space-4) 0 0; }
 .figure-card { padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-subtle); overflow: auto; }

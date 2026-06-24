@@ -149,7 +149,7 @@ The page should be understandable without chat history and should include:
 - task boundary hints and feedback-loop hooks when tasks are planned,
 - architecture/product questions that block design or task execution.
 
-Use graph diagrams for the architecture story and an enjoyable report layout for the review story. Prefer a small set of clear sections in one page over many separate files. If a section becomes crowded, use progressive disclosure and multiple SVG diagrams inside `design.html` rather than creating sibling diagram files by default.
+Use graph diagrams for the architecture story and an enjoyable report layout for the review story. Prefer a small set of clear sections in one page over many separate files. If a section becomes crowded, use progressive disclosure and multiple SVG diagrams inside `design.html` rather than creating sibling diagram files by default. For architecture/slice diagrams with 4+ nodes or routed arrows, create an ELK JSON spec and run `node /Users/carlosrodrigo/agents/scripts/render-elk-diagram.mjs spec.json output.svg`; inspect and inline the generated SVG instead of hand-positioning nodes.
 
 Add stable review anchors to meaningful sections and diagram elements so HTML review comments can attach to durable targets:
 
@@ -174,6 +174,7 @@ Required design review components:
 - concrete main scenario and edge/failure scenario before abstract architecture detail;
 - architecture proposal cards/table covering monorepo/package layout, layers/dependency rules, tech stack, runtime boundaries, and data ownership so reviewers can make architectural decisions;
 - high-level architecture overview diagram showing existing components, new packages/modules/controllers/APIs/jobs/events, changed components, and communication boundaries;
+- multi-node architecture/slice diagrams use build-time ELK layout when practical so spacing, ranks, ports, and routed arrows are intentional rather than hand-tuned;
 - all SVG diagram edge labels use foreground label pills (`diagram-edge-label` + `diagram-label-bg`) so labels are never hidden behind components;
 - architecture delta table: add/change/remove, component/package/API/controller/job/event, owner, reason, stories served;
 - PRD-derived slice plan: each slice maps to specific stories/BDD/acceptance criteria, not arbitrary technical layers;
@@ -254,6 +255,7 @@ Design quality and smell check:
 - every slice is derived from specific PRD stories/BDD/AC IDs;
 - every likely execution slice has a small outside-in design with external need, entry point, acceptance boundary, delivery contract, concrete route/endpoint, application service/use case, domain model/service/rule, repository/DB model/table, feedback hook, and spike/escalation condition;
 - every slice has an SVG diagram showing how added/changed architecture components satisfy its stories, with foreground edge labels and named endpoints/services/models rather than generic boxes;
+- every 4+ node slice diagram is either generated with the ELK renderer or has an explicit reason for manual layout;
 - no slice starts from the database/domain model unless the external caller and acceptance boundary are already defined;
 - current and intended flows are both described when existing behavior matters;
 - conceptual data/API/domain contracts are stacked as a vertical code-block list, not shown as multi-column cards; each contract item has an entity-name row followed by a full-width colored `schema-code` block with one property per line;
