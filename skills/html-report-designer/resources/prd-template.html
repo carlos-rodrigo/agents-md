@@ -69,13 +69,13 @@
           <h2 id="what-title">What</h2>
           <p class="section-summary">{{WHAT_FEATURE_SUMMARY}}</p>
           <p>{{WHAT_FEATURE_STORY}}</p>
-          <div class="story-list">
-            <article class="story-card" data-review-id="what.capability-001"><h3>{{CAPABILITY_001_TITLE}}</h3><p>{{CAPABILITY_001_DESCRIPTION}}</p></article>
-            <article class="story-card" data-review-id="what.capability-002"><h3>{{CAPABILITY_002_TITLE}}</h3><p>{{CAPABILITY_002_DESCRIPTION}}</p></article>
-          </div>
+          <ul class="checklist capability-list">
+            <li data-review-id="what.capability-001"><strong>{{CAPABILITY_001_TITLE}}:</strong> {{CAPABILITY_001_DESCRIPTION}}</li>
+            <li data-review-id="what.capability-002"><strong>{{CAPABILITY_002_TITLE}}:</strong> {{CAPABILITY_002_DESCRIPTION}}</li>
+          </ul>
           <div class="scope-grid">
-            <div class="callout" data-review-id="what.scope.in"><strong>In scope</strong><ul class="checklist"><li>{{IN_SCOPE_1}}</li><li>{{IN_SCOPE_2}}</li><li>{{IN_SCOPE_3}}</li></ul></div>
-            <div class="callout warning" data-review-id="what.scope.out"><strong>Out of scope / non-goals</strong><ul class="checklist"><li>{{OUT_OF_SCOPE_1}}</li><li>{{OUT_OF_SCOPE_2}}</li><li>{{OUT_OF_SCOPE_3}}</li></ul></div>
+            <div class="callout" data-review-id="what.scope.in"><strong>In scope</strong><ul class="checklist"><li>{{IN_SCOPE_1}}</li><li>{{IN_SCOPE_2}}</li></ul></div>
+            <div class="callout warning" data-review-id="what.scope.out"><strong>Out of scope / non-goals</strong><ul class="checklist"><li>{{OUT_OF_SCOPE_1}}</li><li>{{OUT_OF_SCOPE_2}}</li></ul></div>
           </div>
           <span class="review-label">review: what</span>
         </section>
@@ -84,13 +84,14 @@
           <span class="section-kicker">Need and opportunity</span>
           <h2 id="why-title">Why</h2>
           <p class="section-summary">{{WHY_SUMMARY}}</p>
-          <p><strong>Need:</strong> {{NEED_STATEMENT}}</p>
-          <p><strong>Current pain:</strong> {{CURRENT_PAIN}}</p>
-          <p><strong>Opportunity:</strong> {{OPPORTUNITY}}</p>
+          <ul class="checklist">
+            <li><strong>Need:</strong> {{NEED_STATEMENT}}</li>
+            <li><strong>Current pain:</strong> {{CURRENT_PAIN}}</li>
+            <li><strong>Opportunity:</strong> {{OPPORTUNITY}}</li>
+          </ul>
           <ul class="takeaway-list" data-review-id="why.success-signals">
             <li>{{SUCCESS_SIGNAL_1}}</li>
             <li>{{SUCCESS_SIGNAL_2}}</li>
-            <li>{{SUCCESS_SIGNAL_3}}</li>
           </ul>
           <span class="review-label">review: why</span>
         </section>
@@ -99,23 +100,22 @@
           <span class="section-kicker">Requirements and workflows</span>
           <h2 id="how-title">How</h2>
           <p class="section-summary">{{HOW_SUMMARY}}</p>
-          <div class="story-list">
+          <div class="story-list compact-story-list">
             <article class="story-card" data-review-id="how.story-001">
               <h3><span class="id-chip">STORY-001</span>{{STORY_001_TITLE}}</h3>
               <p>As a {{STORY_001_ACTOR}}, I want {{STORY_001_CAPABILITY}}, so that {{STORY_001_OUTCOME}}.</p>
-              <p><strong>Rules:</strong> <span data-review-id="how.req-001">REQ-001: {{REQ_001}}</span>; <span data-review-id="how.req-002">REQ-002: {{REQ_002}}</span>.</p>
+              <ul class="checklist"><li data-review-id="how.req-001">REQ-001: {{REQ_001}}</li><li data-review-id="how.req-002">REQ-002: {{REQ_002}}</li></ul>
             </article>
             <article class="story-card" data-review-id="how.story-002">
               <h3><span class="id-chip">STORY-002</span>{{STORY_002_TITLE}}</h3>
               <p>As a {{STORY_002_ACTOR}}, I want {{STORY_002_CAPABILITY}}, so that {{STORY_002_OUTCOME}}.</p>
-              <p><strong>Rules:</strong> <span data-review-id="how.req-003">REQ-003: {{REQ_003}}</span>.</p>
+              <ul class="checklist"><li data-review-id="how.req-003">REQ-003: {{REQ_003}}</li></ul>
             </article>
           </div>
-          <div class="example-list">
-            <article class="example-card" data-review-id="how.workflow-001"><h3><span class="id-chip">WF-001</span>Main workflow</h3><p><strong>Given</strong> {{MAIN_GIVEN}}</p><p><strong>When</strong> {{MAIN_WHEN}}</p><p><strong>Then</strong> {{MAIN_THEN}}</p></article>
-            <article class="example-card" data-review-id="how.workflow-002"><h3><span class="id-chip">WF-002</span>Edge / error workflow</h3><p><strong>Given</strong> {{EDGE_GIVEN}}</p><p><strong>When</strong> {{EDGE_WHEN}}</p><p><strong>Then</strong> {{EDGE_THEN}}</p></article>
+          <div class="example-list compact-workflows">
+            <article class="example-card" data-review-id="how.workflow-001"><h3><span class="id-chip">WF-001</span>Main workflow</h3><p><strong>Given</strong> {{MAIN_GIVEN}}. <strong>When</strong> {{MAIN_WHEN}}. <strong>Then</strong> {{MAIN_THEN}}.</p></article>
+            <article class="example-card" data-review-id="how.workflow-002"><h3><span class="id-chip">WF-002</span>Edge / error workflow</h3><p><strong>Given</strong> {{EDGE_GIVEN}}. <strong>When</strong> {{EDGE_WHEN}}. <strong>Then</strong> {{EDGE_THEN}}.</p></article>
           </div>
-          <details data-review-id="how.notes"><summary>Requirement and workflow notes</summary><p>{{HOW_NOTES}}</p></details>
           <span class="review-label">review: how</span>
         </section>
 
@@ -136,8 +136,8 @@
           <h2 id="questions-title">Open Questions</h2>
           <p class="section-summary">{{OPEN_QUESTIONS_SUMMARY}}</p>
           <ol class="question-list">
-            <li data-review-id="open-questions.question-1"><strong>Q-001:</strong> {{QUESTION_1}} <br />Owner: {{QUESTION_OWNER_1}} · Blocks: {{QUESTION_BLOCKS_1}} · Resolution: {{QUESTION_RESOLUTION_1}}</li>
-            <li data-review-id="open-questions.question-2"><strong>Q-002:</strong> {{QUESTION_2}} <br />Owner: {{QUESTION_OWNER_2}} · Blocks: {{QUESTION_BLOCKS_2}} · Resolution: {{QUESTION_RESOLUTION_2}}</li>
+            <li data-review-id="open-questions.question-1"><strong>Q-001:</strong> {{QUESTION_1}}<br />Owner: {{QUESTION_OWNER_1}} · Blocks: {{QUESTION_BLOCKS_1}} · Resolution: {{QUESTION_RESOLUTION_1}}</li>
+            <li data-review-id="open-questions.question-2"><strong>Q-002:</strong> {{QUESTION_2}}<br />Owner: {{QUESTION_OWNER_2}} · Blocks: {{QUESTION_BLOCKS_2}} · Resolution: {{QUESTION_RESOLUTION_2}}</li>
           </ol>
           <span class="review-label">review: open-questions</span>
         </section>

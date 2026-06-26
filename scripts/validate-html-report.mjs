@@ -246,6 +246,12 @@ for (const file of files) {
   if (captionCount < tableCount) {
     errors.push(`tables need captions: found ${tableCount} table(s), ${captionCount} caption(s)`);
   }
+  if (isPrdReport && tableCount > 1) {
+    warnings.push(`PRD report has ${tableCount} tables; prefer concise bullets/cards and reserve tables for rare traceability matrices`);
+  }
+  if (isDesignReport && tableCount > 2) {
+    warnings.push(`design report has ${tableCount} tables; prefer cards/lists and reserve tables for true traceability matrices`);
+  }
 
   const svgBlocks = [...html.matchAll(/<svg\b[\s\S]*?<\/svg>/gi)].map((match) => match[0]);
   for (const [index, svg] of svgBlocks.entries()) {

@@ -101,14 +101,20 @@
           <span class="section-kicker">PRD extraction</span>
           <h2 id="prd-story-title">PRD Story And BDD Inventory</h2>
           <p class="section-summary">{{PRD_STORY_INVENTORY_SUMMARY}}</p>
-          <table>
-            <caption>Product stories, BDD scenarios, and acceptance criteria that this design must satisfy</caption>
-            <thead><tr><th scope="col">PRD item</th><th scope="col">Behavior / scenario</th><th scope="col">Acceptance IDs</th><th scope="col">Design implication</th></tr></thead>
-            <tbody>
-              <tr data-review-id="prd-story-inventory.story-1"><td><span class="id-chip">{{STORY_1_ID}}</span>{{STORY_1_TITLE}}</td><td>{{STORY_1_BDD_SCENARIO}}</td><td>{{STORY_1_ACCEPTANCE_IDS}}</td><td>{{STORY_1_DESIGN_IMPLICATION}}</td></tr>
-              <tr data-review-id="prd-story-inventory.story-2"><td><span class="id-chip">{{STORY_2_ID}}</span>{{STORY_2_TITLE}}</td><td>{{STORY_2_BDD_SCENARIO}}</td><td>{{STORY_2_ACCEPTANCE_IDS}}</td><td>{{STORY_2_DESIGN_IMPLICATION}}</td></tr>
-            </tbody>
-          </table>
+          <div class="story-list">
+            <article class="story-card" data-review-id="prd-story-inventory.story-1">
+              <h3><span class="id-chip">{{STORY_1_ID}}</span>{{STORY_1_TITLE}}</h3>
+              <p>{{STORY_1_BDD_SCENARIO}}</p>
+              <p><strong>Acceptance:</strong> {{STORY_1_ACCEPTANCE_IDS}}</p>
+              <p><strong>Design implication:</strong> {{STORY_1_DESIGN_IMPLICATION}}</p>
+            </article>
+            <article class="story-card" data-review-id="prd-story-inventory.story-2">
+              <h3><span class="id-chip">{{STORY_2_ID}}</span>{{STORY_2_TITLE}}</h3>
+              <p>{{STORY_2_BDD_SCENARIO}}</p>
+              <p><strong>Acceptance:</strong> {{STORY_2_ACCEPTANCE_IDS}}</p>
+              <p><strong>Design implication:</strong> {{STORY_2_DESIGN_IMPLICATION}}</p>
+            </article>
+          </div>
           <div class="callout" data-review-id="prd-story-inventory.non-goals">
             <strong>Non-goals that constrain design</strong>
             <p>{{PRD_NON_GOALS}}</p>
@@ -120,14 +126,18 @@
           <span class="section-kicker">Prior art</span>
           <h2 id="research-title">Pattern Research</h2>
           <p class="section-summary">{{PATTERN_RESEARCH_SUMMARY}}</p>
-          <table>
-            <caption>Research sources and design-shaping insights</caption>
-            <thead><tr><th scope="col">Source</th><th scope="col">Insight</th><th scope="col">Design impact</th></tr></thead>
-            <tbody>
-              <tr data-review-id="pattern-research.source-1"><td>{{SOURCE_1}}</td><td>{{SOURCE_INSIGHT_1}}</td><td>{{SOURCE_IMPACT_1}}</td></tr>
-              <tr data-review-id="pattern-research.source-2"><td>{{SOURCE_2}}</td><td>{{SOURCE_INSIGHT_2}}</td><td>{{SOURCE_IMPACT_2}}</td></tr>
-            </tbody>
-          </table>
+          <div class="example-list">
+            <article class="evidence-card" data-review-id="pattern-research.source-1">
+              <h3>{{SOURCE_1}}</h3>
+              <p><strong>Insight:</strong> {{SOURCE_INSIGHT_1}}</p>
+              <p><strong>Design impact:</strong> {{SOURCE_IMPACT_1}}</p>
+            </article>
+            <article class="evidence-card" data-review-id="pattern-research.source-2">
+              <h3>{{SOURCE_2}}</h3>
+              <p><strong>Insight:</strong> {{SOURCE_INSIGHT_2}}</p>
+              <p><strong>Design impact:</strong> {{SOURCE_IMPACT_2}}</p>
+            </article>
+          </div>
           <span class="review-label">review: pattern-research</span>
         </section>
 
@@ -181,17 +191,26 @@
           <span class="section-kicker">Technology decisions</span>
           <h2 id="technology-stack-title">Technology Stack</h2>
           <p class="section-summary">{{TECH_STACK_SUMMARY}}</p>
-          <table>
-            <caption>Proposed technology choices and decision impact</caption>
-            <thead><tr><th scope="col">Layer</th><th scope="col">Choice</th><th scope="col">Why this fits</th><th scope="col">Tradeoff / decision needed</th></tr></thead>
-            <tbody>
-              <tr data-review-id="technology-stack.frontend"><td>Frontend</td><td>{{TECH_FRONTEND}}</td><td>{{TECH_FRONTEND_WHY}}</td><td>{{TECH_FRONTEND_TRADEOFF}}</td></tr>
-              <tr data-review-id="technology-stack.api"><td>API / application</td><td>{{TECH_API_APPLICATION}}</td><td>{{TECH_API_APPLICATION_WHY}}</td><td>{{TECH_API_APPLICATION_TRADEOFF}}</td></tr>
-              <tr data-review-id="technology-stack.domain"><td>Domain</td><td>{{TECH_DOMAIN}}</td><td>{{TECH_DOMAIN_WHY}}</td><td>{{TECH_DOMAIN_TRADEOFF}}</td></tr>
-              <tr data-review-id="technology-stack.persistence"><td>Persistence</td><td>{{TECH_PERSISTENCE}}</td><td>{{TECH_PERSISTENCE_WHY}}</td><td>{{TECH_PERSISTENCE_TRADEOFF}}</td></tr>
-              <tr data-review-id="technology-stack.testing"><td>Testing / feedback</td><td>{{TECH_TESTING}}</td><td>{{TECH_TESTING_WHY}}</td><td>{{TECH_TESTING_TRADEOFF}}</td></tr>
-            </tbody>
-          </table>
+          <div class="card-grid">
+            <article class="component-card" data-review-id="technology-stack.frontend-api">
+              <h3>Frontend + API</h3>
+              <p><strong>Choice:</strong> {{TECH_FRONTEND}} with {{TECH_API_APPLICATION}}</p>
+              <p><strong>Why:</strong> {{TECH_FRONTEND_WHY}} {{TECH_API_APPLICATION_WHY}}</p>
+              <p><strong>Tradeoff:</strong> {{TECH_FRONTEND_TRADEOFF}} {{TECH_API_APPLICATION_TRADEOFF}}</p>
+            </article>
+            <article class="component-card" data-review-id="technology-stack.domain-persistence">
+              <h3>Domain + Persistence</h3>
+              <p><strong>Choice:</strong> {{TECH_DOMAIN}} with {{TECH_PERSISTENCE}}</p>
+              <p><strong>Why:</strong> {{TECH_DOMAIN_WHY}} {{TECH_PERSISTENCE_WHY}}</p>
+              <p><strong>Tradeoff:</strong> {{TECH_DOMAIN_TRADEOFF}} {{TECH_PERSISTENCE_TRADEOFF}}</p>
+            </article>
+            <article class="component-card" data-review-id="technology-stack.testing">
+              <h3>Feedback</h3>
+              <p><strong>Choice:</strong> {{TECH_TESTING}}</p>
+              <p><strong>Why:</strong> {{TECH_TESTING_WHY}}</p>
+              <p><strong>Tradeoff:</strong> {{TECH_TESTING_TRADEOFF}}</p>
+            </article>
+          </div>
           <span class="review-label">review: technology-stack</span>
         </section>
 
@@ -241,14 +260,18 @@
           <span class="section-kicker">What we add or change</span>
           <h2 id="architecture-delta-title">Architecture Delta</h2>
           <p class="section-summary">{{ARCHITECTURE_DELTA_SUMMARY}}</p>
-          <table>
-            <caption>New and changed components required by the PRD stories</caption>
-            <thead><tr><th scope="col">Change</th><th scope="col">Component / package / API</th><th scope="col">Communicates with</th><th scope="col">Stories served</th></tr></thead>
-            <tbody>
-              <tr data-review-id="architecture-delta.change-1"><td>{{ARCH_DELTA_1_KIND}}</td><td>{{ARCH_DELTA_1_COMPONENT}}</td><td>{{ARCH_DELTA_1_COMMUNICATION}}</td><td>{{ARCH_DELTA_1_STORIES}}</td></tr>
-              <tr data-review-id="architecture-delta.change-2"><td>{{ARCH_DELTA_2_KIND}}</td><td>{{ARCH_DELTA_2_COMPONENT}}</td><td>{{ARCH_DELTA_2_COMMUNICATION}}</td><td>{{ARCH_DELTA_2_STORIES}}</td></tr>
-            </tbody>
-          </table>
+          <div class="story-list">
+            <article class="component-card" data-review-id="architecture-delta.change-1">
+              <h3><span class="id-chip">{{ARCH_DELTA_1_KIND}}</span>{{ARCH_DELTA_1_COMPONENT}}</h3>
+              <p><strong>Communicates with:</strong> {{ARCH_DELTA_1_COMMUNICATION}}</p>
+              <p><strong>Stories served:</strong> {{ARCH_DELTA_1_STORIES}}</p>
+            </article>
+            <article class="component-card" data-review-id="architecture-delta.change-2">
+              <h3><span class="id-chip">{{ARCH_DELTA_2_KIND}}</span>{{ARCH_DELTA_2_COMPONENT}}</h3>
+              <p><strong>Communicates with:</strong> {{ARCH_DELTA_2_COMMUNICATION}}</p>
+              <p><strong>Stories served:</strong> {{ARCH_DELTA_2_STORIES}}</p>
+            </article>
+          </div>
           <span class="review-label">review: architecture-delta</span>
         </section>
 
@@ -256,14 +279,20 @@
           <span class="section-kicker">PRD-derived increments</span>
           <h2 id="slice-plan-title">Slice Plan</h2>
           <p class="section-summary">{{SLICE_PLAN_SUMMARY}}</p>
-          <table>
-            <caption>Stories and BDD scenarios grouped into outside-in slices</caption>
-            <thead><tr><th scope="col">Slice</th><th scope="col">Covers</th><th scope="col">Architecture delta</th><th scope="col">Why this slice is thin</th></tr></thead>
-            <tbody>
-              <tr data-review-id="slice-plan.slice-1"><td><span class="id-chip">SLICE-001</span>{{SLICE_1_NAME}}</td><td>{{SLICE_1_COVERS}}</td><td>{{SLICE_1_ARCH_DELTA}}</td><td>{{SLICE_1_THIN_REASON}}</td></tr>
-              <tr data-review-id="slice-plan.slice-2"><td><span class="id-chip">SLICE-002</span>{{SLICE_2_NAME}}</td><td>{{SLICE_2_COVERS}}</td><td>{{SLICE_2_ARCH_DELTA}}</td><td>{{SLICE_2_THIN_REASON}}</td></tr>
-            </tbody>
-          </table>
+          <div class="slice-grid">
+            <article class="slice-card" data-review-id="slice-plan.slice-1">
+              <h3><span class="id-chip">SLICE-001</span>{{SLICE_1_NAME}}</h3>
+              <p><strong>Covers:</strong> {{SLICE_1_COVERS}}</p>
+              <p><strong>Architecture delta:</strong> {{SLICE_1_ARCH_DELTA}}</p>
+              <p><strong>Thin because:</strong> {{SLICE_1_THIN_REASON}}</p>
+            </article>
+            <article class="slice-card" data-review-id="slice-plan.slice-2">
+              <h3><span class="id-chip">SLICE-002</span>{{SLICE_2_NAME}}</h3>
+              <p><strong>Covers:</strong> {{SLICE_2_COVERS}}</p>
+              <p><strong>Architecture delta:</strong> {{SLICE_2_ARCH_DELTA}}</p>
+              <p><strong>Thin because:</strong> {{SLICE_2_THIN_REASON}}</p>
+            </article>
+          </div>
           <span class="review-label">review: slice-plan</span>
         </section>
 
@@ -271,14 +300,20 @@
           <span class="section-kicker">Boundaries</span>
           <h2 id="communication-title">Component Communication</h2>
           <p class="section-summary">{{COMPONENT_COMMUNICATION_SUMMARY}}</p>
-          <table>
-            <caption>Components, ownership, and handoffs</caption>
-            <thead><tr><th scope="col">Component</th><th scope="col">Owns</th><th scope="col">Handoff</th><th scope="col">Boundary</th></tr></thead>
-            <tbody>
-              <tr data-review-id="component-communication.component-1"><td>{{COMPONENT_1}}</td><td>{{COMPONENT_1_OWNS}}</td><td>{{COMPONENT_1_HANDOFF}}</td><td>{{COMPONENT_1_BOUNDARY}}</td></tr>
-              <tr data-review-id="component-communication.component-2"><td>{{COMPONENT_2}}</td><td>{{COMPONENT_2_OWNS}}</td><td>{{COMPONENT_2_HANDOFF}}</td><td>{{COMPONENT_2_BOUNDARY}}</td></tr>
-            </tbody>
-          </table>
+          <div class="card-grid">
+            <article class="component-card" data-review-id="component-communication.component-1">
+              <h3>{{COMPONENT_1}}</h3>
+              <p><strong>Owns:</strong> {{COMPONENT_1_OWNS}}</p>
+              <p><strong>Handoff:</strong> {{COMPONENT_1_HANDOFF}}</p>
+              <p><strong>Boundary:</strong> {{COMPONENT_1_BOUNDARY}}</p>
+            </article>
+            <article class="component-card" data-review-id="component-communication.component-2">
+              <h3>{{COMPONENT_2}}</h3>
+              <p><strong>Owns:</strong> {{COMPONENT_2_OWNS}}</p>
+              <p><strong>Handoff:</strong> {{COMPONENT_2_HANDOFF}}</p>
+              <p><strong>Boundary:</strong> {{COMPONENT_2_BOUNDARY}}</p>
+            </article>
+          </div>
           <span class="review-label">review: component-communication</span>
         </section>
 
@@ -286,14 +321,18 @@
           <span class="section-kicker">Concepts</span>
           <h2 id="domain-title">Domain Model</h2>
           <p class="section-summary">{{DOMAIN_MODEL_SUMMARY}}</p>
-          <table>
-            <caption>Domain concepts, states, and invariants</caption>
-            <thead><tr><th scope="col">Concept</th><th scope="col">Meaning</th><th scope="col">States / rules</th></tr></thead>
-            <tbody>
-              <tr data-review-id="domain-model.concept-1"><td>{{CONCEPT_1}}</td><td>{{CONCEPT_1_MEANING}}</td><td>{{CONCEPT_1_RULES}}</td></tr>
-              <tr data-review-id="domain-model.concept-2"><td>{{CONCEPT_2}}</td><td>{{CONCEPT_2_MEANING}}</td><td>{{CONCEPT_2_RULES}}</td></tr>
-            </tbody>
-          </table>
+          <div class="story-list">
+            <article class="story-card" data-review-id="domain-model.concept-1">
+              <h3>{{CONCEPT_1}}</h3>
+              <p>{{CONCEPT_1_MEANING}}</p>
+              <p><strong>States / rules:</strong> {{CONCEPT_1_RULES}}</p>
+            </article>
+            <article class="story-card" data-review-id="domain-model.concept-2">
+              <h3>{{CONCEPT_2}}</h3>
+              <p>{{CONCEPT_2_MEANING}}</p>
+              <p><strong>States / rules:</strong> {{CONCEPT_2_RULES}}</p>
+            </article>
+          </div>
           <span class="review-label">review: domain-model</span>
         </section>
 
@@ -349,15 +388,11 @@
           <span class="section-kicker">Release safety</span>
           <h2 id="operations-title">Operational Concerns</h2>
           <p class="section-summary">{{OPERATIONAL_CONCERNS_SUMMARY}}</p>
-          <table>
-            <caption>Rollout, rollback, observability, and migration plan</caption>
-            <thead><tr><th scope="col">Concern</th><th scope="col">Plan</th><th scope="col">Owner / signal</th></tr></thead>
-            <tbody>
-              <tr data-review-id="operational-concerns.rollout"><td>Rollout</td><td>{{ROLLOUT_PLAN}}</td><td>{{ROLLOUT_SIGNAL}}</td></tr>
-              <tr data-review-id="operational-concerns.rollback"><td>Rollback</td><td>{{ROLLBACK_PLAN}}</td><td>{{ROLLBACK_SIGNAL}}</td></tr>
-              <tr data-review-id="operational-concerns.observability"><td>Observability</td><td>{{OBSERVABILITY_PLAN}}</td><td>{{OBSERVABILITY_SIGNAL}}</td></tr>
-            </tbody>
-          </table>
+          <ul class="checklist">
+            <li data-review-id="operational-concerns.rollout"><strong>Rollout:</strong> {{ROLLOUT_PLAN}} <span class="status-chip">{{ROLLOUT_SIGNAL}}</span></li>
+            <li data-review-id="operational-concerns.rollback"><strong>Rollback:</strong> {{ROLLBACK_PLAN}} <span class="status-chip">{{ROLLBACK_SIGNAL}}</span></li>
+            <li data-review-id="operational-concerns.observability"><strong>Observability:</strong> {{OBSERVABILITY_PLAN}} <span class="status-chip">{{OBSERVABILITY_SIGNAL}}</span></li>
+          </ul>
           <span class="review-label">review: operational-concerns</span>
         </section>
 
@@ -392,18 +427,15 @@
               </svg>
               <figcaption>{{SLICE_1_DIAGRAM_CAPTION}}</figcaption>
             </figure>
-            <table>
-              <caption>SLICE-001 small design</caption>
-              <tbody>
-                <tr data-review-id="slice-designs.slice-001.external-need"><th scope="row">External need</th><td>{{SLICE_1_EXTERNAL_NEED}}</td></tr>
-                <tr data-review-id="slice-designs.slice-001.entrypoint"><th scope="row">Entry point / contract</th><td>{{SLICE_1_ENTRYPOINT}} with {{SLICE_1_REQUEST_SHAPE}} → {{SLICE_1_RESPONSE_SHAPE}}</td></tr>
-                <tr data-review-id="slice-designs.slice-001.delivery-surface"><th scope="row">Route / endpoint</th><td>Route: <code>{{SLICE_1_ROUTE_PATH}}</code>. Endpoint: <code>{{SLICE_1_HTTP_METHOD}} {{SLICE_1_ENDPOINT_ROUTE}}</code>. Handler: <code>{{SLICE_1_ENDPOINT_NAME}}</code>.</td></tr>
-                <tr data-review-id="slice-designs.slice-001.service-domain"><th scope="row">Service / domain</th><td>Service: <code>{{SLICE_1_SERVICE_NAME}}.{{SLICE_1_SERVICE_METHOD}}</code>. Domain model: <code>{{SLICE_1_DOMAIN_MODEL}}</code>. Domain service/rule: {{SLICE_1_DOMAIN_SERVICE}} / {{SLICE_1_DOMAIN_RULE}}.</td></tr>
-                <tr data-review-id="slice-designs.slice-001.persistence-model"><th scope="row">Repository / DB</th><td>Repository: <code>{{SLICE_1_REPOSITORY_MODEL}}.{{SLICE_1_REPOSITORY_METHOD}}</code>. DB model/table: <code>{{SLICE_1_DB_MODEL}}</code> / <code>{{SLICE_1_TABLE_OR_COLLECTION}}</code>.</td></tr>
-                <tr data-review-id="slice-designs.slice-001.small-design"><th scope="row">Small design</th><td>Application seam: {{SLICE_1_APPLICATION_SEAM}}. Domain behavior: {{SLICE_1_DOMAIN_BEHAVIOR}}. Ports/adapters/data: {{SLICE_1_PORTS_ADAPTERS_DATA}}.</td></tr>
-                <tr data-review-id="slice-designs.slice-001.feedback"><th scope="row">Feedback / spike</th><td>{{SLICE_1_FEEDBACK}}. Escalate/spike if {{SLICE_1_SPIKE_OR_ESCALATE}}.</td></tr>
-              </tbody>
-            </table>
+            <ul class="checklist slice-design-points">
+              <li data-review-id="slice-designs.slice-001.external-need"><strong>External need:</strong> {{SLICE_1_EXTERNAL_NEED}}</li>
+              <li data-review-id="slice-designs.slice-001.entrypoint"><strong>Entry point:</strong> {{SLICE_1_ENTRYPOINT}} with {{SLICE_1_REQUEST_SHAPE}} → {{SLICE_1_RESPONSE_SHAPE}}</li>
+              <li data-review-id="slice-designs.slice-001.delivery-surface"><strong>Delivery:</strong> <code>{{SLICE_1_ROUTE_PATH}}</code>; <code>{{SLICE_1_HTTP_METHOD}} {{SLICE_1_ENDPOINT_ROUTE}}</code>; handler <code>{{SLICE_1_ENDPOINT_NAME}}</code>.</li>
+              <li data-review-id="slice-designs.slice-001.service-domain"><strong>Service/domain:</strong> <code>{{SLICE_1_SERVICE_NAME}}.{{SLICE_1_SERVICE_METHOD}}</code>; <code>{{SLICE_1_DOMAIN_MODEL}}</code>; {{SLICE_1_DOMAIN_SERVICE}} / {{SLICE_1_DOMAIN_RULE}}.</li>
+              <li data-review-id="slice-designs.slice-001.persistence-model"><strong>Persistence:</strong> <code>{{SLICE_1_REPOSITORY_MODEL}}.{{SLICE_1_REPOSITORY_METHOD}}</code>; <code>{{SLICE_1_DB_MODEL}}</code> / <code>{{SLICE_1_TABLE_OR_COLLECTION}}</code>.</li>
+              <li data-review-id="slice-designs.slice-001.small-design"><strong>Small design:</strong> {{SLICE_1_APPLICATION_SEAM}}; {{SLICE_1_DOMAIN_BEHAVIOR}}; {{SLICE_1_PORTS_ADAPTERS_DATA}}.</li>
+              <li data-review-id="slice-designs.slice-001.feedback"><strong>Feedback/spike:</strong> {{SLICE_1_FEEDBACK}}. Escalate if {{SLICE_1_SPIKE_OR_ESCALATE}}.</li>
+            </ul>
           </article>
 
           <article class="decision-record-card slice-design-card" data-review-id="slice-designs.slice-002">
@@ -432,18 +464,15 @@
               </svg>
               <figcaption>{{SLICE_2_DIAGRAM_CAPTION}}</figcaption>
             </figure>
-            <table>
-              <caption>SLICE-002 small design</caption>
-              <tbody>
-                <tr data-review-id="slice-designs.slice-002.external-need"><th scope="row">External need</th><td>{{SLICE_2_EXTERNAL_NEED}}</td></tr>
-                <tr data-review-id="slice-designs.slice-002.entrypoint"><th scope="row">Entry point / contract</th><td>{{SLICE_2_ENTRYPOINT}} with {{SLICE_2_REQUEST_SHAPE}} → {{SLICE_2_RESPONSE_SHAPE}}</td></tr>
-                <tr data-review-id="slice-designs.slice-002.delivery-surface"><th scope="row">Route / endpoint</th><td>Route: <code>{{SLICE_2_ROUTE_PATH}}</code>. Endpoint: <code>{{SLICE_2_HTTP_METHOD}} {{SLICE_2_ENDPOINT_ROUTE}}</code>. Handler: <code>{{SLICE_2_ENDPOINT_NAME}}</code>.</td></tr>
-                <tr data-review-id="slice-designs.slice-002.service-domain"><th scope="row">Service / domain</th><td>Service: <code>{{SLICE_2_SERVICE_NAME}}.{{SLICE_2_SERVICE_METHOD}}</code>. Domain model: <code>{{SLICE_2_DOMAIN_MODEL}}</code>. Domain service/rule: {{SLICE_2_DOMAIN_SERVICE}} / {{SLICE_2_DOMAIN_RULE}}.</td></tr>
-                <tr data-review-id="slice-designs.slice-002.persistence-model"><th scope="row">Repository / DB</th><td>Repository: <code>{{SLICE_2_REPOSITORY_MODEL}}.{{SLICE_2_REPOSITORY_METHOD}}</code>. DB model/table: <code>{{SLICE_2_DB_MODEL}}</code> / <code>{{SLICE_2_TABLE_OR_COLLECTION}}</code>.</td></tr>
-                <tr data-review-id="slice-designs.slice-002.small-design"><th scope="row">Small design</th><td>Application seam: {{SLICE_2_APPLICATION_SEAM}}. Domain behavior: {{SLICE_2_DOMAIN_BEHAVIOR}}. Ports/adapters/data: {{SLICE_2_PORTS_ADAPTERS_DATA}}.</td></tr>
-                <tr data-review-id="slice-designs.slice-002.feedback"><th scope="row">Feedback / spike</th><td>{{SLICE_2_FEEDBACK}}. Escalate/spike if {{SLICE_2_SPIKE_OR_ESCALATE}}.</td></tr>
-              </tbody>
-            </table>
+            <ul class="checklist slice-design-points">
+              <li data-review-id="slice-designs.slice-002.external-need"><strong>External need:</strong> {{SLICE_2_EXTERNAL_NEED}}</li>
+              <li data-review-id="slice-designs.slice-002.entrypoint"><strong>Entry point:</strong> {{SLICE_2_ENTRYPOINT}} with {{SLICE_2_REQUEST_SHAPE}} → {{SLICE_2_RESPONSE_SHAPE}}</li>
+              <li data-review-id="slice-designs.slice-002.delivery-surface"><strong>Delivery:</strong> <code>{{SLICE_2_ROUTE_PATH}}</code>; <code>{{SLICE_2_HTTP_METHOD}} {{SLICE_2_ENDPOINT_ROUTE}}</code>; handler <code>{{SLICE_2_ENDPOINT_NAME}}</code>.</li>
+              <li data-review-id="slice-designs.slice-002.service-domain"><strong>Service/domain:</strong> <code>{{SLICE_2_SERVICE_NAME}}.{{SLICE_2_SERVICE_METHOD}}</code>; <code>{{SLICE_2_DOMAIN_MODEL}}</code>; {{SLICE_2_DOMAIN_SERVICE}} / {{SLICE_2_DOMAIN_RULE}}.</li>
+              <li data-review-id="slice-designs.slice-002.persistence-model"><strong>Persistence:</strong> <code>{{SLICE_2_REPOSITORY_MODEL}}.{{SLICE_2_REPOSITORY_METHOD}}</code>; <code>{{SLICE_2_DB_MODEL}}</code> / <code>{{SLICE_2_TABLE_OR_COLLECTION}}</code>.</li>
+              <li data-review-id="slice-designs.slice-002.small-design"><strong>Small design:</strong> {{SLICE_2_APPLICATION_SEAM}}; {{SLICE_2_DOMAIN_BEHAVIOR}}; {{SLICE_2_PORTS_ADAPTERS_DATA}}.</li>
+              <li data-review-id="slice-designs.slice-002.feedback"><strong>Feedback/spike:</strong> {{SLICE_2_FEEDBACK}}. Escalate if {{SLICE_2_SPIKE_OR_ESCALATE}}.</li>
+            </ul>
           </article>
 
           <div class="approval-checklist" data-review-id="tasks-and-feedback.approval-checklist">
@@ -472,14 +501,10 @@
           <span class="section-kicker">Blockers</span>
           <h2 id="questions-title">Open Questions</h2>
           <p class="section-summary">{{OPEN_QUESTIONS_SUMMARY}}</p>
-          <table>
-            <caption>Architecture or product questions with owners</caption>
-            <thead><tr><th scope="col">Question</th><th scope="col">Owner</th><th scope="col">Blocks</th><th scope="col">Resolution path</th></tr></thead>
-            <tbody>
-              <tr data-review-id="open-questions.question-1"><td>{{QUESTION_1}}</td><td>{{QUESTION_OWNER_1}}</td><td>{{QUESTION_BLOCKS_1}}</td><td>{{QUESTION_RESOLUTION_1}}</td></tr>
-              <tr data-review-id="open-questions.question-2"><td>{{QUESTION_2}}</td><td>{{QUESTION_OWNER_2}}</td><td>{{QUESTION_BLOCKS_2}}</td><td>{{QUESTION_RESOLUTION_2}}</td></tr>
-            </tbody>
-          </table>
+          <ul class="question-list">
+            <li data-review-id="open-questions.question-1"><strong>{{QUESTION_1}}</strong><br />Owner: {{QUESTION_OWNER_1}}. Blocks: {{QUESTION_BLOCKS_1}}. Resolution: {{QUESTION_RESOLUTION_1}}.</li>
+            <li data-review-id="open-questions.question-2"><strong>{{QUESTION_2}}</strong><br />Owner: {{QUESTION_OWNER_2}}. Blocks: {{QUESTION_BLOCKS_2}}. Resolution: {{QUESTION_RESOLUTION_2}}.</li>
+          </ul>
           <span class="review-label">review: open-questions</span>
         </section>
 

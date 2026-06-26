@@ -62,6 +62,14 @@ Do **not** put line-by-line implementation design in `design.html`. However, the
 
 The HTML must be readable in a browser without chat history. It should combine concise text with graph diagrams: architecture boundaries, flows, component communication, domain concepts, state/lifecycle, major decisions, how the PRD maps to the solution, and how each slice should be implemented outside-in.
 
+Conciseness rules:
+
+- State the point once, then move on. Prefer one-sentence section summaries plus bullets/cards.
+- Do not paste whole PRD inventories, research dumps, file inventories, or exhaustive domain catalogs into `design.html`.
+- Use tables only for true matrices: story coverage, dense tradeoff comparison, or many row/column relationships. A normal design should have 0-2 tables.
+- Prefer cards/lists for PRD stories, architecture deltas, tech choices, boundaries, domain concepts, operational notes, and open questions.
+- Move raw detail to ADRs, task briefs, source links, or `<details>` disclosures when it is useful but not decision-critical.
+
 ## Process
 
 ### 1. Read the approved PRD
@@ -124,30 +132,22 @@ Create a self-contained HTML/SVG artifact:
 docs/features/{feature}/design.html
 ```
 
-The page should be understandable without chat history and should include:
+The page should be understandable without chat history and should include only decision-critical design material:
 
 - title, feature summary, status, and link/path to `prd.html`,
-- PRD story/BDD/acceptance inventory that the design must satisfy,
-- how to read the diagrams and color/ownership legend,
-- pattern research influences and success cases that shaped the design,
+- a short review path saying what must be decided,
+- one main scenario and one edge/failure scenario,
+- architecture-shaping PRD facts, not a full PRD dump,
+- pattern research only when it changes the design,
 - design thesis: the high-level solution shape and why it fits the PRD, constraints, and existing system,
 - architecture proposal: monorepo/package shape, layers, runtime boundaries, data ownership, dependency rules, and tech stack tradeoffs,
 - high-level architecture overview diagram with existing/new/changed components, communication boundaries, and foreground edge-label pills,
-- architecture delta: new packages/modules/controllers/APIs/jobs/events plus changed components,
-- PRD-derived slice plan,
-- per-slice SVG diagrams showing architecture additions/changes and how they satisfy stories, including concrete endpoint/route names, application services, domain models/services, repositories, DB models/tables, request/response shapes, and feedback checks,
-- current flow and intended flow,
-- component/service/module communication and boundaries,
-- domain concepts and important states/lifecycle,
-- conceptual data/API/domain contracts rendered as a single-column `contract-list`: entity name row first, then one full-width colored `schema-code` block with one property per line,
-- invariants and operational concerns,
-- major design decisions and tradeoffs,
-- architecture alternatives considered,
-- rollout/rollback or migration paths when relevant,
-- PRD requirement coverage highlights,
-- small outside-in design per implementation slice,
-- task boundary hints and feedback-loop hooks when tasks are planned,
-- architecture/product questions that block design or task execution.
+- compact architecture delta cards/lists,
+- PRD-derived slice plan as cards,
+- per-slice SVG diagrams plus a short outside-in checklist: delivery, service/domain, persistence, feedback,
+- conceptual data/API/domain contracts as a single-column `contract-list` only when contracts are needed for implementation,
+- major design decisions, operational risks, and open questions,
+- one story coverage matrix only when traceability would otherwise be unclear.
 
 Use graph diagrams for the architecture story and an enjoyable report layout for the review story. Prefer a small set of clear sections in one page over many separate files. If a section becomes crowded, use progressive disclosure and multiple SVG diagrams inside `design.html` rather than creating sibling diagram files by default. For architecture/slice diagrams with 4+ nodes or routed arrows, create an ELK JSON spec and run `node /Users/carlosrodrigo/agents/scripts/render-elk-diagram.mjs spec.json output.svg`; inspect and inline the generated SVG instead of hand-positioning nodes.
 
@@ -162,35 +162,35 @@ Add stable review anchors to meaningful sections and diagram elements so HTML re
 Design narrative pattern:
 
 ```text
-PRD → story/BDD inventory → architecture proposal + tech stack → high-level architecture overview → architecture delta → PRD-derived slice plan → per-slice outside-in design + detailed diagram → story coverage matrix → task feedback hooks
+Review decision → concrete examples → design thesis → architecture overview → compact architecture delta → slice plan → per-slice outside-in design + diagram → coverage/feedback only as needed
 ```
 
 Required design review components:
 
 - Vercel-style docs shell: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, prev/next, related artifacts, feedback, and provenance;
 - focused first viewport with PRD link, architecture risk/readiness in compact prose or pills, and 3-5 thesis takeaways; do not add dashboard/status metric cards by default;
-- PRD story/BDD inventory extracted from `prd.html`: stories, BDD scenarios, acceptance IDs, product constraints, and non-goals that shape design;
+- PRD story/BDD inventory extracted from `prd.html`: only stories, BDD scenarios, acceptance IDs, product constraints, and non-goals that shape architecture; render as cards/lists, not a default table;
 - review path step list that says what reviewers should decide;
 - concrete main scenario and edge/failure scenario before abstract architecture detail;
-- architecture proposal cards/table covering monorepo/package layout, layers/dependency rules, tech stack, runtime boundaries, and data ownership so reviewers can make architectural decisions;
+- architecture proposal cards covering monorepo/package layout, layers/dependency rules, tech stack, runtime boundaries, and data ownership so reviewers can make architectural decisions;
 - high-level architecture overview diagram showing existing components, new packages/modules/controllers/APIs/jobs/events, changed components, and communication boundaries;
 - multi-node architecture/slice diagrams use build-time ELK layout when practical so spacing, ranks, ports, and routed arrows are intentional rather than hand-tuned;
 - all SVG diagram edge labels use foreground label pills (`diagram-edge-label` + `diagram-label-bg`) so labels are never hidden behind components;
-- architecture delta table: add/change/remove, component/package/API/controller/job/event, owner, reason, stories served;
+- architecture delta cards/list: add/change/remove, component/package/API/controller/job/event, owner, reason, stories served;
 - PRD-derived slice plan: each slice maps to specific stories/BDD/acceptance criteria, not arbitrary technical layers;
 - per-slice architecture delta and SVG diagram: external trigger → route/endpoint → application service/use case → domain model/service/rule → repository/DB model/table → observable feedback;
 - before/after user/system flow panel;
 - tabs for thesis versus evidence/source anchors;
-- pattern research table showing source, insight, and design impact;
-- component communication table showing owner, handoff, and boundary;
-- domain model table showing concepts, states, lifecycle, and invariants;
+- pattern research evidence cards showing only source, insight, and design impact that changed the design;
+- component communication cards/lists showing owner, handoff, and boundary;
+- domain model cards/lists showing only concepts, states, lifecycle, and invariants needed for the first slices;
 - conceptual data contracts in a vertical `contract-list` where each item has two rows: entity name, then a colored `schema-code` block with one property per line and restrained `code-key` / `code-enum` / `code-punctuation` spans;
 - decision cards with chosen direction, why it fits, alternatives rejected, tradeoffs, and risks;
-- operational concerns table for rollout, rollback, observability, migration, and failure handling;
-- story coverage matrix mapping PRD `STORY-*` / BDD / `REQ-*` / `AC-*` IDs to slices, architecture changes, and feedback-loop hooks;
+- operational concerns checklist for rollout, rollback, observability, migration, and failure handling;
+- story coverage matrix mapping PRD `STORY-*` / BDD / `REQ-*` / `AC-*` IDs to slices, architecture changes, and feedback-loop hooks when traceability is needed;
 - outside-in slice designs: one small design per likely vertical slice explaining external need → delivery entrypoint → acceptance boundary → contract/data shape → collaborators/ports → domain behavior pulled by need → adapters/persistence → observable feedback;
 - task boundary hints that defer exact patches and step-by-step execution to task briefs;
-- open-question table with owner and blocker status.
+- open-question list with owner and blocker status.
 
 ### Outside-in slice design
 
@@ -251,7 +251,7 @@ Design quality and smell check:
 
 - every major PRD story, BDD scenario, requirement, and acceptance criterion appears in the PRD story inventory;
 - high-level architecture diagram is clear enough to follow component communication and shows what is existing, new, and changed;
-- every new package/module/controller/API/job/event is named in the architecture delta table with the PRD story it supports;
+- every new package/module/controller/API/job/event is named in the architecture delta cards/list with the PRD story it supports;
 - every slice is derived from specific PRD stories/BDD/AC IDs;
 - every likely execution slice has a small outside-in design with external need, entry point, acceptance boundary, delivery contract, concrete route/endpoint, application service/use case, domain model/service/rule, repository/DB model/table, feedback hook, and spike/escalation condition;
 - every slice has an SVG diagram showing how added/changed architecture components satisfy its stories, with foreground edge labels and named endpoints/services/models rather than generic boxes;

@@ -43,7 +43,19 @@ Default to self-clarifying from the request, existing docs, source context, and 
 
 ## PRD structure
 
-Write the PRD as a narrative, not a dashboard. Prefer prose, bullets, cards, and concrete workflows over tables. Use tables only when comparison or traceability is the point.
+Write the PRD as a concise product decision brief, not a dashboard or transcript. A reviewer should understand the product bet, scope, workflows, and acceptance criteria in a few minutes.
+
+Brevity defaults:
+
+- Summary: 1 paragraph plus 2-3 takeaways.
+- What: 2-3 capabilities and short in/out bullets.
+- Why: 3 bullets at most: need, current pain, opportunity/success signal.
+- How: 2-4 product stories; each story gets 1 sentence and only the observable rules it needs.
+- Workflows: one main workflow plus one edge/error/empty/permission workflow unless the feature truly needs more.
+- Acceptance: 3-6 criteria, each directly verifiable.
+- Open questions: only unresolved blockers; omit the section body when there are none.
+
+Use tables only for rare traceability matrices. Default table count is zero.
 
 Required sections:
 
@@ -69,7 +81,7 @@ constraints        # product-level constraints that do not fit the What/How pros
 
 ### Summary
 
-Open with a short product story: what changes for the user, why it is valuable, and how reviewers should read the PRD. Keep status/date/type as compact metadata; do not add owner/outcome/next-action metric cards by default.
+Open with a short product story: what changes for the user, why it is valuable, and what reviewers should approve or challenge. Keep status/date/type as compact metadata; do not add owner/outcome/next-action metric cards by default.
 
 ### What
 
@@ -79,7 +91,7 @@ Explain the feature in plain product language:
 We want to build {feature} so {actor/user} can {new capability} without {current friction}.
 ```
 
-Include:
+Include only:
 
 - primary users or jobs-to-be-done,
 - 2-3 capabilities that describe the feature shape,
@@ -87,24 +99,24 @@ Include:
 - out-of-scope/non-goals,
 - product constraints that affect the user experience.
 
-Do not prescribe files, classes, schemas, APIs, or rollout mechanics.
+Do not prescribe files, classes, schemas, APIs, or rollout mechanics. If a detail will not affect scope, acceptance, or design readiness, leave it out.
 
 ### Why
 
-Explain the need and opportunity:
+Explain the need and opportunity in bullets, not essays:
 
 - current pain or missed opportunity,
 - why this matters now,
 - expected user/business outcome,
 - success signals that show the need was met.
 
-Avoid implementation mechanics unless they are product-visible.
+Avoid implementation mechanics unless they are product-visible. Avoid generic business-value filler.
 
 ### How
 
 Explain how the feature achieves the goal through requirements and workflows.
 
-Use a small set of numbered stories and rules:
+Use a small set of numbered stories and rules. Keep each story to actor, capability, and outcome:
 
 ```text
 STORY-001 — {Capability}
@@ -115,7 +127,7 @@ Rules:
 - REQ-002: When {condition}, the user sees/gets {observable result}.
 ```
 
-Then add concrete workflows:
+Then add only the workflows needed to prove behavior:
 
 ```text
 WF-001 Main workflow
@@ -174,10 +186,12 @@ Before finishing, check:
 ## Smells to fix
 
 - A PRD that reads like a table of facts instead of a product story.
+- A PRD that repeats the same idea in summary, scope, stories, workflows, and acceptance.
+- A PRD that includes nice-to-have context no reviewer needs to decide scope or acceptance.
 - Vague verbs: “support”, “handle”, “manage”, “improve” without observable behavior.
 - Subjective acceptance: “intuitive”, “robust”, “seamless”, “clean”.
 - Loopholes: “if possible”, “as needed”, “where applicable”.
-- Too many tables where prose would be clearer.
+- Tables where a short checklist or card would be clearer.
 - Hidden assumptions presented as decisions.
 - Architecture leakage: APIs, schemas, files, class names, storage mechanics, rollout details.
 - Task lists or implementation steps inside the PRD.
