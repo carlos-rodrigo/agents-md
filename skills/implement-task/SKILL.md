@@ -66,7 +66,15 @@ Read in this order:
 
 Capture: goal, external need, entry point, acceptance boundary, observable side effect, files, risks, agent-owned choices, feedback loop, escalation triggers.
 
-Avoid broad repo wandering. Do not invent product or architecture behavior.
+Also extract a **task-contract checklist** from explicit task language:
+
+- `Goal`, `Change`, and `Done` bullets;
+- required files/components/functions and named approaches in `Execute`;
+- explicit “must”, “use”, “do”, “do not”, “avoid”, and “only” instructions;
+- constraints and escalation triggers;
+- each feedback-loop expected result.
+
+Avoid broad repo wandering. Do not invent product or architecture behavior. Do not replace an explicit requested approach with a different local implementation unless the task/user permits it or you record a user-owned blocker.
 
 ## 2. Tighten task if needed
 
@@ -88,6 +96,7 @@ Escalate instead if the gap affects product behavior, high-level architecture, A
 State briefly:
 
 - external entry point and observable side effect,
+- task-contract checklist items that must be satisfied,
 - acceptance/feature/contract test to write or run first,
 - inner-loop unit tests likely needed,
 - files to edit/create,
@@ -133,8 +142,9 @@ After outside-in TDD passes:
 1. Run the `Fast` check from `## Feedback loop`.
 2. If the fast check passes, run the practical `User/system` and `Edge` checks.
 3. If a check fails, diagnose the smallest in-scope cause, fix it, and rerun the same failing check before moving on.
-4. After required task checks pass, run the `Gate` command from `## Feedback loop`.
-5. If the gate fails because of this task's scope, fix and rerun the failing command, then rerun the gate.
+4. Audit the implementation against the task-contract checklist. If any explicit task instruction is unmet, continue working until it is met or stop blocked with owner/reason.
+5. After required task checks and task-contract audit pass, run the `Gate` command from `## Feedback loop`.
+6. If the gate fails because of this task's scope, fix and rerun the failing command, then rerun the gate.
 
 Retry rules:
 
@@ -148,11 +158,11 @@ Retry rules:
 
 ## 5. Review
 
-Self-review small/local changes. Use oracle/deep review for large, risky, auth/security/payment, schema/API, persistence, repeated loop failure, or cross-cutting changes.
+Self-review small/local changes with the `are-you-proud` rubric. Use oracle/deep review for large, risky, auth/security/payment, schema/API, persistence, repeated loop failure, or cross-cutting changes.
 
-Before finalizing a completed implementation, run an Oracle **Are You Proud?** validation unless the change is docs-only, task-only, or explicitly too small to justify a background review. Ask Oracle to use the five-topic validation: correctness/intent, simplicity/YAGNI/overengineering, naming/readability, SOLID/design fit, and tests/verification. Resolve must-fix findings before marking the task done; record skipped Oracle validation with the reason.
+Before finalizing a completed implementation, load `are-you-proud` and run an **Are You Proud?** validation unless the change is docs-only, task-only, or explicitly too small to justify a review. When oracle is used, explicitly ask Oracle to apply the `are-you-proud` skill/rubric and include: correctness/intent, simplicity/YAGNI/overengineering, naming/readability, SOLID/design fit, and tests/verification. Resolve must-fix findings before marking the task done; record skipped Are You Proud/Oracle validation with the reason.
 
-Check: scope, architecture/ADR consistency, Outside-In TDD evidence, edge cases, tests, feedback-loop results, Oracle findings when used, and whether the final gate passed after the last fix.
+Check: scope, architecture/ADR consistency, task-contract checklist satisfaction, Outside-In TDD evidence, edge cases, tests, feedback-loop results, Are You Proud/Oracle findings when used, and whether the final gate passed after the last fix.
 
 ## 6. Result / finalize
 
@@ -168,9 +178,10 @@ Minimum complete result:
 - Status: done
 - Changed: `path`, `path`
 - TDD: acceptance/feature/contract red → inner-loop unit red/green/refactor → acceptance green, or explicit exception
+- Task contract: explicit instructions checked → satisfied, or unmet item + owner/reason
 - Feedback loop: `command/action` → result, including failed attempts/fixes when relevant
 - Gate: `command` → passed
-- Review: self/oracle/Are You Proud validation; findings resolved or skipped with reason
+- Review: self/oracle Are You Proud validation; findings resolved or skipped with reason
 - Follow-up applied to next task: none | `TASK-002`
 ```
 
@@ -204,7 +215,7 @@ After blocked result is recorded:
 2. Update `_active.md`: leave the task unchecked, set `Current` to `none`, and set `Next` to `blocked` with blocker owner and the last failing command/action summary.
 3. Do not mark done.
 
-Do not mark the task `done` until implementation, review, and feedback-loop results are recorded in the task file.
+Do not mark the task `done` until implementation, task-contract audit, review, and feedback-loop results are recorded in the task file.
 
 Refresh semantic index after code/doc changes when available; record skipped/running/fresh status.
 
@@ -214,11 +225,13 @@ Refresh semantic index after code/doc changes when available; record skipped/run
 ✅ Task complete: TASK-XXX
 - Changed: ...
 - TDD: ...
+- Task contract: ...
 - Feedback loop: ...
+- Gate: ...
 - Result: task file updated
 - Next task context: updated TASK-YYY | none
 - Active board: .features/.../tasks/_active.md updated | not used
-- Review: self/oracle/Are You Proud validation; findings resolved or skipped with reason
+- Review: self/oracle Are You Proud validation; findings resolved or skipped with reason
 - Semantic index: ...
 - Follow-up: ...
 ```
@@ -226,6 +239,7 @@ Refresh semantic index after code/doc changes when available; record skipped/run
 ```text
 ⛔ Task blocked: TASK-XXX
 - Last failing check: ...
+- Task contract: satisfied | unmet item + owner/reason
 - Blocker owner: user | oracle | environment | upstream
 - Result: task file updated
 - Active board: .features/.../tasks/_active.md updated | not used

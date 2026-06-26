@@ -38,11 +38,14 @@ If multiple features have ready work, ask which one to run.
 3. Pick the target or next executable task using both `_active.md` and task frontmatter.
 4. Resolve agent-owned blockers before declaring blocked: stale task metadata, missing `_active.md`, stale anchors, missing local feedback-loop commands, result/status drift, or in-scope check failures.
 5. If a blocked task's blocker is agent-owned/local, document the unblock action, set it back to `status: ready`, refresh `_active.md`, then execute it. Keep user-owned blocked tasks blocked.
-6. Load `implement-task` and execute exactly one task.
-7. Record feedback-loop results in the task's `## Result` section.
-8. If the next task needs context from this iteration, update that next task directly.
-9. Mark task done and update `_active.md` only after results and review.
-10. Report iteration status.
+6. Load `implement-task` from `/Users/carlosrodrigo/agents/skills/implement-task/SKILL.md` and execute exactly one task with that workflow.
+7. Extract and maintain an explicit task-contract checklist from the task brief: Goal, Done, Execute bullets, required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results.
+8. Record feedback-loop results and the task-contract audit in the task's `## Result` section.
+9. If any explicit task-contract item is unmet, continue working or stop blocked with owner/reason; do not mark done.
+10. If the next task needs context from this iteration, update that next task directly.
+11. Load/apply `are-you-proud` during review, using Oracle with that rubric for risky/complex/repeated-failure work.
+12. Mark task done and update `_active.md` only after results, Are You Proud/Oracle review, and contract audit.
+13. Report iteration status to the user and loop artifacts.
 
 Ready/open/locally-blocked task is executable when:
 
@@ -56,11 +59,18 @@ If no task is executable, first try to make one executable when the blocker is l
 
 ## Iteration output
 
+Every iteration must inform back in both the final response and loop artifacts:
+
 ```text
 Loop iteration complete: TASK-XXX — {title}
+Changed: {paths}
+Task contract: {all explicit instructions satisfied | unmet item + owner}
+Feedback loop: {summary}
+Gate: {summary}
+Review: {self/oracle Are You Proud summary or skipped reason}
 Result: .features/{feature}/tasks/NNN-title.md updated
 Active board: .features/{feature}/tasks/_active.md updated
-Feedback loop: {summary}
+Summary: .features/{feature}/artifacts/loop/latest-iteration.md updated
 Next: {continue | blocked | complete}
 ```
 
@@ -78,6 +88,8 @@ Do not use `Loop blocked:` for a blocker you can fix locally. Fix it, update tas
 When targeted work is done:
 
 - ensure completed/blocked tasks have current `## Result` sections,
+- ensure each completed task's `## Result` includes a task-contract audit for explicit instructions,
+- ensure no explicit task instruction was silently replaced by a different local implementation path,
 - ensure any next-task handoff context was written directly into the next task,
 - ensure `_active.md` shows all completed tasks checked off or the next blocker,
 - run final regression gate if required by task feedback loops,

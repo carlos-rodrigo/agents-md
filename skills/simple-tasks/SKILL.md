@@ -102,6 +102,7 @@ created: YYYY-MM-DD
 ## Feedback loop
 
 - State: {what must be true}
+- Contract: all explicit `Goal` / `Done` / `Execute` instructions are satisfied by the implementation or recorded as blocked with owner
 - Fast: `{command}` → {expected}
 - User/system: {action/API/browser/manual check} → {expected}
 - Edge: {case} → {expected}
@@ -148,6 +149,7 @@ A task can be `ready` only when:
 - context links are enough to avoid broad rediscovery,
 - `Execute` names likely files or planned new files,
 - feedback loop is concrete and executable,
+- task contract is checkable from explicit Goal/Done/Execute language,
 - escalation triggers are clear.
 
 Use the `feedback-loop` skill to fill or tighten `## Feedback loop` before marking a task ready.
@@ -179,9 +181,10 @@ Append or update the task result as:
 
 - Status: done | blocked
 - Changed: `path`, `path` | none
+- Task contract: explicit instructions checked → satisfied, or unmet item + owner/reason
 - Feedback loop: passed/failed/skipped with reason
 - Gate: passed/failed/skipped with reason
-- Review: self/oracle + findings
+- Review: self/oracle Are You Proud validation; findings resolved or skipped with reason
 - Follow-up applied to next task: none | `TASK-002`
 ```
 
@@ -195,3 +198,4 @@ If a later task needs information discovered during execution, write that inform
 4. Feedback loop lives in the task.
 5. `_active.md` is first-class loop state.
 6. No `done` without a task-local `## Result`.
+7. No `done` until explicit task instructions are audited against the diff and feedback-loop evidence.

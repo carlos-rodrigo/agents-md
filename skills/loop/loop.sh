@@ -313,6 +313,7 @@ fi
 mkdir -p ".features/$FEATURE/artifacts/loop"
 PROGRESS_FILE=".features/$FEATURE/artifacts/loop/progress.txt"
 LOG_FILE=".features/$FEATURE/artifacts/loop/loop.log"
+SUMMARY_FILE=".features/$FEATURE/artifacts/loop/latest-iteration.md"
 
 if [[ ! -f "$PROGRESS_FILE" ]]; then
   {
@@ -335,6 +336,7 @@ fi
 PROMPT_TEMPLATE="$(<"$PROMPT_TEMPLATE_FILE")"
 PROMPT="${PROMPT_TEMPLATE//\{\{FEATURE\}\}/$FEATURE}"
 PROMPT="${PROMPT//\{\{PROGRESS_FILE\}\}/$PROGRESS_FILE}"
+PROMPT="${PROMPT//\{\{SUMMARY_FILE\}\}/$SUMMARY_FILE}"
 if [[ -n "$TASK_ID" ]]; then
   TARGET_TASK_LINE="Target task: $TASK_ID. Do not execute any other task."
 else
@@ -357,6 +359,7 @@ else
   echo "project=$PROJECT_ROOT feature=$FEATURE task=${TASK_ID:-none} tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 fi
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
+echo "summary_file=$SUMMARY_FILE" | tee -a "$LOG_FILE"
 
 RATE_LIMIT_STREAK=0
 
@@ -447,6 +450,26 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   if [[ $TOOL_EXIT -ne 0 ]]; then
     echo "⚠️  Tool exited non-zero (exit=$TOOL_EXIT). Continuing loop." | tee -a "$LOG_FILE"
   fi
+
+  {
+    echo "# Latest Loop Iteration"
+    echo
+    echo "- Feature: $FEATURE"
+    echo "- Task target: ${TASK_ID:-none}"
+    echo "- Iteration: $i/$MAX_ITERATIONS"
+    echo "- Finished: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "- Duration: $DURATION_STR"
+    echo "- Tool: $TOOL"
+    echo "- Tool exit: $TOOL_EXIT"
+    echo "- Log: $LOG_FILE"
+    echo
+    echo "## Agent output tail"
+    echo
+    echo '```text'
+    tail -n 80 "$TEMP_OUTPUT"
+    echo '```'
+  } > "$SUMMARY_FILE"
+  echo "summary_file=$SUMMARY_FILE" | tee -a "$LOG_FILE"
 
   if grep -Eq "Loop complete|<promise>COMPLETE</promise>" "$TEMP_OUTPUT"; then
     echo "✅ Loop complete detected." | tee -a "$LOG_FILE"
