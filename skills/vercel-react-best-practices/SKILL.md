@@ -1,6 +1,6 @@
 ---
 name: vercel-react-best-practices
-description: React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.
+description: React and Next.js performance optimization guidelines from Vercel Engineering. Use when writing, reviewing, or refactoring React/Next.js code for performance, data fetching, rendering, or bundle shape. Do not use for visual design critique; use frontend-design for creation and web-design-guidelines for UI/UX/accessibility review.
 license: MIT
 metadata:
   author: vercel
@@ -9,7 +9,7 @@ metadata:
 
 # Vercel React Best Practices
 
-Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 45 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
+Comprehensive performance optimization guide for React and Next.js applications, maintained by Vercel. Contains 40+ rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
 
 ## When to Apply
 
@@ -19,6 +19,8 @@ Reference these guidelines when:
 - Reviewing code for performance issues
 - Refactoring existing React/Next.js code
 - Optimizing bundle size or load times
+
+Before applying a rule, inspect `package.json`, framework version, existing project patterns, and dependencies. Do not add dependencies, use experimental APIs, or force a rule that does not fit the installed stack unless the user approves.
 
 ## Rule Categories by Priority
 
@@ -61,8 +63,10 @@ Reference these guidelines when:
 
 ### 4. Client-Side Data Fetching (MEDIUM-HIGH)
 
-- `client-swr-dedup` - Use SWR for automatic request deduplication
+- `client-swr-dedup` - Use SWR for automatic request deduplication when SWR is already present or approved
 - `client-event-listeners` - Deduplicate global event listeners
+- `client-passive-event-listeners` - Use passive listeners for scroll/touch where safe
+- `client-localstorage-schema` - Validate and version localStorage/sessionStorage data
 
 ### 5. Re-render Optimization (MEDIUM)
 
@@ -111,7 +115,7 @@ Read individual rule files for detailed explanations and code examples:
 ```
 rules/async-parallel.md
 rules/bundle-barrel-imports.md
-rules/_sections.md
+rules/client-passive-event-listeners.md
 ```
 
 Each rule file contains:
@@ -119,6 +123,16 @@ Each rule file contains:
 - Incorrect code example with explanation
 - Correct code example with explanation
 - Additional context and references
+
+## Verification
+
+For React/Next changes, run available project checks and targeted smoke tests:
+
+- lint/typecheck/build,
+- route/component smoke for changed UI paths,
+- no hydration warnings for rendering changes,
+- bundle output comparison when changing imports/dynamic loading,
+- before/after measurements only for explicit performance work.
 
 ## Full Compiled Document
 

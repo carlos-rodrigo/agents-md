@@ -59,6 +59,7 @@ Bug fixes, docs, readability improvements, and small duplication reduction are a
 - Use `researcher` for unfamiliar APIs/libraries, prior-art search, or broad code exploration.
 - Use `oracle` when blocked after 2 failed attempts, for architecture trade-offs, or for pre-merge deep review.
 - Prefer `agent_job_start` / agent-jobs for researcher, oracle, and deep-review work when tmux is available; use synchronous `subagent` only when blocking is explicit or tmux is unavailable.
+- When fanning out multiple Oracle/research jobs, set `followUp:false` and poll/read results manually to avoid cross-talk between completion follow-ups.
 - Chain `researcher` → `oracle` when uncertainty is high.
 
 ## Finish

@@ -1,11 +1,13 @@
 ---
 name: prd
-description: "Create or update a feature PRD as a reviewable HTML product story with What, Why, How, workflows, and acceptance criteria. Triggers on: create a prd, write prd, prd.html, plan feature, requirements for, user stories, acceptance criteria."
+description: "Create or update a concise feature PRD as a reviewable HTML What/Why/How product brief. Use before design or implementation when product intent, scope, workflows, or acceptance behavior are unclear. Do not use for task-level test plans; use feedback-loop for implementation verification. Triggers on: create a prd, write prd, prd.html, product requirements, plan feature."
 ---
 
 # Product Requirements Document
 
-Use this skill when a feature needs product intent clarified before design or implementation.
+Use this skill to answer one product question:
+
+> What are we making, why does it matter, how will people use it, and how do we know it works?
 
 Default artifact:
 
@@ -13,110 +15,95 @@ Default artifact:
 docs/features/{feature}/prd.html
 ```
 
-A PRD is a product story about **what we want to build, why it matters, and how the requirements/workflows make the feature achieve the goal**.
+Generate a self-contained, reviewable HTML brief. Use `html-report-designer` for the HTML shell, accessibility, stable review anchors, and validation. Markdown PRDs are legacy; create one only when the user or repo asks.
 
-Generate the PRD as a self-contained, reviewable HTML document. Use `html-report-designer` for the shell, accessibility, stable review anchors, and progressive motion.
+## In one minute
 
-Markdown PRDs are legacy/compatibility outputs. Do not create a Markdown PRD unless the user asks or the repo requires it.
+1. Understand the request.
+2. Read just enough product/repo context to avoid guessing.
+3. Explain the feature in What / Why / How / Done.
+4. Name what is out of scope.
+5. Write or update `docs/features/{feature}/prd.html`.
+6. Cite sources and open questions.
+7. Stop before architecture, tasks, or implementation.
 
-## The job
+## Plain-language test
 
-1. Receive the feature idea or product request.
-2. Read just enough repo/product context to avoid invented requirements.
-3. Self-clarify the What / Why / How before writing.
-4. Create or update `docs/features/{feature}/prd.html`.
-5. Stop at product requirements. Do not design architecture, create tasks, or implement.
+A smart 10-year-old should understand the first screen:
 
-## Self-clarification
+- **What:** What are we building, and for whom?
+- **Why:** What problem or opportunity makes this worth doing?
+- **How:** What will the user/system do differently?
+- **Done:** What can we observe to prove it works?
+- **Not now:** What are we explicitly not doing?
 
-Before writing the PRD, answer these internally and use the answers to shape the document:
+If a sentence does not help answer one of those questions, cut it or move it to a later design/task artifact.
+
+## Source and scope rules
+
+- Do not invent requirements, users, business rules, or acceptance behavior.
+- If a missing answer changes scope, legal/security/billing risk, or design readiness, ask up to 3 blocking questions.
+- If the gap is small and non-blocking, list it under assumptions or open questions.
+- Keep implementation out: no files, classes, schemas, endpoints, migrations, rollout mechanics, or task steps unless they are product-visible constraints.
+- End with a `Sources reviewed` note: paths, docs, screenshots, conversations, or “user request only”.
+
+## PRD shape
+
+Keep it concise. Default table count is zero.
 
 ```text
-What: What feature are we building, for whom, and what is explicitly in/out?
-Why: What need, pain, or opportunity makes this worth doing now?
-How: Which product requirements and user workflows will make the feature achieve the goal?
-Acceptance: What observable results prove the workflows satisfy the need?
-Open questions: What decisions still block design or implementation?
+summary            # product story, status, 2-3 takeaways, sources reviewed
+what               # feature, users/jobs, in scope, out of scope
+why                # need, pain, opportunity, success signal
+how                # 2-4 stories/rules plus one main workflow and key edge workflow
+acceptance         # 3-6 observable criteria tied to workflows
+open-questions     # only unresolved blockers with owner/status
+ready-for-design   # yes/no checklist and next step
 ```
 
-Default to self-clarifying from the request, existing docs, source context, and examples. Ask the user only when a missing answer changes scope, acceptance, legal/security/billing risk, or downstream design. Ask at most 3 blocking questions.
-
-## PRD structure
-
-Write the PRD as a concise product decision brief, not a dashboard or transcript. A reviewer should understand the product bet, scope, workflows, and acceptance criteria in a few minutes.
-
-Brevity defaults:
-
-- Summary: 1 paragraph plus 2-3 takeaways.
-- What: 2-3 capabilities and short in/out bullets.
-- Why: 3 bullets at most: need, current pain, opportunity/success signal.
-- How: 2-4 product stories; each story gets 1 sentence and only the observable rules it needs.
-- Workflows: one main workflow plus one edge/error/empty/permission workflow unless the feature truly needs more.
-- Acceptance: 3-6 criteria, each directly verifiable.
-- Open questions: only unresolved blockers; omit the section body when there are none.
-
-Use tables only for rare traceability matrices. Default table count is zero.
-
-Required sections:
+Optional sections only when useful:
 
 ```text
-summary            # title, concise product story, status metadata, key takeaways
-what               # what feature we are building, who it serves, and scope boundaries
-why                # need, current pain, opportunity, and success signals
-how                # requirements, user stories, product rules, and workflows
-acceptance         # verifiable acceptance criteria tied to workflows
-open-questions     # only unresolved decisions with owner/blocker state
-ready-for-design   # readiness checklist and recommended next step
-```
-
-Optional content when useful:
-
-```text
-assumptions        # inferred facts the user should verify
-deferred-stories   # adjacent behavior intentionally out of scope
-constraints        # product-level constraints that do not fit the What/How prose
+assumptions        # inferred facts to verify
+deferred-stories   # adjacent behavior intentionally later
+constraints        # product-level constraints that shape user behavior
 ```
 
 ## Writing pattern
 
 ### Summary
 
-Open with a short product story: what changes for the user, why it is valuable, and what reviewers should approve or challenge. Keep status/date/type as compact metadata; do not add owner/outcome/next-action metric cards by default.
+Open with one paragraph:
+
+```text
+We want to build {feature} so {user/job} can {new capability} without {current friction}.
+```
+
+Then add 2-3 takeaways reviewers should approve or challenge.
 
 ### What
 
-Explain the feature in plain product language:
+Use bullets for:
 
-```text
-We want to build {feature} so {actor/user} can {new capability} without {current friction}.
-```
-
-Include only:
-
-- primary users or jobs-to-be-done,
-- 2-3 capabilities that describe the feature shape,
+- primary users/jobs,
+- 2-3 capabilities,
 - in-scope behavior,
-- out-of-scope/non-goals,
-- product constraints that affect the user experience.
-
-Do not prescribe files, classes, schemas, APIs, or rollout mechanics. If a detail will not affect scope, acceptance, or design readiness, leave it out.
+- out-of-scope behavior,
+- product constraints that affect user experience.
 
 ### Why
 
-Explain the need and opportunity in bullets, not essays:
+Use at most 3 bullets:
 
 - current pain or missed opportunity,
-- why this matters now,
-- expected user/business outcome,
-- success signals that show the need was met.
+- why now,
+- expected outcome or success signal.
 
-Avoid implementation mechanics unless they are product-visible. Avoid generic business-value filler.
+Avoid generic business-value filler.
 
 ### How
 
-Explain how the feature achieves the goal through requirements and workflows.
-
-Use a small set of numbered stories and rules. Keep each story to actor, capability, and outcome:
+Use a few product stories and observable rules:
 
 ```text
 STORY-001 — {Capability}
@@ -127,7 +114,7 @@ Rules:
 - REQ-002: When {condition}, the user sees/gets {observable result}.
 ```
 
-Then add only the workflows needed to prove behavior:
+Then include the smallest workflows that prove behavior:
 
 ```text
 WF-001 Main workflow
@@ -141,69 +128,59 @@ When ...
 Then ...
 ```
 
-Use workflows to express behavior, not UI click scripts or implementation procedures.
+### Simple product diagram
+
+Include a tiny semantic diagram only if it makes the product idea easier to understand. Prefer 3-7 nodes with verb labels:
+
+```text
+User need → Product action → System response → Visible outcome
+```
+
+Use diagrams to explain meaning, not decoration.
 
 ### Acceptance
 
-Acceptance criteria must be verifiable without guessing:
+Make acceptance criteria observable:
 
 ```text
 AC-001: Given WF-001, the user can observe ...
-AC-002: Given WF-002, the system shows/prevents/allows ...
-AC-003: Quality checks pass and the PRD has no unresolved placeholders.
-```
-
-A simple checklist is usually better than a large matrix. Use a matrix only when many stories need traceability.
-
-### Open questions
-
-Only include questions that still need a decision. Each question should say owner and blocker state:
-
-```text
-Q-001: {question}
-Owner: {person/team}
-Blocks: design | task | none
-Resolution path: {how to answer}
+AC-002: Given WF-002, the system prevents/allows/shows ...
+AC-003: The PRD has no unresolved placeholders and is ready for design.
 ```
 
 ## Quality checklist
 
-Before finishing, check:
+Before finishing:
 
-- [ ] The PRD reads as a What / Why / How product story.
-- [ ] What clearly explains the feature, users/jobs, scope, and non-goals.
-- [ ] Why clearly explains the need, opportunity, and success signals.
-- [ ] How connects stories, requirements, and workflows to the goal.
-- [ ] Each story has actor, capability, and outcome.
-- [ ] Requirements are observable and product-level.
-- [ ] Workflows cover main behavior plus relevant edge/error/empty/permission behavior.
+- [ ] The PRD is a What / Why / How / Done product story.
+- [ ] A non-engineer can understand the summary and workflow.
+- [ ] Requirements are observable product behavior.
 - [ ] Acceptance criteria are verifiable and tied to workflows.
+- [ ] Sources reviewed are named.
 - [ ] Open questions have owner and blocker state.
-- [ ] No architecture or implementation details leaked into the PRD.
+- [ ] No architecture, task, or implementation details leaked in.
+- [ ] Tables are absent unless a true traceability matrix is needed.
 - [ ] `data-review-id` anchors are stable and unique.
 - [ ] HTML validation passes when available.
 
 ## Smells to fix
 
-- A PRD that reads like a table of facts instead of a product story.
-- A PRD that repeats the same idea in summary, scope, stories, workflows, and acceptance.
-- A PRD that includes nice-to-have context no reviewer needs to decide scope or acceptance.
+- Repeating the same idea in summary, scope, stories, workflows, and acceptance.
 - Vague verbs: “support”, “handle”, “manage”, “improve” without observable behavior.
 - Subjective acceptance: “intuitive”, “robust”, “seamless”, “clean”.
 - Loopholes: “if possible”, “as needed”, “where applicable”.
-- Tables where a short checklist or card would be clearer.
 - Hidden assumptions presented as decisions.
-- Architecture leakage: APIs, schemas, files, class names, storage mechanics, rollout details.
-- Task lists or implementation steps inside the PRD.
+- Tables where a sentence, card, or checklist would be clearer.
+- APIs, schemas, files, class names, storage mechanics, rollout steps, or task lists.
 
 ## Handoff
 
-After approval:
+After PRD approval:
 
 - use `design-solution` for architecture/design when needed,
-- update ADRs only for durable architecture rationale,
-- use `simple-tasks` for compact implementation task briefs,
-- execute only ready tasks.
+- use `simple-tasks` for implementation task briefs when splitting/delegating is useful,
+- use `feedback-loop` for task-level verification,
+- update ADRs only for durable architecture rationale.
 
 ## Output
 
@@ -212,6 +189,7 @@ End with:
 ```text
 PRD updated: docs/features/{feature}/prd.html {opened/reviewed | not opened + reason}
 Status: {Draft | Review | Approved | Blocked}
+Sources reviewed: {paths/docs/chat | user request only}
 Review anchors: {yes | no + reason}
 Validation: {passed | not run + reason | failed + key issue}
 Ready for design: {yes | no + blockers}

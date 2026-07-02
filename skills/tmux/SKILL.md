@@ -1,8 +1,7 @@
 ---
 name: tmux
 description: Instructions for using tmux to spawn multiple processes, inspect them, and capture their output. Useful for running servers or long-running tasks in the background.
-allowed-tools:
-  - Bash
+allowed-tools: Bash
 ---
 
 # Tmux Skill
@@ -19,7 +18,7 @@ First, verify you are running inside tmux:
 echo $TMUX
 ```
 
-If this returns empty, you are not running inside tmux and these commands will not work as expected.
+If this returns empty, either start/attach a tmux session first or create a detached session with `tmux new-session -d -s <session>`. Prefer running background jobs from an existing Pi/tmux session when possible.
 
 Once verified, check your current windows:
 
@@ -31,17 +30,15 @@ tmux list-windows
 
 To run a command (e.g., a dev server) in a way that persists and can be inspected:
 
-1.  **Create a new detached window** with a specific name. This keeps it isolated and easy to reference.
+1.  **Create a new detached window** with a unique name. Include the task/purpose to avoid collisions, e.g. `pi-api-server` or `pi-loop-task-002`.
 
     ```bash
-    tmux new-window -n "server-log" -d
+    tmux new-window -n "pi-api-server" -d
     ```
-
-    _(Replace "server-log" with a relevant name for your task)_
 
 2.  **Send the command** to that window.
     ```bash
-    tmux send-keys -t "server-log" "npm start" C-m
+    tmux send-keys -t "pi-api-server" "npm start" C-m
     ```
     _(`C-m` simulates the Enter key)_
 
@@ -52,13 +49,13 @@ You can read the output of that pane at any time without switching your context.
 **Get the current visible screen:**
 
 ```bash
-tmux capture-pane -p -t "server-log"
+tmux capture-pane -p -t "pi-api-server"
 ```
 
 **Get the entire history (scrollback):**
 
 ```bash
-tmux capture-pane -p -S - -t "server-log"
+tmux capture-pane -p -S - -t "pi-api-server"
 ```
 
 _Use this if the output might have scrolled off the screen._
@@ -70,27 +67,28 @@ If you need to stop or restart the process:
 **Send Ctrl+C (Interrupt):**
 
 ```bash
-tmux send-keys -t "server-log" C-c
+tmux send-keys -t "pi-api-server" C-c
 ```
 
 **Kill the window (Clean up):**
 
 ```bash
-tmux kill-window -t "server-log"
+tmux kill-window -t "pi-api-server"
 ```
 
-## 5. Advanced: Chaining Commands
+## 5. Optional: Chaining Commands
 
-You can chain multiple tmux commands in a single invocation using `';'` (note the quotes to avoid interpretation by the shell). This is faster and cleaner than running multiple `tmux` commands.
+Default to the simple two-step commands above for clarity. You can chain multiple tmux commands in a single invocation using `';'` when the command is already proven.
 
 Example: Create window and start process in one go:
 
 ```bash
-tmux new-window -n "server-log" -d ';' send-keys -t "server-log" "npm start" C-m
+tmux new-window -n "pi-api-server" -d ';' send-keys -t "pi-api-server" "npm start" C-m
 ```
 
 ## Summary of Pattern
 
-1. `tmux new-window -n "ID" -d`
-2. `tmux send-keys -t "ID" "CMD" C-m`
-3. `tmux capture-pane -p -t "ID"`
+1. `tmux new-window -n "pi-{task}-{purpose}" -d`
+2. `tmux send-keys -t "pi-{task}-{purpose}" "CMD" C-m`
+3. `tmux capture-pane -p -S - -t "pi-{task}-{purpose}"`
+4. Capture logs before `tmux kill-window -t "pi-{task}-{purpose}"`

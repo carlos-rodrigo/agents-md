@@ -1,6 +1,6 @@
 ---
 name: html-report-designer
-description: "Design and generate self-contained, reviewable HTML reports for PRDs, feature designs, architecture diagrams, research briefs, and decision documents. Triggers on: html report, report design, enjoyable document, prd.html, design.html, reviewable html, document UI/UX."
+description: "Design and generate the self-contained, reviewable HTML shell for PRDs, feature designs, diagrams, research briefs, and decision documents. Use for document UX, accessibility, templates, CSS, review anchors, and validation; use prd/design-solution to decide product or architecture content. Triggers on: html report, report design, reviewable html, document UI/UX."
 ---
 
 # HTML Report Designer

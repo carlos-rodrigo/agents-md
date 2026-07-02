@@ -45,27 +45,28 @@ That's the gist. [Optional: mention open questions if critical]
 
 ### 3. Generate Audio
 
-Use TTS to convert script to audio:
+Ask before calling any external TTS/network/API service or spending credits. If no approved TTS tool is available, output the script only.
+
+Before TTS:
+
+- check the requested/available TTS tool,
+- write the script to a local temp file to avoid shell-quoting problems,
+- never print or echo API keys/secrets,
+- save audio to a local file path.
+
+Example shape after approval:
 
 ```bash
-# If using OpenClaw with TTS
-# The agent will use the tts tool directly
-
-# If using ElevenLabs CLI (sag)
-sag -t "script content" -o briefing.mp3
-
-# If using OpenAI TTS
-curl -X POST "https://api.openai.com/v1/audio/speech" \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model":"tts-1","input":"script","voice":"onyx"}' \
-  --output briefing.mp3
+# Example only; adapt to the approved local tool.
+printf '%s' "$SCRIPT" > /tmp/audio-briefing-script.txt
+sag -f /tmp/audio-briefing-script.txt -o briefing.mp3
 ```
 
 ### 4. Deliver
 
-- Play the audio directly if possible
-- Or save to file and provide path
+- Ask before playing audio aloud.
+- Otherwise save to file and provide the path.
+- If audio generation was not approved or unavailable, provide the spoken script.
 
 ## Voice Guidelines
 

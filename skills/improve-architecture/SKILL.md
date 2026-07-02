@@ -28,7 +28,11 @@ Note where you experience friction:
 Numbered list with:
 - **Cluster**: Which modules involved
 - **Why coupled**: Shared types, call patterns, co-ownership
+- **Risk**: Why the current shape causes change/test risk
+- **Smallest viable refactor**: The first safe seam to try
+- **Files to inspect**: Concrete anchors
 - **Test impact**: What tests would be replaced by boundary tests
+- **Recommended next step**: Explore, spike, defer, or no change
 
 Ask: "Which would you like to explore?"
 
@@ -41,7 +45,7 @@ For chosen candidate:
 
 ### 4. Design multiple interfaces
 
-Spawn 3+ designs with different constraints:
+Generate 3+ alternative designs inline unless the user explicitly asks for subagents. Vary constraints:
 - Minimize interface (1-3 entry points)
 - Maximize flexibility
 - Optimize for common caller
@@ -54,6 +58,6 @@ Each outputs:
 
 **Give your recommendation** — be opinionated.
 
-### 5. Create GitHub issue
+### 5. Draft follow-up
 
-Use `gh issue create` with the chosen design as RFC.
+Draft a GitHub issue/RFC body with the chosen design. Ask the user before creating an issue or running `gh issue create`.

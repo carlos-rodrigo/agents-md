@@ -1,6 +1,6 @@
 ---
 name: feedback-loop
-description: "Define task-level feedback loops: how an agent proves an implementation reaches the desired user/system state using tests, CLI/API/browser/manual checks, expected results, reruns, and task-local results. Triggers on: feedback loop, how to test, verification plan, define testing, acceptance criteria."
+description: "Define task-level implementation feedback loops: how an agent proves a task reaches the desired user/system state using tests, CLI/API/browser/manual checks, expected results, reruns, and task-local results. Use for task acceptance checks, not PRD-level product acceptance criteria. Triggers on: feedback loop, how to test, verification plan, define testing, task checks."
 ---
 
 # Feedback Loop
@@ -14,7 +14,7 @@ Default location:
 .features/{feature}/tasks/NNN-title.md#result             # actual results after execution
 ```
 
-Do not create feature-level verification documents or separate report files by default; keep planned checks and actual results in the task file.
+Do not create feature-level verification documents or separate report files by default; keep planned checks and actual results in the task file. Do not use this skill to define PRD-level product acceptance criteria; use `prd` for product behavior and this skill for implementation proof.
 
 ## Progressive disclosure rule
 
