@@ -19,7 +19,8 @@ The diagram is a **learning artifact**, not decoration. It should help the user 
 - what exists in the system,
 - how the parts communicate,
 - where responsibilities and boundaries live,
-- which domain concepts are being introduced,
+- which domain concepts/entities are being introduced,
+- how domain entities interact through verbs/actions and state/effect changes,
 - how data/state moves,
 - which strategic decisions or feedback-loop evidence matter.
 
@@ -48,6 +49,7 @@ Pick the smallest mode that teaches the user what they need.
 | Understand implementation flow | Code Flow | class/function/method calls, events, jobs, payloads |
 | Understand how components talk | Component Communication | modules/services/components, protocols, boundaries |
 | Understand product concepts | Domain Concept Model | entities/concepts/states and relationships |
+| Understand domain behavior | Domain Interaction Model | source entity → verb/action → target entity/state/effect, authority, invariants |
 | Understand current vs intended behavior | Before/After System Story | old flow next to new flow |
 | Understand ownership | Ownership/Lane Map | runtime/team/module responsibility |
 | Understand strategic choices | Decision Map | options, tradeoffs, escalation points |
@@ -65,6 +67,7 @@ Before drawing, identify:
 - real classes/functions/modules/routes/events,
 - call order and data passed between calls,
 - domain concepts and their relationships,
+- domain interactions: which entity/concept triggers an action, what target entity/state/effect changes, and which rule or authority allows it,
 - state transitions and persistence points,
 - runtime/process/service boundaries,
 - error/retry/recovery paths,
@@ -99,10 +102,18 @@ input/output: important payload or state
 For domain-oriented boxes, include:
 
 ```text
-Concept name
+Concept/entity name
 Plain-language meaning
 Key fields/states/rules
 Relationship to other concepts
+Interaction verbs: creates / consumes / transfers / schedules / approves / reconciles / blocks
+```
+
+For domain arrows, label the verb and the observable effect:
+
+```text
+Campaign Event --consumes--> Input Inventory
+visible effect: stock down + cost impact
 ```
 
 Use plain language for understanding and real code names for traceability.
@@ -177,8 +188,10 @@ Mode: Context | Flow | Sequence | State | Ownership | Slice | Decision
 Scope: What is included and intentionally excluded?
 Evidence: Which files/docs/tests/logs back this drawing?
 Nodes: What actors/components/concepts must appear?
-Edges: What calls/events/transitions must be labelled?
+Domain interactions: Which source entity → verb/action → target entity/state/effect relationships must be shown?
+Edges: What calls/events/transitions/interactions must be labelled?
 Boundaries: What runtime/team/module/process boundaries matter?
+Motion/read order: In what sequence should nodes, edges, labels, and risk paths reveal so the diagram teaches the flow?
 Uncertainty: What is assumed, unresolved, removed, risky, or decision-needed?
 ```
 
@@ -193,6 +206,7 @@ State the question the diagram should answer, for example:
 - “Which classes and methods run when a user submits this form?”
 - “How does this event move from controller → service → job → subscriber?”
 - “What domain concepts are introduced by this feature and how do they relate?”
+- “How does one domain entity change, create, block, consume, or reconcile another?”
 - “How do PRDs, design.html, ADRs, task briefs, and task results communicate?”
 
 If the question is unclear, ask one focused clarifying question before drawing.
@@ -217,7 +231,10 @@ Calls / handoffs:
 - caller → callee — payload/state
 
 Domain concepts:
-- concept — meaning — relationships
+- concept/entity — meaning — relationships
+
+Domain interactions:
+- source entity → verb/action → target entity/state/effect — rule/authority
 
 Boundaries:
 - runtime/service/module/persistence boundary
@@ -254,6 +271,15 @@ Preferred outputs:
 
 Use a self-contained HTML file with inline SVG and CSS.
 
+If the user asks for a handmade, sketchy, Excalidraw-like, or whiteboard style, keep the same semantic contract but choose the lightest style treatment that improves approachability without lowering legibility:
+
+- **Sketch-outline:** slightly imperfect/double-stroked outlines and hand-labelled callouts; safest for durable technical docs.
+- **Rough/hachure:** build-time Rough.js-style primitives or manually inlined sketch paths; use when the diagram is concept-heavy and benefits from “working model” energy.
+- **Whiteboard/napkin:** loose frames, arrows, and sticky-note callouts; use for early product/domain exploration, not final API contracts.
+- **Chalkboard/dark sketch:** high-contrast dark canvas with chalk strokes; reserve for presentations or explicitly requested narrative artifacts.
+
+Finished diagrams still must be inline SVG/CSS only: no remote runtime, no Mermaid runtime, and no decorative roughness that makes labels or arrows harder to read.
+
 - For durable report pages, start from `../html-report-designer/resources/report-template.html` and embed the SVG as a figure.
 - For diagram-only pages, start from `resources/system-diagram-template.html` when helpful.
 
@@ -278,11 +304,12 @@ When the user says a layer, responsibility, domain relationship, or call arrow f
 - Do not use Tailwind CDN/runtime, remote fonts, Mermaid runtime, or external CSS in finished diagrams. D2/Mermaid/Graphviz may be used only at build time if the final SVG is inlined and restyled to this system.
 - Prefer the build-time ELK renderer for multi-node architecture/call-flow diagrams: create an ELK JSON spec, run `node /Users/carlosrodrigo/agents/scripts/render-elk-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. Use manual SVG only for tiny diagrams or intentionally custom spatial metaphors.
 - Use a tokenized Vercel-style diagram system: semantic surfaces, text ranks, borders, neutral default, status colors, spacing, radius, focus rings, and reduced-motion-safe motion.
-- Use subtle scroll appearance, SVG node reveal, and path draw-in motion when it teaches reading order; keep content visible without JavaScript and honor `prefers-reduced-motion`.
+- Use subtle scroll appearance, SVG node reveal, and path draw-in motion when it teaches reading order; do not let complex diagrams simply appear all at once. The intended motion is actor/context → labelled edge/action → next node/state → recovery/risk path. Keep content visible without JavaScript and honor `prefers-reduced-motion`.
 - Keep text readable; do not shrink below 12px effective size in SVG.
 - Prefer semantic HTML text around the SVG over packing every explanation into SVG labels.
 - Use `foreignObject` only when necessary, and give it extra height to avoid clipping.
 - Use numbered steps for the main story when order matters.
+- Assign stable reveal delays (`--reveal-delay`) to readable groups; paths should use `pathLength="1"` and `.path-draw` so the drawn line shows progress.
 - Keep side effects inside cards as chips/callouts instead of drawing every side-effect arrow.
 - Use red dashed arrows only for exceptional paths.
 - Add a legend that defines colors for this specific diagram.
@@ -309,13 +336,14 @@ Before handoff, check:
 - the diagram answers one explicit question, not a vague topic;
 - source evidence was inspected for real actors, calls, state, and boundaries;
 - every color has a responsibility meaning documented in the legend;
-- every meaningful arrow is labeled with call/event/protocol/payload;
+- domain diagrams show entity/concept interactions with verb/action labels and state/effect outcomes, not just noun boxes;
+- every meaningful arrow is labeled with call/event/protocol/payload or domain interaction verb/effect;
 - for 4+ node diagrams, spacing/routing is generated with ELK or the manual layout has an explicit reason;
 - key SVG groups/nodes have stable `data-review-id` anchors;
 - SVG has `<title>` and `<desc>` and a visible caption/how-to-read note;
 - text remains readable at the expected viewport and is at least 12px effective size;
 - uncertainty, removed paths, recovery, or decision-needed paths are visible instead of implied;
-- progressive motion is optional and respects `prefers-reduced-motion`;
+- progressive motion reveals the diagram in reading order and respects `prefers-reduced-motion`;
 - final HTML has no external CSS/JS/runtime assets;
 - build-time Tailwind CSS is current (`npm run check:report-css` in `/Users/carlosrodrigo/agents`);
 - diagram-only pages pass `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs --allow-placeholders resources/system-diagram-template.html` when validating templates, and finished diagrams pass without `--allow-placeholders`.
@@ -329,6 +357,7 @@ Created: <path>
 Opened in browser: yes/no
 Diagram mode: <Code Flow | Component Communication | Domain Concept Model | ...>
 Diagram question: <question answered>
+Motion/read order: <how the diagram reveals the flow, or why motion was intentionally skipped>
 Key ownership/concept decisions:
 - ...
 What this should help you explain:

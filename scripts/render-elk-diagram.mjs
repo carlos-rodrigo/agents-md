@@ -117,11 +117,12 @@ function toSvg(spec, graph) {
   const titleId = `${spec.id}-title`.replace(/[^a-zA-Z0-9_-]/g, '-');
   const descId = `${spec.id}-desc`.replace(/[^a-zA-Z0-9_-]/g, '-');
 
-  const edgeElements = spec.edges.map((edge, index) => renderEdge(spec, edge, edgeById.get(edge.id), pad, markerId, boundaryMarkerId, index)).join('\n');
-  const nodeElements = spec.nodes.map((node, index) => renderNode(spec, node, nodeById.get(node.id), pad, index)).join('\n');
+  const timeline = revealTimeline(spec);
+  const edgeElements = spec.edges.map((edge) => renderEdge(spec, edge, edgeById.get(edge.id), pad, markerId, boundaryMarkerId, timeline.edgeDelays.get(edge.id))).join('\n');
+  const nodeElements = spec.nodes.map((node) => renderNode(spec, node, nodeById.get(node.id), pad, timeline.nodeDelays.get(node.id))).join('\n');
   const labelElements = spec.edges
     .filter((edge) => edge.label)
-    .map((edge, index) => renderEdgeLabel(spec, edge, edgeById.get(edge.id), pad, index))
+    .map((edge) => renderEdgeLabel(spec, edge, edgeById.get(edge.id), pad, timeline.labelDelays.get(edge.id)))
     .join('\n');
 
   return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="${titleId} ${descId}" xmlns="http://www.w3.org/2000/svg" data-review-id="${reviewId(spec, 'svg')}">
@@ -138,7 +139,7 @@ ${labelElements}
 </svg>`;
 }
 
-function renderNode(spec, sourceNode, layoutNode, pad, index) {
+function renderNode(spec, sourceNode, layoutNode, pad, revealDelay = 0) {
   if (!layoutNode) throw new Error(`ELK did not return layout for node ${sourceNode.id}`);
   const x = round(layoutNode.x + pad);
   const y = round(layoutNode.y + pad);
@@ -153,19 +154,18 @@ function renderNode(spec, sourceNode, layoutNode, pad, index) {
   const subtitle = sourceNode.subtitle ? `<text class="diagram-node-subtitle" x="${center}" y="${round(subtitleY)}" text-anchor="middle">${escapeHtml(sourceNode.subtitle)}</text>` : '';
   const meta = sourceNode.meta ? `<text class="diagram-node-meta" x="${center}" y="${round(subtitleY + 28)}" text-anchor="middle">${escapeHtml(sourceNode.meta)}</text>` : '';
 
-  return `  <g class="diagram-node diagram-reveal" style="--reveal-delay: ${index * 70}ms" data-review-id="${reviewId(spec, 'node', sourceNode.id, sourceNode.reviewId)}"><rect class="diagram-node-card" x="${x}" y="${y}" width="${width}" height="${height}" rx="16" fill="${colors.fill}" stroke="${colors.stroke}"/>${title}${subtitle}${meta}</g>`;
+  return `  <g class="diagram-node diagram-reveal" style="--reveal-delay: ${revealDelay}ms" data-review-id="${reviewId(spec, 'node', sourceNode.id, sourceNode.reviewId)}"><rect class="diagram-node-card" x="${x}" y="${y}" width="${width}" height="${height}" rx="16" fill="${colors.fill}" stroke="${colors.stroke}"/>${title}${subtitle}${meta}</g>`;
 }
 
-function renderEdge(spec, sourceEdge, layoutEdge, pad, markerId, boundaryMarkerId, index) {
+function renderEdge(spec, sourceEdge, layoutEdge, pad, markerId, boundaryMarkerId, revealDelay = 0) {
   const points = edgePoints(layoutEdge, pad);
   const d = pointsToPath(points);
   const klass = sourceEdge.kind === 'boundary' ? 'diagram-arrow-boundary' : 'diagram-arrow';
   const marker = sourceEdge.kind === 'boundary' ? boundaryMarkerId : markerId;
-  const delay = spec.nodes.length * 70 + index * 60;
-  return `  <g class="diagram-edge diagram-reveal" style="--reveal-delay: ${delay}ms" data-review-id="${reviewId(spec, 'edge', sourceEdge.id, sourceEdge.reviewIds?.edge)}"><path class="${klass} path-draw" pathLength="1" d="${d}" marker-end="url(#${marker})"/></g>`;
+  return `  <g class="diagram-edge diagram-reveal" style="--reveal-delay: ${revealDelay}ms" data-review-id="${reviewId(spec, 'edge', sourceEdge.id, sourceEdge.reviewIds?.edge)}"><path class="${klass} path-draw" pathLength="1" d="${d}" marker-end="url(#${marker})"/></g>`;
 }
 
-function renderEdgeLabel(spec, sourceEdge, layoutEdge, pad, index) {
+function renderEdgeLabel(spec, sourceEdge, layoutEdge, pad, revealDelay = 0) {
   const label = layoutEdge?.labels?.[0];
   const width = estimateLabelWidth(sourceEdge);
   const height = sourceEdge.detail ? 48 : 32;
@@ -176,8 +176,34 @@ function renderEdgeLabel(spec, sourceEdge, layoutEdge, pad, index) {
   const textX = round(x + width / 2);
   const textY = round(y + (sourceEdge.detail ? 20 : 21));
   const detail = sourceEdge.detail ? `<tspan class="diagram-label-detail" x="${textX}" dy="16">${escapeHtml(sourceEdge.detail)}</tspan>` : '';
-  const delay = spec.nodes.length * 70 + spec.edges.length * 60 + index * 50;
-  return `  <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: ${delay}ms" data-review-id="${reviewId(spec, 'edge-label', sourceEdge.id, sourceEdge.reviewIds?.label)}"><rect class="diagram-label-bg" x="${x}" y="${y}" width="${width}" height="${height}" rx="12"/><text class="diagram-arrow-label" x="${textX}" y="${textY}" text-anchor="middle"><tspan>${escapeHtml(sourceEdge.label)}</tspan>${detail}</text></g>`;
+  return `  <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: ${revealDelay}ms" data-review-id="${reviewId(spec, 'edge-label', sourceEdge.id, sourceEdge.reviewIds?.label)}"><rect class="diagram-label-bg" x="${x}" y="${y}" width="${width}" height="${height}" rx="12"/><text class="diagram-arrow-label" x="${textX}" y="${textY}" text-anchor="middle"><tspan>${escapeHtml(sourceEdge.label)}</tspan>${detail}</text></g>`;
+}
+
+function revealTimeline(spec) {
+  const stepMs = spec.motion?.stepMs ?? 140;
+  const nodeDelays = new Map();
+  const edgeDelays = new Map();
+  const labelDelays = new Map();
+
+  spec.nodes.forEach((node, index) => {
+    nodeDelays.set(node.id, index * stepMs * 2);
+  });
+
+  spec.edges.forEach((edge, index) => {
+    const sourceDelay = nodeDelays.get(edge.from) ?? 0;
+    const orderedDelay = index * stepMs * 2 + stepMs;
+    const edgeDelay = Math.max(orderedDelay, sourceDelay + stepMs);
+    const targetDelay = edgeDelay + stepMs;
+    const existingTargetDelay = nodeDelays.get(edge.to);
+
+    edgeDelays.set(edge.id, edgeDelay);
+    labelDelays.set(edge.id, edgeDelay + Math.round(stepMs * 0.55));
+    if (existingTargetDelay === undefined || targetDelay < existingTargetDelay) {
+      nodeDelays.set(edge.to, targetDelay);
+    }
+  });
+
+  return { nodeDelays, edgeDelays, labelDelays };
 }
 
 function edgePoints(layoutEdge, pad) {

@@ -23,15 +23,18 @@
             <li><a href="#review-path">Review path</a></li>
             <li><a href="#examples">Examples</a></li>
             <li><a href="#prd-story-inventory">PRD stories</a></li>
+            <li><a href="#prd-experience-contract">Experience</a></li>
             <li><a href="#pattern-research">Research</a></li>
             <li><a href="#design-thesis">Thesis</a></li>
             <li><a href="#proposed-architecture">System proposal</a></li>
             <li><a href="#technology-stack">Tech stack</a></li>
+            <li><a href="#interface-implementation">Interface</a></li>
             <li><a href="#architecture-overview">Architecture</a></li>
             <li><a href="#architecture-delta">Architecture delta</a></li>
             <li><a href="#slice-plan">Slice plan</a></li>
             <li><a href="#component-communication">Boundaries</a></li>
             <li><a href="#domain-model">Domain</a></li>
+            <li><a href="#domain-interactions">Domain interactions</a></li>
             <li><a href="#data-contracts">Contracts</a></li>
             <li><a href="#design-decisions">Decisions</a></li>
             <li><a href="#tasks-and-feedback">Slice designs</a></li>
@@ -106,12 +109,14 @@
               <h3><span class="id-chip">{{STORY_1_ID}}</span>{{STORY_1_TITLE}}</h3>
               <p>{{STORY_1_BDD_SCENARIO}}</p>
               <p><strong>Acceptance:</strong> {{STORY_1_ACCEPTANCE_IDS}}</p>
+              <p><strong>User flow/UI option:</strong> {{STORY_1_FLOW_AND_UI_OPTION}}</p>
               <p><strong>Design implication:</strong> {{STORY_1_DESIGN_IMPLICATION}}</p>
             </article>
             <article class="story-card" data-review-id="prd-story-inventory.story-2">
               <h3><span class="id-chip">{{STORY_2_ID}}</span>{{STORY_2_TITLE}}</h3>
               <p>{{STORY_2_BDD_SCENARIO}}</p>
               <p><strong>Acceptance:</strong> {{STORY_2_ACCEPTANCE_IDS}}</p>
+              <p><strong>User flow/UI option:</strong> {{STORY_2_FLOW_AND_UI_OPTION}}</p>
               <p><strong>Design implication:</strong> {{STORY_2_DESIGN_IMPLICATION}}</p>
             </article>
           </div>
@@ -120,6 +125,36 @@
             <p>{{PRD_NON_GOALS}}</p>
           </div>
           <span class="review-label">review: prd-story-inventory</span>
+        </section>
+
+        <section class="section-card reveal" id="prd-experience-contract" aria-labelledby="experience-contract-title" data-review-id="prd-experience-contract">
+          <span class="section-kicker">Product experience source of truth</span>
+          <h2 id="experience-contract-title">PRD Experience Contract</h2>
+          <p class="section-summary">{{PRD_EXPERIENCE_CONTRACT_SUMMARY}}</p>
+          <div class="card-grid">
+            <article class="decision-card" data-review-id="prd-experience-contract.selected-ui-option">
+              <h3>Selected PRD UI option</h3>
+              <p><strong>Option:</strong> {{SELECTED_UI_OPTION_ID}} — {{SELECTED_UI_OPTION_TITLE}}</p>
+              <p><strong>Why it shapes design:</strong> {{SELECTED_UI_OPTION_DESIGN_IMPACT}}</p>
+            </article>
+            <article class="decision-card" data-review-id="prd-experience-contract.user-flows">
+              <h3>Post-story flows to preserve</h3>
+              <p>{{POST_STORY_FLOW_DESIGN_SUMMARY}}</p>
+              <p><strong>Stories:</strong> {{POST_STORY_FLOW_IDS}}</p>
+            </article>
+            <article class="decision-card" data-review-id="prd-experience-contract.visible-states">
+              <h3>Visible states</h3>
+              <p>{{VISIBLE_STATES_SUMMARY}}</p>
+              <p><strong>Must include:</strong> {{VISIBLE_STATES_REQUIRED}}</p>
+            </article>
+            <article class="decision-card" data-review-id="prd-experience-contract.review-gaps">
+              <h3>PRD review gaps</h3>
+              <p>{{PRD_REVIEW_GAPS_SUMMARY}}</p>
+              <p><strong>Design gate:</strong> {{PRD_REVIEW_GAPS_GATE}}</p>
+            </article>
+          </div>
+          <div class="callout warning" data-review-id="prd-experience-contract.blocker-note"><strong>Do not hide product choices in design</strong><p>{{PRD_EXPERIENCE_BLOCKER_NOTE}}</p></div>
+          <span class="review-label">review: prd-experience-contract</span>
         </section>
 
         <section class="section-card reveal" id="pattern-research" aria-labelledby="research-title" data-review-id="pattern-research">
@@ -214,6 +249,35 @@
           <span class="review-label">review: technology-stack</span>
         </section>
 
+        <section class="section-card reveal" id="interface-implementation" aria-labelledby="interface-implementation-title" data-review-id="interface-implementation">
+          <span class="section-kicker">How the selected UI gets built</span>
+          <h2 id="interface-implementation-title">Interface Implementation Strategy</h2>
+          <p class="section-summary">{{INTERFACE_IMPLEMENTATION_SUMMARY}}</p>
+          <div class="card-grid">
+            <article class="component-card" data-review-id="interface-implementation.surfaces">
+              <h3>Surfaces and composition</h3>
+              <p><strong>Entry surfaces:</strong> {{INTERFACE_SURFACES}}</p>
+              <p><strong>Composition rule:</strong> {{INTERFACE_COMPOSITION_RULE}}</p>
+            </article>
+            <article class="component-card" data-review-id="interface-implementation.state-model">
+              <h3>State, loading, and recovery</h3>
+              <p>{{INTERFACE_STATE_MODEL}}</p>
+              <p><strong>Edge states:</strong> {{INTERFACE_EDGE_STATES}}</p>
+            </article>
+            <article class="component-card" data-review-id="interface-implementation.style-motion">
+              <h3>Style, libraries, and motion</h3>
+              <p><strong>Choices:</strong> {{INTERFACE_STYLE_LIBRARY_MOTION_CHOICES}}</p>
+              <p><strong>Why:</strong> {{INTERFACE_STYLE_LIBRARY_MOTION_WHY}}</p>
+            </article>
+            <article class="component-card" data-review-id="interface-implementation.accessibility">
+              <h3>Accessibility and responsiveness</h3>
+              <p>{{INTERFACE_ACCESSIBILITY_RESPONSIVE}}</p>
+              <p><strong>Feedback hook:</strong> {{INTERFACE_FEEDBACK_HOOK}}</p>
+            </article>
+          </div>
+          <span class="review-label">review: interface-implementation</span>
+        </section>
+
         <section class="section-card reveal" id="architecture-overview" aria-labelledby="architecture-title" data-review-id="architecture-overview">
           <span class="section-kicker">How the system fits together</span>
           <h2 id="architecture-title">High-Level Architecture Overview</h2>
@@ -233,23 +297,23 @@
               <g class="diagram-reveal" style="--reveal-delay: 210ms" data-review-id="architecture-overview.boundary-data"><rect class="diagram-boundary" x="940" y="58" width="300" height="510" rx="18" stroke="var(--warning)"/><text class="diagram-lane-title" x="964" y="92">{{ARCH_DATA_PACKAGE}}</text></g>
 
               <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="architecture-overview.node-route"><rect class="diagram-node-card" x="72" y="140" width="186" height="102" rx="16" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="165" y="170" text-anchor="middle">{{ARCH_ROUTE_NAME}}</text><text class="diagram-node-subtitle" x="165" y="196" text-anchor="middle">{{ARCH_UI_COMPONENT}}</text><text class="diagram-node-meta" x="165" y="220" text-anchor="middle">{{ARCH_ROUTE_PATH}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 360ms" data-review-id="architecture-overview.node-endpoint"><rect class="diagram-node-card" x="362" y="140" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="170" text-anchor="middle">{{ARCH_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="455" y="196" text-anchor="middle">{{ARCH_COMMAND_OR_QUERY}}</text><text class="diagram-node-meta" x="455" y="220" text-anchor="middle">{{ARCH_ENDPOINT_ROUTE}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 440ms" data-review-id="architecture-overview.node-service"><rect class="diagram-node-card" x="362" y="338" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="368" text-anchor="middle">{{ARCH_APP_SERVICE}}</text><text class="diagram-node-subtitle" x="455" y="394" text-anchor="middle">application seam</text><text class="diagram-node-meta" x="455" y="418" text-anchor="middle">{{ARCH_SERVICE_METHOD}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 520ms" data-review-id="architecture-overview.node-domain"><rect class="diagram-node-card" x="660" y="250" width="200" height="118" rx="16" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="760" y="282" text-anchor="middle">{{ARCH_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="760" y="308" text-anchor="middle">{{ARCH_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="760" y="332" text-anchor="middle">{{ARCH_DOMAIN_INVARIANT}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 600ms" data-review-id="architecture-overview.node-repository"><rect class="diagram-node-card" x="982" y="180" width="220" height="102" rx="16" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="1092" y="210" text-anchor="middle">{{ARCH_REPOSITORY}}</text><text class="diagram-node-subtitle" x="1092" y="236" text-anchor="middle">{{ARCH_DB_MODEL}}</text><text class="diagram-node-meta" x="1092" y="260" text-anchor="middle">{{ARCH_TABLE_OR_COLLECTION}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 680ms" data-review-id="architecture-overview.node-external"><rect class="diagram-node-card" x="982" y="390" width="220" height="102" rx="16" fill="var(--surface-subtle)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="1092" y="420" text-anchor="middle">{{ARCH_EXTERNAL_SYSTEM}}</text><text class="diagram-node-subtitle" x="1092" y="446" text-anchor="middle">{{ARCH_EXTERNAL_CONTRACT}}</text><text class="diagram-node-meta" x="1092" y="470" text-anchor="middle">{{ARCH_EXTERNAL_PAYLOAD}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 480ms" data-review-id="architecture-overview.node-endpoint"><rect class="diagram-node-card" x="362" y="140" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="170" text-anchor="middle">{{ARCH_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="455" y="196" text-anchor="middle">{{ARCH_COMMAND_OR_QUERY}}</text><text class="diagram-node-meta" x="455" y="220" text-anchor="middle">{{ARCH_ENDPOINT_ROUTE}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 680ms" data-review-id="architecture-overview.node-service"><rect class="diagram-node-card" x="362" y="338" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="368" text-anchor="middle">{{ARCH_APP_SERVICE}}</text><text class="diagram-node-subtitle" x="455" y="394" text-anchor="middle">application seam</text><text class="diagram-node-meta" x="455" y="418" text-anchor="middle">{{ARCH_SERVICE_METHOD}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 880ms" data-review-id="architecture-overview.node-domain"><rect class="diagram-node-card" x="660" y="250" width="200" height="118" rx="16" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="760" y="282" text-anchor="middle">{{ARCH_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="760" y="308" text-anchor="middle">{{ARCH_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="760" y="332" text-anchor="middle">{{ARCH_DOMAIN_INVARIANT}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="architecture-overview.node-repository"><rect class="diagram-node-card" x="982" y="180" width="220" height="102" rx="16" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="1092" y="210" text-anchor="middle">{{ARCH_REPOSITORY}}</text><text class="diagram-node-subtitle" x="1092" y="236" text-anchor="middle">{{ARCH_DB_MODEL}}</text><text class="diagram-node-meta" x="1092" y="260" text-anchor="middle">{{ARCH_TABLE_OR_COLLECTION}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1280ms" data-review-id="architecture-overview.node-external"><rect class="diagram-node-card" x="982" y="390" width="220" height="102" rx="16" fill="var(--surface-subtle)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="1092" y="420" text-anchor="middle">{{ARCH_EXTERNAL_SYSTEM}}</text><text class="diagram-node-subtitle" x="1092" y="446" text-anchor="middle">{{ARCH_EXTERNAL_CONTRACT}}</text><text class="diagram-node-meta" x="1092" y="470" text-anchor="middle">{{ARCH_EXTERNAL_PAYLOAD}}</text></g>
 
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 760ms" data-review-id="architecture-overview.edge-route-to-endpoint"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M258 191 C304 191 316 191 362 191" marker-end="url(#architecture-boundary-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 820ms" data-review-id="architecture-overview.edge-endpoint-to-service"><path class="diagram-arrow path-draw" pathLength="1" d="M455 242 L455 338" marker-end="url(#architecture-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 880ms" data-review-id="architecture-overview.edge-service-to-domain"><path class="diagram-arrow path-draw" pathLength="1" d="M548 389 C598 389 612 310 660 310" marker-end="url(#architecture-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 940ms" data-review-id="architecture-overview.edge-domain-to-repository"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 310 C910 310 930 231 982 231" marker-end="url(#architecture-boundary-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 1000ms" data-review-id="architecture-overview.edge-domain-to-external"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 338 C918 338 925 440 982 440" marker-end="url(#architecture-boundary-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 360ms" data-review-id="architecture-overview.edge-route-to-endpoint"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M258 191 C304 191 316 191 362 191" marker-end="url(#architecture-boundary-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 560ms" data-review-id="architecture-overview.edge-endpoint-to-service"><path class="diagram-arrow path-draw" pathLength="1" d="M455 242 L455 338" marker-end="url(#architecture-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 760ms" data-review-id="architecture-overview.edge-service-to-domain"><path class="diagram-arrow path-draw" pathLength="1" d="M548 389 C598 389 612 310 660 310" marker-end="url(#architecture-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 960ms" data-review-id="architecture-overview.edge-domain-to-repository"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 310 C910 310 930 231 982 231" marker-end="url(#architecture-boundary-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 1160ms" data-review-id="architecture-overview.edge-domain-to-external"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 338 C918 338 925 440 982 440" marker-end="url(#architecture-boundary-arrow)"/></g>
 
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1060ms" data-review-id="architecture-overview.edge-label.route-to-endpoint"><rect class="diagram-label-bg" x="230" y="76" width="226" height="50" rx="12"/><text class="diagram-arrow-label" x="343" y="98" text-anchor="middle"><tspan>{{ARCH_EDGE_UI_API}}</tspan><tspan class="diagram-label-detail" x="343" dy="16">{{ARCH_EDGE_UI_API_PAYLOAD}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1100ms" data-review-id="architecture-overview.edge-label.endpoint-to-service"><rect class="diagram-label-bg" x="72" y="270" width="214" height="50" rx="12"/><text class="diagram-arrow-label" x="179" y="292" text-anchor="middle"><tspan>{{ARCH_EDGE_COMMAND}}</tspan><tspan class="diagram-label-detail" x="179" dy="16">{{ARCH_EDGE_COMMAND_SHAPE}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1140ms" data-review-id="architecture-overview.edge-label.service-to-domain"><rect class="diagram-label-bg" x="590" y="382" width="172" height="50" rx="12"/><text class="diagram-arrow-label" x="676" y="404" text-anchor="middle"><tspan>{{ARCH_EDGE_DOMAIN}}</tspan><tspan class="diagram-label-detail" x="676" dy="16">{{ARCH_EDGE_DOMAIN_RULE}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1180ms" data-review-id="architecture-overview.edge-label.repository"><rect class="diagram-label-bg" x="846" y="116" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="961" y="138" text-anchor="middle"><tspan>{{ARCH_EDGE_PERSIST}}</tspan><tspan class="diagram-label-detail" x="961" dy="16">{{ARCH_EDGE_PERSIST_MODEL}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1220ms" data-review-id="architecture-overview.edge-label.external"><rect class="diagram-label-bg" x="848" y="516" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="963" y="538" text-anchor="middle"><tspan>{{ARCH_EDGE_EXTERNAL}}</tspan><tspan class="diagram-label-detail" x="963" dy="16">{{ARCH_EDGE_EXTERNAL_PAYLOAD}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 410ms" data-review-id="architecture-overview.edge-label.route-to-endpoint"><rect class="diagram-label-bg" x="230" y="76" width="226" height="50" rx="12"/><text class="diagram-arrow-label" x="343" y="98" text-anchor="middle"><tspan>{{ARCH_EDGE_UI_API}}</tspan><tspan class="diagram-label-detail" x="343" dy="16">{{ARCH_EDGE_UI_API_PAYLOAD}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 610ms" data-review-id="architecture-overview.edge-label.endpoint-to-service"><rect class="diagram-label-bg" x="72" y="270" width="214" height="50" rx="12"/><text class="diagram-arrow-label" x="179" y="292" text-anchor="middle"><tspan>{{ARCH_EDGE_COMMAND}}</tspan><tspan class="diagram-label-detail" x="179" dy="16">{{ARCH_EDGE_COMMAND_SHAPE}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 810ms" data-review-id="architecture-overview.edge-label.service-to-domain"><rect class="diagram-label-bg" x="590" y="382" width="172" height="50" rx="12"/><text class="diagram-arrow-label" x="676" y="404" text-anchor="middle"><tspan>{{ARCH_EDGE_DOMAIN}}</tspan><tspan class="diagram-label-detail" x="676" dy="16">{{ARCH_EDGE_DOMAIN_RULE}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1010ms" data-review-id="architecture-overview.edge-label.repository"><rect class="diagram-label-bg" x="846" y="116" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="961" y="138" text-anchor="middle"><tspan>{{ARCH_EDGE_PERSIST}}</tspan><tspan class="diagram-label-detail" x="961" dy="16">{{ARCH_EDGE_PERSIST_MODEL}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1210ms" data-review-id="architecture-overview.edge-label.external"><rect class="diagram-label-bg" x="848" y="516" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="963" y="538" text-anchor="middle"><tspan>{{ARCH_EDGE_EXTERNAL}}</tspan><tspan class="diagram-label-detail" x="963" dy="16">{{ARCH_EDGE_EXTERNAL_PAYLOAD}}</tspan></text></g>
             </svg>
             <figcaption class="diagram-caption" data-review-id="architecture-overview.legend"><span class="legend-item"><i class="swatch" style="color: var(--info)"></i>UI/web</span><span class="legend-item"><i class="swatch" style="color: var(--success)"></i>domain/application owner</span><span class="legend-item"><i class="swatch" style="color: var(--warning)"></i>persistence/reference state</span><span class="legend-item"><i class="swatch" style="color: var(--info); border-style: dashed"></i>boundary/API/process crossing</span></figcaption>
           </figure>
@@ -336,6 +400,46 @@
           <span class="review-label">review: domain-model</span>
         </section>
 
+        <section class="section-card reveal" id="domain-interactions" aria-labelledby="domain-interactions-title" data-review-id="domain-interactions">
+          <span class="section-kicker">Entity behavior</span>
+          <h2 id="domain-interactions-title">Domain Entity Interactions</h2>
+          <p class="section-summary">{{DOMAIN_INTERACTIONS_SUMMARY}}</p>
+          <figure class="figure-card diagram-figure" data-review-id="domain-interactions.figure">
+            <svg viewBox="0 0 1120 420" role="img" aria-labelledby="domain-interactions-diagram-title domain-interactions-diagram-desc" xmlns="http://www.w3.org/2000/svg" data-review-id="domain-interactions.svg">
+              <title id="domain-interactions-diagram-title">{{DOMAIN_INTERACTIONS_DIAGRAM_TITLE}}</title>
+              <desc id="domain-interactions-diagram-desc">Entity interaction map showing source entity, action verb, target entity state or effect, and policy authority.</desc>
+              <defs><marker id="domain-interactions-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
+              <rect class="diagram-bg" x="0" y="0" width="1120" height="420" />
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="domain-interactions.node-source"><rect class="diagram-node-card" x="70" y="122" width="210" height="112" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="175" y="154" text-anchor="middle">{{DOMAIN_SOURCE_ENTITY}}</text><text class="diagram-node-subtitle" x="175" y="182" text-anchor="middle">{{DOMAIN_SOURCE_MEANING}}</text><text class="diagram-node-meta" x="175" y="210" text-anchor="middle">owns: {{DOMAIN_SOURCE_OWNS}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="domain-interactions.node-target"><rect class="diagram-node-card" x="455" y="122" width="210" height="112" rx="16" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="560" y="154" text-anchor="middle">{{DOMAIN_TARGET_ENTITY}}</text><text class="diagram-node-subtitle" x="560" y="182" text-anchor="middle">{{DOMAIN_TARGET_MEANING}}</text><text class="diagram-node-meta" x="560" y="210" text-anchor="middle">changes: {{DOMAIN_TARGET_STATE}}</text></g>
+              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="domain-interactions.node-effect"><rect class="diagram-node-card" x="840" y="122" width="210" height="112" rx="16" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="945" y="154" text-anchor="middle">{{DOMAIN_EFFECT_ENTITY}}</text><text class="diagram-node-subtitle" x="945" y="182" text-anchor="middle">{{DOMAIN_EFFECT_MEANING}}</text><text class="diagram-node-meta" x="945" y="210" text-anchor="middle">records: {{DOMAIN_EFFECT_STATE}}</text></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 280ms" data-review-id="domain-interactions.edge-source-target"><path class="diagram-arrow path-draw" pathLength="1" d="M280 178 L455 178" marker-end="url(#domain-interactions-arrow)"/></g>
+              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 840ms" data-review-id="domain-interactions.edge-target-effect"><path class="diagram-arrow path-draw" pathLength="1" d="M665 178 L840 178" marker-end="url(#domain-interactions-arrow)"/></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 350ms" data-review-id="domain-interactions.edge-label.source-target"><rect class="diagram-label-bg" x="292" y="70" width="326" height="50" rx="12"/><text class="diagram-arrow-label" x="455" y="92" text-anchor="middle"><tspan>{{DOMAIN_INTERACTION_VERB}}</tspan><tspan class="diagram-label-detail" x="455" dy="16">{{DOMAIN_INTERACTION_RULE}}</tspan></text></g>
+              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 910ms" data-review-id="domain-interactions.edge-label.target-effect"><rect class="diagram-label-bg" x="680" y="70" width="326" height="50" rx="12"/><text class="diagram-arrow-label" x="843" y="92" text-anchor="middle"><tspan>{{DOMAIN_EFFECT_VERB}}</tspan><tspan class="diagram-label-detail" x="843" dy="16">{{DOMAIN_EFFECT_RULE}}</tspan></text></g>
+              <g class="diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="domain-interactions.policy-callout"><rect x="330" y="282" width="460" height="70" rx="14" fill="var(--warning-soft)" stroke="var(--warning)" stroke-width="1.8"/><text class="diagram-arrow-label" x="560" y="312" text-anchor="middle">{{DOMAIN_POLICY_CALLOUT}}</text><text class="diagram-label-detail" x="560" y="334" text-anchor="middle">{{DOMAIN_POLICY_GAP_OR_INVARIANT}}</text></g>
+            </svg>
+            <figcaption class="diagram-caption" data-review-id="domain-interactions.legend"><span class="legend-item"><i class="swatch" style="color: var(--success)"></i>changed entity/state</span><span class="legend-item"><i class="swatch" style="color: var(--warning)"></i>derived effect/evidence</span><span class="legend-item"><i class="swatch" style="color: var(--text)"></i>verb-labelled domain interaction</span></figcaption>
+          </figure>
+          <div class="story-list">
+            <article class="story-card" data-review-id="domain-interactions.interaction-001">
+              <h3><span class="id-chip">DOMAIN-INT-001</span>{{DOMAIN_INTERACTION_001_TITLE}}</h3>
+              <p><strong>Entities:</strong> {{DOMAIN_INTERACTION_001_ENTITIES}}</p>
+              <p><strong>Verb/effect:</strong> {{DOMAIN_INTERACTION_001_VERB_EFFECT}}</p>
+              <p><strong>Invariant:</strong> {{DOMAIN_INTERACTION_001_INVARIANT}}</p>
+              <p><strong>Persistence/contract implication:</strong> {{DOMAIN_INTERACTION_001_CONTRACT_IMPLICATION}}</p>
+            </article>
+            <article class="story-card" data-review-id="domain-interactions.interaction-002">
+              <h3><span class="id-chip">DOMAIN-INT-002</span>{{DOMAIN_INTERACTION_002_TITLE}}</h3>
+              <p><strong>Entities:</strong> {{DOMAIN_INTERACTION_002_ENTITIES}}</p>
+              <p><strong>Verb/effect:</strong> {{DOMAIN_INTERACTION_002_VERB_EFFECT}}</p>
+              <p><strong>Invariant:</strong> {{DOMAIN_INTERACTION_002_INVARIANT}}</p>
+              <p><strong>Persistence/contract implication:</strong> {{DOMAIN_INTERACTION_002_CONTRACT_IMPLICATION}}</p>
+            </article>
+          </div>
+          <span class="review-label">review: domain-interactions</span>
+        </section>
+
         <section class="section-card reveal" id="data-contracts" aria-labelledby="contracts-title" data-review-id="data-contracts">
           <span class="section-kicker">Conceptual contracts</span>
           <h2 id="contracts-title">Conceptual Data Contracts</h2>
@@ -410,20 +514,20 @@
                 <desc id="slice-1-diagram-desc">Outside-in architecture additions for SLICE-001 with route, endpoint, service, domain model, repository, and database model.</desc>
                 <defs><marker id="slice-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
                 <rect class="diagram-bg" x="0" y="0" width="1120" height="360" />
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_1_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_1_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_1_ROUTE_PATH}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_1_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_1_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_1_ENDPOINT_ROUTE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_1_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_1_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_1_REQUEST_SHAPE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_1_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_1_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_1_DOMAIN_RULE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_1_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_1_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_1_DB_MODEL}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-001.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_1_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_1_FEEDBACK_SIGNAL}}</text></g>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-trigger-endpoint"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-endpoint-service"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-service-domain"/>
-                <path class="diagram-arrow-boundary path-draw" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-domain-repository"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-feedback"/>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-001.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_1_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_1_RESPONSE_SHAPE}}</tspan></text></g>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-001.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_1_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_1_DOMAIN_EVENT}}</tspan></text></g>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-001.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_1_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_1_TABLE_OR_COLLECTION}}</tspan></text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="slice-designs.slice-001.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_1_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_1_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_1_ROUTE_PATH}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="slice-designs.slice-001.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_1_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_1_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_1_ENDPOINT_ROUTE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="slice-designs.slice-001.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_1_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_1_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_1_REQUEST_SHAPE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 840ms" data-review-id="slice-designs.slice-001.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_1_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_1_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_1_DOMAIN_RULE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="slice-designs.slice-001.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_1_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_1_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_1_DB_MODEL}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="slice-designs.slice-001.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_1_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_1_FEEDBACK_SIGNAL}}</text></g>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 140ms" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-trigger-endpoint"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 420ms" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-endpoint-service"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 700ms" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-service-domain"/>
+                <path class="diagram-arrow-boundary path-draw" style="--reveal-delay: 980ms" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-domain-repository"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 1260ms" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-feedback"/>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 210ms" data-review-id="slice-designs.slice-001.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_1_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_1_RESPONSE_SHAPE}}</tspan></text></g>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 770ms" data-review-id="slice-designs.slice-001.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_1_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_1_DOMAIN_EVENT}}</tspan></text></g>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1050ms" data-review-id="slice-designs.slice-001.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_1_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_1_TABLE_OR_COLLECTION}}</tspan></text></g>
               </svg>
               <figcaption>{{SLICE_1_DIAGRAM_CAPTION}}</figcaption>
             </figure>
@@ -447,20 +551,20 @@
                 <desc id="slice-2-diagram-desc">Outside-in architecture additions for SLICE-002 with route, endpoint, service, domain model, repository, and database model.</desc>
                 <defs><marker id="slice-2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
                 <rect class="diagram-bg" x="0" y="0" width="1120" height="360" />
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_2_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_2_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_2_ROUTE_PATH}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_2_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_2_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_2_ENDPOINT_ROUTE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_2_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_2_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_2_REQUEST_SHAPE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_2_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_2_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_2_DOMAIN_RULE}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_2_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_2_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_2_DB_MODEL}}</text></g>
-                <g class="diagram-node diagram-reveal" data-review-id="slice-designs.slice-002.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_2_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_2_FEEDBACK_SIGNAL}}</text></g>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-trigger-endpoint"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-endpoint-service"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-service-domain"/>
-                <path class="diagram-arrow-boundary path-draw" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-domain-repository"/>
-                <path class="diagram-arrow path-draw" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-feedback"/>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-002.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_2_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_2_RESPONSE_SHAPE}}</tspan></text></g>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-002.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_2_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_2_DOMAIN_EVENT}}</tspan></text></g>
-                <g class="diagram-edge-label" data-review-id="slice-designs.slice-002.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_2_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_2_TABLE_OR_COLLECTION}}</tspan></text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="slice-designs.slice-002.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_2_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_2_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_2_ROUTE_PATH}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="slice-designs.slice-002.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_2_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_2_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_2_ENDPOINT_ROUTE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="slice-designs.slice-002.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_2_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_2_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_2_REQUEST_SHAPE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 840ms" data-review-id="slice-designs.slice-002.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_2_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_2_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_2_DOMAIN_RULE}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="slice-designs.slice-002.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_2_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_2_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_2_DB_MODEL}}</text></g>
+                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="slice-designs.slice-002.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_2_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_2_FEEDBACK_SIGNAL}}</text></g>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 140ms" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-trigger-endpoint"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 420ms" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-endpoint-service"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 700ms" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-service-domain"/>
+                <path class="diagram-arrow-boundary path-draw" style="--reveal-delay: 980ms" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-domain-repository"/>
+                <path class="diagram-arrow path-draw" style="--reveal-delay: 1260ms" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-feedback"/>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 210ms" data-review-id="slice-designs.slice-002.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_2_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_2_RESPONSE_SHAPE}}</tspan></text></g>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 770ms" data-review-id="slice-designs.slice-002.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_2_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_2_DOMAIN_EVENT}}</tspan></text></g>
+                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1050ms" data-review-id="slice-designs.slice-002.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_2_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_2_TABLE_OR_COLLECTION}}</tspan></text></g>
               </svg>
               <figcaption>{{SLICE_2_DIAGRAM_CAPTION}}</figcaption>
             </figure>

@@ -117,7 +117,7 @@ Every HTML report should be:
 
 Every generated report must pass this definition of done before handoff:
 
-- first viewport states the reader goal, current review state, and what the reviewer should focus on without using a dashboard-style metric strip;
+- first viewport states the reader goal, current review state, what the reviewer should focus on, and any UI option/gap decision needed without using a dashboard-style metric strip;
 - Vercel-like docs shell exists: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, prev/next, related links, feedback widget, and back-to-top affordance;
 - no unresolved `{{PLACEHOLDER}}` tokens remain in generated docs;
 - exactly one `<h1>`, a skip link to `<main id="main">`, semantic landmarks, and non-skipping heading order;
@@ -127,6 +127,7 @@ Every generated report must pass this definition of done before handoff:
 - assumptions, facts, decisions, risks, and open questions are visually separated;
 - motion is optional progressive enhancement and respects `prefers-reduced-motion`;
 - print view is usable;
+- PRDs and designs include a domain interaction map when meaningful, or an explicit “not applicable” note: source entity/concept → verb/action → target entity/state/effect, with ownership/rules and unresolved vocabulary/policy gaps.
 - PRDs do not leak architecture and designs do not invent product behavior.
 
 When available, run the validator on generated reports:
@@ -224,10 +225,15 @@ Use these named components instead of inventing one-off containers:
 - **Conceptual contract lists** for multiple code-like data shapes; stack them in a single column with `contract-list` instead of a multi-column card grid. Each item is two rows: entity name, then one full-width colored `schema-code` block.
 - **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
 - **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
+- **Post-story flow cards/timelines** for every PRD story: entry → action → visible response → next user decision → review gap.
+- **Domain interaction maps/cards** for PRDs and designs: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps. Use “not applicable” only with a visible rationale.
+- **UI option wireframes** for 2-3 user-facing directions with detailed HTML/SVG wireframes, labelled regions, representative copy, state changes, step-by-step usage, expected outcome per step, best-fit context, tradeoff, and selected/recommended/pending status.
+- **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
 - **Example pairs / before-after panels** for concrete behavioral or system changes.
 - **Acceptance checklists** for concise `AC-*` criteria; use matrices only when traceability would otherwise be unclear.
-- **Design coverage matrices** only when traceability would otherwise be unclear: PRD story/BDD/acceptance → slice → architecture delta → feedback hook.
+- **Design coverage matrices** only when traceability would otherwise be unclear: PRD story/BDD/acceptance → selected UI option/user flow → slice → architecture delta → feedback hook.
+- **Interface implementation cards** for design reports: component/surface plan, state model, library/style/motion choices, accessibility/responsiveness, and feedback hooks.
 - **Approval checklists** for review readiness and release confidence.
 - **Architecture overview figures** for existing/new/changed components, boundaries, and communication direction.
 - **Architecture delta cards/lists** for added/changed packages, controllers, APIs, jobs, events, ports, adapters, and data stores.
@@ -251,8 +257,10 @@ Bake these patterns into every future generated report:
 - **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
 - **Tables only for true matrices** — use tables for comparison/traceability, not as the default section shape. Prefer prose, bullets, cards, examples, and diagrams for explanation. A normal design should have 0-2 tables; if there are more, collapse reference detail into cards, lists, or `<details>`.
 - **Code blocks follow code-block convention** — code-like snippets need enough horizontal room, should not be clipped, and should not be placed in responsive multi-column grids. If a section has several code/data shapes, render them as a vertical list (`contract-list`): first row is the entity name, second row is a colored `schema-code` block, and each property appears on its own line. Use restrained spans: `code-key` for properties, `code-enum` for enum/status values, and `code-punctuation` for braces, commas, colons, and union bars.
-- **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, and uncertainty if relevant.
-- **ELK-laid-out architecture diagrams** — for multi-node architecture/slice diagrams, prefer the build-time ELK renderer (`scripts/render-elk-diagram.mjs`) over hand-positioning. It produces inline SVG with automatic spacing, orthogonal routed arrows, foreground edge-label pills, and the shared diagram CSS primitives.
+- **Wireframe-first UI options** — product-facing UI choices should use screen-like wireframes, not plain text boxes. Include header/navigation/content/detail regions, representative copy, controls, state chips, empty/loading/error/success states when relevant, and enough structure for the reviewer to comment on specific regions. Each option must also include a short numbered use flow where every step states the user action and expected visible outcome.
+- **Domain interaction before implementation detail** — when domain concepts matter, show verbs and effects between entities before data contracts or components. Reviewers should be able to say “this entity changes that state because of this business action.”
+- **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, uncertainty if relevant, and progressive reading-order motion.
+- **ELK-laid-out architecture diagrams** — for multi-node architecture/slice diagrams, prefer the build-time ELK renderer (`scripts/render-elk-diagram.mjs`) over hand-positioning. It produces inline SVG with automatic spacing, orthogonal routed arrows, foreground edge-label pills, reading-order reveal delays, path draw-in motion, and the shared diagram CSS primitives.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
@@ -264,6 +272,9 @@ Every PRD or design report must include these concrete review aids before abstra
 - one main scenario showing the happy path;
 - one edge/error/empty/loading/permission scenario, or an explicit “not applicable” note;
 - a before/after panel describing what changes for the user or system;
+- for PRDs, a post-story flow for every story and 2-3 detailed UI wireframe options with step-by-step use and expected outcomes when the change is user-facing;
+- for PRDs and designs, a domain interaction map/cards when domain entities/concepts matter, or a visible “not applicable” rationale;
+- for designs, the selected PRD UI option plus interface state/style/motion/library implications;
 - a “what reviewers should decide” review path;
 - an evidence/source-anchor block tying claims to code, research, tests, screenshots, logs, or source docs.
 
@@ -280,37 +291,44 @@ summary                  # one product-story paragraph, status metadata, 2-3 tak
 what                     # users/jobs, 2-3 capabilities, scope/non-goals
 why                      # need, pain, opportunity/success signals as short bullets
 how                      # 2-4 stories, observable rules, one main workflow, one edge workflow
-acceptance               # 3-6 verifiable criteria tied to workflows
+user-flows               # after every story: entry, action, visible response, next user decision, review gap
+domain-interactions      # entities/concepts, verbs/actions, state/effect outcomes, authority/rules, vocabulary/policy gaps
+ui-options               # 2-3 detailed UI wireframes with recommended/selected/pending status, step-by-step use, and expected outcomes
+review-gaps              # explicit reviewer choices for UI, wording, flow, scope, domain language, or product gaps
+acceptance               # 3-6 verifiable criteria tied to workflows and visible UI/state outcomes
 open-questions           # only unresolved blockers with owner/blocker state
 ready-for-design         # readiness checklist and next action
 ```
 
-Keep PRDs terse. Do not paste research notes, implementation ideas, exhaustive edge cases, or repeated context. Default to zero tables; use at most one traceability matrix only when a checklist would be ambiguous. PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`. Keep motion as progressive enhancement: subtle reveal/hover effects are welcome, but they must work without external assets and respect `prefers-reduced-motion`.
+Keep PRDs terse but visual enough to review without guessing. User-facing PRDs must include per-story flow cards and 2-3 detailed UI wireframe option cards unless only one direction is truly viable; non-UI PRDs must say why UI choice is not applicable. Domain-shaped PRDs must include domain interaction cards/diagrams before UI options, using product language: source entity/concept, action verb, target state/effect, rule/authority, and open vocabulary/policy gaps. Wireframes should be screen-like: labelled header/navigation/content/detail regions, representative copy, controls, visible state changes, and next action. Under each wireframe, include a numbered “How it is used and expected outcomes” block: each step names the user action, screen/state change, and outcome the reviewer should expect. They should be detailed enough for review comments but still product-level; do not name implementation libraries or component APIs. Review gaps should be clickable/commentable cards with owner, impact, and blocker state. Do not paste research notes, implementation ideas, exhaustive edge cases, or repeated context. Default to zero tables; use at most one traceability matrix only when a checklist would be ambiguous. PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`. Keep motion as progressive enhancement: subtle reveal/hover effects and diagram flow reveals are welcome, but they must work without external assets and respect `prefers-reduced-motion`.
 
 ## Design report pattern
 
 For `docs/features/{feature}/design.html`, default to this concise pattern:
 
 ```text
-summary                  # feature, PRD link, status, review action
-review-path              # what reviewers should decide
-examples                 # one happy path and one edge/failure path
-prd-story-inventory      # only the PRD stories/BDD/AC that shape architecture, as cards
-pattern-research         # only decision-shaping insights, as evidence cards
-design-thesis            # chosen solution shape and why it fits
-proposed-architecture    # package/layer/runtime/data ownership as cards
-technology-stack         # only choices that affect implementation or risk
-architecture-overview    # high-level diagram with foreground edge labels
-architecture-delta       # compact list/cards of added/changed components
-slice-plan               # PRD-derived vertical slices as cards
-data-contracts           # conceptual contracts as a single-column schema-code list when needed
-design-decisions         # decisions, alternatives, tradeoffs
-story-coverage           # the one allowed matrix when traceability matters
-tasks-and-feedback       # per-slice outside-in designs, diagrams, task boundaries, feedback hooks
-open-questions           # blockers and owner
+summary                     # feature, PRD link, status, review action
+review-path                 # what reviewers should decide
+examples                    # one happy path and one edge/failure path
+prd-story-inventory         # only the PRD stories/BDD/AC that shape architecture, as cards
+prd-experience-contract     # selected PRD UI option, post-story flows, visible states, review gaps
+pattern-research            # only decision-shaping insights, as evidence cards
+design-thesis               # chosen solution shape and why it fits
+proposed-architecture       # package/layer/runtime/data ownership as cards
+technology-stack            # only choices that affect implementation or risk
+interface-implementation    # components/surfaces, state model, libraries/styles/motion, accessibility
+architecture-overview       # high-level diagram with foreground edge labels and reading-order motion
+architecture-delta          # compact list/cards of added/changed components
+slice-plan                  # PRD-derived vertical slices as cards
+domain-interactions         # entity ownership, interaction verbs, state/effect transitions, invariants, and open domain gaps
+data-contracts              # conceptual contracts as a single-column schema-code list when needed
+design-decisions            # decisions, alternatives, tradeoffs
+story-coverage              # the one allowed matrix when traceability matters
+tasks-and-feedback          # per-slice outside-in designs, diagrams, task boundaries, feedback hooks
+open-questions              # blockers and owner
 ```
 
-Keep designs terse: every section should start with one sentence and then use bullets/cards. Do not paste the whole PRD, research notes, file inventory, or every domain field into `design.html`; link or defer raw detail. Use tables only for true matrices such as story coverage or dense tradeoff comparisons. Design reports must be built in this order: extract only architecture-shaping PRD facts, state the thesis, propose the monorepo/layer/runtime/data architecture, draw the high-level architecture, list the architecture delta, derive vertical slices, then give each slice a small outside-in design and detailed SVG diagram. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, and review anchors. For diagrams with 4+ nodes or any routed arrows, generate the SVG with `node scripts/render-elk-diagram.mjs <spec.json> <output.svg>` and then inline the SVG into the report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
+Keep designs terse: every section should start with one sentence and then use bullets/cards. Do not paste the whole PRD, research notes, file inventory, or every domain field into `design.html`; link or defer raw detail. Use tables only for true matrices such as story coverage or dense tradeoff comparisons. Design reports must be built in this order: extract only architecture-shaping PRD facts, capture the selected PRD UI option/post-story flows/review gaps as the experience contract, state the thesis, propose the monorepo/layer/runtime/data architecture, choose interface implementation strategy only where it affects delivery/risk, draw the high-level architecture, list the architecture delta, derive vertical slices, map domain interactions, then give each slice a small outside-in design and detailed SVG diagram. The domain interaction section must show entity ownership, action verbs, state/effect transitions, invariants, and open domain gaps before dropping into data contracts. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, review anchors, and reading-order motion using `diagram-reveal`, `path-draw`, `pathLength="1"`, and staggered `--reveal-delay`. For diagrams with 4+ nodes or any routed arrows, generate the SVG with `node scripts/render-elk-diagram.mjs <spec.json> <output.svg>` and then inline the SVG into the report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
 
 ## Visual modes
 
@@ -331,6 +349,10 @@ Use this for PRDs, feature designs, decision packets, and most durable docs. It 
 Secondary mode: **editorial technical atlas**.
 
 Use only when the user asks for an intentionally visual narrative or when diagrams are the primary artifact. It may use warmer paper, larger headings, and richer figure treatment, but it must keep accessible docs navigation and review anchors.
+
+Optional diagram treatment: **handmade technical sketch**.
+
+Use only when the user asks for handmade/sketchy/Excalidraw-like diagrams or for early-domain exploration. Keep the report shell accessible and precise, but allow diagrams to use imperfect/double strokes, hachure fills, sticky-note callouts, and warmer paper/ink tokens. Sketch treatment must never reduce arrow/label readability, semantic color meaning, review anchors, or no-external-runtime portability.
 
 Avoid:
 
@@ -356,6 +378,8 @@ Use motion for:
 
 - section/card reveal as the reader scrolls,
 - diagram node reveal in reading order,
+- diagram path draw-in so the edge motion shows how the flow progresses from one node/state to the next,
+- UI mockup/state cards that clarify before → after or loading → success → recovery,
 - anchor-target emphasis after following a TOC/review link,
 - small disclosure transitions around optional details.
 
@@ -370,6 +394,7 @@ Implementation rules:
 
 - Default content must be visible without JavaScript.
 - If JavaScript is used, add a `.js` class and reveal `.reveal` elements with `IntersectionObserver`.
+- For inline SVG, wrap readable groups in `.diagram-reveal`, paths in `.path-draw` with `pathLength="1"`, and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story.
 - Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
 - Keep reveal distance small: `8–16px` vertical movement.
 - Keep reveal duration short: `160–260ms` for cards, `260–420ms` for diagram groups.
@@ -453,7 +478,7 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- For architecture/slice diagrams, prefer build-time ELK layout: create a JSON spec, run `node scripts/render-elk-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the JSON spec near the feature/task when it should be regenerated.
+- For architecture/slice diagrams, prefer build-time ELK layout: create a JSON spec, run `node scripts/render-elk-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated `diagram-reveal`, `path-draw`, foreground label groups, and reveal delays intact so diagrams animate in reading order. Keep the JSON spec near the feature/task when it should be regenerated.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.
