@@ -220,6 +220,13 @@ th, .prose th { color: var(--text-muted); font-size: .74rem; letter-spacing: .06
 thead th, .prose thead th { background: color-mix(in srgb, var(--surface-subtle) 72%, var(--surface)); }
 tbody tr:last-child th, tbody tr:last-child td, .prose tbody tr:last-child th, .prose tbody tr:last-child td { border-bottom: 0; }
 
+.review-option-selector { display: grid; gap: var(--space-2); margin-top: var(--space-3); padding: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.review-option-selector legend { padding: 0; color: var(--text); font-size: .82rem; font-weight: 800; }
+.review-option { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2); align-items: start; color: var(--text-muted); font-size: .9rem; }
+.review-option input[type="radio"] { margin-top: .22rem; accent-color: var(--accent); }
+.review-option input[type="text"] { width: 100%; min-width: 0; padding: .42rem .55rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-subtle); color: var(--text); font: inherit; }
+.review-option-custom { grid-template-columns: auto minmax(0, 1fr); }
+
 figure { margin: var(--space-4) 0 0; }
 .figure-card { padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-subtle); overflow: auto; }
 .figure-card svg { display: block; width: 100%; min-width: min(760px, 100%); height: auto; }

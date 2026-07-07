@@ -25,7 +25,7 @@ Generate a self-contained, reviewable HTML brief. Use `html-report-designer` for
 4. For every story, show the user's post-story flow: entry → action → visible response → next decision.
 5. Map how the domain entities/concepts interact: source entity → action/verb → target entity/state/effect. If there is no meaningful domain model, include an explicit “not applicable” note.
 6. When the feature is user-facing, offer 2-3 detailed wireframe/mockup options and mark the recommended/selected/pending direction.
-7. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review.
+7. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review; every review gap and open question must include a visible option selector with at least one free-text option for reviewer-supplied answers.
 8. Name what is out of scope.
 9. Write or update `docs/features/{feature}/prd.html`.
 10. Cite sources and open questions.
@@ -54,6 +54,7 @@ If a sentence does not help answer one of those questions, cut it or move it to 
 - Keep implementation out: no files, classes, schemas, endpoints, migrations, rollout mechanics, or task steps unless they are product-visible constraints.
 - UI options are product-visible wireframes and interaction choices, not library/component/animation implementation decisions.
 - Review gaps must be explicit choice prompts with impact; do not hide them as assumptions.
+- Each review gap and open question must include a reviewer option selector: provide concrete choices when known, and always include a free-text “Other / custom answer” option so the selected answer can become part of the review record.
 - Domain interaction content is product language, not architecture: name domain entities/concepts, user-visible actions, state/effect outcomes, ownership/authority, and unresolved vocabulary or policy gaps without naming schemas, classes, or endpoints.
 - End with a `Sources reviewed` note: paths, docs, screenshots, conversations, or “user request only”.
 
@@ -197,7 +198,13 @@ GAP-001 — {choice needed}
 Question: Should the user see {option/wording/flow A} or {B}?
 Impact: This changes {story/acceptance/design readiness}.
 Owner/status: {reviewer | product | blocked/non-blocking}.
+Reviewer options:
+  - [ ] {Option A label}: {what selecting it means}
+  - [ ] {Option B label}: {what selecting it means}
+  - [ ] Other / custom answer: __________________
 ```
+
+Open questions use the same selector shape. If the only responsible answer is reviewer-authored, still render one free-text option instead of plain paragraph text.
 
 A good PRD wireframe is detailed enough that the reviewer can point at regions and say “make this the main panel” or “this action belongs in the right rail.” Prefer HTML/CSS or inline SVG wireframes with labelled regions over monospace sketches. Show layout, hierarchy, representative copy, primary/secondary actions, visible state changes, and the next decision. Under every UI option, add a short step-by-step usage flow where each step names the user action and the expected visible outcome. Do not choose libraries, components, schemas, or animation implementation here.
 
@@ -231,7 +238,8 @@ Before finishing:
 - [ ] Domain entities/concepts and their interactions are mapped, or a clear “not applicable” rationale is present.
 - [ ] User-facing changes include 2-3 detailed wireframe/mockup options or explain why only one is viable.
 - [ ] Every UI option explains step-by-step use and expected outcome per step.
-- [ ] Reviewer gaps are explicit, owned, and tied to design readiness.
+- [ ] Reviewer gaps are explicit, owned, tied to design readiness, and include option selectors with a free-text option.
+- [ ] Open questions that need reviewer input include option selectors with a free-text option.
 - [ ] Requirements are observable product behavior.
 - [ ] Acceptance criteria are verifiable and tied to workflows/UI states.
 - [ ] Sources reviewed are named.

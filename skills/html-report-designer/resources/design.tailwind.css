@@ -232,6 +232,12 @@ pre code { border: 0; background: transparent; color: inherit; padding: 0; }
 .status-chip { margin-left: .35rem; padding: .1rem .42rem; border: 1px solid var(--border); color: var(--text-muted); }
 .review-label { margin-top: var(--space-4); color: var(--text-subtle); }
 .takeaway-list, .checklist, .question-list, .source-list { display: grid; gap: var(--space-2); margin: var(--space-3) 0 0; padding-left: 1.15rem; color: var(--text-muted); }
+.review-option-selector { display: grid; gap: var(--space-2); margin-top: var(--space-3); padding: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.review-option-selector legend { padding: 0; color: var(--text); font-size: .82rem; font-weight: 800; }
+.review-option { display: grid; grid-template-columns: auto 1fr; gap: var(--space-2); align-items: start; color: var(--text-muted); font-size: .9rem; }
+.review-option input[type="radio"] { margin-top: .22rem; accent-color: var(--accent); }
+.review-option input[type="text"] { width: 100%; min-width: 0; padding: .42rem .55rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-subtle); color: var(--text); font: inherit; }
+.review-option-custom { grid-template-columns: auto minmax(0, 1fr); }
 
 table { width: 100%; border-collapse: collapse; margin-top: var(--space-4); font-size: .94rem; }
 .table-wrap { overflow-x: auto; margin-top: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
