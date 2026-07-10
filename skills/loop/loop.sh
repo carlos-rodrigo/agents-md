@@ -19,7 +19,7 @@ AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
 PI_PROVIDER="${LOOP_PI_PROVIDER:-openai-codex}"
-PI_MODEL="${LOOP_PI_MODEL:-gpt-5.5}"
+PI_MODEL="${LOOP_PI_MODEL:-gpt-5.6-sol}"
 PI_THINKING="${LOOP_PI_THINKING:-xhigh}"
 OPENCODE_MODEL="${LOOP_OPENCODE_MODEL-$PI_MODEL}"
 OPENCODE_VARIANT="${LOOP_OPENCODE_VARIANT-$PI_THINKING}"
@@ -95,7 +95,7 @@ Options:
 
 Environment overrides:
   LOOP_PI_PROVIDER         Pi provider (default: openai-codex)
-  LOOP_PI_MODEL            Pi model (default: gpt-5.5)
+  LOOP_PI_MODEL            Pi model (default: gpt-5.6-sol)
   LOOP_PI_THINKING         Pi thinking level (default: xhigh)
   LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
