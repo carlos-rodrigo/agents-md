@@ -143,13 +143,13 @@ Rules:
 - Show ownership and boundaries when they matter.
 - For domain diagrams, connect entities with verb labels and show the state/effect that changes; do not stop at a noun-only entity map.
 - Use multiple small diagrams instead of one crowded map.
-- Use build-time ELK for 4+ node routed architecture/call-flow diagrams when practical:
+- Use the build-time Excalidraw renderer for semantic architecture/call-flow diagrams:
 
 ```bash
-node /Users/carlosrodrigo/agents/scripts/render-elk-diagram.mjs spec.json output.svg
+node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg
 ```
 
-Inline the final SVG. Edge labels must be foreground pill labels and must not collide with nodes/edges. Diagram motion should reveal the reading order: first actor/context, then action edge, then next node/state, with `diagram-reveal`, `path-draw`, `pathLength="1"`, and staggered `--reveal-delay` values. Content must remain visible without JavaScript and under `prefers-reduced-motion`.
+Inline the final SVG. Give nodes enough space for labels and route arrows explicitly so labels do not collide with nodes or edges. Preserve the renderer-owned `diagram-reveal` wrappers and staggered `--reveal-delay` values; do not add `path-draw` to Excalidraw's coordinated multi-stroke edges because it breaks their masks and arrowheads. Content must remain visible without JavaScript and under `prefers-reduced-motion`.
 
 ## Outside-in slice design
 

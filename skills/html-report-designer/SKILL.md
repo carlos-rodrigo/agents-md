@@ -261,7 +261,7 @@ Bake these patterns into every future generated report:
 - **Wireframe-first UI options** — product-facing UI choices should use screen-like wireframes, not plain text boxes. Include header/navigation/content/detail regions, representative copy, controls, state chips, empty/loading/error/success states when relevant, and enough structure for the reviewer to comment on specific regions. Each option must also include a short numbered use flow where every step states the user action and expected visible outcome.
 - **Domain interaction before implementation detail** — when domain concepts matter, show verbs and effects between entities before data contracts or components. Reviewers should be able to say “this entity changes that state because of this business action.”
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, uncertainty if relevant, and progressive reading-order motion.
-- **ELK-laid-out architecture diagrams** — for multi-node architecture/slice diagrams, prefer the build-time ELK renderer (`scripts/render-elk-diagram.mjs`) over hand-positioning. It produces inline SVG with automatic spacing, orthogonal routed arrows, foreground edge-label pills, reading-order reveal delays, path draw-in motion, and the shared diagram CSS primitives.
+- **Authentic Excalidraw diagrams** — use the build-time Excalidraw renderer (`scripts/render-excalidraw-diagram.mjs`) for architecture, slice, domain, and workflow diagrams. Its explicitly positioned scene exports self-contained inline SVG with coordinated hand-drawn geometry, embedded Virgil, searchable text, stable review IDs, accessibility metadata, and reading-order group reveals.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
@@ -329,7 +329,7 @@ tasks-and-feedback          # per-slice outside-in designs, diagrams, task bound
 open-questions              # blockers and owner
 ```
 
-Keep designs terse: every section should start with one sentence and then use bullets/cards. Do not paste the whole PRD, research notes, file inventory, or every domain field into `design.html`; link or defer raw detail. Use tables only for true matrices such as story coverage or dense tradeoff comparisons. Design reports must be built in this order: extract only architecture-shaping PRD facts, capture the selected PRD UI option/post-story flows/review gaps as the experience contract, state the thesis, propose the monorepo/layer/runtime/data architecture, choose interface implementation strategy only where it affects delivery/risk, draw the high-level architecture, list the architecture delta, derive vertical slices, map domain interactions, then give each slice a small outside-in design and detailed SVG diagram. The domain interaction section must show entity ownership, action verbs, state/effect transitions, invariants, and open domain gaps before dropping into data contracts. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, foreground `diagram-edge-label` groups, `diagram-label-bg` pills, legend/caption, review anchors, and reading-order motion using `diagram-reveal`, `path-draw`, `pathLength="1"`, and staggered `--reveal-delay`. For diagrams with 4+ nodes or any routed arrows, generate the SVG with `node scripts/render-elk-diagram.mjs <spec.json> <output.svg>` and then inline the SVG into the report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
+Keep designs terse: every section should start with one sentence and then use bullets/cards. Do not paste the whole PRD, research notes, file inventory, or every domain field into `design.html`; link or defer raw detail. Use tables only for true matrices such as story coverage or dense tradeoff comparisons. Design reports must be built in this order: extract only architecture-shaping PRD facts, capture the selected PRD UI option/post-story flows/review gaps as the experience contract, state the thesis, propose the monorepo/layer/runtime/data architecture, choose interface implementation strategy only where it affects delivery/risk, draw the high-level architecture, list the architecture delta, derive vertical slices, map domain interactions, then give each slice a small outside-in design and detailed SVG diagram. The domain interaction section must show entity ownership, action verbs, state/effect transitions, invariants, and open domain gaps before dropping into data contracts. Use `data-contracts` for conceptual code-like shapes and render them with the single-column `contract-list` pattern, never a `card-grid`: each contract item has an entity-name row followed by a full-width colored `schema-code` block, with one property per line. Use the `system-diagram` quality rules for diagrams inside the design report: focused question, semantic nodes/edges, readable edge labels, legend/caption, review anchors, and reading-order motion using renderer-owned `diagram-reveal` wrappers and staggered `--reveal-delay` values. Generate diagrams with `node scripts/render-excalidraw-diagram.mjs <spec.json> <output.svg>`, inspect the SVG, and then inline it into the report. Use this skill for the report shell, layout, visual hierarchy, and review UX.
 
 ## Visual modes
 
@@ -351,9 +351,9 @@ Secondary mode: **editorial technical atlas**.
 
 Use only when the user asks for an intentionally visual narrative or when diagrams are the primary artifact. It may use warmer paper, larger headings, and richer figure treatment, but it must keep accessible docs navigation and review anchors.
 
-Optional diagram treatment: **handmade technical sketch**.
+Default diagram treatment: **authentic Excalidraw export**.
 
-Use only when the user asks for handmade/sketchy/Excalidraw-like diagrams or for early-domain exploration. Keep the report shell accessible and precise, but allow diagrams to use imperfect/double strokes, hachure fills, sticky-note callouts, and warmer paper/ink tokens. Sketch treatment must never reduce arrow/label readability, semantic color meaning, review anchors, or no-external-runtime portability.
+Keep the report shell accessible and precise while diagrams use Excalidraw's coordinated rough strokes, arrows, fills, and selective handwritten callouts. Technical diagrams still require readable labels, semantic color meaning, stable review anchors, and no runtime dependency.
 
 Avoid:
 
@@ -395,7 +395,7 @@ Implementation rules:
 
 - Default content must be visible without JavaScript.
 - If JavaScript is used, add a `.js` class and reveal `.reveal` elements with `IntersectionObserver`.
-- For inline SVG, wrap readable groups in `.diagram-reveal`, paths in `.path-draw` with `pathLength="1"`, and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story.
+- Preserve the Excalidraw renderer's `.diagram-reveal` wrappers and staggered `--reveal-delay` values so actor/context → edge/action → target state appears as a story. Do not add `.path-draw` to Excalidraw's coordinated multi-stroke edge groups.
 - Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
 - Keep reveal distance small: `8–16px` vertical movement.
 - Keep reveal duration short: `160–260ms` for cards, `260–420ms` for diagram groups.
@@ -479,7 +479,7 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- For architecture/slice diagrams, prefer build-time ELK layout: create a JSON spec, run `node scripts/render-elk-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated `diagram-reveal`, `path-draw`, foreground label groups, and reveal delays intact so diagrams animate in reading order. Keep the JSON spec near the feature/task when it should be regenerated.
+- For architecture/slice diagrams, create an explicitly positioned JSON scene, run `node scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated semantic text, review wrappers, label groups, and reveal delays intact. Keep the JSON scene near the feature/task when it should be regenerated.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.

@@ -271,14 +271,9 @@ Preferred outputs:
 
 Use a self-contained HTML file with inline SVG and CSS.
 
-If the user asks for a handmade, sketchy, Excalidraw-like, or whiteboard style, keep the same semantic contract but choose the lightest style treatment that improves approachability without lowering legibility:
+Use authentic build-time Excalidraw export as the default diagram treatment. Keep the semantic contract strict even though geometry is hand-drawn: technical labels remain readable, color communicates ownership or state, and callouts stay brief. Use whiteboard looseness for early exploration and tighter spacing/alignment for durable technical docs.
 
-- **Sketch-outline:** slightly imperfect/double-stroked outlines and hand-labelled callouts; safest for durable technical docs.
-- **Rough/hachure:** build-time Rough.js-style primitives or manually inlined sketch paths; use when the diagram is concept-heavy and benefits from “working model” energy.
-- **Whiteboard/napkin:** loose frames, arrows, and sticky-note callouts; use for early product/domain exploration, not final API contracts.
-- **Chalkboard/dark sketch:** high-contrast dark canvas with chalk strokes; reserve for presentations or explicitly requested narrative artifacts.
-
-Finished diagrams still must be inline SVG/CSS only: no remote runtime, no Mermaid runtime, and no decorative roughness that makes labels or arrows harder to read.
+Finished diagrams still must be self-contained inline SVG/CSS: no remote runtime, no Mermaid runtime, and no decorative roughness that makes labels or arrows harder to read.
 
 - For durable report pages, start from `../html-report-designer/resources/report-template.html` and embed the SVG as a figure.
 - For diagram-only pages, start from `resources/system-diagram-template.html` when helpful.
@@ -301,15 +296,15 @@ When the user says a layer, responsibility, domain relationship, or call arrow f
 - Treat the diagram as an informational figure with a title, caption, legend, and “How to read this” note.
 - Use the `html-report-designer` shell for polished long-form pages: breadcrumbs, collapsible left sidebar, no top menu/right rail, semantic sections, feedback, provenance, and print styles.
 - Use `resources/system-diagram-template.html` for diagram-only pages. It uses build-time Tailwind and inline compiled CSS; edit `resources/system-diagram.tailwind.css`, then run `npm run build:report-css` from `/Users/carlosrodrigo/agents` before handoff/commit.
-- Do not use Tailwind CDN/runtime, remote fonts, Mermaid runtime, or external CSS in finished diagrams. D2/Mermaid/Graphviz may be used only at build time if the final SVG is inlined and restyled to this system.
-- Prefer the build-time ELK renderer for multi-node architecture/call-flow diagrams: create an ELK JSON spec, run `node /Users/carlosrodrigo/agents/scripts/render-elk-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. Use manual SVG only for tiny diagrams or intentionally custom spatial metaphors.
+- Do not use Tailwind CDN/runtime, remote fonts, Mermaid, D2, Graphviz, or external CSS in finished diagrams or their build pipeline. Excalidraw is the sole diagram renderer.
+- Use the build-time Excalidraw renderer for diagrams: create an explicitly positioned JSON scene, run `node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. The renderer embeds Virgil, semantic text, accessibility metadata, stable review IDs, and reading-order reveal wrappers. `reviewId` and `reviewIds` values are namespace-relative suffixes; `reviewPrefix` plus the required unique `id` scopes them when several diagrams are inlined.
 - Use a tokenized Vercel-style diagram system: semantic surfaces, text ranks, borders, neutral default, status colors, spacing, radius, focus rings, and reduced-motion-safe motion.
-- Use subtle scroll appearance, SVG node reveal, and path draw-in motion when it teaches reading order; do not let complex diagrams simply appear all at once. The intended motion is actor/context → labelled edge/action → next node/state → recovery/risk path. Keep content visible without JavaScript and honor `prefers-reduced-motion`.
+- Use subtle scroll appearance and SVG node/edge-group reveal when it teaches reading order; do not let complex diagrams simply appear all at once. The intended motion is actor/context → labelled edge/action → next node/state → recovery/risk path. Keep content visible without JavaScript and honor `prefers-reduced-motion`.
 - Keep text readable; do not shrink below 12px effective size in SVG.
 - Prefer semantic HTML text around the SVG over packing every explanation into SVG labels.
 - Use `foreignObject` only when necessary, and give it extra height to avoid clipping.
 - Use numbered steps for the main story when order matters.
-- Assign stable reveal delays (`--reveal-delay`) to readable groups; paths should use `pathLength="1"` and `.path-draw` so the drawn line shows progress.
+- Preserve the Excalidraw renderer's stable `--reveal-delay` wrappers. Do not apply `.path-draw` to exported multi-stroke edges; reveal each coordinated edge group as one authored mark.
 - Keep side effects inside cards as chips/callouts instead of drawing every side-effect arrow.
 - Use red dashed arrows only for exceptional paths.
 - Add a legend that defines colors for this specific diagram.
@@ -323,7 +318,7 @@ Use these reusable primitives instead of ad hoc boxes:
 
 - **Lanes/boundaries** — dashed rounded regions for actor, system/module, external dependency, worker/process, or team ownership.
 - **Nodes** — rounded cards with a human label, real symbol/path when known, owner/runtime/layer, and important input/output/state.
-- **Edges** — labelled arrows; solid for local/same-runtime handoffs, blue dashed for boundary/API/process crossings, red dashed for risk/recovery/removed paths. Use ELK orthogonal routing for 4+ node flows. Put labels in foreground pill groups (`diagram.edge-label.*`) so they are never hidden behind nodes or clipped by nearby components.
+- **Edges** — labelled arrows; neutral for local/same-runtime handoffs, blue for boundary/API/process crossings, and red for risk/recovery/removed paths. Route Excalidraw arrows explicitly and leave enough space for every label. Keep exported label groups in the foreground so they are never hidden behind nodes or clipped by nearby components.
 - **Decision/callout nodes** — amber cards for unresolved decisions, assumptions, unproven claims, or escalation triggers.
 - **Legend** — visible semantic color/line guide tied to this diagram, not a generic decorative palette.
 
@@ -338,7 +333,7 @@ Before handoff, check:
 - every color has a responsibility meaning documented in the legend;
 - domain diagrams show entity/concept interactions with verb/action labels and state/effect outcomes, not just noun boxes;
 - every meaningful arrow is labeled with call/event/protocol/payload or domain interaction verb/effect;
-- for 4+ node diagrams, spacing/routing is generated with ELK or the manual layout has an explicit reason;
+- diagram spacing and arrow routes are explicit in the Excalidraw scene and remain readable at desktop, mobile overflow, and print sizes;
 - key SVG groups/nodes have stable `data-review-id` anchors;
 - SVG has `<title>` and `<desc>` and a visible caption/how-to-read note;
 - text remains readable at the expected viewport and is at least 12px effective size;
