@@ -229,7 +229,7 @@ Use these named components instead of inventing one-off containers:
 - **Domain interaction maps/cards** for PRDs and designs: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps. Use “not applicable” only with a visible rationale.
 - **UI option wireframes** for 2-3 user-facing directions with detailed HTML/SVG wireframes, labelled regions, representative copy, state changes, step-by-step usage, expected outcome per step, best-fit context, tradeoff, and selected/recommended/pending status.
 - **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
-- **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option so the selected answer can become part of the review record.
+- **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option. Mark the anchored gap/card with `data-review-decision="single-choice"`, use enabled named radio inputs, and keep the free-text input editable so the document reviewer records checked options as anchored feedback instead of treating them as decoration.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
 - **Example pairs / before-after panels** for concrete behavioral or system changes.
 - **Acceptance checklists** for concise `AC-*` criteria; use matrices only when traceability would otherwise be unclear.

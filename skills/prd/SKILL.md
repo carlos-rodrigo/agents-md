@@ -54,7 +54,7 @@ If a sentence does not help answer one of those questions, cut it or move it to 
 - Keep implementation out: no files, classes, schemas, endpoints, migrations, rollout mechanics, or task steps unless they are product-visible constraints.
 - UI options are product-visible wireframes and interaction choices, not library/component/animation implementation decisions.
 - Review gaps must be explicit choice prompts with impact; do not hide them as assumptions.
-- Each review gap and open question must include a reviewer option selector: provide concrete choices when known, and always include a free-text “Other / custom answer” option so the selected answer can become part of the review record.
+- Each review gap and open question must include a reviewer option selector: provide concrete choices when known, and always include a free-text “Other / custom answer” option. For HTML PRDs, mark the anchored gap/card with `data-review-decision="single-choice"` and use enabled named radio inputs so checked decisions are exported as review feedback.
 - Domain interaction content is product language, not architecture: name domain entities/concepts, user-visible actions, state/effect outcomes, ownership/authority, and unresolved vocabulary or policy gaps without naming schemas, classes, or endpoints.
 - End with a `Sources reviewed` note: paths, docs, screenshots, conversations, or “user request only”.
 
