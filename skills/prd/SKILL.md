@@ -24,12 +24,13 @@ Generate a self-contained, reviewable HTML brief. Use `html-report-designer` for
 3. Explain the feature in What / Why / How / Experience / Done.
 4. For every story, show the user's post-story flow: entry → action → visible response → next decision.
 5. Map how the domain entities/concepts interact: source entity → action/verb → target entity/state/effect. If there is no meaningful domain model, include an explicit “not applicable” note.
-6. When the feature is user-facing, offer 2-3 detailed wireframe/mockup options and mark the recommended/selected/pending direction.
-7. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review; every review gap and open question must include a visible option selector with at least one free-text option for reviewer-supplied answers.
-8. Name what is out of scope.
-9. Write or update `docs/features/{feature}/prd.html`.
-10. Cite sources and open questions.
-11. Stop before architecture, tasks, or implementation.
+6. For user-facing work, inspect the existing product UI before drawing: shell, navigation, page hierarchy, density, controls, states, and responsive behavior. Record the evidence.
+7. Name the visual decision to unlock and check whether existing mockups already suffice. Only when more evidence is needed, offer 2-3 detailed options and mark the recommended/selected/pending direction. Existing UI options continue the product and vary placement/workflow—not style; greenfield options define the missing shell and interaction details explicitly.
+8. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review; every review gap and open question must include a visible option selector with at least one free-text option for reviewer-supplied answers.
+9. Name what is out of scope.
+10. Write or update `docs/features/{feature}/prd.html`.
+11. Cite sources and open questions.
+12. Stop before architecture, tasks, or implementation.
 
 ## Plain-language test
 
@@ -53,6 +54,10 @@ If a sentence does not help answer one of those questions, cut it or move it to 
 - If the gap is small and non-blocking, list it under assumptions or open questions.
 - Keep implementation out: no files, classes, schemas, endpoints, migrations, rollout mechanics, or task steps unless they are product-visible constraints.
 - UI options are product-visible wireframes and interaction choices, not library/component/animation implementation decisions.
+- Treat an existing product UI as evidence and a product constraint. Inspect real screens or source-backed visible patterns before drawing. Preserve its shell, navigation, visual language, density, control shapes, and state patterns unless redesign is explicitly in scope.
+- When an existing UI exists, options should compare where/how the feature fits—entry point, page versus dialog, information hierarchy, or workflow—not present unrelated visual systems.
+- When no existing UI exists, make options more detailed: define global shell/navigation, page hierarchy, responsive behavior, form/control language, primary/secondary actions, and representative loading/empty/error/success states.
+- Add a stable `ui-options.existing-ui-evidence` review anchor stating which UI sources were inspected, what must continue, and whether the product has no established UI yet.
 - Review gaps must be explicit choice prompts with impact; do not hide them as assumptions.
 - Each review gap and open question must include a reviewer option selector: provide concrete choices when known, and always include a free-text “Other / custom answer” option. For HTML PRDs, mark the anchored gap/card with `data-review-decision="single-choice"` and use enabled named radio inputs so checked decisions are exported as review feedback.
 - Domain interaction content is product language, not architecture: name domain entities/concepts, user-visible actions, state/effect outcomes, ownership/authority, and unresolved vocabulary or policy gaps without naming schemas, classes, or endpoints.
@@ -69,7 +74,7 @@ why                # need, pain, opportunity, success signal
 how                # 2-4 stories/rules plus one main workflow and key edge workflow
 user-flows         # after every story: entry, action, visible response, next user decision
 domain-interactions # entities/concepts, verbs, state/effect outcomes, ownership, and unresolved vocabulary/policy gaps
-ui-options         # 2-3 detailed wireframe/mockup directions plus step-by-step use and expected outcome per step
+ui-options         # existing-UI evidence + 2-3 continuity-preserving placement/workflow options; if no UI exists, detailed foundational directions
 review-gaps        # choices the reviewer should make now: UI, wording, flow, scope, domain language, or open product gap
 acceptance         # 3-6 observable criteria tied to workflows and visible UI/state outcomes
 open-questions     # only unresolved blockers with owner/status
@@ -181,6 +186,29 @@ If the feature is content-only or has no meaningful domain entities, include a s
 
 ### UI options, wireframes, and review gaps
 
+Start with an **existing UI continuity check**:
+
+```text
+Existing UI: {yes | no}
+Evidence inspected: {screenshots, routes, visible source paths, design system docs}
+Must continue: {shell, navigation, hierarchy, density, color/control/state patterns}
+Option differences: {placement, entry point, page/dialog, hierarchy, workflow}
+```
+
+If the answer is **yes**, reproduce the recognizable product shell in every wireframe and vary only the product choice under review. Do not turn each option into a different redesign. If the answer is **no**, each wireframe must carry enough detail to establish the shell and interaction system instead of showing isolated floating cards.
+
+Apply a **mockup decision gate** before drawing or redrawing:
+
+1. Name the next unresolved product decision the mockup must unlock.
+2. Check whether current screenshots/wireframes already make that decision reviewable.
+3. Create nothing when existing evidence is sufficient; do not redraw UI just because a new artifact format is available.
+4. Mock up only alternatives that change visible placement, hierarchy, entry point, page/dialog choice, or recovery flow. Text selectors are enough for non-visual policy choices.
+5. If a compact comparison is still needed, prefer one shared-shell Excalidraw scene that shows only the option deltas and one common interaction path. Keep detailed states in the existing wireframes instead of duplicating them.
+
+Excalidraw is valid for product UI mockups when it preserves the existing UI faithfully. Use one base shell, clone it for alternatives, keep labels searchable and reviewable, and render with the build-time Excalidraw renderer. It is not a reason to replace sufficient HTML/CSS wireframes or invent a sketch-style redesign.
+
+Option cards and reviewer selectors are one contract: selector labels must use the same option names and ordering as the mockups, and each selectable option should reference its option card with a stable anchor.
+
 When the feature changes a screen, command UI, TUI, document, or visible workflow, include 2-3 options as real wireframes, not text-only cards:
 
 ```text
@@ -206,7 +234,7 @@ Reviewer options:
 
 Open questions use the same selector shape. If the only responsible answer is reviewer-authored, still render one free-text option instead of plain paragraph text.
 
-A good PRD wireframe is detailed enough that the reviewer can point at regions and say “make this the main panel” or “this action belongs in the right rail.” Prefer HTML/CSS or inline SVG wireframes with labelled regions over monospace sketches. Show layout, hierarchy, representative copy, primary/secondary actions, visible state changes, and the next decision. Under every UI option, add a short step-by-step usage flow where each step names the user action and the expected visible outcome. Do not choose libraries, components, schemas, or animation implementation here.
+A good PRD wireframe is detailed enough that the reviewer can point at regions and say “put this action on the existing page” or “this deserves a dedicated page.” When the product already has a UI, use its real shell and visible conventions rather than generic header/nav/inspector scaffolding. Prefer HTML/CSS or inline SVG wireframes with labelled regions over monospace sketches. Show layout, hierarchy, representative copy, primary/secondary actions, visible state changes, and the next decision. Under every UI option, add a short step-by-step usage flow where each step names the user action and the expected visible outcome. Do not choose libraries, components, schemas, or animation implementation here.
 
 ### Simple product diagram
 
@@ -236,8 +264,14 @@ Before finishing:
 - [ ] A non-engineer can understand the summary and workflow.
 - [ ] Every story has a visible post-story flow or an explicit “not user-facing” note.
 - [ ] Domain entities/concepts and their interactions are mapped, or a clear “not applicable” rationale is present.
+- [ ] Existing UI evidence is anchored and names what every option must preserve, or explicitly states that no UI exists yet.
+- [ ] The mockup gate names the next visual decision and says whether new mockups are actually needed.
+- [ ] Existing sufficient mockups are reused rather than redrawn in another format.
 - [ ] User-facing changes include 2-3 detailed wireframe/mockup options or explain why only one is viable.
+- [ ] When a product UI exists, every option visibly continues it and differs by placement/workflow rather than visual style.
+- [ ] When no product UI exists, options define the shell, responsive hierarchy, controls, and key states in enough detail to guide design.
 - [ ] Every UI option explains step-by-step use and expected outcome per step.
+- [ ] UI option names/order match the reviewer selector and selectable options link to stable option anchors.
 - [ ] Reviewer gaps are explicit, owned, tied to design readiness, and include option selectors with a free-text option.
 - [ ] Open questions that need reviewer input include option selectors with a free-text option.
 - [ ] Requirements are observable product behavior.
@@ -261,6 +295,11 @@ Before finishing:
 - Domain sections that list nouns/entities but do not show action verbs, state/effect changes, ownership, or unresolved vocabulary/policy choices.
 - Only one hidden UI direction when the reviewer needs to choose between plausible flows.
 - Mockups that are decorative, text-only, or too abstract to show layout, states, copy, hierarchy, primary actions, or next action.
+- Generic mockups that ignore an existing product shell or make each option look like a different application.
+- Redrawing already-sufficient mockups in Excalidraw without a new decision to unlock.
+- Full-screen alternative mockups for a non-visual policy decision.
+- Selector labels that no longer match the option cards they approve.
+- Isolated cards presented as a complete UI when no existing shell has been defined.
 - UI options that show a static screen but not how the user uses it or what outcome each step produces.
 - UI options that leak implementation libraries/components instead of product-visible behavior.
 - APIs, schemas, files, class names, storage mechanics, rollout steps, or task lists.
@@ -270,7 +309,7 @@ Before finishing:
 After PRD approval:
 
 - use `design-solution` for architecture/design when needed,
-- pass the selected PRD UI option, post-story flows, domain interactions, and unresolved review gaps into `design.html`,
+- pass the approved PRD UI option, post-story flows, domain interactions, and resolved decision record into `design.html`; do not carry blocking product gaps into design,
 - do not let design choose a product UI direction that the PRD left unresolved unless the user approves it,
 - use `simple-tasks` for implementation task briefs when splitting/delegating is useful,
 - use `feedback-loop` for task-level verification,
@@ -288,6 +327,7 @@ Review anchors: {yes | no + reason}
 Validation: {passed | not run + reason | failed + key issue}
 Domain interactions: {mapped | not applicable + reason | blocked + gap IDs}
 UI options: {selected/recommended option | pending reviewer choice | not user-facing}
+Mockup gate: {existing evidence sufficient | smallest additional artifact + decision unlocked | not applicable}
 Review gaps: {none | GAP-* pending + blocker state}
 Ready for design: {yes | no + blockers}
 Next: {review prd.html | choose UI option | create design.html | create tasks | resolve questions}

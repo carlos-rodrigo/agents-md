@@ -22,7 +22,7 @@ Markdown design files are legacy. Update `design.html` as the current intended d
 
 ## In one minute
 
-1. Read the approved PRD, including post-story user flows, domain interactions, UI options/mockups, and review gaps.
+1. Read the approved PRD, including post-story user flows, domain interactions, the selected UI option/mockup, and resolved review gaps. If status is still Review or a blocking choice is unresolved, stop before creating `design.html`.
 2. Explain the system in simple pieces and paths.
 3. Translate PRD domain interactions into entity ownership, state transitions, invariants, and cross-entity effects.
 4. Translate the selected PRD UI direction into interface boundaries, states, style/motion intent, and implementation-facing choices.
@@ -51,12 +51,12 @@ If a diagram or paragraph does not help explain those ideas, simplify it.
 
 ## Ownership boundaries
 
-- `prd.html` owns product why, what, scope, workflows, acceptance behavior, post-story user flows, product-level domain interactions, UI options/mockups, and reviewer gaps.
+- `prd.html` owns product why, what, scope, workflows, acceptance behavior, post-story user flows, product-level domain interactions, UI options/mockups, mockup-need decisions, and reviewer gaps.
 - `design.html` owns architecture shape, interface implementation strategy for the selected PRD UI direction, domain entity ownership/interactions, state transitions, invariants, boundaries, decisions, diagrams, and outside-in slice designs.
 - `docs/adrs/` owns durable system-level rationale for architecture-significant decisions.
 - `.features/.../tasks/` owns execution details, local feedback loops, and actual result evidence.
 
-Design must not invent product behavior. If PRD behavior, domain language/interactions, selected UI option, or review-gap resolution is unclear, pause and update/clarify the PRD before designing.
+Design must not invent product behavior. If PRD status is not approved, or behavior, domain language/interactions, selected UI option, or review-gap resolution is unclear, pause and update/clarify the PRD before designing. A recommended option is not a selected option.
 
 ## Design needed gate
 
@@ -81,7 +81,16 @@ Prefer:
 1. `docs/features/{feature}/prd.html`
 2. an explicit approved feature brief from the user
 
-Check that principal workflows, post-story user flows, domain interactions, selected/recommended UI option, acceptance behavior, constraints, non-goals, and review-gap resolutions are clear. Keep product open questions in the PRD; do not turn them into hidden design assumptions.
+Check that principal workflows, post-story user flows, domain interactions, the approved UI option, acceptance behavior, constraints, non-goals, and review-gap resolutions are clear. Confirm that UI selectors still match their option cards. Keep product open questions in the PRD; do not turn them into hidden design assumptions.
+
+### UI mockup gate
+
+Consume the approved PRD mockup; do not redraw it by default. Before creating any design-stage UI comparison:
+
+1. Name the implementation-facing visual decision that remains after product approval.
+2. Reuse the PRD mockup when it already resolves placement, hierarchy, entry point, and visible states.
+3. Do not create alternative product mockups in design or silently revisit the approved direction.
+4. If a remaining visual decision truly needs comparison, create the smallest artifact: one shared existing-UI shell, only the changed regions, and one common interaction path. Excalidraw is appropriate for this compact comparison; detailed pixel treatment belongs to the selected implementation direction.
 
 ### 2. Inspect the system
 
@@ -202,7 +211,9 @@ Before finishing:
 - [ ] The design says what pieces exist/new/change and how they talk.
 - [ ] A non-engineer can follow the main scenario and diagram.
 - [ ] Every product claim traces to the PRD or named source.
+- [ ] The PRD is approved and all blocking product decisions are resolved before design begins.
 - [ ] The selected PRD UI option, post-story flows, domain interactions, and review gaps are consumed or explicitly blocked.
+- [ ] Existing sufficient mockups are reused; any new design-stage mockup unlocks a named implementation-facing decision and does not reopen product choice.
 - [ ] Domain entity interactions show verbs/actions, ownership, state/effect changes, and invariants; not just entity nouns.
 - [ ] Interface/library/style/motion decisions are implementation-facing and trace to product-visible UI states.
 - [ ] Diagrams teach semantics; they are not decorative.
@@ -219,7 +230,9 @@ Before finishing:
 ## Smells to fix
 
 - Design invents product behavior not in the PRD.
+- Design starts from a Review-status PRD or treats a recommended option as approved.
 - Design ignores PRD UI options/mockups or silently chooses among unresolved review gaps.
+- Design redraws sufficient PRD mockups without a new implementation-facing decision.
 - Design lists domain entities but does not show how they interact, what action verbs connect them, or what state/effect changes.
 - Interface details name libraries/styles/motion without tying them to a visible product state.
 - The first diagram is too dense to explain aloud.

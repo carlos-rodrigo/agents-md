@@ -8,6 +8,7 @@ node "$ROOT/scripts/render-excalidraw-diagram.mjs" --check \
   "$ROOT/skills/html-report-designer/resources/excalidraw-slice-example.json" \
   "$ROOT/skills/html-report-designer/resources/excalidraw-slice-example.svg"
 node "$ROOT/scripts/test-excalidraw-diagram.mjs"
+node "$ROOT/scripts/test-html-report-validator.mjs"
 
 node "$ROOT/scripts/validate-html-report.mjs" --allow-placeholders \
   "$ROOT/skills/html-report-designer/resources/report-template.html" \

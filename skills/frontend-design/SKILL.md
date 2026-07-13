@@ -10,14 +10,18 @@ The user provides frontend requirements: a component, page, application, or inte
 
 ## Design Thinking
 
-Before coding, inspect nearby UI, theme tokens, component libraries, and accessibility conventions. Then understand the context and commit to a BOLD aesthetic direction:
+Before coding, inspect nearby UI, theme tokens, component libraries, accessibility conventions, and representative screens.
+
+For an established product, **continuity is the default direction**: preserve its shell, navigation, typography, density, controls, states, and visual language unless redesign is explicitly requested. Do not force a new “bold” aesthetic onto one feature. Compare feature placement/workflow within the current system, and reuse sufficient approved mockups rather than redrawing them.
+
+For greenfield work or an explicitly approved redesign, understand the context and commit to a BOLD aesthetic direction:
 
 - **Purpose**: What problem does this interface solve? Who uses it?
 - **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
 - **Constraints**: Technical requirements (framework, performance, accessibility).
 - **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
 
-**CRITICAL**: Choose a clear conceptual direction and execute it with precision. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
+**CRITICAL**: Choose a clear conceptual direction and execute it with precision. In an existing application, that direction is usually the established product system; distinctiveness should come from solving the feature well, not making it look like another application. Bold maximalism and refined minimalism both work - the key is intentionality, not intensity.
 
 Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
 

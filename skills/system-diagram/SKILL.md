@@ -54,12 +54,13 @@ Pick the smallest mode that teaches the user what they need.
 | Understand ownership | Ownership/Lane Map | runtime/team/module responsibility |
 | Understand strategic choices | Decision Map | options, tradeoffs, escalation points |
 | Understand lifecycle | State/Lifecycle Diagram | states, transitions, triggers, terminal states |
+| Compare UI placement/workflow | UI Decision Comparison | one existing product shell, 2-3 highlighted deltas, and the shared action/outcome path |
 
 ## Core Principles
 
 ### 1. Inspect reality before drawing
 
-Do not infer ownership or call flow from folder names alone. Read/search actual source, tests, routes, docs, and types first.
+Do not infer ownership or call flow from folder names alone. For UI decision comparisons, inspect the real product shell, navigation, page hierarchy, visual tokens, controls, and states; Excalidraw must continue the product rather than replace it with a generic sketch UI. Read/search actual source, tests, routes, docs, and types first.
 
 Before drawing, identify:
 
@@ -183,6 +184,7 @@ Before drawing, write a compact brief. The final diagram must make this brief ob
 
 ```markdown
 Diagram question: What single question should this diagram answer?
+Decision unlocked: What reviewer choice becomes possible after seeing it, and why do existing artifacts not already suffice?
 Audience: Who needs to understand it?
 Mode: Context | Flow | Sequence | State | Ownership | Slice | Decision
 Scope: What is included and intentionally excluded?
@@ -196,6 +198,20 @@ Uncertainty: What is assumed, unresolved, removed, risky, or decision-needed?
 ```
 
 If the brief cannot be filled from repo/product context, ask one focused question instead of drawing a vague topology.
+
+## UI decision artifact gate
+
+Do not create UI mockups automatically. First name the next visual decision and check whether existing screenshots or wireframes already make it reviewable. If they do, reuse them. Non-visual policy decisions need selectors, not screens.
+
+When an additional Excalidraw UI artifact is justified, make it the smallest comparison that unlocks the decision:
+
+- one shared representation of the existing product shell;
+- 2-3 option panels showing only changed placement, hierarchy, entry point, or page/dialog flow;
+- one shared action/outcome path drawn once when all options use it;
+- exact option names and stable review anchors matching the PRD selector;
+- no duplicated detailed states already covered by existing mockups.
+
+Excalidraw is the medium, not the design direction. Preserve the existing product's recognizable navigation, colors, density, control shapes, and copy. Use HTML/CSS or screenshots instead when pixel-level comparison—not placement/workflow—is the actual decision.
 
 ## Workflow
 
@@ -328,7 +344,10 @@ For design reports, reuse the same semantics in embedded architecture and slice 
 
 Before handoff, check:
 
-- the diagram answers one explicit question, not a vague topic;
+- the diagram answers one explicit question and unlocks a named decision, not a vague topic;
+- existing artifacts were checked first so the diagram does not duplicate sufficient mockups;
+- UI comparisons preserve the existing product shell and show only option deltas plus shared flow;
+- option labels/anchors exactly match the PRD selector when the diagram supports a PRD decision;
 - source evidence was inspected for real actors, calls, state, and boundaries;
 - every color has a responsibility meaning documented in the legend;
 - domain diagrams show entity/concept interactions with verb/action labels and state/effect outcomes, not just noun boxes;

@@ -182,6 +182,18 @@
           <span class="section-kicker">Choose the product shape</span>
           <h2 id="ui-options-title">UI Options To Review</h2>
           <p class="section-summary">{{UI_OPTIONS_SUMMARY}}</p>
+          <div class="callout" data-review-id="ui-options.existing-ui-evidence">
+            <strong>Existing UI continuity</strong>
+            <p><strong>Evidence inspected:</strong> {{UI_EXISTING_UI_EVIDENCE}}</p>
+            <p><strong>Every option must preserve:</strong> {{UI_CONTINUITY_CONTRACT}}</p>
+            <p><strong>Options differ by:</strong> {{UI_OPTION_DIFFERENCES}}</p>
+          </div>
+          <div class="callout" data-review-id="ui-options.mockup-decision">
+            <strong>Mockup decision gate</strong>
+            <p><strong>Next visual decision:</strong> {{UI_NEXT_VISUAL_DECISION}}</p>
+            <p><strong>Are additional mockups needed?</strong> {{UI_ADDITIONAL_MOCKUPS_NEEDED}}</p>
+            <p><strong>Smallest useful artifact:</strong> {{UI_SMALLEST_REVIEW_ARTIFACT}}</p>
+          </div>
           <div class="ui-option-grid">
             <article class="ui-option-card recommended" data-review-id="ui-options.option-a">
               <h3><span class="id-chip">UI-A</span>{{UI_OPTION_A_TITLE}}</h3>
@@ -283,7 +295,7 @@
           <h2 id="review-gaps-title">Review Gaps</h2>
           <p class="section-summary">{{REVIEW_GAPS_SUMMARY}}</p>
           <div class="review-gap-list">
-            <article class="review-gap-card" data-review-id="review-gaps.gap-001"><h3><span class="id-chip">GAP-001</span>{{GAP_001_TITLE}}</h3><p><strong>Question:</strong> {{GAP_001_QUESTION}}</p><p><strong>Impact:</strong> {{GAP_001_IMPACT}}</p><p><strong>Owner/status:</strong> {{GAP_001_OWNER_STATUS}}</p><fieldset class="review-option-selector" data-review-id="review-gaps.gap-001.options" data-review-decision="single-choice"><legend>Reviewer options</legend><label class="review-option"><input type="radio" name="gap-001-option" /> <span>{{GAP_001_OPTION_A}}</span></label><label class="review-option"><input type="radio" name="gap-001-option" /> <span>{{GAP_001_OPTION_B}}</span></label><label class="review-option review-option-custom"><input type="radio" name="gap-001-option" /> <span>Other / custom answer <input type="text" aria-label="Custom answer for GAP-001" placeholder="Write reviewer answer…" /></span></label></fieldset></article>
+            <article class="review-gap-card" data-review-id="review-gaps.gap-001"><h3><span class="id-chip">GAP-001</span>{{GAP_001_TITLE}}</h3><p><strong>Question:</strong> {{GAP_001_QUESTION}}</p><p><strong>Impact:</strong> {{GAP_001_IMPACT}}</p><p><strong>Owner/status:</strong> {{GAP_001_OWNER_STATUS}}</p><fieldset class="review-option-selector" data-review-id="review-gaps.gap-001.options" data-review-decision="single-choice"><legend>Reviewer options</legend><label class="review-option"><input type="radio" name="gap-001-option" value="option-a" data-ui-option-ref="ui-options.option-a" /> <span>{{GAP_001_OPTION_A}}</span></label><label class="review-option"><input type="radio" name="gap-001-option" value="option-b" data-ui-option-ref="ui-options.option-b" /> <span>{{GAP_001_OPTION_B}}</span></label><label class="review-option"><input type="radio" name="gap-001-option" value="option-c" data-ui-option-ref="ui-options.option-c" /> <span>{{GAP_001_OPTION_C}}</span></label><label class="review-option review-option-custom"><input type="radio" name="gap-001-option" value="other" /> <span>Other / custom answer <input type="text" aria-label="Custom answer for GAP-001" placeholder="Write reviewer answer…" /></span></label></fieldset></article>
             <article class="review-gap-card" data-review-id="review-gaps.gap-002"><h3><span class="id-chip">GAP-002</span>{{GAP_002_TITLE}}</h3><p><strong>Question:</strong> {{GAP_002_QUESTION}}</p><p><strong>Impact:</strong> {{GAP_002_IMPACT}}</p><p><strong>Owner/status:</strong> {{GAP_002_OWNER_STATUS}}</p><fieldset class="review-option-selector" data-review-id="review-gaps.gap-002.options" data-review-decision="single-choice"><legend>Reviewer options</legend><label class="review-option"><input type="radio" name="gap-002-option" /> <span>{{GAP_002_OPTION_A}}</span></label><label class="review-option"><input type="radio" name="gap-002-option" /> <span>{{GAP_002_OPTION_B}}</span></label><label class="review-option review-option-custom"><input type="radio" name="gap-002-option" /> <span>Other / custom answer <input type="text" aria-label="Custom answer for GAP-002" placeholder="Write reviewer answer…" /></span></label></fieldset></article>
           </div>
           <span class="review-label">review: review-gaps</span>

@@ -101,6 +101,8 @@ for (const file of files) {
       ['how.workflow-001', 'first product workflow'],
       ['domain-interactions', 'domain entity interaction map'],
       ['domain-interactions.interaction-001', 'first domain interaction'],
+      ['ui-options.existing-ui-evidence', 'existing UI continuity evidence'],
+      ['ui-options.mockup-decision', 'mockup decision gate'],
       ['acceptance', 'acceptance criteria'],
       ['acceptance.ac-001', 'first acceptance criterion'],
       ['open-questions', 'open questions'],
@@ -109,6 +111,33 @@ for (const file of files) {
     for (const [id, label] of requiredPrdReviewIds) {
       if (!seenReviewIds.has(id)) {
         errors.push(`PRD report missing ${label} data-review-id "${id}"`);
+      }
+    }
+
+    const domainInteractionsSection = html.match(
+      /<section\b(?=[^>]*data-review-id=["']domain-interactions["'])[^>]*>[\s\S]*?<\/section>/i,
+    )?.[0] ?? '';
+    const hasDomainDiagram = /<svg\b/i.test(domainInteractionsSection)
+      || /<(?:div|figure)\b[^>]*role=["']img["']/i.test(domainInteractionsSection);
+    if (hasDomainDiagram && !/<!--\s*svg-source:excalidraw\s*-->/i.test(domainInteractionsSection)) {
+      errors.push('PRD domain diagrams must use an inline SVG rendered from Excalidraw');
+    }
+    if (hasDomainDiagram && !/class=["'][^"']*diagram-reveal[^"']*["']/i.test(domainInteractionsSection)) {
+      errors.push('PRD domain diagrams must preserve Excalidraw diagram-reveal groups');
+    }
+
+    const uiOptionInputs = [...html.matchAll(/<input\b[^>]*data-ui-option-ref=["']([^"']+)["'][^>]*>/gi)];
+    for (const match of uiOptionInputs) {
+      const input = match[0];
+      const target = match[1];
+      if (!/type=["']radio["']/i.test(input)) {
+        errors.push(`UI option reference "${target}" must be attached to a radio input`);
+      }
+      if (!seenReviewIds.has(target)) {
+        errors.push(`UI option selector references missing data-review-id "${target}"`);
+      }
+      if (!/\bvalue=["'][^"']+["']/i.test(input)) {
+        errors.push(`UI option selector for "${target}" needs a stable value`);
       }
     }
   }
