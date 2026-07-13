@@ -17,7 +17,8 @@ Rules:
 - Before coding, extract an explicit task-contract checklist from the task brief: Goal, Done, Execute bullets, required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results
 - Do not substitute a different implementation path for an explicit task instruction unless the task/user allows it or a user-owned blocker is recorded
 - Before marking done, audit the implementation against every task-contract checklist item; if any explicit item is unmet, continue working or block with owner/reason
-- Use adaptive review: load /Users/carlosrodrigo/agents/skills/are-you-proud/SKILL.md and apply it as self-review for small low-risk diffs; use oracle with the Are You Proud rubric for complex/high-risk diffs
+- Use adaptive review: load /Users/carlosrodrigo/agents/skills/are-you-proud/SKILL.md and apply it directly as self-review; consume already-completed Oracle results when relevant
+- Do not start detached/background subagents from a loop iteration: their completion cannot resume this print-mode iteration and causes empty-output retry churn; perform the review inline
 - Resolve must-fix Are You Proud/Oracle findings before marking done, or record skipped review with reason
 - Write/update feedback-loop results, task-contract audit, and Are You Proud/Oracle review status in the task's ## Result section; do not create separate report files for task results
 - If the next task needs handoff context, update that next task directly before marking the current task done

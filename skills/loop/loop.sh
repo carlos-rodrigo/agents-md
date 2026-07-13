@@ -15,6 +15,8 @@ MAX_ITERATIONS=10
 SLEEP_SECONDS=2
 POLL_SECONDS="${LOOP_POLL_SECONDS:-3}"
 RATE_LIMIT_MAX_STREAK="${LOOP_RATE_LIMIT_MAX_STREAK:-3}"
+PROVIDER_ERROR_MAX_STREAK="${LOOP_PROVIDER_ERROR_MAX_STREAK:-3}"
+PROVIDER_RETRY_DELAY_SECONDS="${LOOP_PROVIDER_RETRY_DELAY_SECONDS:-5}"
 AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
@@ -74,6 +76,11 @@ is_rate_limit_error_output() {
   grep -Eiq 'rate_limit_error|too[[:space:]]+many[[:space:]]+requests|\bHTTP[[:space:]]*429\b|\b429\b' "$file"
 }
 
+is_provider_transport_error_output() {
+  local file="$1"
+  grep -Eiq 'provider_transport_failure|WebSocket[^[:cntrl:]]*(idle[[:space:]]+timeout|timed[[:space:]]+out|closed|terminated)|openai-codex-responses[^[:cntrl:]]*(transport|timeout|fetch failed)|^[[:space:]]*(Error:[[:space:]]*)?fetch failed[.!]?[[:space:]]*$' "$file"
+}
+
 usage() {
   cat <<'EOF'
 Usage: loop.sh [options] [max_iterations]
@@ -91,6 +98,10 @@ Options:
   --poll <seconds>         Heartbeat log interval while tool runs (default: 3)
                            Set 0 to disable heartbeat logging
   --rate-limit-streak <n>  Stop loop after n consecutive rate-limit failures (default: 3)
+  --provider-error-streak <n>
+                           Stop after n consecutive provider/WebSocket interruptions (default: 3)
+  --provider-retry-delay <seconds>
+                           Base delay before retrying a provider interruption (default: 5)
   -h, --help               Show this help
 
 Environment overrides:
@@ -101,6 +112,10 @@ Environment overrides:
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
                            Set LOOP_OPENCODE_VARIANT='' to omit --variant
   LOOP_RATE_LIMIT_MAX_STREAK  Consecutive rate-limit failures before stopping (default: 3)
+  LOOP_PROVIDER_ERROR_MAX_STREAK
+                           Consecutive provider/WebSocket interruptions before stopping (default: 3)
+  LOOP_PROVIDER_RETRY_DELAY_SECONDS
+                           Base provider retry delay in seconds (default: 5)
 
 Examples:
   ~/agents/skills/loop/loop.sh --feature agentic-finance --project-root "$PWD" --tool pi --poll 1 20
@@ -185,6 +200,22 @@ while [[ $# -gt 0 ]]; do
       RATE_LIMIT_MAX_STREAK="${1#*=}"
       shift
       ;;
+    --provider-error-streak)
+      PROVIDER_ERROR_MAX_STREAK="${2:-}"
+      shift 2
+      ;;
+    --provider-error-streak=*)
+      PROVIDER_ERROR_MAX_STREAK="${1#*=}"
+      shift
+      ;;
+    --provider-retry-delay)
+      PROVIDER_RETRY_DELAY_SECONDS="${2:-}"
+      shift 2
+      ;;
+    --provider-retry-delay=*)
+      PROVIDER_RETRY_DELAY_SECONDS="${1#*=}"
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -216,6 +247,19 @@ fi
 
 if [[ "$RATE_LIMIT_MAX_STREAK" -le 0 ]]; then
   echo "Error: --rate-limit-streak must be > 0"
+  exit 1
+fi
+
+if ! validate_non_negative_int "--provider-error-streak" "$PROVIDER_ERROR_MAX_STREAK"; then
+  exit 1
+fi
+
+if [[ "$PROVIDER_ERROR_MAX_STREAK" -le 0 ]]; then
+  echo "Error: --provider-error-streak must be > 0"
+  exit 1
+fi
+
+if ! validate_non_negative_int "--provider-retry-delay" "$PROVIDER_RETRY_DELAY_SECONDS"; then
   exit 1
 fi
 
@@ -354,14 +398,15 @@ fi
 LOOP_START_TS=$(date +%s)
 echo "=== loop start $(date '+%Y-%m-%d %H:%M:%S') ===" | tee -a "$LOG_FILE"
 if [[ -n "$AGENT" ]]; then
-  echo "project=$PROJECT_ROOT feature=$FEATURE task=${TASK_ID:-none} agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK$TOOL_RUNTIME" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE task=${TASK_ID:-none} agent=$AGENT model=$AGENT_MODEL tool=$TOOL max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK provider_error_streak_limit=$PROVIDER_ERROR_MAX_STREAK provider_retry_delay=$PROVIDER_RETRY_DELAY_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 else
-  echo "project=$PROJECT_ROOT feature=$FEATURE task=${TASK_ID:-none} tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK$TOOL_RUNTIME" | tee -a "$LOG_FILE"
+  echo "project=$PROJECT_ROOT feature=$FEATURE task=${TASK_ID:-none} tool=$TOOL tool_order=$TOOL_ORDER max_iterations=$MAX_ITERATIONS sleep=$SLEEP_SECONDS poll=$POLL_SECONDS rate_limit_streak_limit=$RATE_LIMIT_MAX_STREAK provider_error_streak_limit=$PROVIDER_ERROR_MAX_STREAK provider_retry_delay=$PROVIDER_RETRY_DELAY_SECONDS$TOOL_RUNTIME" | tee -a "$LOG_FILE"
 fi
 echo "log_file=$LOG_FILE (follow with: tail -f $LOG_FILE)" | tee -a "$LOG_FILE"
 echo "summary_file=$SUMMARY_FILE" | tee -a "$LOG_FILE"
 
 RATE_LIMIT_STREAK=0
+PROVIDER_ERROR_STREAK=0
 
 for i in $(seq 1 "$MAX_ITERATIONS"); do
   echo "" | tee -a "$LOG_FILE"
@@ -451,6 +496,18 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     echo "⚠️  Tool exited non-zero (exit=$TOOL_EXIT). Continuing loop." | tee -a "$LOG_FILE"
   fi
 
+  PROVIDER_INTERRUPTION=0
+  INTERRUPTION_OUTCOME=""
+  if [[ ! -s "$TEMP_OUTPUT" ]]; then
+    PROVIDER_INTERRUPTION=1
+    INTERRUPTION_OUTCOME="empty_agent_output"
+    echo "🔌 Empty agent output detected; task state will not be classified from this iteration." | tee -a "$LOG_FILE"
+  elif is_provider_transport_error_output "$TEMP_OUTPUT"; then
+    PROVIDER_INTERRUPTION=1
+    INTERRUPTION_OUTCOME="provider_transport_interruption"
+    echo "🔌 Provider/WebSocket interruption detected; task state will not be classified from this output." | tee -a "$LOG_FILE"
+  fi
+
   {
     echo "# Latest Loop Iteration"
     echo
@@ -461,6 +518,10 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     echo "- Duration: $DURATION_STR"
     echo "- Tool: $TOOL"
     echo "- Tool exit: $TOOL_EXIT"
+    if [[ "$PROVIDER_INTERRUPTION" -eq 1 ]]; then
+      echo "- Outcome: $INTERRUPTION_OUTCOME"
+      echo "- Task classification: skipped"
+    fi
     echo "- Log: $LOG_FILE"
     echo
     echo "## Agent output tail"
@@ -470,6 +531,30 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     echo '```'
   } > "$SUMMARY_FILE"
   echo "summary_file=$SUMMARY_FILE" | tee -a "$LOG_FILE"
+
+  if [[ "$PROVIDER_INTERRUPTION" -eq 1 ]]; then
+    PROVIDER_ERROR_STREAK=$((PROVIDER_ERROR_STREAK + 1))
+    RATE_LIMIT_STREAK=0
+    echo "↻ Retrying with a fresh agent on the next iteration (provider streak $PROVIDER_ERROR_STREAK/$PROVIDER_ERROR_MAX_STREAK)." | tee -a "$LOG_FILE"
+    echo "   No task completion, blocker, or TASK status was inferred from the interrupted output." | tee -a "$LOG_FILE"
+
+    if [[ "$PROVIDER_ERROR_STREAK" -ge "$PROVIDER_ERROR_MAX_STREAK" ]]; then
+      echo "🛑 Stopping loop after $PROVIDER_ERROR_STREAK consecutive provider/WebSocket/empty-output interruptions." | tee -a "$LOG_FILE"
+      rm -f "$TEMP_OUTPUT"
+      exit 4
+    fi
+
+    RETRY_DELAY=$((PROVIDER_RETRY_DELAY_SECONDS * PROVIDER_ERROR_STREAK))
+    rm -f "$TEMP_OUTPUT"
+    echo "──────────────────────────────────────────────────────────" | tee -a "$LOG_FILE"
+    if [[ "$RETRY_DELAY" -gt 0 ]]; then
+      echo "   Waiting ${RETRY_DELAY}s before provider retry." | tee -a "$LOG_FILE"
+      sleep "$RETRY_DELAY"
+    fi
+    continue
+  fi
+
+  PROVIDER_ERROR_STREAK=0
 
   if grep -Eq "Loop complete|<promise>COMPLETE</promise>" "$TEMP_OUTPUT"; then
     echo "✅ Loop complete detected." | tee -a "$LOG_FILE"

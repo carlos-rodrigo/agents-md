@@ -34,6 +34,9 @@ If multiple features have ready work, ask which one to run.
 - Interactive: execute one task, summarize, ask before continuing.
 - Pi background job: prefer `loop_job_start` when available. It opens `loop.sh` in a detached tmux window, records `.pi/loop-jobs/{jobId}/`, keeps `.features/{feature}/artifacts/loop/`, and sends a Pi follow-up message when the loop finishes.
 - Background shell: `loop.sh` spawns a fresh agent per iteration until complete/blocked/max iterations.
+- Provider/WebSocket interruptions and empty agent output are classified separately from task output. The harness skips task completion/blocker inference, retries with a fresh iteration, and exits `4` after the configured consecutive-failure budget.
+- Print-mode loop iterations must review inline rather than launch detached subagents; detached completion cannot resume that iteration.
+- Configure provider retry safety with `--provider-error-streak`, `--provider-retry-delay`, `LOOP_PROVIDER_ERROR_MAX_STREAK`, and `LOOP_PROVIDER_RETRY_DELAY_SECONDS`.
 - `loop.sh --task TASK-001`: execute only that task.
 
 ## Start from Pi
