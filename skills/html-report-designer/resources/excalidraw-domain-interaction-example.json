@@ -1,0 +1,153 @@
+{
+  "id": "excalidraw-domain-interaction-example",
+  "title": "Which domain building blocks own facts, derived state, and planning?",
+  "desc": "A product-domain map showing authoritative evidence becoming an accepted fact, derived current state, and a read-only lens while planning stays separate under an invariant rail.",
+  "reviewPrefix": "diagram.domain-example",
+  "reviewId": "svg",
+  "backgroundColor": "#fffdf8",
+  "padding": 20,
+  "nodes": [
+    {
+      "id": "authoritative-evidence",
+      "reviewId": "node-authoritative-evidence",
+      "kind": "entry",
+      "x": 20,
+      "y": 60,
+      "width": 170,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Evidence\nOwner: source\ninput boundary"
+    },
+    {
+      "id": "accepted-fact",
+      "reviewId": "node-accepted-fact",
+      "kind": "domain",
+      "x": 250,
+      "y": 60,
+      "width": 170,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Accepted fact\nOwner: domain\ntruth boundary"
+    },
+    {
+      "id": "derived-state",
+      "reviewId": "node-derived-state",
+      "kind": "feedback",
+      "x": 480,
+      "y": 60,
+      "width": 180,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Current state\nOwner: read view\nvisible effect"
+    },
+    {
+      "id": "read-only-lens",
+      "reviewId": "node-read-only-lens",
+      "x": 730,
+      "y": 60,
+      "width": 180,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Read-only lens\nOwner: experience\nnext decision"
+    },
+    {
+      "id": "invariant-rail",
+      "reviewId": "node-invariant-rail",
+      "kind": "repository",
+      "x": 250,
+      "y": 300,
+      "width": 410,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Invariant / policy rail\nOnly authoritative evidence creates facts\nDerived views never rewrite facts"
+    },
+    {
+      "id": "planning-state",
+      "reviewId": "node-planning-state",
+      "fill": "#fff1f1",
+      "stroke": "#b94a42",
+      "x": 730,
+      "y": 300,
+      "width": 180,
+      "height": 100,
+      "fontSize": 14,
+      "text": "Planning state\nOwner: planning\nseparate boundary"
+    }
+  ],
+  "edges": [
+    {
+      "id": "evidence-to-fact",
+      "reviewIds": {
+        "edge": "edge-evidence-to-fact",
+        "label": "edge-label-evidence-to-fact"
+      },
+      "from": "authoritative-evidence",
+      "to": "accepted-fact",
+      "kind": "boundary",
+      "x": 190,
+      "y": 110,
+      "points": [[0, 0], [60, 0]],
+      "fontSize": 13,
+      "label": "records"
+    },
+    {
+      "id": "fact-to-state",
+      "reviewIds": {
+        "edge": "edge-fact-to-state",
+        "label": "edge-label-fact-to-state"
+      },
+      "from": "accepted-fact",
+      "to": "derived-state",
+      "kind": "feedback",
+      "x": 420,
+      "y": 110,
+      "points": [[0, 0], [60, 0]],
+      "fontSize": 13,
+      "label": "changes"
+    },
+    {
+      "id": "state-to-lens",
+      "reviewIds": {
+        "edge": "edge-state-to-lens",
+        "label": "edge-label-state-to-lens"
+      },
+      "from": "derived-state",
+      "to": "read-only-lens",
+      "x": 660,
+      "y": 110,
+      "points": [[0, 0], [70, 0]],
+      "fontSize": 13,
+      "label": "informs"
+    },
+    {
+      "id": "policy-to-state",
+      "reviewIds": {
+        "edge": "edge-policy-to-state",
+        "label": "edge-label-policy-to-state"
+      },
+      "from": "invariant-rail",
+      "to": "derived-state",
+      "kind": "repository",
+      "x": 570,
+      "y": 300,
+      "points": [[0, 0], [0, -140]],
+      "fontSize": 13,
+      "label": "governs"
+    },
+    {
+      "id": "policy-to-planning",
+      "reviewIds": {
+        "edge": "edge-policy-to-planning",
+        "label": "edge-label-policy-to-planning"
+      },
+      "from": "invariant-rail",
+      "to": "planning-state",
+      "kind": "risk",
+      "x": 660,
+      "y": 350,
+      "points": [[0, 0], [70, 0]],
+      "fontSize": 13,
+      "label": "separates"
+    }
+  ]
+}

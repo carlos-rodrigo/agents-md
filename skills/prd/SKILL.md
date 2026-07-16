@@ -22,15 +22,17 @@ Generate a self-contained, reviewable HTML brief. Use `html-report-designer` for
 1. Understand the request.
 2. Read just enough product/repo context to avoid guessing.
 3. Explain the feature in What / Why / How / Experience / Done.
-4. For every story, show the user's post-story flow: entry → action → visible response → next decision.
-5. Map how the domain entities/concepts interact: source entity → action/verb → target entity/state/effect. If there is no meaningful domain model, include an explicit “not applicable” note.
-6. For user-facing work, inspect the existing product UI before drawing: shell, navigation, page hierarchy, density, controls, states, and responsive behavior. Record the evidence.
-7. Name the visual decision to unlock and check whether existing mockups already suffice. Only when more evidence is needed, offer 2-3 detailed options and mark the recommended/selected/pending direction. Existing UI options continue the product and vary placement/workflow—not style; greenfield options define the missing shell and interaction details explicitly.
-8. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review; every review gap and open question must include a visible option selector with at least one free-text option for reviewer-supplied answers.
-9. Name what is out of scope.
-10. Write or update `docs/features/{feature}/prd.html`.
-11. Cite sources and open questions.
-12. Stop before architecture, tasks, or implementation.
+4. Establish one reading spine: overview/question → canonical scenario or domain model → supporting exceptions/details → reviewer decision/next action.
+5. For every story, show the shared `Entry → Action → Visible response → Next decision` grammar once, then a compact full-width outcome row. Put the outcome first and omit the review-gap field when it is empty.
+6. Map meaningful domain behavior as a renderer-backed Excalidraw building-block/evolution figure: source/owner → verb-labelled interaction → target state/effect, plus boundaries, invariant/policy rail, figure question, caption, and adjacent numbered walkthrough. If domain behavior is not meaningful, state why and use an authentic user-flow diagram instead.
+7. For user-facing work, inspect the existing product UI before drawing: shell, navigation, page hierarchy, density, controls, states, and responsive behavior. Record the evidence.
+8. Name the visual decision to unlock and check whether existing mockups already suffice. Only when more evidence is needed, offer 2-3 detailed options and mark the recommended/selected/pending direction. Draw the unchanged shell/baseline once, then stack full-width Option A/B/C rows; never use responsive multi-column option cards.
+9. Add explicit review gaps where the reviewer should choose UI, wording, flow, scope, or domain language during PRD review; every review gap and open question must include a visible option selector with at least one free-text option for reviewer-supplied answers.
+10. Name what is out of scope.
+11. Write or update `docs/features/{feature}/prd.html`.
+12. Cite sources and open questions.
+13. Validate without `--allow-placeholders`; a finished `prd.html` must contain an authentic renderer-backed semantic Excalidraw SVG in `user-flows` or `domain-interactions`.
+14. Stop before architecture, tasks, or implementation.
 
 ## Plain-language test
 
@@ -61,6 +63,8 @@ If a sentence does not help answer one of those questions, cut it or move it to 
 - Review gaps must be explicit choice prompts with impact; do not hide them as assumptions.
 - Each review gap and open question must include a reviewer option selector: provide concrete choices when known, and always include a free-text “Other / custom answer” option. For HTML PRDs, mark the anchored gap/card with `data-review-decision="single-choice"` and use enabled named radio inputs so checked decisions are exported as review feedback.
 - Domain interaction content is product language, not architecture: name domain entities/concepts, user-visible actions, state/effect outcomes, ownership/authority, and unresolved vocabulary or policy gaps without naming schemas, classes, or endpoints.
+- Finished PRDs have no diagram exemption or grandfathering. Inline the build-time renderer output with its `<!-- svg-source:excalidraw -->` provenance, accessible SVG title/description, stable review IDs, labelled edge groups, and renderer-owned reveal groups. Unrelated SVG, rich HTML wireframes, and hand-authored lookalikes do not satisfy the gate.
+- `prd-template.html --allow-placeholders` may retain the canonical `data-excalidraw-slot="semantic-domain-diagram"` without a feature-specific scene. Never use placeholder mode for a finished PRD.
 - End with a `Sources reviewed` note: paths, docs, screenshots, conversations, or “user request only”.
 
 ## PRD shape
@@ -71,10 +75,10 @@ Keep it concise. Default table count is zero.
 summary            # product story, status, 2-3 takeaways, sources reviewed
 what               # feature, users/jobs, in scope, out of scope
 why                # need, pain, opportunity, success signal
-how                # 2-4 stories/rules plus one main workflow and key edge workflow
-user-flows         # after every story: entry, action, visible response, next user decision
-domain-interactions # entities/concepts, verbs, state/effect outcomes, ownership, and unresolved vocabulary/policy gaps
-ui-options         # existing-UI evidence + 2-3 continuity-preserving placement/workflow options; if no UI exists, detailed foundational directions
+how                # 2-4 stories/rules plus one expanded canonical scenario and grouped full-width exception rows
+user-flows         # shared grammar once; compact full-width outcome-first row per story
+domain-interactions # renderer-backed building-block map + numbered walkthrough; definition cards only as support
+ui-options         # existing-UI evidence + one shared baseline + stacked full-width placement/workflow option rows
 review-gaps        # choices the reviewer should make now: UI, wording, flow, scope, domain language, or open product gap
 acceptance         # 3-6 observable criteria tied to workflows and visible UI/state outcomes
 open-questions     # only unresolved blockers with owner/status
@@ -136,40 +140,45 @@ Rules:
 - REQ-002: When {condition}, the user sees/gets {observable result}.
 ```
 
-Then include the smallest workflows that prove behavior:
+Then include the smallest scenarios that prove behavior. Expand one canonical scenario and group exceptions beneath it as full-width rows. Every row leads with the same 4 facts so readers can compare without scanning cards:
 
 ```text
-WF-001 Main workflow
-Given ...
-When ...
-Then ...
+WF-001 Canonical scenario
+Trigger: ...
+Expected effect: ...
+Invariant: ...
+Recovery / next action: ...
 
-WF-002 Edge/error/empty/permission workflow
-Given ...
-When ...
-Then ...
+Supporting exceptions — economic | integrity/recovery | availability
+WF-002 {exception}
+Trigger: ...
+Expected effect: ...
+Invariant: ...
+Recovery: ...
 ```
+
+Keep the canonical scenario visible. Use `<details>` only for long evidence or uncommon branches, never for the recommendation, invariant, tradeoff, or reviewer decision.
 
 ### Post-story user flows
 
-Every story gets a concrete after-state so reviewers can picture the feature instead of only reading requirements:
+Show `Entry → Action → Visible response → Next decision` once as the grammar, then give every story one compact full-width label/content row. Lead with the outcome so reviewers can see the value before the mechanics:
 
 ```text
 FLOW-001 — After STORY-001
+Outcome: The product shows {new state, confirmation, empty/error/loading state}.
 Entry: The user starts from {screen/state/context}.
 Action: The user {does the visible thing}.
-System response: The product shows {new state, confirmation, empty/error/loading state}.
-Next user decision: The user can now {continue, choose, recover, undo, inspect, share}.
-Gaps to review: {copy/layout/state choice that needs reviewer input, or “none”}.
+Next decision: The user can now {continue, choose, recover, undo, inspect, share}.
+Review gap: {only render when non-empty}.
 ```
 
-Prefer 3-5 steps per flow. Include empty/loading/error/permission flow only when it changes user trust or design readiness.
+Keep rows in story order. Include empty/loading/error/permission outcomes only when they change user trust or design readiness; put long evidence and uncommon branches in meaningful `<details>/<summary>` disclosures.
 
 ### Domain entity interactions
 
-Every PRD with meaningful domain behavior must include a compact interaction map before UI options. It should answer “what real-world things change other real-world things?” without leaking implementation.
+Every PRD with meaningful domain behavior must use a renderer-backed Excalidraw building-block/evolution map before UI options. It should answer one explicit figure question—usually “what real-world things change other real-world things?”—without leaking implementation.
 
-Use cards or a small semantic diagram with 3-7 entities/concepts. Label relationships with verbs, not vague nouns:
+Use 3-7 owned concepts inside visible authority/boundary groupings. Label every meaningful arrow with a verb and state/effect, add an invariant/policy rail, a caption/how-to-read note, and an adjacent numbered HTML walkthrough. Keep cards or disclosures only as supporting definitions:
 
 ```text
 DOMAIN-INT-001 — {interaction name}
@@ -182,7 +191,7 @@ Open vocabulary/policy gap: {term, state, or rule reviewers must approve, or “
 
 Good PRD domain interactions stay product-visible: “Campaign event consumes input inventory and creates cost impact” is OK; “EventService writes `event_effects` rows” belongs in design.
 
-If the feature is content-only or has no meaningful domain entities, include a short `Domain interactions: not applicable` card with the reason so the omission is reviewable.
+If the feature is content-only or has no meaningful domain entities, include a short `Domain interactions: not applicable` note with the reason, then render the authentic semantic diagram in `user-flows` instead. A finished PRD never omits both diagram forms.
 
 ### UI options, wireframes, and review gaps
 
@@ -207,9 +216,11 @@ Apply a **mockup decision gate** before drawing or redrawing:
 
 Excalidraw is valid for product UI mockups when it preserves the existing UI faithfully. Use one base shell, clone it for alternatives, keep labels searchable and reviewable, and render with the build-time Excalidraw renderer. It is not a reason to replace sufficient HTML/CSS wireframes or invent a sketch-style redesign.
 
-Option cards and reviewer selectors are one contract: selector labels must use the same option names and ordering as the mockups, and each selectable option should reference its option card with a stable anchor.
+Option rows and reviewer selectors are one contract: selector labels must use the same option names and ordering as the mockups, and each selectable option should reference its row with a stable anchor.
 
-When the feature changes a screen, command UI, TUI, document, or visible workflow, include 2-3 options as real wireframes, not text-only cards:
+Draw the shared unchanged shell/baseline once. Follow it with full-width Option A/B/C rows—never a responsive multi-column option-card gallery. Each row must contain a decision sentence, delta from baseline, full-size `<figure>`/`<figcaption>` wireframe, workflow with visible outcomes, tradeoff, status, and selector. Rich HTML wireframes must not use `role="img"`, because that hides child semantics from assistive technology.
+
+When the feature changes a screen, command UI, TUI, document, or visible workflow, include 2-3 options as real wireframes, not text-only rows:
 
 ```text
 UI-OPTION-A — {plain-language direction}
@@ -236,15 +247,16 @@ Open questions use the same selector shape. If the only responsible answer is re
 
 A good PRD wireframe is detailed enough that the reviewer can point at regions and say “put this action on the existing page” or “this deserves a dedicated page.” When the product already has a UI, use its real shell and visible conventions rather than generic header/nav/inspector scaffolding. Prefer HTML/CSS or inline SVG wireframes with labelled regions over monospace sketches. Show layout, hierarchy, representative copy, primary/secondary actions, visible state changes, and the next decision. Under every UI option, add a short step-by-step usage flow where each step names the user action and the expected visible outcome. Do not choose libraries, components, schemas, or animation implementation here.
 
-### Simple product diagram
+### Semantic product diagram hard gate
 
-Include a tiny semantic diagram or storyboard only if it makes the product idea easier to understand. Prefer 3-7 nodes with verb labels:
+Every finished PRD includes at least one meaningful renderer-backed Excalidraw semantic diagram in `user-flows` or `domain-interactions`. Prefer 3-7 nodes and a single teaching question:
 
 ```text
-User need → Product action → System response → Visible outcome → Next choice
+User need → Product action → Visible outcome → Next choice
+Source/owner --verb + effect--> target state
 ```
 
-Use diagrams to explain meaning, not decoration. For HTML diagrams, reveal nodes/paths in reading order so the diagram teaches the flow rather than appearing all at once.
+Use diagrams to explain meaning, not decoration. Retain the JSON scene beside durable feature artifacts when it must be regenerated, render with `scripts/render-excalidraw-diagram.mjs`, inline the checked SVG, and preserve provenance, title/description, review IDs, labelled edges, and reading-order reveal groups. Add a nearby structured text equivalent. Unrelated illustrations and wireframes do not count.
 
 ### Acceptance
 
@@ -263,14 +275,16 @@ Before finishing:
 - [ ] The PRD is a What / Why / How / Done product story.
 - [ ] A non-engineer can understand the summary and workflow.
 - [ ] Every story has a visible post-story flow or an explicit “not user-facing” note.
-- [ ] Domain entities/concepts and their interactions are mapped, or a clear “not applicable” rationale is present.
+- [ ] A meaningful renderer-backed Excalidraw semantic diagram exists in `user-flows` or `domain-interactions`, with a figure question, caption, and nearby structured text equivalent.
+- [ ] Domain entities/concepts and their interactions are mapped with ownership, verb/effect edges, and an invariant/policy rail, or a clear “not applicable” rationale points to the user-flow diagram.
 - [ ] Existing UI evidence is anchored and names what every option must preserve, or explicitly states that no UI exists yet.
 - [ ] The mockup gate names the next visual decision and says whether new mockups are actually needed.
 - [ ] Existing sufficient mockups are reused rather than redrawn in another format.
 - [ ] User-facing changes include 2-3 detailed wireframe/mockup options or explain why only one is viable.
 - [ ] When a product UI exists, every option visibly continues it and differs by placement/workflow rather than visual style.
 - [ ] When no product UI exists, options define the shell, responsive hierarchy, controls, and key states in enough detail to guide design.
-- [ ] Every UI option explains step-by-step use and expected outcome per step.
+- [ ] The unchanged UI shell/baseline appears once, followed by full-width option rows rather than responsive multi-column cards.
+- [ ] Every UI option row shows its decision sentence, baseline delta, full-size semantic wireframe figure, step-by-step use/outcomes, tradeoff, and selector.
 - [ ] UI option names/order match the reviewer selector and selectable options link to stable option anchors.
 - [ ] Reviewer gaps are explicit, owned, tied to design readiness, and include option selectors with a free-text option.
 - [ ] Open questions that need reviewer input include option selectors with a free-text option.
@@ -298,7 +312,7 @@ Before finishing:
 - Generic mockups that ignore an existing product shell or make each option look like a different application.
 - Redrawing already-sufficient mockups in Excalidraw without a new decision to unlock.
 - Full-screen alternative mockups for a non-visual policy decision.
-- Selector labels that no longer match the option cards they approve.
+- Selector labels that no longer match the option rows they approve.
 - Isolated cards presented as a complete UI when no existing shell has been defined.
 - UI options that show a static screen but not how the user uses it or what outcome each step produces.
 - UI options that leak implementation libraries/components instead of product-visible behavior.

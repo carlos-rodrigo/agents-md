@@ -32,6 +32,19 @@ for (const file of files) {
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'");
+  const sectionByReviewId = (id) => html.match(
+    new RegExp(`<section\\b(?=[^>]*data-review-id=["']${id}["'])[^>]*>[\\s\\S]*?<\\/section>`, 'i'),
+  )?.[0] ?? '';
+  const rendererDiagramContract = (svg) => ({
+    provenance: /<!--\s*svg-source:excalidraw\s*-->/i.test(svg),
+    accessible: /<svg\b[^>]*role=["']img["'][^>]*aria-labelledby=["'][^"']+["']/i.test(svg)
+      && /<title\b[^>]*>[\s\S]*?<\/title>/i.test(svg)
+      && /<desc\b[^>]*>[\s\S]*?<\/desc>/i.test(svg),
+    rootReviewId: /<svg\b[^>]*data-review-id=["'][a-z0-9]+(?:[.-][a-z0-9]+)*["']/i.test(svg),
+    nodeReveal: /<g\b(?=[^>]*class=["'][^"']*\bdiagram-node\b[^"']*\bdiagram-reveal\b[^"']*["'])(?=[^>]*data-review-id=["'][^"']+["'])[^>]*>/i.test(svg),
+    edgeReveal: /<g\b(?=[^>]*class=["'][^"']*\bdiagram-edge\b[^"']*\bdiagram-reveal\b[^"']*["'])(?=[^>]*data-review-id=["'][^"']+["'])[^>]*>/i.test(svg),
+    labelledEdge: /<g\b(?=[^>]*class=["'][^"']*\bdiagram-edge-label\b[^"']*\bdiagram-reveal\b[^"']*["'])(?=[^>]*data-review-id=["'][^"']+["'])[^>]*>[\s\S]*?<text\b[^>]*>[\s\S]*?\S[\s\S]*?<\/text>[\s\S]*?<\/g>/i.test(svg),
+  });
 
   if (!/^\s*<!doctype html>/i.test(html)) {
     errors.push('missing <!doctype html>');
@@ -88,6 +101,57 @@ for (const file of files) {
     errors.push(`duplicate data-review-id "${id}"`);
   }
 
+  const scenarioAutoFitContainers = [...html.matchAll(/<[^>]*\bclass=["'][^"']*\bexample-pair\b[^"']*["'][^>]*>/gi)];
+  for (const match of scenarioAutoFitContainers) {
+    if (!/data-layout-exception=["']visual-diff["']/i.test(match[0])) {
+      errors.push('sequential scenarios must use a stacked layout; reserve side-by-side layout for an explicit data-layout-exception="visual-diff"');
+    }
+  }
+
+  const visualDiffs = [...html.matchAll(/<[^>]*data-layout-exception=["']visual-diff["'][^>]*>/gi)];
+  for (const match of visualDiffs) {
+    if (!/data-visual-diff-states=["']2["']/i.test(match[0])) {
+      errors.push('visual-diff layout exceptions must declare data-visual-diff-states="2" for exactly 2 compact equivalent states');
+    }
+  }
+
+  const detailsBlocks = [...html.matchAll(/<details\b([^>]*)>([\s\S]*?)<\/details>/gi)];
+  for (const block of detailsBlocks) {
+    const summary = block[2].match(/^\s*<summary\b[^>]*>([\s\S]*?)<\/summary>/i)?.[1] ?? '';
+    if (stripHtml(summary).replace(/\s+/g, ' ').trim().length < 4) {
+      errors.push('every <details> disclosure needs a meaningful non-empty <summary> as its first child');
+    }
+  }
+  const hasClosedDetails = detailsBlocks.some((block) => !/\bopen(?:\s|=|$)/i.test(block[1]));
+  if (hasClosedDetails && !has(/@media\s+print[\s\S]*?details:not\(\[open\]\)\s*>\s*:not\(summary\)\s*\{[^}]*display\s*:\s*block/i)) {
+    errors.push('closed <details> content must print expanded/readable with a print details:not([open]) rule');
+  }
+
+  if (has(/<(?:article|div|figure|section)\b[^>]*\brole=["']img["'][^>]*>/i)) {
+    errors.push('rich HTML must not use role="img" wrappers; use semantic <figure>/<figcaption> and preserve child semantics');
+  }
+
+  const complexFigures = [...html.matchAll(/<figure\b([^>]*\bdata-complex-figure\b[^>]*)>([\s\S]*?)<\/figure>/gi)];
+  for (const figure of complexFigures) {
+    const reviewId = figure[1].match(/data-review-id=["']([^"']+)["']/i)?.[1];
+    if (!reviewId) {
+      errors.push('complex figures need a stable data-review-id for their adjacent walkthrough');
+      continue;
+    }
+    if (!/<p\b[^>]*class=["'][^"']*\bfigure-question\b[^"']*["'][^>]*>[\s\S]*?\S[\s\S]*?<\/p>/i.test(figure[2])) {
+      errors.push(`complex figure "${reviewId}" needs its own visible question/how-to-read prompt`);
+    }
+    if (!/<figcaption\b[^>]*>[\s\S]*?\S[\s\S]*?<\/figcaption>/i.test(figure[2])) {
+      errors.push(`complex figure "${reviewId}" needs its own <figcaption>; an unrelated page-level caption does not count`);
+    }
+    const figureEnd = (figure.index ?? 0) + figure[0].length;
+    const nextContent = html.slice(figureEnd);
+    const adjacentWalkthrough = nextContent.match(/^\s*<ol\b([^>]*)>[\s\S]*?<\/ol>/i);
+    if (!adjacentWalkthrough || !new RegExp(`data-figure-walkthrough-for=["']${reviewId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`, 'i').test(adjacentWalkthrough[1])) {
+      errors.push(`complex figure "${reviewId}" needs an adjacent structured walkthrough tied with data-figure-walkthrough-for`);
+    }
+  }
+
   const isPrdReport = /^(prd|prd-template)\.html$/i.test(basename(file));
   if (isPrdReport) {
     const requiredPrdReviewIds = [
@@ -114,16 +178,34 @@ for (const file of files) {
       }
     }
 
-    const domainInteractionsSection = html.match(
-      /<section\b(?=[^>]*data-review-id=["']domain-interactions["'])[^>]*>[\s\S]*?<\/section>/i,
-    )?.[0] ?? '';
-    const hasDomainDiagram = /<svg\b/i.test(domainInteractionsSection)
-      || /<(?:div|figure)\b[^>]*role=["']img["']/i.test(domainInteractionsSection);
-    if (hasDomainDiagram && !/<!--\s*svg-source:excalidraw\s*-->/i.test(domainInteractionsSection)) {
-      errors.push('PRD domain diagrams must use an inline SVG rendered from Excalidraw');
+    const semanticSections = [sectionByReviewId('user-flows'), sectionByReviewId('domain-interactions')].join('\n');
+    const canonicalSlotPattern = /data-excalidraw-slot=["']semantic-domain-diagram["']/i;
+    if (allowPlaceholders) {
+      if (!canonicalSlotPattern.test(semanticSections)) {
+        errors.push('placeholder PRD template needs the canonical semantic Excalidraw slot data-excalidraw-slot="semantic-domain-diagram"');
+      }
+    } else {
+      const semanticSvgs = [...semanticSections.matchAll(/<svg\b[\s\S]*?<\/svg>/gi)].map((match) => match[0]);
+      const contracts = semanticSvgs.map(rendererDiagramContract);
+      const isAuthentic = (contract) => Object.values(contract).every(Boolean);
+      if (!contracts.some(isAuthentic)) {
+        const allSvgs = [...html.matchAll(/<svg\b[\s\S]*?<\/svg>/gi)].map((match) => match[0]);
+        const authenticOutsideSemanticSections = allSvgs.some((svg) => isAuthentic(rendererDiagramContract(svg)));
+        if (authenticOutsideSemanticSections && semanticSvgs.length === 0) {
+          errors.push('finished PRD authentic semantic Excalidraw diagram must be inside the user-flows or domain-interactions section; unrelated page diagrams and wireframes do not count');
+        } else {
+          errors.push('finished PRD needs an authentic semantic Excalidraw diagram: render a meaningful user-flow or domain-interaction scene and inline its SVG with renderer provenance, stable review IDs, labelled edges, and reveal groups');
+        }
+        if (contracts.some((contract) => contract.provenance && !contract.accessible)) {
+          errors.push('PRD semantic Excalidraw diagrams need an accessible title and description using role="img", aria-labelledby, <title>, and <desc>');
+        }
+      }
     }
-    if (hasDomainDiagram && !/class=["'][^"']*diagram-reveal[^"']*["']/i.test(domainInteractionsSection)) {
-      errors.push('PRD domain diagrams must preserve Excalidraw diagram-reveal groups');
+
+    const uiOptionsSection = sectionByReviewId('ui-options');
+    if (!/class=["'][^"']*\bui-option-list\b[^"']*["']/i.test(uiOptionsSection)
+      || /class=["'][^"']*\b(?:card-grid|example-pair)\b[^"']*["']/i.test(uiOptionsSection)) {
+      errors.push('UI options must use full-width stacked rows; responsive auto-fit option galleries are not allowed');
     }
 
     const uiOptionInputs = [...html.matchAll(/<input\b[^>]*data-ui-option-ref=["']([^"']+)["'][^>]*>/gi)];
@@ -168,7 +250,7 @@ for (const file of files) {
       ['domain-model', 'domain model section'],
       ['domain-interactions', 'domain entity interaction section'],
       ['domain-interactions.figure', 'domain entity interaction figure'],
-      ['domain-interactions.svg', 'domain entity interaction SVG'],
+      ['domain-interactions.svg', 'domain entity interaction diagram slot'],
       ['domain-interactions.interaction-001', 'first domain entity interaction'],
       ['slice-designs.slice-001.delivery-surface', 'first per-slice route/endpoint details'],
       ['slice-designs.slice-001.service-domain', 'first per-slice service/domain details'],
@@ -192,6 +274,20 @@ for (const file of files) {
     }
     if (!has(/class=["'][^"']*diagram-node[^"']*["']/i)) {
       errors.push('design report diagrams need reusable diagram-node primitives');
+    }
+
+    const domainInteractionsSection = sectionByReviewId('domain-interactions');
+    const designDiagramSlot = /data-excalidraw-slot=["']design-domain-diagram["']/i;
+    if (allowPlaceholders) {
+      if (!designDiagramSlot.test(domainInteractionsSection)) {
+        errors.push('placeholder design template needs data-excalidraw-slot="design-domain-diagram" for its renderer-backed domain map');
+      }
+    } else {
+      const domainSvgs = [...domainInteractionsSection.matchAll(/<svg\b[\s\S]*?<\/svg>/gi)].map((match) => match[0]);
+      const hasAuthenticDomainDiagram = domainSvgs.some((svg) => Object.values(rendererDiagramContract(svg)).every(Boolean));
+      if (!hasAuthenticDomainDiagram) {
+        errors.push('finished design needs a renderer-backed domain building-block diagram with provenance, accessible text, stable review IDs, labelled verb edges, and reveal groups');
+      }
     }
 
     const dataContractsSection = html.match(/<section\b[^>]*id=["']data-contracts["'][\s\S]*?<\/section>/i)?.[0] ?? '';

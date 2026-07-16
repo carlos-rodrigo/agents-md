@@ -49,7 +49,7 @@ Pick the smallest mode that teaches the user what they need.
 | Understand implementation flow | Code Flow | class/function/method calls, events, jobs, payloads |
 | Understand how components talk | Component Communication | modules/services/components, protocols, boundaries |
 | Understand product concepts | Domain Concept Model | entities/concepts/states and relationships |
-| Understand domain behavior | Domain Interaction Model | source entity → verb/action → target entity/state/effect, authority, invariants |
+| Understand domain behavior | Domain Building-Block / Evolution Map | owned concepts and boundaries, source → verb/effect → target state, invariant/policy rail, and extension path |
 | Understand current vs intended behavior | Before/After System Story | old flow next to new flow |
 | Understand ownership | Ownership/Lane Map | runtime/team/module responsibility |
 | Understand strategic choices | Decision Map | options, tradeoffs, escalation points |
@@ -121,7 +121,7 @@ Use plain language for understanding and real code names for traceability.
 
 ### 4. Prefer step-by-step learning over dense topology
 
-The user should be able to follow the diagram in order.
+The user should be able to follow the diagram in order. For PRD domain teaching, the building-block/evolution map is primary: show ownership/authority boundaries, verb-labelled arrows, visible state/effect changes, and an invariant/policy rail. Put cards in adjacent HTML only as supporting definitions, and pair the figure with one explicit question, a caption/how-to-read note, and a numbered structured walkthrough.
 
 Good structures:
 
@@ -185,6 +185,7 @@ Before drawing, write a compact brief. The final diagram must make this brief ob
 ```markdown
 Diagram question: What single question should this diagram answer?
 Decision unlocked: What reviewer choice becomes possible after seeing it, and why do existing artifacts not already suffice?
+Reading spine: What must be understood first, which exceptions/details follow, and what reviewer next action closes the story?
 Audience: Who needs to understand it?
 Mode: Context | Flow | Sequence | State | Ownership | Slice | Decision
 Scope: What is included and intentionally excluded?
@@ -205,11 +206,13 @@ Do not create UI mockups automatically. First name the next visual decision and 
 
 When an additional Excalidraw UI artifact is justified, make it the smallest comparison that unlocks the decision:
 
-- one shared representation of the existing product shell;
-- 2-3 option panels showing only changed placement, hierarchy, entry point, or page/dialog flow;
+- one shared representation of the existing product shell/baseline;
+- 2-3 option deltas showing only changed placement, hierarchy, entry point, or page/dialog flow;
 - one shared action/outcome path drawn once when all options use it;
 - exact option names and stable review anchors matching the PRD selector;
 - no duplicated detailed states already covered by existing mockups.
+
+In the PRD page, present that baseline once and stack full-width Option A/B/C rows. Each row owns its decision sentence, delta, full-size wireframe figure, workflow/outcomes, tradeoff, and selector; never turn the options into a responsive multi-column card gallery. Rich HTML wireframes use `<figure>`/`<figcaption>`, not `role="img"` wrappers.
 
 Excalidraw is the medium, not the design direction. Preserve the existing product's recognizable navigation, colors, density, control shapes, and copy. Use HTML/CSS or screenshots instead when pixel-level comparison—not placement/workflow—is the actual decision.
 
@@ -313,7 +316,8 @@ When the user says a layer, responsibility, domain relationship, or call arrow f
 - Use the `html-report-designer` shell for polished long-form pages: breadcrumbs, collapsible left sidebar, no top menu/right rail, semantic sections, feedback, provenance, and print styles.
 - Use `resources/system-diagram-template.html` for diagram-only pages. It uses build-time Tailwind and inline compiled CSS; edit `resources/system-diagram.tailwind.css`, then run `npm run build:report-css` from `/Users/carlosrodrigo/agents` before handoff/commit.
 - Do not use Tailwind CDN/runtime, remote fonts, Mermaid, D2, Graphviz, or external CSS in finished diagrams or their build pipeline. Excalidraw is the sole diagram renderer.
-- Use the build-time Excalidraw renderer for diagrams: create an explicitly positioned JSON scene, run `node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. The renderer embeds Virgil, semantic text, accessibility metadata, stable review IDs, and reading-order reveal wrappers. `reviewId` and `reviewIds` values are namespace-relative suffixes; `reviewPrefix` plus the required unique `id` scopes them when several diagrams are inlined.
+- Use the existing build-time Excalidraw renderer for diagrams; do not rewrite or bypass its API. Create an explicitly positioned JSON scene, run `node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. The renderer embeds Virgil, semantic text, accessibility metadata, stable review IDs, labelled edge groups, provenance, and reading-order reveal wrappers. `reviewId` and `reviewIds` values are namespace-relative suffixes; `reviewPrefix` plus the required unique `id` scopes them when several diagrams are inlined.
+- A finished PRD must include one authentic renderer SVG inside `user-flows` or `domain-interactions`. Preserve `<!-- svg-source:excalidraw -->`, root `role="img"`/`aria-labelledby`, `<title>`/`<desc>`, stable review IDs, labelled edges, and `.diagram-reveal` groups. Unrelated SVG, wireframes, or hand-authored lookalikes do not count; there is no self-issued exemption.
 - Use a tokenized Vercel-style diagram system: semantic surfaces, text ranks, borders, neutral default, status colors, spacing, radius, focus rings, and reduced-motion-safe motion.
 - Use subtle scroll appearance and SVG node/edge-group reveal when it teaches reading order; do not let complex diagrams simply appear all at once. The intended motion is actor/context → labelled edge/action → next node/state → recovery/risk path. Keep content visible without JavaScript and honor `prefers-reduced-motion`.
 - Keep text readable; do not shrink below 12px effective size in SVG.
@@ -350,7 +354,8 @@ Before handoff, check:
 - option labels/anchors exactly match the PRD selector when the diagram supports a PRD decision;
 - source evidence was inspected for real actors, calls, state, and boundaries;
 - every color has a responsibility meaning documented in the legend;
-- domain diagrams show entity/concept interactions with verb/action labels and state/effect outcomes, not just noun boxes;
+- domain diagrams show owned building blocks/boundaries, verb/action labels, state/effect outcomes, and an invariant/policy rail—not generic noun boxes or actor→system skeletons;
+- each complex figure owns its question, caption/how-to-read note, and adjacent numbered structured walkthrough;
 - every meaningful arrow is labeled with call/event/protocol/payload or domain interaction verb/effect;
 - diagram spacing and arrow routes are explicit in the Excalidraw scene and remain readable at desktop, mobile overflow, and print sizes;
 - key SVG groups/nodes have stable `data-review-id` anchors;

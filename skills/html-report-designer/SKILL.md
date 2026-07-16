@@ -127,9 +127,11 @@ Every generated report must pass this definition of done before handoff:
 - assumptions, facts, decisions, risks, and open questions are visually separated;
 - motion is optional progressive enhancement and respects `prefers-reduced-motion`;
 - print view is usable;
-- PRDs and designs include a domain interaction map when meaningful, or an explicit “not applicable” note: source entity/concept → verb/action → target entity/state/effect, with ownership/rules and unresolved vocabulary/policy gaps.
+- PRDs follow one learning spine: overview/question → expanded canonical scenario or domain model → grouped supporting exceptions/details → reviewer decision/next action;
+- finished PRDs include an authentic renderer-backed Excalidraw semantic diagram in `user-flows` or `domain-interactions`; it retains provenance, accessible title/description, stable review IDs, labelled edges, renderer reveal groups, and a nearby structured text equivalent;
+- PRDs and designs include a domain interaction map when meaningful, or an explicit “not applicable” note: source entity/concept → verb/action → target entity/state/effect, with ownership/rules and unresolved vocabulary/policy gaps. A PRD with no meaningful domain behavior uses the required semantic diagram for its user flow instead;
 - user-facing PRDs include anchored existing-UI evidence and a mockup-need decision; their wireframes visibly continue the product UI when one exists, or define a detailed foundational shell when none exists;
-- additional mockups are generated only when they unlock a named visual decision; sufficient existing mockups are reused, and option selectors remain aligned with option cards;
+- additional mockups are generated only when they unlock a named visual decision; sufficient existing mockups are reused, and option selectors remain aligned with option rows;
 - PRDs do not leak architecture and designs do not invent product behavior.
 
 When available, run the validator on generated reports:
@@ -227,11 +229,12 @@ Use these named components instead of inventing one-off containers:
 - **Conceptual contract lists** for multiple code-like data shapes; stack them in a single column with `contract-list` instead of a multi-column card grid. Each item is two rows: entity name, then one full-width colored `schema-code` block.
 - **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
 - **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
-- **Post-story flow cards/timelines** for every PRD story: entry → action → visible response → next user decision → review gap.
-- **Domain interaction maps/cards** for PRDs and designs: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps. Use “not applicable” only with a visible rationale.
+- **Story-outcome rows** for every PRD story: show the `Entry → Action → Visible response → Next decision` grammar once, then stack compact full-width rows with outcome first and a review gap only when non-empty.
+- **Scenario stacks** for behavior: one expanded canonical scenario followed by grouped full-width exception rows. Each row prioritizes trigger, expected effect, invariant, and recovery; only long evidence or uncommon branches may collapse.
+- **Domain building-block/evolution maps** for PRDs and designs: renderer-backed Excalidraw figures with a question, source/owner boundaries, verb-labelled edges, target state/effects, invariant/policy rail, caption, and adjacent numbered walkthrough. Cards/disclosures are supporting definitions only. Use “not applicable” only with a visible rationale.
 - **Existing UI evidence** for user-facing PRDs: an anchored note naming inspected screens/source-backed visible patterns, the shell and visual conventions every option must preserve, or an explicit statement that no established UI exists.
 - **Mockup decision gate** for user-facing PRDs: an anchored note naming the next visual decision, whether current mockups already suffice, and the smallest additional artifact if they do not.
-- **UI option wireframes** for 2-3 user-facing directions with detailed HTML/SVG wireframes, labelled regions, representative copy, state changes, step-by-step usage, expected outcome per step, best-fit context, tradeoff, and selected/recommended/pending status. When an existing UI exists, options share its shell and differ by placement/workflow rather than style.
+- **UI option rows** for 2-3 user-facing directions: draw the unchanged product shell/baseline once, then stack full-width Option A/B/C rows. Every row contains a decision sentence, baseline delta, full-size `<figure>`/`<figcaption>` wireframe, workflow/outcomes, tradeoff, selected/recommended/pending status, and selector. Never use responsive multi-column option cards, and never wrap rich HTML wireframes in `role="img"`.
 - **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
 - **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option. Mark the anchored gap/card with `data-review-decision="single-choice"`, use enabled named radio inputs, and keep the free-text input editable so the document reviewer records checked options as anchored feedback instead of treating them as decoration.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
@@ -256,7 +259,8 @@ Use these named components instead of inventing one-off containers:
 Bake these patterns into every future generated report:
 
 - **Focused first viewport** — title, concise summary, compact status metadata, and key takeaways before long-form content; do not add a dashboard/status-strip row by default.
-- **Layer-cake scanning** — heading → one-sentence summary → prose/bullets/examples → optional details. Do not bury the point in large tables.
+- **Linear learning spine** — overview/question → primary scenario or domain model → supporting exceptions/details → reviewer decision/next action. Do not make readers synthesize the story from equal-weight card galleries.
+- **Layer-cake scanning** — heading → one-sentence summary → prose/bullets/examples → optional details. Do not bury the point in large tables. Keep recommendations, tradeoffs, invariants, and reviewer decisions visible; collapse only long evidence and uncommon branches under meaningful summaries.
 - **Diátaxis-specific shapes** — PRDs are product explanation/acceptance packets; designs are architecture decision/communication packets.
 - **Review-first anchors** — review IDs are visible enough for humans to reference and stable enough for `/review` comments.
 - **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
@@ -298,17 +302,17 @@ For `docs/features/{feature}/prd.html`, present the PRD as a concise What / Why 
 summary                  # one product-story paragraph, status metadata, 2-3 takeaways
 what                     # users/jobs, 2-3 capabilities, scope/non-goals
 why                      # need, pain, opportunity/success signals as short bullets
-how                      # 2-4 stories, observable rules, one main workflow, one edge workflow
-user-flows               # after every story: entry, action, visible response, next user decision, review gap
-domain-interactions      # entities/concepts, verbs/actions, state/effect outcomes, authority/rules, vocabulary/policy gaps
-ui-options               # existing-UI evidence + mockup gate + only the continuity-preserving placement/workflow options needed for the next decision
+how                      # stories/rules + one expanded canonical scenario + grouped full-width exceptions
+user-flows               # grammar once + compact full-width outcome-first row per story
+domain-interactions      # renderer-backed building-block map + figure question/caption + numbered walkthrough
+ui-options               # existing-UI evidence + mockup gate + one shared baseline + stacked full-width option rows
 review-gaps              # explicit reviewer choices for UI, wording, flow, scope, domain language, or product gaps
 acceptance               # 3-6 verifiable criteria tied to workflows and visible UI/state outcomes
 open-questions           # only unresolved blockers with owner/blocker state
 ready-for-design         # readiness checklist and next action
 ```
 
-Keep PRDs terse but visual enough to review without guessing. User-facing PRDs must first anchor the existing UI evidence and state which next visual decision, if any, needs more mockup evidence. If a product UI exists, every wireframe must visibly continue it and options should vary entry point, placement, page/dialog choice, hierarchy, or workflow—not visual style. If no product UI exists, wireframes must define the shell, responsive hierarchy, control language, and key states in greater detail. User-facing PRDs must include per-story flow cards and 2-3 detailed UI wireframe option cards unless only one direction is truly viable; non-UI PRDs must say why UI choice is not applicable. Domain-shaped PRDs must include domain interaction cards/diagrams before UI options, using product language: source entity/concept, action verb, target state/effect, rule/authority, and open vocabulary/policy gaps. Wireframes should be screen-like: labelled header/navigation/content/detail regions, representative copy, controls, visible state changes, and next action. Under each wireframe, include a numbered “How it is used and expected outcomes” block: each step names the user action, screen/state change, and outcome the reviewer should expect. They should be detailed enough for review comments but still product-level; do not name implementation libraries or component APIs. Review gaps should be clickable/commentable cards with owner, impact, blocker state, and a visible option selector; each selector must include at least one free-text `Other / custom answer` option. UI selector labels/order must match the option cards and link to their stable anchors. Do not paste research notes, implementation ideas, exhaustive edge cases, or repeated context. Default to zero tables; use at most one traceability matrix only when a checklist would be ambiguous. PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`. Keep motion as progressive enhancement: subtle reveal/hover effects and diagram flow reveals are welcome, but they must work without external assets and respect `prefers-reduced-motion`.
+Keep PRDs terse but visual enough to review without guessing. User-facing PRDs must first anchor existing UI evidence and state which next visual decision, if any, needs more mockup evidence. If a product UI exists, draw its unchanged shell/baseline once; each full-width option row varies only entry point, placement, page/dialog choice, hierarchy, or workflow—not visual style. If no product UI exists, the shared baseline must define the shell, responsive hierarchy, control language, and key states in greater detail. User-facing PRDs include the shared story grammar, compact outcome-first rows, and 2-3 stacked full-width wireframe option rows unless only one direction is truly viable; non-UI PRDs say why UI choice is not applicable. Domain-shaped PRDs put a renderer-backed building-block/evolution map before UI options, using product language: ownership/boundary, action verb, target state/effect, invariant/policy rail, and open vocabulary/policy gaps. Give every complex figure its own question, caption/how-to-read note, and adjacent structured walkthrough. Rich HTML wireframes use `<figure>`/`<figcaption>`, not `role="img"` wrappers. Under each wireframe, include a numbered “How it is used and expected outcomes” block: each step names the user action, screen/state change, and expected outcome. Review gaps should be clickable/commentable cards with owner, impact, blocker state, and a visible option selector; each selector must include at least one free-text `Other / custom answer` option. UI selector labels/order must match the option rows and link to their stable anchors. Do not paste research notes, implementation ideas, exhaustive edge cases, or repeated context. Default to zero tables; use at most one traceability matrix only when a checklist would be ambiguous. PRD HTML must avoid architecture leakage. It can link to `design.html`, but product acceptance stays in `prd.html`. Keep motion as progressive enhancement: preserve renderer-owned reveal groups, work without external assets, and respect `prefers-reduced-motion`.
 
 ## Design report pattern
 
@@ -475,7 +479,8 @@ Before finishing, check:
 - [ ] skip link exists and targets `<main id="main">`;
 - [ ] color is not the only signal;
 - [ ] contrast is strong enough for body text and labels;
-- [ ] SVG has `<title>`/`<desc>` or surrounding figure caption;
+- [ ] every complex SVG has `<title>` and `<desc>`, a figure caption/how-to-read note, and a nearby structured text equivalent;
+- [ ] rich HTML wireframes use `<figure>`/`<figcaption>` and are not hidden behind `role="img"`;
 - [ ] diagram text is at least 12px effective size;
 - [ ] tables use `<caption>`, `<th>`, and `scope` where appropriate;
 - [ ] interactive disclosure uses native `<details>/<summary>`;
@@ -486,7 +491,8 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- For architecture/slice diagrams, create an explicitly positioned JSON scene, run `node scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated semantic text, review wrappers, label groups, and reveal delays intact. Keep the JSON scene near the feature/task when it should be regenerated.
+- For architecture, slice, PRD user-flow, and PRD domain-interaction diagrams, create an explicitly positioned JSON scene, run `node scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated provenance marker, semantic text, review wrappers, label groups, and reveal delays intact. Keep the JSON scene near the feature/task when it should be regenerated.
+- Validate finished `prd.html` without `--allow-placeholders`; the authentic semantic diagram gate has no grandfathering or self-issued exemption. `prd-template.html --allow-placeholders` only permits the canonical `data-excalidraw-slot="semantic-domain-diagram"` to await a feature scene.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.

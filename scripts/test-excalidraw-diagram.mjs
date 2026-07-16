@@ -10,6 +10,10 @@ const specPath = resolve(root, 'skills/html-report-designer/resources/excalidraw
 const svgPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-slice-example.svg');
 const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 const svg = readFileSync(svgPath, 'utf8');
+const domainSpecPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-domain-interaction-example.json');
+const domainSvgPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-domain-interaction-example.svg');
+const domainSpec = JSON.parse(readFileSync(domainSpecPath, 'utf8'));
+const domainSvg = readFileSync(domainSvgPath, 'utf8');
 
 assert(/<title\b/.test(svg) && /<desc\b/.test(svg), 'SVG requires title and description');
 assert(/role="img"/.test(svg), 'SVG requires role=img');
@@ -29,6 +33,22 @@ for (const edge of spec.edges) {
   assert(svg.includes(`data-review-id="${reviewId(spec, 'edge', edge.id, edge.reviewIds?.edge)}"`), `missing edge review ID ${edge.id}`);
   assert(svg.includes(`data-review-id="${reviewId(spec, 'edge-label', edge.id, edge.reviewIds?.label)}"`), `missing edge-label review ID ${edge.id}`);
 }
+
+assert(/<!--\s*svg-source:excalidraw\s*-->/.test(domainSvg), 'domain fixture requires Excalidraw provenance');
+assert(/<title\b/.test(domainSvg) && /<desc\b/.test(domainSvg), 'domain fixture requires title and description');
+assert(/role="img"/.test(domainSvg) && /aria-labelledby=/.test(domainSvg), 'domain fixture requires accessible SVG semantics');
+assert(/class="diagram-edge-label diagram-reveal"/.test(domainSvg), 'domain fixture requires labelled renderer reveal groups');
+assert(domainSpec.nodes.every((node) => /Owner:|Invariant \/ policy rail/.test(node.text)), 'domain fixture nodes must expose ownership boundaries or the policy rail');
+assert(domainSpec.edges.every((edge) => /records|changes|informs|governs|separates/.test(edge.label)), 'domain fixture edges must use effect-bearing verbs');
+assert(domainSpec.nodes.some((node) => /Invariant \/ policy rail/.test(node.text)), 'domain fixture requires an invariant/policy rail');
+for (const node of domainSpec.nodes) {
+  assert(domainSvg.includes(`data-review-id="${reviewId(domainSpec, 'node', node.id, node.reviewId)}"`), `domain fixture missing node review ID ${node.id}`);
+}
+for (const edge of domainSpec.edges) {
+  assert(domainSvg.includes(`data-review-id="${reviewId(domainSpec, 'edge', edge.id, edge.reviewIds?.edge)}"`), `domain fixture missing edge review ID ${edge.id}`);
+  assert(domainSvg.includes(`data-review-id="${reviewId(domainSpec, 'edge-label', edge.id, edge.reviewIds?.label)}"`), `domain fixture missing edge-label review ID ${edge.id}`);
+}
+assertSelfContainedSvg(domainSvg);
 
 assert(!existsSync(resolve(root, 'scripts/render-elk-diagram.mjs')), 'legacy ELK renderer still exists');
 assert(!existsSync(resolve(root, 'skills/html-report-designer/resources/elk-slice-example.json')), 'legacy ELK fixture still exists');

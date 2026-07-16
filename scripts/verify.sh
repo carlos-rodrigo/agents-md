@@ -7,8 +7,12 @@ node "$ROOT/scripts/build-html-report-css.mjs" --check
 node "$ROOT/scripts/render-excalidraw-diagram.mjs" --check \
   "$ROOT/skills/html-report-designer/resources/excalidraw-slice-example.json" \
   "$ROOT/skills/html-report-designer/resources/excalidraw-slice-example.svg"
+node "$ROOT/scripts/render-excalidraw-diagram.mjs" --check \
+  "$ROOT/skills/html-report-designer/resources/excalidraw-domain-interaction-example.json" \
+  "$ROOT/skills/html-report-designer/resources/excalidraw-domain-interaction-example.svg"
 node "$ROOT/scripts/test-excalidraw-diagram.mjs"
 node "$ROOT/scripts/test-html-report-validator.mjs"
+node "$ROOT/scripts/test-html-report-layout.mjs"
 bash "$ROOT/skills/loop/loop.test.sh"
 
 node "$ROOT/scripts/validate-html-report.mjs" --allow-placeholders \
