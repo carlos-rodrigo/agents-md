@@ -59,6 +59,7 @@ Proceed only if:
 - dependencies are satisfied,
 - `## Brief`, `## Execute`, `## Feedback loop`, and `## Escalate if` exist or are locally fixable,
 - feedback loop is executable or locally fixable,
+- a fresh agent can derive behavior, boundaries, invariants, and verification without chat history or invented product decisions; executable legacy tasks may express the same detail under older headings,
 - `_active.md` exists or can be refreshed for looped/multi-task work.
 
 Stop on `draft`, user-owned `blocked`, missing unfixable context, or product/architecture/API/schema/auth/persistence/rollout ambiguity.
@@ -74,19 +75,20 @@ Read in this order:
 
 Capture:
 
-- goal and external need,
+- goal, external need, and source anchors/facts,
 - entry point and observable side effect,
-- files/patterns to touch,
-- feedback-loop checks,
-- risks and escalation triggers,
-- local choices the agent may decide.
+- required behaviors, scope/non-goals, implementation constraints, and invariants,
+- navigation anchors and feedback-loop checks,
+- risks, approval boundaries, and delegated choices.
 
 Extract a **task-contract checklist** from explicit task language:
 
-- `Goal`, `Change`, `Done`, `Execute`, and `Feedback loop`,
+- `Goal`, `Change`, `Done`, binding `Execute` items (`Required behavior`, `Required implementation`, `In scope`, `Out of scope`, `Invariants`; legacy `Required`, `Preserve / avoid`, `Touch`, or `Pattern` unless marked advisory), and `Feedback loop`,
 - required files/components/functions and named approaches,
 - explicit “must/use/do/do not/avoid/only” instructions,
 - constraints and escalation triggers.
+
+Treat `Inspect first` or `Likely files` as navigation, not required edits, unless the task explicitly says otherwise.
 
 Do not invent product behavior. Do not replace an explicit requested approach unless the task/user permits it or you record a user-owned blocker.
 
@@ -188,7 +190,7 @@ Minimum complete result:
 - Status: done
 - Changed: `path`, `path`
 - TDD: acceptance/feature/contract red → inner-loop red/green/refactor → acceptance green, or explicit exception
-- Task contract: explicit instructions checked → satisfied, or unmet item + owner/reason
+- Task contract: binding instructions checked → satisfied, or unmet item + owner/reason
 - Feedback loop: `command/action` → result, including failed attempts/fixes when relevant
 - Gate: `command` → passed
 - Review: self/oracle Are You Proud validation; findings resolved or skipped with reason

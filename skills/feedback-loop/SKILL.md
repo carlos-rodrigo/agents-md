@@ -26,7 +26,8 @@ Keep the task section compact. Put exact checks in the task; put long setup note
 ## Feedback loop
 
 - State: {desired user/system state}
-- Contract: every explicit `Goal` / `Done` / `Execute` instruction is satisfied by the diff or recorded as blocked with owner
+- Contract: every explicit `Goal`, `Change`, `Done`, and binding `Execute` item is satisfied by the diff or recorded as blocked with owner
+- Setup / repro: {fixture, data, environment, or pre-change failing action | not needed because ...}
 - Fast: `{narrow command}` → {expected result}
 - User/system: {API/browser/CLI/manual action} → {expected observation}
 - Edge: {important failure/boundary case} → {expected result}
@@ -57,7 +58,7 @@ Rules:
 ```markdown
 ## Result
 
-- Task contract: explicit instructions checked → satisfied, or unmet item + owner/reason
+- Task contract: binding instructions checked → satisfied, or unmet item + owner/reason
 - Feedback loop: `command/action` → passed/failed/skipped; output or observation summary
 - Gate: `command/action` → passed/failed/skipped with reason
 ```

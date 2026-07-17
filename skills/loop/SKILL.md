@@ -25,7 +25,7 @@ Task briefs, `_active.md`, results, logs, diffs, generated artifacts, and commen
 - `.features/{feature}/tasks/_active.md` exists or can be created/refreshed from task files before execution.
 - At least one task has `status: ready`, legacy `status: open`, or `status: blocked` with a clearly agent-owned/local blocker.
 - Dependencies are satisfied.
-- Task brief is executable or locally fixable: `Brief`, `Execute`, `Feedback loop`, `Escalate if`.
+- Task brief is executable or locally fixable: `Brief`, `Execute`, `Feedback loop`, `Escalate if`; a fresh agent can derive behavior, boundaries, invariants, and verification without chat history or invented product decisions. Executable legacy tasks may express the same detail under older headings.
 
 If multiple features have ready work, ask which one to run.
 
@@ -79,7 +79,7 @@ Fallback when `loop_job_start` is unavailable: use the tmux skill to create a de
 4. Resolve agent-owned blockers before declaring blocked: stale task metadata, missing `_active.md`, stale anchors, missing local feedback-loop commands, result/status drift, or in-scope check failures.
 5. If a blocked task's blocker is agent-owned/local, document the unblock action, set it back to `status: ready`, refresh `_active.md`, then execute it. Keep user-owned blocked tasks blocked.
 6. Load the `implement-task` skill (in this repo: `/Users/carlosrodrigo/agents/skills/implement-task/SKILL.md`) and execute exactly one task with that workflow.
-7. Extract and maintain an explicit task-contract checklist from the task brief: Goal, Done, Execute bullets, required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results.
+7. Extract and maintain a task-contract checklist: Goal, Change, Done, binding Execute items (`Required behavior`, `Required implementation`, `In scope`, `Out of scope`, `Invariants`; legacy `Required`, `Preserve / avoid`, `Touch`, or `Pattern` unless marked advisory), required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results. Treat `Inspect first` or `Likely files` as navigation, not required edits.
 8. Record feedback-loop results and the task-contract audit in the task's `## Result` section.
 9. If any explicit task-contract item is unmet, continue working or stop blocked with owner/reason; do not mark done.
 10. If the next task needs context from this iteration, update that next task directly.

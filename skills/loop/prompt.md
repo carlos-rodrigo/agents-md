@@ -14,7 +14,7 @@ Rules:
 - Read durable docs from docs/features/{{FEATURE}}/ only when relevant
 - Load and follow the implement-task skill before executing: /Users/carlosrodrigo/agents/skills/implement-task/SKILL.md
 - Follow Understand → Tighten → Plan → Implement/check/fix loop → Review → Result/finalize from the implement-task skill
-- Before coding, extract an explicit task-contract checklist from the task brief: Goal, Done, Execute bullets, required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results
+- Before coding, extract the task contract: Goal, Change, Done, binding Execute items (required behaviors/implementation, scope/non-goals, invariants), named files/approaches, constraints, and Feedback loop expected results; treat Inspect first/Likely files as advisory navigation
 - Do not substitute a different implementation path for an explicit task instruction unless the task/user allows it or a user-owned blocker is recorded
 - Before marking done, audit the implementation against every task-contract checklist item; if any explicit item is unmet, continue working or block with owner/reason
 - Use adaptive review: load /Users/carlosrodrigo/agents/skills/are-you-proud/SKILL.md and apply it directly as self-review; consume already-completed Oracle results when relevant
@@ -23,7 +23,7 @@ Rules:
 - Write/update feedback-loop results, task-contract audit, and Are You Proud/Oracle review status in the task's ## Result section; do not create separate report files for task results
 - If the next task needs handoff context, update that next task directly before marking the current task done
 - Update task status and .features/{{FEATURE}}/tasks/_active.md after results; check off the completed task and set next/blocker state
-- Run required validation commands before marking done: Fast → User/system → Edge → Gate, fixing in-scope failures up to 3 attempts per distinct failure
+- Run required validation before marking done: Setup/repro → Fast → User/system → Edge → Gate, fixing in-scope failures up to 3 attempts per distinct failure
 - Append a compact iteration report to {{PROGRESS_FILE}}
 - Write the latest iteration report to {{SUMMARY_FILE}} with: task, explicit contract audit, changed files, feedback-loop evidence, gate, active board update, next action/blocker
 - Do not produce a continuation or new-session template
