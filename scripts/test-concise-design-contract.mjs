@@ -37,10 +37,10 @@ requireAll('optional design recipes', recipes, [
 ]);
 
 requireAll('html-report-designer', report, [
-  '## Content neutrality',
-  'supplies the complete content model',
-  'Preserve supplied headings, order, emphasis, evidence, and omissions',
-  'PRD, design, and generic shells differ only in metadata labels',
+  '## Generation quality contract',
+  'resources/prd-template.html',
+  'resources/design-template.html',
+  'Start from the most specific template',
 ]);
 
 requireAll('system-diagram', diagram, [

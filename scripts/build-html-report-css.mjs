@@ -9,36 +9,32 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const checkOnly = process.argv.includes('--check');
 const tailwindBin = join(root, 'node_modules/.bin/tailwindcss');
 const htmlResources = 'skills/html-report-designer/resources';
+const restoredReportConfig = join(root, 'scripts/restored-report-tailwind.config.cjs');
+const defaultConfig = join(root, 'tailwind.config.cjs');
 const groups = [
   {
     dir: htmlResources,
     css: 'report.tailwind.css',
     html: ['report-template.html'],
+    config: restoredReportConfig,
   },
   {
     dir: htmlResources,
     css: 'prd.tailwind.css',
-    html: [
-      'prd-template.html',
-      'prd-recipe-tiny.html',
-      'prd-recipe-decision.html',
-      'prd-recipe-visual.html',
-    ],
+    html: ['prd-template.html'],
+    config: restoredReportConfig,
   },
   {
     dir: htmlResources,
     css: 'design.tailwind.css',
-    html: [
-      'design-template.html',
-      'design-recipe-tiny.html',
-      'design-recipe-boundary.html',
-      'design-recipe-visual.html',
-    ],
+    html: ['design-template.html'],
+    config: restoredReportConfig,
   },
   {
     dir: 'skills/system-diagram/resources',
     css: 'system-diagram.tailwind.css',
     html: ['system-diagram-template.html'],
+    config: defaultConfig,
   },
 ];
 const sharedScripts = [
@@ -59,12 +55,12 @@ function fail(message) {
   process.exit(1);
 }
 
-function compileCss(inputPath) {
+function compileCss(inputPath, configPath) {
   const tmp = mkdtempSync(join(tmpdir(), 'html-report-css-'));
   const outputPath = join(tmp, 'compiled.css');
   const result = spawnSync(
     tailwindBin,
-    ['-c', join(root, 'tailwind.config.cjs'), '-i', inputPath, '-o', outputPath, '--minify'],
+    ['-c', configPath, '-i', inputPath, '-o', outputPath, '--minify'],
     { cwd: root, encoding: 'utf8' },
   );
 
@@ -103,7 +99,7 @@ let changed = false;
 for (const group of groups) {
   const resourcesDir = join(root, group.dir);
   const cssPath = join(resourcesDir, group.css);
-  const css = compileCss(cssPath);
+  const css = compileCss(cssPath, group.config);
   const styleBlock = buildStyleBlock(css, group.css);
 
   for (const htmlName of group.html) {

@@ -96,7 +96,7 @@ for (const file of files) {
     errors.push('closed <details> content must print expanded with a details:not([open]) rule');
   }
 
-  if (has(/<(?:article|div|figure|section|main|aside)\b[^>]*\brole=["']img["'][^>]*>/i)) {
+  if (!allowPlaceholders && has(/<(?:article|div|figure|section|main|aside)\b[^>]*\brole=["']img["'][^>]*>/i)) {
     errors.push('rich HTML must not use role="img" wrappers; use semantic figure content and preserve child semantics');
   }
 

@@ -23,11 +23,10 @@ requireAll('prd', prd, [
 ]);
 
 requireAll('html-report-designer', report, [
-  '## Content neutrality',
-  'supplies the complete content model',
-  'Preserve supplied headings, order, emphasis, evidence, and omissions',
-  'Never require a workflow, scenario, decision, diagram, wireframe, matrix, or navigation element',
-  'PRD and design shells use Protocol-derived documentation chrome',
+  '## Generation quality contract',
+  'resources/prd-template.html',
+  'resources/design-template.html',
+  'Start from the most specific template',
 ]);
 
 requireAll('design-solution', design, [

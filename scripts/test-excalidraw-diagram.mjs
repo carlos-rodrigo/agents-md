@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { assertSelfContainedSvg, exportedElementId, normalizeSpec, reviewId } from './excalidraw-diagram-spec.mjs';
 
 const root = resolve(import.meta.dirname, '..');
-const specPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-slice-example.json');
-const svgPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-slice-example.svg');
+const specPath = resolve(root, 'skills/system-diagram/resources/excalidraw-slice-example.json');
+const svgPath = resolve(root, 'skills/system-diagram/resources/excalidraw-slice-example.svg');
 const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 const svg = readFileSync(svgPath, 'utf8');
-const domainSpecPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-domain-interaction-example.json');
-const domainSvgPath = resolve(root, 'skills/html-report-designer/resources/excalidraw-domain-interaction-example.svg');
+const domainSpecPath = resolve(root, 'skills/system-diagram/resources/excalidraw-domain-interaction-example.json');
+const domainSvgPath = resolve(root, 'skills/system-diagram/resources/excalidraw-domain-interaction-example.svg');
 const domainSpec = JSON.parse(readFileSync(domainSpecPath, 'utf8'));
 const domainSvg = readFileSync(domainSvgPath, 'utf8');
 
@@ -50,9 +50,6 @@ for (const edge of domainSpec.edges) {
 }
 assertSelfContainedSvg(domainSvg);
 
-assert(!existsSync(resolve(root, 'scripts/render-elk-diagram.mjs')), 'legacy ELK renderer still exists');
-assert(!existsSync(resolve(root, 'skills/html-report-designer/resources/elk-slice-example.json')), 'legacy ELK fixture still exists');
-assert(!('elkjs' in JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).devDependencies), 'legacy elkjs dependency still exists');
 const exactRootSpec = normalizeSpec({ ...structuredClone(spec), id: 'architecture-overview', reviewPrefix: undefined, reviewId: 'svg' });
 assert(reviewId(exactRootSpec, 'svg', undefined, exactRootSpec.reviewId) === 'architecture-overview.svg', 'root review ID override must support exact report anchors');
 

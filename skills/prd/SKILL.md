@@ -15,6 +15,18 @@ Default artifact:
 docs/features/{feature}/prd.html
 ```
 
+## Restored report template lock
+
+Every new or regenerated PRD must use the report presentation restored from commit `ce8aab10f17fb9365533ee225bd5c2ce663a897f`:
+
+```text
+skills/html-report-designer/resources/prd-template.html
+```
+
+Start from a byte-for-byte copy of this template. Keep its embedded style block and visual component classes unchanged. Replace placeholders with sourced PRD content, remove unused sample sections and their navigation links, remove `role="img"` from rich HTML wireframe wrappers while preserving their child semantics, and leave no unresolved placeholders. Do not substitute another report shell, recipe, or visual system unless the user explicitly replaces this lock.
+
+The template controls presentation, not product scope: do not invent content merely to fill its available components.
+
 This skill owns the PRD's content structure. `html-report-designer` supplies the shared HTML shell, design tokens, accessibility, and build/validation workflow; it does not decide the PRD's sections or require visual artifacts.
 
 ## Product narrative

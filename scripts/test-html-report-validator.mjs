@@ -17,9 +17,9 @@ const temp = mkdtempSync(join(tmpdir(), 'html-report-validator-'));
 try {
   for (const [label, path] of templates) {
     assertSuccess(runValidator(path, { allowPlaceholders: true }), `${label} with placeholders`);
-    const finished = replacePlaceholders(readFileSync(path, 'utf8'));
-    const finishedPath = fixture(`${slug(label)}-minimal.html`, finished);
-    assertSuccess(runValidator(finishedPath), `${label} with no prescribed sections or diagrams`);
+    const finished = finishTemplate(readFileSync(path, 'utf8'));
+    const finishedPath = fixture(`${slug(label)}-finished.html`, finished);
+    assertSuccess(runValidator(finishedPath), `${label} after placeholder replacement and rich-wrapper cleanup`);
   }
 
   const baseTemplate = readFileSync(join(resources, 'report-template.html'), 'utf8');
@@ -51,12 +51,12 @@ try {
     'report with a non-embedded image',
   );
   assertFailureIncludes(
-    runValidator(fixture('duplicate-review-id.html', base.replace('</header>', '</header><p data-review-id="document.outcome">Duplicate anchor</p>'))),
+    runValidator(fixture('duplicate-review-id.html', base.replace('</header>', '</header><p data-review-id="summary">Duplicate anchor</p>'))),
     'duplicate data-review-id',
     'report with duplicate review anchors',
   );
   assertFailureIncludes(
-    runValidator(fixture('invalid-review-id.html', base.replace('data-review-id="document.outcome"', 'data-review-id="Document Outcome"'))),
+    runValidator(fixture('invalid-review-id.html', base.replace('data-review-id="summary"', 'data-review-id="Document Outcome"'))),
     'lowercase kebab/dot notation',
     'report with an unstable review id',
   );
@@ -109,11 +109,19 @@ function replacePlaceholders(content) {
   return content.replace(/\{\{[^}]+\}\}/g, 'Fixture');
 }
 
+function finishTemplate(content) {
+  return replacePlaceholders(content)
+    .replace(/(<(?:article|div|figure|section|main|aside)\b[^>]*?)\srole=["']img["']/gi, '$1');
+}
+
 function insertContent(template, content) {
   const slot = ['{{COMPOSED_REPORT_CONTENT}}', '{{COMPOSED_PRD_CONTENT}}', '{{COMPOSED_DESIGN_CONTENT}}']
     .find((candidate) => template.includes(candidate));
-  assert(slot, 'template composition slot is missing');
-  return replacePlaceholders(template.replace(slot, content));
+  const inserted = slot
+    ? template.replace(slot, content)
+    : template.replace('</article>', `${content}</article>`);
+  assert(inserted !== template, 'template needs a composition slot or article insertion point');
+  return replacePlaceholders(inserted);
 }
 
 function fixture(name, content) {

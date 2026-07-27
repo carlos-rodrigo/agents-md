@@ -18,6 +18,18 @@ docs/adrs/                          # optional durable decisions
 .features/{feature}/tasks/          # optional execution packets
 ```
 
+## Restored report template lock
+
+Every new or regenerated feature design must use the report presentation restored from commit `ce8aab10f17fb9365533ee225bd5c2ce663a897f`:
+
+```text
+skills/html-report-designer/resources/design-template.html
+```
+
+Start from a byte-for-byte copy of this template. Keep its embedded style block and visual component classes unchanged. Replace placeholders with sourced design content, remove unused sample sections and their navigation links, and leave no unresolved placeholders. Do not substitute another report shell, recipe, or visual system unless the user explicitly replaces this lock.
+
+The template controls presentation, not architecture scope: do not invent content merely to fill its available components.
+
 This skill owns the design's content structure. `html-report-designer` owns the static shell, visual tokens, accessibility, generation, and validation—not architecture content or section order.
 
 ## Architecture narrative
