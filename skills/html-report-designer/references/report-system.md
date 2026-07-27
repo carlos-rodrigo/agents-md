@@ -12,13 +12,13 @@ Protocol is the visual authority for generated PRDs and designs: white and zinc 
 
 An established repository document system or explicit user direction may override the theme. Product interfaces do not inherit this palette; `frontend-design` follows the product's own visual authority.
 
-Use one readable article column inside the Protocol shell. Allow a wider canvas only for a real comparison, contract, or figure. Use the system sans stack throughout PRDs and designs; no remote font is required.
+Use one 48rem readable article column inside a 66rem Protocol canvas. Allow the wider canvas only for a real comparison, contract, resource group, or figure. Use the system sans stack throughout PRDs and designs; no remote font is required. Match Protocol's compact hierarchy: 14px/28px body, 16px/28px lead, 18px/28px section heading, and 24px/32px page title.
 
 A technical-atlas composition may give figures more room, but it retains the same palette, typography, review anchors, static reading order, and print behavior.
 
 ## Canonical tokens
 
-PRD/design shells use `#fff` page/paper, zinc `#18181b` / `#52525b` / `#71717a` text, zinc `#e4e4e7` borders, and emerald `#059669` links/accent. Use the following Editorial Ink defaults for generic reports and semantic diagram categories:
+PRD/design shells use `#fff` page/paper, zinc `#18181b` / `#52525b` / `#71717a` text, zinc `#e4e4e7` borders, and AA-safe emerald `#047857` links/accent. Use the following Editorial Ink defaults for generic reports and semantic diagram categories:
 
 ```css
 :root {
@@ -70,20 +70,29 @@ The primary, secondary, tertiary, accent, link, and semantic foregrounds meet WC
 
 ## Hierarchy
 
-- First viewport: title, status, one-sentence promise/conclusion, review focus, and compact source context.
+- First viewport: restrained title, status, one-sentence promise/conclusion, and compact source context.
 - Section: conclusion-bearing heading, one-sentence point, supporting prose/example/evidence, optional detail.
-- Keep body measure around 65–75 characters where prose leads.
-- Reserve wide layouts for true comparisons, contracts, and diagrams.
+- Keep narrative direct children on the 48rem prose spine.
+- Use roughly 64px between major sections; do not draw a border between every section.
+- Reserve the 66rem canvas for true comparisons, contracts, resource groups, and diagrams.
+- Use cards only for bounded linked resources or genuinely interactive objects; requirements, risks, decisions, and acceptance evidence usually belong in prose, notes, or divided property lists.
 - Avoid equal-weight card galleries that force readers to synthesize the story.
 
 ## Component semantics
 
-- A **card** is a bounded object, decision, example, or action—not default section chrome.
-- A **callout** changes risk, assumption, readiness, or next action.
+- A **document note** changes risk, assumption, readiness, interpretation, or next action.
+- A **property list** names terms, responsibilities, states, acceptance categories, contract values, or supplied decision tradeoffs in divided rows.
+- A **decision** remains a Protocol heading and prose, with property rows only when named tradeoffs improve scanning; it is not a bespoke card.
+- An **ordered path** explains sequence or causality with quiet numbered rows.
+- A **split row** compares two equivalent evidence bodies and stacks outside wide layouts.
+- A **code group** presents command, payload, or contract evidence on a zinc-900 surface.
+- A **resource card** is a bounded navigable object—not default section chrome.
 - A **table** represents a real matrix or comparison.
 - A **disclosure** contains supporting detail, not the conclusion or primary recovery path.
 - A **figure** answers a named question and owns caption, evidence, review anchors, and text equivalent.
 - A **selector** represents a real reviewer choice, not ceremony.
+
+Read `protocol-patterns.md` before selecting or constructing these patterns.
 
 ## Diagram language
 

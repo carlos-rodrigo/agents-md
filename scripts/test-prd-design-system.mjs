@@ -8,6 +8,8 @@ const resources = join(root, 'skills/html-report-designer/resources');
 const validator = join(root, 'scripts/validate-html-report.mjs');
 const templatePath = join(resources, 'prd-template.html');
 const cssPath = join(resources, 'prd.tailwind.css');
+const reportSkillPath = join(root, 'skills/html-report-designer/SKILL.md');
+const protocolReferencePath = join(root, 'skills/html-report-designer/references/protocol-patterns.md');
 const recipes = [
   {
     name: 'tiny behavior',
@@ -18,8 +20,8 @@ const recipes = [
   {
     name: 'product decision',
     path: join(resources, 'prd-recipe-decision.html'),
-    includes: ['prd-opening', 'product-bet', 'boundary', 'review-focus', 'narrative-section', 'flow', 'rules', 'scope', 'no-go', 'proof', 'decision', 'sources'],
-    excludes: ['linchpin-figure'],
+    includes: ['prd-opening', 'product-bet', 'boundary', 'review-focus', 'narrative-section', 'flow', 'rules', 'scope', 'no-go', 'proof', 'property-list', 'sources'],
+    excludes: ['decision', 'linchpin-figure'],
   },
   {
     name: 'justified visual',
@@ -35,16 +37,37 @@ for (const recipe of recipes) {
 
 const template = readFileSync(templatePath, 'utf8');
 const css = readFileSync(cssPath, 'utf8');
+const reportSkill = readFileSync(reportSkillPath, 'utf8');
+const protocolReference = readFileSync(protocolReferencePath, 'utf8');
 const requiredTokens = [
   '--reading-measure', '--type-body', '--type-display', '--space-1', '--surface-page',
   '--accent', '--border', '--status-draft', '--focus-ring', '--print-text',
 ];
 const requiredPrimitives = [
   'prd-opening', 'product-bet', 'boundary', 'review-focus', 'narrative-section',
-  'flow', 'rules', 'scope', 'no-go', 'proof', 'decision', 'sources', 'linchpin-figure',
+  'flow', 'rules', 'scope', 'no-go', 'proof', 'sources', 'linchpin-figure',
+];
+const protocolPatterns = [
+  'doc-note', 'property-list', 'property', 'split-row', 'code-group',
+  'resource-grid', 'resource-card', 'meta-tag', 'section-divider', 'hero-wash',
 ];
 for (const token of requiredTokens) assert(css.includes(token), `PRD CSS missing token ${token}`);
 for (const primitive of requiredPrimitives) assert(css.includes(`.${primitive}`), `PRD CSS missing rhetorical primitive .${primitive}`);
+for (const pattern of protocolPatterns) assert(css.includes(`.${pattern}`), `PRD CSS missing reusable Protocol pattern .${pattern}`);
+for (const phrase of ['prose spine', 'document note', 'property list', 'ordered path', 'split row', 'code group', 'resource grid/card', 'section divider', 'hero wash', 'figure canvas']) {
+  assert(reportSkill.includes(phrase), `HTML report skill does not explain when to use the Protocol ${phrase} pattern`);
+}
+for (const heading of ['## Pattern selection', '## Hierarchy rules', '## Responsive translation', '## Anti-patterns']) {
+  assert(protocolReference.includes(heading), `Protocol pattern reference missing ${heading}`);
+}
+assert(protocolReference.includes('src/components/Prose.tsx') && protocolReference.includes('typography.ts'), 'Protocol reference must identify the local visual sources it translates');
+assert(reportSkill.includes('do not invent a bespoke decision card') && protocolReference.includes('bespoke decision cards'), 'Protocol guidance must keep decisions in headings, prose, and optional property rows');
+assert(css.includes('--reading-measure: 48rem'), 'PRD prose spine should use Protocol’s compact 48rem reading measure');
+assert(css.includes('--type-body-size: .875rem'), 'PRD body type should match Protocol’s compact 14px scale');
+assert(css.includes('--type-h1: 1.5rem'), 'PRD title should match Protocol’s restrained 24px scale');
+assert(css.includes('--type-h2: 1.125rem'), 'PRD section headings should match Protocol’s 18px scale');
+assert(css.includes('width: min(24rem, 100%)'), 'PRD mobile navigation should use a Protocol-like left sheet');
+assert(css.includes('@media (min-width: 80rem)'), 'PRD rail should support Protocol’s wider extra-large breakpoint');
 
 assert(count(template, /<h1\b/gi) === 1, 'content-free shell needs exactly one h1 location');
 assert(/<main\b[^>]*id=["']main["'][^>]*>[\s\S]*<article\b/i.test(template), 'content-free shell needs main/article landmarks');
@@ -56,11 +79,12 @@ assert(count(template, /<script\b[^>]*data-artifact-motion=["']native["']/gi) ==
 assert(count(template, /<script\b[^>]*data-document-navigation=["']progressive["']/gi) === 1, 'PRD shell needs one progressive static-document navigation runtime');
 assert(template.includes('class="sidebar"') && template.includes('class="headerbar"'), 'PRD shell needs the Protocol-derived document chrome');
 assert(template.includes('prefers-reduced-motion: reduce'), 'PRD shell motion must honor reduced motion');
+assert(!/<article\b[^>]*data-motion-sections=/i.test(template), 'PRD shell must not choreograph every authored section by default');
 
 const forbiddenFamilies = [
   '.doc-shell', '.breadcrumbs', '.back-to-top', '.prev-next',
   '.feedback-widget', '.wireframe-', '.diagram-viewport', '.ui-option-',
-  '.option-gallery', '.card-gallery', '.reveal', '.prose',
+  '.option-gallery', '.card-gallery', '.decision', '.reveal', '.prose',
 ];
 for (const fragment of forbiddenFamilies) {
   assert(!css.includes(fragment), `PRD source CSS retains dormant family ${fragment}`);
@@ -78,6 +102,7 @@ for (const recipe of recipes) {
   assert(!/\b(?:N\/A|not applicable|TBD)\b/i.test(html), `${recipe.name} recipe contains filler`);
   assert(count(html, /<h1\b/gi) === 1, `${recipe.name} recipe needs exactly one h1`);
   assert(count(html, /data-review-id=/gi) >= 5, `${recipe.name} recipe needs stable review anchors on meaningful claims`);
+  assert(!/<article\b[^>]*data-motion-sections=/i.test(html), `${recipe.name} recipe must keep section entrance motion opt-in`);
   for (const component of recipe.includes) assert(hasClass(html, component), `${recipe.name} recipe missing .${component}`);
   for (const component of recipe.excludes) assert(!hasClass(html, component), `${recipe.name} recipe includes irrelevant .${component}`);
   for (const fragment of forbiddenFamilies) assert(!html.includes(fragment), `${recipe.name} recipe retains dormant family ${fragment}`);

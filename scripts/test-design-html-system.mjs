@@ -18,14 +18,14 @@ const recipes = [
   {
     name: 'API persistence boundary',
     path: join(resources, 'design-recipe-boundary.html'),
-    includes: ['design-opening', 'architecture-pressure', 'chosen-seam', 'system-path', 'responsibility', 'decision', 'contract-block', 'slice-outline', 'risk', 'boundary', 'proof', 'sources'],
-    excludes: ['interface-consequence', 'linchpin-figure'],
+    includes: ['design-opening', 'architecture-pressure', 'chosen-seam', 'system-path', 'responsibility', 'property-list', 'contract-block', 'slice-outline', 'risk', 'boundary', 'proof', 'sources'],
+    excludes: ['decision', 'interface-consequence', 'linchpin-figure'],
   },
   {
     name: 'UI to backend visual path',
     path: join(resources, 'design-recipe-visual.html'),
-    includes: ['design-opening', 'architecture-pressure', 'chosen-seam', 'system-path', 'responsibility', 'decision', 'interface-consequence', 'risk', 'boundary', 'proof', 'sources', 'linchpin-figure'],
-    excludes: ['contract-block', 'slice-outline'],
+    includes: ['design-opening', 'architecture-pressure', 'chosen-seam', 'system-path', 'responsibility', 'property-list', 'interface-consequence', 'risk', 'boundary', 'proof', 'sources', 'linchpin-figure'],
+    excludes: ['decision', 'contract-block', 'slice-outline'],
   },
 ];
 
@@ -39,11 +39,22 @@ const requiredTokens = [
 ];
 const requiredPrimitives = [
   'design-opening', 'architecture-pressure', 'chosen-seam', 'system-path',
-  'responsibility', 'decision', 'contract-block', 'interface-consequence',
+  'responsibility', 'contract-block', 'interface-consequence',
   'slice-outline', 'risk', 'boundary', 'proof', 'sources', 'linchpin-figure',
+];
+const protocolPatterns = [
+  'doc-note', 'property-list', 'property', 'split-row', 'code-group',
+  'resource-grid', 'resource-card', 'meta-tag', 'section-divider', 'hero-wash',
 ];
 for (const token of requiredTokens) assert(css.includes(token), `design CSS missing token ${token}`);
 for (const primitive of requiredPrimitives) assert(css.includes(`.${primitive}`), `design CSS missing architecture primitive .${primitive}`);
+for (const pattern of protocolPatterns) assert(css.includes(`.${pattern}`), `design CSS missing reusable Protocol pattern .${pattern}`);
+assert(css.includes('--reading-measure: 48rem'), 'design prose spine should use Protocol’s compact 48rem reading measure');
+assert(css.includes('--type-body-size: .875rem'), 'design body type should match Protocol’s compact 14px scale');
+assert(css.includes('--type-h1: 1.5rem'), 'design title should match Protocol’s restrained 24px scale');
+assert(css.includes('--type-h2: 1.125rem'), 'design section headings should match Protocol’s 18px scale');
+assert(css.includes('width: min(24rem, 100%)'), 'design mobile navigation should use a Protocol-like left sheet');
+assert(css.includes('@media (min-width: 80rem)'), 'design rail should support Protocol’s wider extra-large breakpoint');
 
 assert(count(template, /<h1\b/gi) === 1, 'content-free design shell needs exactly one h1 location');
 assert(/<main\b[^>]*id=["']main["'][^>]*>[\s\S]*<article\b/i.test(template), 'content-free design shell needs main/article landmarks');
@@ -56,13 +67,14 @@ assert(count(template, /<script\b[^>]*data-artifact-motion=["']native["']/gi) ==
 assert(count(template, /<script\b[^>]*data-document-navigation=["']progressive["']/gi) === 1, 'design shell needs one progressive static-document navigation runtime');
 assert(template.includes('class="sidebar"') && template.includes('class="headerbar"'), 'design shell needs the Protocol-derived document chrome');
 assert(template.includes('prefers-reduced-motion: reduce'), 'design shell motion must honor reduced motion');
+assert(!/<article\b[^>]*data-motion-sections=/i.test(template), 'design shell must not choreograph every authored section by default');
 assert(!/data-excalidraw-slot/i.test(template), 'content-free design shell must not reserve a diagram slot');
 
 const forbiddenFamilies = [
   '.doc-shell', '.breadcrumbs', '.back-to-top', '.prev-next',
   '.feedback-widget', '.tabs', '.card-grid', '.component-card', '.story-list',
   '.scenario-stack', '.contract-list', '.slice-card', '.domain-walkthrough',
-  '.diagram-viewport', '.diagram-node', '.diagram-edge', '.review-label', '.reveal', '.prose',
+  '.diagram-viewport', '.diagram-node', '.diagram-edge', '.review-label', '.decision', '.reveal', '.prose',
 ];
 for (const fragment of forbiddenFamilies) {
   assert(!css.includes(fragment), `design source CSS retains dormant family ${fragment}`);
@@ -81,6 +93,7 @@ for (const recipe of recipes) {
   assert(!/\b(?:N\/A|not applicable|TBD)\b/i.test(html), `${recipe.name} recipe contains filler`);
   assert(count(html, /<h1\b/gi) === 1, `${recipe.name} recipe needs exactly one h1`);
   assert(count(html, /data-review-id=/gi) >= 6, `${recipe.name} recipe needs stable review anchors on architecture claims`);
+  assert(!/<article\b[^>]*data-motion-sections=/i.test(html), `${recipe.name} recipe must keep section entrance motion opt-in`);
   for (const component of recipe.includes) assert(hasClass(html, component), `${recipe.name} recipe missing .${component}`);
   for (const component of recipe.excludes) assert(!hasClass(html, component), `${recipe.name} recipe includes irrelevant .${component}`);
   for (const fragment of forbiddenFamilies) {

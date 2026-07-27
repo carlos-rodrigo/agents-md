@@ -43,6 +43,8 @@ The durable output is an independently implemented static document shell, not co
 
 The Tailwind Plus source is commercially licensed. Do not redistribute its source or direct derivatives as a template library. The files in this skill are a purpose-built static document system.
 
+Extract behavior from the local `Layout`, `Header`, `Navigation`, `MobileNavigation`, `Prose`, `Heading`, MDX primitives, code groups, guide/resource groups, tags, and typography configuration—not from screenshot mimicry alone. `references/protocol-patterns.md` records the reusable translation and when each pattern is appropriate.
+
 ## Shared shell
 
 Durable PRDs and feature designs use:
@@ -52,7 +54,8 @@ Durable PRDs and feature designs use:
 - a restrained fixed section rail on wide screens;
 - a compact fixed header bar;
 - a native `<details>` section index on narrow screens;
-- a focused reading column with an explicit wide slot for real figures/comparisons;
+- a 48rem focused reading spine inside a 66rem artifact canvas;
+- compact 14px body, 16px lead, 18px section heading, and 24px page-title typography;
 - a compact provenance footer;
 - no remote assets or runtime dependency.
 
@@ -67,13 +70,15 @@ Generic reports may use the same shell or omit navigation when the document is t
 PRD and design shells use Protocol-derived documentation chrome:
 
 - white page and paper surfaces;
-- zinc primary, secondary, tertiary text, and borders;
-- emerald for links, focus, and active section indication;
-- compact system sans typography;
-- nearly flat surfaces with quiet borders and little or no shadow;
+- zinc primary, secondary, tertiary text, and hairlines;
+- emerald for links, focus, active navigation, and small semantic emphasis;
+- a compact 14/16/18/24px system-sans hierarchy with generous line height;
+- a 48rem prose spine and a 66rem wide-artifact canvas;
+- 64px section rhythm created primarily by whitespace;
+- nearly flat surfaces with little or no shadow;
 - a 4px spacing base and restrained radius family.
 
-Use the semantic variables in `resources/prd.tailwind.css` and `resources/design.tailwind.css`. Do not improvise local hex values, spacing, or component radii in generated documents.
+Use the semantic variables in `resources/prd.tailwind.css` and `resources/design.tailwind.css`. Do not improvise local hex values, spacing, or component radii in generated documents. Avoid oversized marketing titles, automatic separators between every section, and card stacks that make documentation look like a dashboard.
 
 ### Editorial Ink
 
@@ -81,24 +86,26 @@ Generic reports and system figures use Editorial Ink: warm paper, high-contrast 
 
 The canonical tokens and usage rules live in `references/report-system.md`.
 
-## Composition primitives
+## Pattern selection
 
-Components are optional presentation tools. Choose them only after the calling skill has supplied the rhetorical role.
+Patterns are optional presentation tools. Choose one only after the calling skill names the rhetorical job.
 
-Common semantic primitives:
+Use the smallest fitting Protocol translation:
 
-- document header and compact metadata;
-- narrative section with point-first heading;
-- boundary or scope note;
-- decision and tradeoff block;
-- ordered flow or causal path;
-- rules or proof list;
-- source/evidence list;
-- code/contract block;
-- accessible figure with local walkthrough;
-- native disclosure for supporting detail.
+- **prose spine** for narrative, rationale, rules, and conclusions;
+- **lead** for one opening promise or orientation sentence;
+- **metadata tag** for a short status, method, or category—not decoration;
+- **document note** when a compact fact changes readiness, interpretation, or next action;
+- **property list** for named responsibilities, states, acceptance categories, contract terms, or the tradeoffs of a supplied decision;
+- **ordered path** for sequence or causality;
+- **split row** only for two bodies of evidence that need same-scale comparison;
+- **code group** for primary command, payload, or contract evidence;
+- **resource grid/card** only for equivalent navigable resources, never a requirements gallery;
+- **section divider** for a major conceptual reset, not every section;
+- **hero wash** only for a true overview/landing document, never by default;
+- **figure canvas** for a justified supplied diagram or comparison.
 
-PRD and design CSS include optional role-specific class names so authored content can be styled consistently. Their existence does not imply that a generated document must use them. See `references/artifact-patterns.md` only after the content role is known.
+PRD and design CSS expose neutral reusable classes (`.doc-note`, `.property-list`, `.property`, `.split-row`, `.code-group`, `.resource-grid`, `.resource-card`, `.meta-tag`, `.section-divider`, `.hero-wash`) alongside optional owning-skill classes. Their existence does not imply use. Keep supplied product or architecture decisions in Protocol headings, prose, and—when named terms aid scanning—property rows; do not invent a bespoke decision card. Read `references/protocol-patterns.md` for selection and construction, then `references/artifact-patterns.md` for the content role.
 
 ## Generation workflow
 
@@ -157,7 +164,7 @@ Use a wide canvas only for a real figure, contract, or comparison. See `system-d
 
 ## Motion
 
-Motion is optional and may clarify causal order, a state transition, retained identity, or review destination. Default documents should not choreograph every section.
+Motion is optional and may clarify causal order, a state transition, retained identity, or review destination. Default documents and shared templates must not choreograph every section; ordinary recipes remain static.
 
 Use semantic values only:
 
@@ -220,6 +227,7 @@ Open finished output in a browser and inspect normal, narrow, short-height, enla
 Load only what the current artifact needs:
 
 - `references/report-system.md` — shell, tokens, hierarchy, and diagram frame;
+- `references/protocol-patterns.md` — source-derived Protocol patterns, selection rules, metrics, and anti-patterns;
 - `references/artifact-patterns.md` — optional semantic presentation patterns;
 - `references/accessibility-motion.md` — structural access, figures, motion, fallbacks;
 - `references/scrollytelling.md` — eligibility and fallback contract for scroll narratives;
