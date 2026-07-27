@@ -1,11 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './skills/html-report-designer/resources/*-template.html',
-    './skills/html-report-designer/resources/*.tailwind.css',
-    './skills/system-diagram/resources/*-template.html',
-    './skills/system-diagram/resources/*.tailwind.css',
-  ],
+  // Report classes are authored in the source CSS. Avoid scanning generated
+  // inline CSS, which would make obsolete utility classes self-perpetuating.
+  content: [{ raw: '<main></main>', extension: 'html' }],
   theme: {
     extend: {
       fontFamily: {
@@ -17,5 +14,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [],
 };

@@ -3,124 +3,132 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{DOCUMENT_TITLE}}</title>
+  <title>Recoverable bulk import · PRD recipe</title>
   <style data-tailwind-build="prd.tailwind.css">
 /* tailwind-report-css:start */
 *,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Geist,Geist Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}:root{color-scheme:light;--reading-measure:70ch;--reading-wide:64rem;--type-body:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--type-display:var(--type-body);--type-mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--type-xs:.75rem;--type-sm:.875rem;--type-body-size:.9375rem;--type-lede:clamp(1rem,2vw,1.125rem);--type-h2:clamp(1.125rem,2.5vw,1.35rem);--type-h1:clamp(2rem,5vw,3rem);--leading-body:1.72;--leading-tight:1.12;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--surface-page:#fff;--surface-paper:#fff;--surface-muted:#fafafa;--surface-strong:#f4f4f5;--text-primary:#18181b;--text-secondary:#52525b;--text-tertiary:#71717a;--accent:#059669;--link:#059669;--accent-soft:#ecfdf5;--info:#285a75;--info-soft:#eaf2f8;--success:#276544;--success-soft:#e8f2eb;--warning:#8b4d00;--warning-soft:#f8eedb;--danger:#a11c1c;--danger-soft:#f8e8e5;--external:#654a80;--external-soft:#f1ecf6;--border:#e4e4e7;--border-strong:#a1a1aa;--sidebar-width:18rem;--topbar-height:3.5rem;--status-draft:#665f55;--status-review:#8b4d00;--status-approved:#276544;--status-blocked:#a11c1c;--status-soft:#f3eee5;--focus-ring:0 0 0 3px rgba(16,185,129,.28);--print-text:#000;--print-border:#9b9b9b;--print-page-margin:16mm;--radius-sm:.35rem;--radius-md:.65rem;--radius-lg:1rem;--motion-feedback:140ms;--motion-enter:220ms;--motion-flow:320ms;--motion-emphasis:420ms;--motion-ease:cubic-bezier(.16,1,.3,1)}*{box-sizing:border-box}html{scroll-behavior:smooth}body,html{background:var(--surface-page)}body{margin:0;color:var(--text-primary);font-family:var(--type-body);font-size:var(--type-body-size);line-height:var(--leading-body);text-rendering:optimizeLegibility}dd,figcaption,h1,h2,h3,li,p{overflow-wrap:anywhere}a{color:var(--link);text-underline-offset:.18em;text-decoration-thickness:.08em}code{padding:.1rem .3rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-muted);font-family:var(--type-mono);font-size:.9em}:where(a,summary,input,button):focus-visible{outline:none;box-shadow:var(--focus-ring)}.skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:50;transform:translateY(-180%);padding:var(--space-2) var(--space-4);border-radius:999px;background:var(--text-primary);color:var(--surface-paper);font-weight:700;text-decoration:none}.skip-link:focus{transform:translateY(0)}.sidebar{position:fixed;inset:0 auto 0 0;z-index:30;display:flex;width:var(--sidebar-width);flex-direction:column;overflow-y:auto;border-right:1px solid rgba(24,24,27,.1);background:var(--surface-paper);padding:1rem 1.5rem 2rem}.brand{display:flex;align-items:center;gap:.7rem;min-height:2rem;color:var(--text-primary);font-weight:700;text-decoration:none}.brand-mark{display:grid;width:1.65rem;height:1.65rem;place-content:center;gap:2px;border-radius:.55rem;background:var(--text-primary)}.brand-mark span{display:block;width:.8rem;height:2px;border-radius:2px;background:#6ee7b7}.brand-mark span:nth-child(2){width:.6rem}.brand-mark span:nth-child(3){width:.4rem}.side-navigation{display:none;margin-top:2.4rem}.navigation-ready .side-navigation{display:block}.nav-heading{margin:0 0 .55rem;color:var(--text-primary);font-size:.75rem;font-weight:650}.nav-list{position:relative;margin:0;padding:0 0 0 .5rem;list-style:none}.nav-list:before{content:"";position:absolute;inset:0 auto 0 .5rem;width:1px;background:rgba(24,24,27,.1)}.nav-list a{position:relative;display:block;padding:.25rem .75rem .25rem 1rem;border-radius:.5rem;color:var(--text-secondary);font-size:.875rem;line-height:1.5rem;text-decoration:none;transition:color var(--motion-feedback) ease,background-color var(--motion-feedback) ease}.nav-list a:hover{color:var(--text-primary);background:rgba(24,24,27,.025)}.nav-list a[aria-current=location]{color:var(--text-primary);background:rgba(24,24,27,.035);font-weight:650}.nav-list a[aria-current=location]:before{content:"";position:absolute;top:.35rem;bottom:.35rem;left:-.5rem;width:1px;background:var(--accent)}.sidebar-meta{margin-top:auto;padding-top:2rem;color:var(--text-tertiary);font-size:.75rem;line-height:1.25rem}.sidebar-meta strong{color:var(--text-secondary)}.headerbar{position:fixed;inset:0 0 auto var(--sidebar-width);z-index:20;display:flex;height:var(--topbar-height);align-items:center;justify-content:space-between;gap:1rem;padding:0 2rem;border-bottom:1px solid rgba(24,24,27,.075);background:hsla(0,0%,100%,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}.headerbar-title{color:var(--text-secondary);font-size:.8125rem;font-weight:600}.mobile-navigation{display:none}.content-frame{min-height:100vh;margin-left:var(--sidebar-width)}.document{display:flex;min-height:100vh;flex-direction:column;padding:calc(var(--topbar-height) + 4rem) 2rem 3rem}.prd-page{width:min(100%,var(--reading-wide));margin:0 auto;background:var(--surface-paper)}.prd-document{min-width:0}.document-header{margin-bottom:var(--space-12);padding-bottom:var(--space-8);border-bottom:1px solid var(--border)}.document-meta{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);align-items:center;margin-bottom:var(--space-6);color:var(--text-tertiary);font-size:var(--type-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase}.status{display:inline-flex;align-items:center;min-height:1.65rem;padding:.12rem .55rem;border:1px solid;border-radius:999px;background:var(--status-soft)}.status--draft{color:var(--status-draft)}.status--review{color:var(--status-review)}.status--approved{color:var(--status-approved)}.status--blocked{color:var(--status-blocked)}h1{max-width:18ch;margin:0;font-family:var(--type-display);font-size:var(--type-h1);font-weight:700;letter-spacing:-.025em;line-height:var(--leading-tight);text-wrap:balance}.lede{margin:var(--space-5) 0 0;color:var(--text-secondary);font-size:var(--type-lede)}.lede,.prd-opening{max-width:var(--reading-measure)}.prd-opening{display:grid;gap:var(--space-4);margin:0 0 var(--space-12);padding:0;list-style:none;counter-reset:story-line}.prd-opening>li{position:relative;padding-left:var(--space-10);counter-increment:story-line}.prd-opening>li:before{content:counter(story-line,decimal-leading-zero);position:absolute;left:0;top:.15em;color:var(--accent);font-family:var(--type-mono);font-size:var(--type-xs);font-weight:800}.boundary,.decision,.product-bet,.review-focus{max-width:var(--reading-measure);margin:0 0 var(--space-10);padding:var(--space-5) var(--space-6);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-muted)}.product-bet{border-left:4px solid var(--accent)}.boundary{border-style:dashed}.review-focus{border-color:color-mix(in srgb,var(--accent) 35%,var(--border));background:var(--accent-soft)}.decision{border-top:4px solid var(--text-primary);background:var(--surface-paper)}.boundary p,.decision p,.product-bet p,.review-focus p{margin:var(--space-2) 0 0}.narrative-section{max-width:var(--reading-measure);margin:0 0 var(--space-12)}.narrative-section+.narrative-section{padding-top:var(--space-10);border-top:1px solid var(--border)}.decision-label,.eyebrow{display:block;margin-bottom:var(--space-2);color:var(--accent);font-size:var(--type-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase}h2{font-family:var(--type-display);font-size:var(--type-h2);font-weight:650;line-height:1.2;text-wrap:balance}h2,h3{margin:0}h3{font-size:1rem;line-height:1.35}.section-point{margin:var(--space-3) 0 0;color:var(--text-secondary)}.figure-walkthrough,.flow,.proof,.rules,.source-list{display:grid;gap:var(--space-3);margin:var(--space-5) 0 0;padding:0;list-style:none}.flow{counter-reset:flow-step}.flow>li{position:relative;padding:var(--space-4) var(--space-4) var(--space-4) var(--space-12);border-left:2px solid var(--border-strong);background:linear-gradient(90deg,var(--surface-muted),transparent 72%);counter-increment:flow-step}.flow>li:before{content:counter(flow-step);position:absolute;left:var(--space-4);top:var(--space-4);display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:999px;background:var(--text-primary);color:var(--surface-paper);font-family:var(--type-mono);font-size:var(--type-xs);font-weight:800}.proof>li,.rules>li{position:relative;padding-left:var(--space-6)}.proof>li:before,.rules>li:before{position:absolute;left:0;color:var(--accent);font-weight:900}.rules>li:before{content:"—"}.proof>li:before{content:"✓"}.no-go,.scope{max-width:var(--reading-measure);margin:var(--space-5) 0 0;padding:var(--space-5);border-top:2px solid var(--text-primary);background:var(--surface-muted)}.no-go{border-top-color:var(--accent)}.no-go ul,.scope ul{margin:var(--space-3) 0 0;padding-left:var(--space-5)}.tradeoff{color:var(--text-secondary)}.sources{max-width:var(--reading-measure);margin-top:var(--space-12);padding-top:var(--space-6);border-top:1px solid var(--border)}.sources h2{font-family:var(--type-body);font-size:1rem}.source-list{gap:var(--space-2);color:var(--text-secondary);font-size:var(--type-sm)}.source-list li{padding-left:var(--space-4);border-left:2px solid var(--border)}.linchpin-figure{max-width:var(--reading-wide);margin:var(--space-6) 0 0;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-muted)}.figure-question{margin:0 0 var(--space-4);color:var(--text-secondary)}.figure-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain;border:1px solid var(--border);background:var(--surface-paper)}.figure-scroll>svg{display:block;width:100%;min-width:35rem;height:auto}.linchpin-figure figcaption{margin-top:var(--space-3);color:var(--text-secondary);font-size:var(--type-sm)}.figure-walkthrough{max-width:var(--reading-measure);counter-reset:figure-step}.figure-walkthrough>li{position:relative;padding-left:var(--space-8);counter-increment:figure-step}.figure-walkthrough>li:before{content:counter(figure-step) ".";position:absolute;left:0;color:var(--accent);font-family:var(--type-mono);font-weight:800}[data-review-id]{scroll-margin-top:calc(var(--topbar-height) + var(--space-4))}[data-review-id]:target{outline:3px solid var(--accent);outline-offset:var(--space-2)}.motion-pending{opacity:0}svg .motion-pending{transform-box:fill-box;transform-origin:center}.provenance{width:min(calc(100% - var(--space-4)*2),var(--reading-wide));margin:0 auto var(--space-8);color:var(--text-tertiary);font-size:var(--type-xs)}.provenance p{margin:0}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.motion-pending{opacity:1!important;transform:none!important}}@media (max-width:64rem){.sidebar{display:none}.headerbar{left:0;padding:0 1rem}.navigation-ready .mobile-navigation{display:block}.mobile-navigation summary{display:inline-flex;align-items:center;min-height:2rem;padding:.25rem .5rem;border-radius:.55rem;cursor:pointer;font-weight:650;list-style:none}.mobile-navigation summary::-webkit-details-marker{display:none}.mobile-panel{position:fixed;inset:var(--topbar-height) 0 0;z-index:40;overflow-y:auto;padding:1.5rem;border-top:1px solid rgba(24,24,27,.075);background:var(--surface-paper);box-shadow:0 12px 24px rgba(24,24,27,.08)}.mobile-panel .side-navigation{max-width:24rem;margin:0}.content-frame{margin-left:0}.document{padding:calc(var(--topbar-height) + 3rem) 1.5rem 2.5rem}}@media (max-width:36rem){.document{padding-right:1rem;padding-left:1rem}.headerbar-title{display:none}.prd-opening>li{padding-left:var(--space-8)}.boundary,.decision,.product-bet,.review-focus{padding:var(--space-4)}}@media print{@page{margin:var(--print-page-margin)}body,html{background:#fff;color:var(--print-text)}details:not([open])>:not(summary){display:block}.headerbar,.mobile-navigation,.sidebar,.skip-link{display:none}.content-frame{margin:0}.document{display:block;min-height:0;padding:0}.prd-page{width:auto;margin:0}.boundary,.decision,.document-header,.flow>li,.linchpin-figure,.narrative-section,.no-go,.product-bet,.proof>li,.review-focus,.rules>li,.scope{-moz-column-break-inside:avoid;break-inside:avoid}.boundary,.decision,.figure-scroll,.linchpin-figure,.no-go,.product-bet,.review-focus,.scope{border-color:var(--print-border);background:#fff}.figure-scroll{overflow:visible}.figure-scroll>svg{min-width:0}.motion-pending{opacity:1!important;transform:none!important}a{text-decoration:none}.provenance,a{color:var(--print-text)}.provenance{width:auto;margin:var(--space-8) 0 0}}
 /* tailwind-report-css:end */
   </style>
 </head>
-<body data-document-kind="prd">
+<body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <main id="main" class="prd-page">
+    <article class="prd-document">
+      <header class="document-header">
+        <div class="document-meta" aria-label="Document metadata">
+          <span class="status status--review">Review</span>
+          <span>Product requirements</span>
+          <span>Updated <time datetime="2026-07-21">21 Jul 2026</time></span>
+        </div>
+        <h1 data-review-id="document.outcome">Let valid rows survive a messy import</h1>
+        <p class="lede">A single visual resolves which rows advance, which wait, and what the operator can safely do next.</p>
+      </header>
 
-  <aside class="sidebar" aria-label="Document sections">
-    <div class="brand" aria-label="Product requirements document">
-      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-      <span>Product requirements</span>
-    </div>
-    <nav class="side-navigation" aria-label="On this page">
-      <p class="nav-heading">On this page</p>
-      <div data-document-navigation-target></div>
-    </nav>
-    <div class="sidebar-meta">
-      <p><strong>Status</strong><br />{{STATUS}}</p>
-      <p><strong>Sources</strong><br />{{SOURCE_PATHS}}</p>
-    </div>
-  </aside>
+      <ol class="prd-opening" aria-label="Product story">
+        <li data-review-id="story.moment"><strong>Moment.</strong> An operations lead uploads 800 customer records before a weekly deadline.</li>
+        <li data-review-id="story.friction"><strong>Friction.</strong> Twelve malformed rows currently make the whole file feel unsafe to retry.</li>
+        <li data-review-id="story.bet"><strong>Bet.</strong> Import valid rows once, isolate invalid rows, and make correction explicit.</li>
+        <li data-review-id="story.proof"><strong>Proof.</strong> The operator can explain the final count and retry only corrected rows.</li>
+        <li data-review-id="story.boundary"><strong>Boundary.</strong> The product does not guess missing customer data.</li>
+      </ol>
 
-  <header class="headerbar">
-    <details class="mobile-navigation">
-      <summary>Sections</summary>
-      <div class="mobile-panel">
-        <nav class="side-navigation" aria-label="Mobile document sections">
-          <p class="nav-heading">On this page</p>
-          <div data-document-navigation-mobile></div>
-        </nav>
-      </div>
-    </details>
-    <span class="headerbar-title">{{FEATURE_NAME}} · Product requirements</span>
-    <span class="headerbar-title">{{STATUS}}</span>
-  </header>
+      <aside class="product-bet" data-review-id="bet.partial-import">
+        <h2>Progress without duplication</h2>
+        <p>Valid rows become customers exactly once; invalid rows remain visible work rather than blocking everything.</p>
+      </aside>
 
-  <div class="content-frame">
-    <div class="document">
-      <main id="main" class="prd-page">
-        <article class="prd-document" data-motion-sections="enter">
-          <header class="document-header">
-            <div class="document-meta" aria-label="Document metadata">
-              <span class="status status--{{STATUS_CLASS}}">{{STATUS}}</span>
-              <span>Product requirements</span>
-              <span>Updated <time datetime="{{UPDATED_DATE_ISO}}">{{UPDATED_DATE}}</time></span>
-            </div>
-            <h1 data-review-id="document.outcome">{{DOCUMENT_TITLE}}</h1>
-            <p class="lede">{{DOCUMENT_SUMMARY}}</p>
-          </header>
+      <aside class="review-focus" data-review-id="review.row-boundary">
+        <strong>Named uncertainty</strong>
+        <p>Can a reviewer see, in one pass, where the file splits and why retry cannot duplicate accepted rows?</p>
+      </aside>
 
-          {{COMPOSED_PRD_CONTENT}}
-        </article>
-      </main>
-    </div>
-    <footer class="provenance" aria-label="Document provenance">
-      <p>Sources: {{SOURCE_PATHS}} · Generated from the shared static report system.</p>
-    </footer>
-  </div>
+      <section class="narrative-section" aria-labelledby="path-title">
+        <span class="eyebrow">Operator path</span>
+        <h2 id="path-title">The file becomes two accountable sets</h2>
+        <ol class="flow" data-motion="flow">
+          <li data-review-id="flow.validate">Validate every row without creating customers.</li>
+          <li data-review-id="flow.commit">Commit the valid set and assign stable import-row receipts.</li>
+          <li data-review-id="flow.correct">Download the invalid set with row-level reasons, correct it, and retry.</li>
+        </ol>
 
-  <script data-document-navigation="progressive">
-/* document-navigation:start */
-(() => {
-  const article = document.querySelector('main#main > article');
-  const desktopTarget = document.querySelector('[data-document-navigation-target]');
-  const mobileTarget = document.querySelector('[data-document-navigation-mobile]');
-  if (!article || !desktopTarget || !mobileTarget) return;
+        <figure class="linchpin-figure" data-complex-figure data-review-id="figure.import-split" data-motion="flow">
+          <p class="figure-question"><strong>How to read:</strong> follow the file from left to right, then compare the two outcomes.</p>
+          <div class="figure-scroll">
+            <svg viewBox="0 0 640 330" role="img" aria-labelledby="import-title import-desc" data-review-id="figure.import-split.svg" xmlns="http://www.w3.org/2000/svg">
+              <title id="import-title">Bulk import splits valid and invalid rows</title>
+              <desc id="import-desc">An uploaded file is validated. Valid rows are committed once with receipts. Invalid rows are returned with reasons and can be corrected and retried without touching accepted rows.</desc>
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#625d54" /></marker>
+              </defs>
+              <rect x="24" y="126" width="132" height="72" rx="10" fill="#fffefa" stroke="#aaa092" stroke-width="2" />
+              <text x="90" y="154" text-anchor="middle" font-size="16" font-weight="700" fill="#211f1b">Uploaded file</text>
+              <text x="90" y="178" text-anchor="middle" font-size="14" fill="#625d54">800 rows</text>
+              <path d="M156 162 H238" stroke="#625d54" stroke-width="2" marker-end="url(#arrow)" />
+              <text x="197" y="148" text-anchor="middle" font-size="13" fill="#625d54">validate</text>
+              <rect x="244" y="126" width="132" height="72" rx="10" fill="#f7e8e1" stroke="#a33b20" stroke-width="2" />
+              <text x="310" y="154" text-anchor="middle" font-size="16" font-weight="700" fill="#211f1b">Row results</text>
+              <text x="310" y="178" text-anchor="middle" font-size="14" fill="#625d54">identity retained</text>
+              <path d="M376 151 C430 151 422 74 474 74" fill="none" stroke="#625d54" stroke-width="2" marker-end="url(#arrow)" />
+              <text x="423" y="101" text-anchor="middle" font-size="13" fill="#276544">788 valid</text>
+              <rect x="480" y="34" width="136" height="80" rx="10" fill="#eef7f1" stroke="#276544" stroke-width="2" />
+              <text x="548" y="65" text-anchor="middle" font-size="16" font-weight="700" fill="#211f1b">Committed once</text>
+              <text x="548" y="89" text-anchor="middle" font-size="14" fill="#625d54">receipt per row</text>
+              <path d="M376 173 C430 173 422 250 474 250" fill="none" stroke="#625d54" stroke-width="2" marker-end="url(#arrow)" />
+              <text x="423" y="226" text-anchor="middle" font-size="13" fill="#a33b20">12 invalid</text>
+              <rect x="480" y="210" width="136" height="80" rx="10" fill="#fff7ed" stroke="#a33b20" stroke-width="2" />
+              <text x="548" y="241" text-anchor="middle" font-size="16" font-weight="700" fill="#211f1b">Returned</text>
+              <text x="548" y="265" text-anchor="middle" font-size="14" fill="#625d54">reason per row</text>
+              <path d="M548 290 C548 316 310 316 310 204" fill="none" stroke="#a33b20" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)" />
+              <text x="425" y="315" text-anchor="middle" font-size="13" fill="#a33b20">correct and retry invalid receipts only</text>
+            </svg>
+          </div>
+          <figcaption>The split is the product contract: accepted row receipts close one path while rejected row receipts keep the correction path open.</figcaption>
+        </figure>
+        <ol class="figure-walkthrough" data-figure-walkthrough-for="figure.import-split">
+          <li>Validation keeps each source row’s identity before any customer is created.</li>
+          <li>Valid rows commit once and receive receipts that make later retries harmless.</li>
+          <li>Invalid rows return with reasons; a corrected retry references only those open receipts.</li>
+        </ol>
+      </section>
 
-  const headings = Array.from(article.querySelectorAll('h2[id]'))
-    .filter((heading) => heading.textContent.trim());
-  if (headings.length === 0) return;
-  document.documentElement.classList.add('navigation-ready');
+      <section class="narrative-section" aria-labelledby="rules-title">
+        <span class="eyebrow">Outcome-protecting rules</span>
+        <h2 id="rules-title">Every row ends in a knowable state</h2>
+        <ul class="rules">
+          <li data-review-id="rules.no-partial-row">A row is either committed or rejected; no customer is half-created.</li>
+          <li data-review-id="rules.receipt">Every committed row has a stable receipt before the result is shown.</li>
+          <li data-review-id="rules.retry">Retry accepts corrected rejected rows and ignores already committed receipts.</li>
+          <li data-review-id="rules.reason">Every rejection names a field and a correction reason.</li>
+        </ul>
+      </section>
 
-  const buildList = () => {
-    const list = document.createElement('ul');
-    list.className = 'nav-list';
-    headings.forEach((heading) => {
-      const item = document.createElement('li');
-      const link = document.createElement('a');
-      link.href = `#${encodeURIComponent(heading.id)}`;
-      link.textContent = heading.textContent.trim();
-      item.append(link);
-      list.append(item);
-    });
-    return list;
-  };
+      <aside class="boundary" data-review-id="boundary.no-guessing">
+        <h2>Correction belongs to the operator</h2>
+        <p>The system may normalize harmless formatting, but it never invents missing identity or consent data.</p>
+      </aside>
 
-  desktopTarget.append(buildList());
-  mobileTarget.append(buildList());
+      <section class="narrative-section" aria-labelledby="proof-title">
+        <span class="eyebrow">Observable proof</span>
+        <h2 id="proof-title">The count survives retries</h2>
+        <ul class="proof">
+          <li data-review-id="proof.first-run">The first run reports 788 committed and 12 rejected, with 800 row receipts.</li>
+          <li data-review-id="proof.retry">Retrying 12 corrected rows creates at most 12 customers and leaves the first 788 unchanged.</li>
+          <li data-review-id="proof.audit">The final summary accounts for every source row and links each rejection to its reason.</li>
+        </ul>
+      </section>
 
-  const desktopLinks = Array.from(desktopTarget.querySelectorAll('a[href^="#"]'));
-  const mobileDetails = document.querySelector('.mobile-navigation');
-  const linksById = new Map(desktopLinks.map((link) => [decodeURIComponent(link.hash.slice(1)), link]));
-  const select = (id) => desktopLinks.forEach((link) => {
-    if (link === linksById.get(id)) link.setAttribute('aria-current', 'location');
-    else link.removeAttribute('aria-current');
-  });
-
-  document.querySelectorAll('.mobile-panel a[href^="#"]').forEach((link) => {
-    link.addEventListener('click', () => mobileDetails?.removeAttribute('open'));
-  });
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top));
-      if (visible[0]?.target.id) select(visible[0].target.id);
-    }, { rootMargin: '-12% 0px -68% 0px', threshold: 0 });
-    headings.forEach((heading) => observer.observe(heading));
-  }
-
-  select(decodeURIComponent(location.hash.slice(1)) || headings[0].id);
-})();
-/* document-navigation:end */
-  </script>
+      <section class="sources" aria-labelledby="sources-title">
+        <h2 id="sources-title">Sources</h2>
+        <ul class="source-list">
+          <li data-review-id="sources.import-log">Three anonymized import failure logs from operations.</li>
+          <li data-review-id="sources.retry-policy"><code>docs/product/import-retry-policy.md</code></li>
+        </ul>
+      </section>
+    </article>
+  </main>
+  <footer class="provenance" aria-label="Document provenance">
+    <p>Recipe: one justified visual · Shared CSS: <code>prd.tailwind.css</code></p>
+  </footer>
   <script data-artifact-motion="native">
 /* artifact-motion:start */
 (() => {

@@ -5,6 +5,22 @@ import {
 } from '@excalidraw/excalidraw';
 import { exportedElementId, normalizeSpec, reviewId } from './excalidraw-diagram-spec.mjs';
 
+const EDITORIAL_INK = Object.freeze({
+  paper: '#fffefa',
+  primary: '#211f1b',
+  accent: '#a33b20',
+  info: '#285a75',
+  infoSoft: '#eaf2f8',
+  success: '#276544',
+  successSoft: '#e8f2eb',
+  warning: '#8b4d00',
+  warningSoft: '#f8eedb',
+  danger: '#a11c1c',
+  dangerSoft: '#f8e8e5',
+  external: '#654a80',
+  externalSoft: '#f1ecf6',
+});
+
 window.renderExcalidrawDiagram = async (rawSpec) => {
   const spec = normalizeSpec(rawSpec);
   const skeleton = [
@@ -148,25 +164,25 @@ function revealWrapper(ns, className, delay) {
 }
 
 function nodeColors(node) {
-  if (node.fill || node.stroke) return { fill: node.fill ?? '#ffffff', stroke: node.stroke ?? '#1b1b1f' };
+  if (node.fill || node.stroke) return { fill: node.fill ?? EDITORIAL_INK.paper, stroke: node.stroke ?? EDITORIAL_INK.primary };
   switch (node.kind) {
-    case 'entry': return { fill: '#dbeafe', stroke: '#3973a5' };
-    case 'domain': return { fill: '#dff3e4', stroke: '#2f7a4d' };
-    case 'repository': return { fill: '#fff0d8', stroke: '#b26a22' };
-    case 'feedback': return { fill: '#e8e1f5', stroke: '#7357a3' };
-    case 'risk': return { fill: '#fde5e3', stroke: '#b94a42' };
-    default: return { fill: '#ffffff', stroke: '#1b1b1f' };
+    case 'entry': return { fill: EDITORIAL_INK.infoSoft, stroke: EDITORIAL_INK.info };
+    case 'domain': return { fill: EDITORIAL_INK.successSoft, stroke: EDITORIAL_INK.success };
+    case 'repository': return { fill: EDITORIAL_INK.warningSoft, stroke: EDITORIAL_INK.warning };
+    case 'feedback': return { fill: EDITORIAL_INK.externalSoft, stroke: EDITORIAL_INK.external };
+    case 'risk': return { fill: EDITORIAL_INK.dangerSoft, stroke: EDITORIAL_INK.danger };
+    default: return { fill: EDITORIAL_INK.paper, stroke: EDITORIAL_INK.primary };
   }
 }
 
 function edgeColor(edge) {
   if (edge.stroke) return edge.stroke;
   switch (edge.kind) {
-    case 'boundary': return '#3973a5';
-    case 'feedback': return '#7357a3';
-    case 'risk': return '#b94a42';
-    case 'repository': return '#b26a22';
-    default: return '#1b1b1f';
+    case 'boundary': return EDITORIAL_INK.info;
+    case 'feedback': return EDITORIAL_INK.external;
+    case 'risk': return EDITORIAL_INK.danger;
+    case 'repository': return EDITORIAL_INK.warning;
+    default: return EDITORIAL_INK.primary;
   }
 }
 

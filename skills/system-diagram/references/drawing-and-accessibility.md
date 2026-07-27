@@ -1,0 +1,63 @@
+# Drawing and Accessibility
+
+## Geometry
+
+- Prefer one numbered top-to-bottom spine. Use lanes or a left-to-right path only when comparison, ownership lanes, or causal fan-out would be less clear vertically.
+- Size each node after wrapping its text. Target at least 24px internal padding around labels and 56px of vertical space between node bounds.
+- Keep generous outer margins and reserve separate whitespace for the main path, exception paths, and labels.
+- Route arrows explicitly through whitespace. Attach them to an obvious node edge and leave clear approach/departure segments around each arrowhead.
+- Never route an arrow through node content, under text, or so close to a border that its origin or destination is ambiguous.
+- Keep side effects inside nodes/callouts rather than adding every possible edge.
+- Split a crowded question into separate figures rather than shrinking text or collapsing spacing.
+- Use dashed red/semantic exception paths only for real recovery, removal, or risk.
+
+## Nodes
+
+Include only information needed for the question:
+
+- human label;
+- real symbol/path when useful;
+- owner/runtime/domain meaning;
+- important input/output/state or invariant.
+
+## Edges
+
+Every meaningful edge names:
+
+- call/event/action/transition;
+- protocol or sync/async boundary when relevant;
+- important payload or domain effect;
+- response/recovery signal where it changes the result.
+
+Labels stay in the foreground on an opaque or paper-colored background. Keep them close to their route with padding on every side; no line, turn, or arrowhead may touch the label.
+
+## Color and legend
+
+Use a restrained semantic palette for ownership, boundary, success, warning, and recovery. Define each meaning in the local legend. Pair color with text, line style, icon, or pattern.
+
+## HTML/SVG
+
+- Self-contained inline SVG and CSS; no Mermaid/D2/Graphviz runtime or remote assets.
+- `<figure>` with visible question/how-to-read note and `<figcaption>`.
+- SVG `viewBox`, `role="img"`, accessible name, `<title>`, and `<desc>`.
+- Stable `data-review-id` on important nodes, edges, labels, decisions, and boundaries.
+- Searchable text; 12px minimum effective diagram text.
+- Adjacent ordered walkthrough tied to the figure review ID.
+- Responsive horizontal overflow rather than unreadable scaling; print removes the minimum width.
+- Rich HTML wireframes preserve their child semantics and never use `role="img"` wrappers.
+
+## Motion
+
+The source SVG is fully visible. Semantic motion may add reading-order progression after load. For a scroll-paced figure, arrange `.diagram-reveal` groups vertically in causal order so their geometry enters the viewport one part at a time. Preserve renderer-owned reveal groups, keep each local entrance bounded, and keep reduced-motion static. Do not apply path-draw behavior to coordinated multi-stroke Excalidraw edges.
+
+## Review
+
+At expected desktop, narrow, and print sizes, verify:
+
+- question and reading direction are obvious;
+- nodes retain comfortable internal padding and the vertical path has breathing room;
+- labels do not overlap routes, arrowheads, or nodes;
+- every arrow has an unambiguous origin/destination and meaning;
+- the main path can be narrated in order;
+- uncertainty and recovery are not implied as success;
+- text equivalent preserves the conclusion with the image hidden.

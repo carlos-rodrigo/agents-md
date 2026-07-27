@@ -9,28 +9,28 @@
  */
 :root {
   color-scheme: light;
-  --page: #ffffff;
-  --surface: #ffffff;
-  --surface-subtle: #fafafa;
-  --surface-raised: #ffffff;
-  --text: #000000;
-  --text-muted: #666666;
-  --text-subtle: #8a8a8a;
-  --border: #eaeaea;
-  --border-strong: #dedede;
-  --accent: #000000;
-  --accent-soft: #f5f5f5;
-  --blue: #0070f3;
-  --blue-soft: #eef6ff;
-  --amber: #a35200;
-  --amber-soft: #fff7ed;
-  --danger: #e00;
-  --danger-soft: #fff1f1;
-  --green: #147d3f;
-  --green-soft: #effaf3;
-  --purple: #6d4aff;
-  --purple-soft: #f4f0ff;
-  --focus: 0 0 0 3px rgba(0, 112, 243, .24);
+  --page: #f3f0e9;
+  --surface: #fffefa;
+  --surface-subtle: #f7f4ed;
+  --surface-raised: #ebe5d9;
+  --text: #211f1b;
+  --text-muted: #625d54;
+  --text-subtle: #766f64;
+  --border: #d8d1c5;
+  --border-strong: #aaa092;
+  --accent: #a33b20;
+  --accent-soft: #f7e8e1;
+  --blue: #285a75;
+  --blue-soft: #eaf2f8;
+  --amber: #8b4d00;
+  --amber-soft: #f8eedb;
+  --danger: #a11c1c;
+  --danger-soft: #f8e8e5;
+  --green: #276544;
+  --green-soft: #e8f2eb;
+  --purple: #654a80;
+  --purple-soft: #f1ecf6;
+  --focus: 0 0 0 3px rgba(163, 59, 32, .28);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -122,7 +122,7 @@ svg { display: block; width: 100%; min-width: 1180px; height: auto; }
 .legend-item { display: inline-flex; align-items: center; gap: var(--space-2); }
 .swatch { width: 1.2rem; height: .72rem; border-radius: var(--radius-sm); border: 2px solid currentColor; display: inline-block; background: color-mix(in srgb, currentColor 12%, transparent); }
 
-.diagram-bg { fill: #fff; }
+.diagram-bg { fill: #fffefa; }
 .diagram-boundary { fill: transparent; stroke-width: 2; stroke-dasharray: 9 7; }
 .diagram-node-card { stroke-width: 2; transition: stroke 180ms ease, filter 180ms ease, transform 180ms ease; }
 .diagram-node-title { font-size: 15px; font-weight: 850; fill: var(--text); }

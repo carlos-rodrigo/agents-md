@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+import { readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+
+const root = resolve(import.meta.dirname, '..');
+const read = (path) => readFileSync(join(root, path), 'utf8');
+const design = read('skills/design-solution/SKILL.md');
+const report = read('skills/html-report-designer/SKILL.md');
+const diagram = read('skills/system-diagram/SKILL.md');
+const recipes = read('skills/design-solution/references/optional-design-recipes.md');
+
+requireAll('design-solution', design, [
+  'approved product promise → architecture pressure → chosen seam → causal system path → tradeoffs and proof → meaningful boundary',
+  '## Architecture core',
+  '## Composition gate',
+  '## Causal system path',
+  '## Progressive disclosure',
+  'references/optional-design-recipes.md',
+  'Skip durable design for small clear changes',
+  'Design must not invent product behavior',
+  'approved PRD',
+  'independently reviewable architecture question or an approved child outcome',
+  'Task execution steps and proof results stay in task packets',
+  'Technology choices belong only when they constrain a boundary or materially change delivery/risk',
+  'Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it',
+  'Use `system-diagram` only after naming a diagram question',
+  'Create or update an ADR only for architecture-significant decisions',
+]);
+
+requireAll('optional design recipes', recipes, [
+  '## Interface consequences',
+  '## Contracts, domain, data, and persistence',
+  '## Operations, rollout, and risk',
+  '## Outside-in slice outline',
+  '## Traceability',
+  'A slice is an observable vertical outcome, not a package/layer phase',
+]);
+
+requireAll('html-report-designer', report, [
+  '## Content neutrality',
+  'supplies the complete content model',
+  'Preserve supplied headings, order, emphasis, evidence, and omissions',
+  'PRD, design, and generic shells differ only in metadata labels',
+]);
+
+requireAll('system-diagram', diagram, [
+  '## Architecture diagram gate',
+  'A design diagram is optional',
+  'named architecture question',
+  'one small causal path',
+  'existing prose, code links, or tests are insufficient',
+]);
+
+forbidAll('design-solution', design, [
+  'The design should include only decision-critical material:',
+  'Every likely execution slice starts from an external need',
+  'A non-engineer can follow the main scenario and diagram',
+]);
+forbidAll('html-report-designer', report, [
+  'default to this concise pattern:',
+  'Design reports must be built in this order',
+  'give each slice a small outside-in design and detailed SVG diagram',
+  'architecture-overview       # high-level diagram',
+]);
+forbidAll('system-diagram', diagram, [
+  'For complex features, create a small set of diagram sections inside the main report by default',
+  'Use authentic build-time Excalidraw export as the default diagram treatment',
+]);
+
+console.log('PASS: concise composition-neutral design guidance is aligned across owning and consuming skills');
+
+function requireAll(label, content, markers) {
+  const missing = markers.filter((marker) => !content.includes(marker));
+  assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`);
+}
+
+function forbidAll(label, content, markers) {
+  const found = markers.filter((marker) => content.includes(marker));
+  assert(found.length === 0, `${label} retains mandatory-richness guidance: ${found.join(', ')}`);
+}
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}

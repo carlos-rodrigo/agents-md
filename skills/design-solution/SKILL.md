@@ -1,261 +1,187 @@
 ---
 name: design-solution
-description: "Create or update a feature's high-level design.html from an approved PRD. Use for architecture shape, semantic diagrams, design rationale, ADR decisions, and optional task slices. Do not use for HTML styling alone; use html-report-designer for the report shell. Triggers on: create design, design this, design.html, architecture design, slice plan, tracer bullets."
+description: "Create or update a feature's concise high-level design.html from an approved PRD. Use for architecture pressure, boundaries, causal system paths, tradeoffs, risks, and optional delivery slices. HTML presentation comes from html-report-designer; diagrams are question-driven and optional. Triggers on: create design, design this, design.html, architecture design, solution design, slice plan."
 ---
 
 # Feature Design
 
 Use this skill to answer one architecture question:
 
-> What pieces do we need, how do they talk, where does data live, and how will we build/test it in small slices?
+> What is the smallest system shape that can keep the approved product promise, and where should responsibility live?
 
 Default artifacts:
 
 ```text
-docs/features/{feature}/prd.html    # product source of truth
-docs/features/{feature}/design.html # current intended architecture/design
-docs/adrs/                          # optional durable architecture decisions
-.features/{feature}/tasks/          # optional gitignored task briefs/results
+docs/features/{feature}/prd.html    # approved product authority
+docs/features/{feature}/design.html # current intended architecture
+docs/adrs/                          # optional durable decisions
+.features/{feature}/tasks/          # optional execution packets
 ```
 
-Markdown design files are legacy. Update `design.html` as the current intended design; preserve durable rationale in ADRs only when it matters.
+This skill owns the design's content structure. `html-report-designer` owns the static shell, visual tokens, accessibility, generation, and validation—not architecture content or section order.
 
-## In one minute
+## Architecture narrative
 
-1. Read the approved PRD, including post-story user flows, domain interactions, the selected UI option/mockup, and resolved review gaps. If status is still Review or a blocking choice is unresolved, stop before creating `design.html`.
-2. Explain the system in simple pieces and paths.
-3. Translate PRD domain interactions into entity ownership, state transitions, invariants, and cross-entity effects.
-4. Translate the selected PRD UI direction into interface boundaries, states, style/motion intent, and implementation-facing choices.
-5. Draw semantic diagrams that teach, not decorate, and reveal flow in reading order.
-6. Choose the smallest architecture that satisfies the PRD.
-7. Split the work into outside-in vertical slices when useful.
-8. Record ADRs only for system-level decisions.
-9. Validate the HTML and cite sources.
-10. Stop before line-by-line implementation or task evidence.
+Build the shortest credible design with this spine:
 
-## Plain-language test
+> approved product promise → architecture pressure → chosen seam → causal system path → tradeoffs and proof → meaningful boundary
 
-A smart 10-year-old should understand the first pass:
+Use feature-specific headings and any useful order. Omit a role entirely when it does not help answer the architecture question.
 
-- **Pieces:** What parts exist or will be added?
-- **Path:** What happens first, next, and last?
-- **Rules:** What must always be true?
-- **Look:** What will the user see, and how does each screen/state respond?
-- **Motion:** What movement helps the user or reviewer understand progress?
-- **Domain:** Which entities interact, which verbs connect them, and what state/effect changes?
-- **Memory:** What data/state is kept, and who owns it?
-- **Danger:** What can go wrong, and how do we see/fix it?
-- **Slices:** What is the first small useful thing we can build?
+## Design gate
 
-If a diagram or paragraph does not help explain those ideas, simplify it.
+Read the approved PRD or explicit approved product brief first. Design must not invent product behavior.
 
-## Ownership boundaries
+Proceed when product promise, observable proof, scope, constraints, and blocking decisions are clear. Consume optional PRD evidence that is present. The absence of optional UI, domain, story, or diagram sections is not a blocker.
 
-- `prd.html` owns product why, what, scope, workflows, acceptance behavior, post-story user flows, product-level domain interactions, UI options/mockups, mockup-need decisions, and reviewer gaps.
-- `design.html` owns architecture shape, interface implementation strategy for the selected PRD UI direction, domain entity ownership/interactions, state transitions, invariants, boundaries, decisions, diagrams, and outside-in slice designs.
-- `docs/adrs/` owns durable system-level rationale for architecture-significant decisions.
-- `.features/.../tasks/` owns execution details, local feedback loops, and actual result evidence.
+Skip durable design for small clear changes when one obvious seam satisfies the approved behavior and an implementation feedback loop can carry the remaining detail.
 
-Design must not invent product behavior. If PRD status is not approved, or behavior, domain language/interactions, selected UI option, or review-gap resolution is unclear, pause and update/clarify the PRD before designing. A recommended option is not a selected option.
+Create or update `design.html` when architecture merits durable review, for example:
 
-## Design needed gate
-
-Create or update `design.html` when one of these is true:
-
-- current vs intended behavior is not obvious,
-- multiple implementation approaches exist,
-- the PRD has multiple UI options, unresolved interaction gaps, or visible state/motion choices,
-- domain states/rules or cross-entity interactions need naming,
-- API/schema/auth/migration/persistence boundaries matter,
-- rollout/rollback/observability matters,
-- execution should be split or delegated.
-
-Skip durable design for small clear changes that can proceed from an approved brief plus a task feedback loop.
+- responsibility or state ownership is ambiguous;
+- multiple credible seams or integration paths exist;
+- contracts, auth, persistence, migration, compatibility, rollout, or recovery matter;
+- failure/operational behavior changes the solution shape;
+- work should be split into independently reviewable vertical outcomes.
 
 ## Process
 
-### 1. Read the PRD
+1. Extract only the approved product promise, observable proof, constraints, and boundary.
+2. Inspect current entry points, owners, data/state, contracts, tests, and relevant ADRs.
+3. Name the architecture pressure that makes the obvious implementation insufficient.
+4. Choose the narrowest seam that owns the change.
+5. Trace one causal system path from external trigger to observable result.
+6. Record consequential tradeoffs, risks, proof strategy, and meaningful boundaries.
+7. Add optional contracts, diagrams, operations, or slices only when the architecture question needs them.
+8. Generate `design.html` through `html-report-designer` without surrendering content order.
+9. Validate claims against code/docs and the artifact against shared quality gates.
+10. Stop before line-by-line patches or execution evidence.
 
-Prefer:
+## Architecture core
 
-1. `docs/features/{feature}/prd.html`
-2. an explicit approved feature brief from the user
+A useful first pass makes these facts obvious:
 
-Check that principal workflows, post-story user flows, domain interactions, the approved UI option, acceptance behavior, constraints, non-goals, and review-gap resolutions are clear. Confirm that UI selectors still match their option cards. Keep product open questions in the PRD; do not turn them into hidden design assumptions.
+- **Approved promise:** what product outcome the system must preserve.
+- **Observable proof:** what external behavior makes the architecture credible.
+- **Architecture pressure:** what ownership, timing, scale, reliability, compatibility, or risk makes a design decision necessary.
+- **Chosen seam:** which boundary owns coordination and why it is narrower than alternatives.
+- **Meaningful boundary:** what remains unchanged or deliberately outside this design.
 
-### UI mockup gate
+Do not paste the PRD. Link to it and extract only facts that shape architecture.
 
-Consume the approved PRD mockup; do not redraw it by default. Before creating any design-stage UI comparison:
+## Composition gate
 
-1. Name the implementation-facing visual decision that remains after product approval.
-2. Reuse the PRD mockup when it already resolves placement, hierarchy, entry point, and visible states.
-3. Do not create alternative product mockups in design or silently revisit the approved direction.
-4. If a remaining visual decision truly needs comparison, create the smallest artifact: one shared existing-UI shell, only the changed regions, and one common interaction path. Excalidraw is appropriate for this compact comparison; detailed pixel treatment belongs to the selected implementation direction.
+Compose only the roles needed for the current architecture question. A small internal behavior may need the core, one path, and proof. A persistence boundary may need contracts, migration, recovery, and an ADR. A user-facing cross-boundary change may need interface consequences and one system path.
 
-### 2. Inspect the system
+Do not add architecture inventory, technology sections, domain models, matrices, risks, slices, or diagrams merely because a report template can render them.
 
-Read/search only enough to anchor the design:
+Load `references/optional-design-recipes.md` only for the role that is actually needed:
 
-- external triggers: UI actions, API routes, CLI commands, jobs, messages, webhooks, public module calls,
-- current components/functions/routes/jobs,
-- data/state ownership,
-- boundary contracts,
-- tests or feedback surfaces,
-- existing `design.html` and relevant `docs/adrs/` for architecture-significant areas.
+- interface consequences;
+- contracts/domain/data/persistence;
+- operations/rollout/risk;
+- outside-in slice outline;
+- traceability.
 
-Do not create exhaustive file inventories.
+## Causal system path
 
-### 3. Research only when it changes the decision
-
-Use repo prior art first. For unfamiliar/non-trivial design choices, timebox targeted research with primary docs, mature prior art, or the `researcher` agent. Skip web research for obvious local changes and say why.
-
-When research is used, capture only:
-
-```text
-Source → insight → design impact
-```
-
-### 4. Write `design.html`
-
-Use `html-report-designer` for the page shell, accessibility, review anchors, visual hierarchy, and validation. Use `system-diagram` for diagrams. Do not duplicate their full checklists here.
-
-The design should include only decision-critical material:
-
-- title, status, PRD link, sources reviewed,
-- short review path: what reviewers must decide,
-- one main scenario and one edge/failure scenario,
-- architecture-shaping PRD facts, not a PRD dump,
-- product experience contract: selected PRD UI option/mockup, post-story flows, visible states, copy/hierarchy constraints, and unresolved UI gaps,
-- domain interaction model: entity/concept ownership, verbs/actions, state transitions, invariants, cross-entity effects, and unresolved domain gaps,
-- design thesis: the solution shape and why it fits,
-- interface implementation strategy: components/surfaces, state model, accessibility, style/motion intent, and library choices only where they affect implementation or risk,
-- architecture overview: packages/modules/runtime/data ownership/dependency rules,
-- semantic diagrams showing existing/new/changed parts, domain entity interactions, and motion/read order,
-- compact architecture delta list,
-- outside-in slice plan tied to PRD stories/AC IDs,
-- major decisions, risks, operational concerns, and open questions,
-- story coverage matrix only when traceability would otherwise be unclear.
-
-## Semantic diagram rules
-
-Prefer tiny diagrams before big ones:
+Trace one small causal path before drawing topology:
 
 ```text
-Actor → Entry point → Application seam → Domain rule → Entity state/effect → State/output
+external trigger → entry/transport → owning seam → policy/state transition → dependency or persistence → observable result
 ```
 
-Rules:
+Name real symbols or paths when known, but keep the design at boundary level. Include a failure branch only when it changes ownership, contract, recovery, or product-visible behavior.
 
-- 3-7 nodes by default.
-- Use verb labels: “creates”, “checks”, “locks”, “records”, “emits”.
-- Show existing/new/changed components.
-- Show ownership and boundaries when they matter.
-- For domain diagrams, connect entities with verb labels and show the state/effect that changes; do not stop at a noun-only entity map.
-- Use multiple small diagrams instead of one crowded map.
-- Use the build-time Excalidraw renderer for semantic architecture/call-flow diagrams:
+A path should answer:
 
-```bash
-node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg
-```
+- who initiates the change;
+- which boundary validates or translates it;
+- where policy and coordination live;
+- who owns state and durability;
+- what result crosses back to the caller;
+- where failure is detected and recovered.
 
-Inline the final SVG. Give nodes enough space for labels and route arrows explicitly so labels do not collide with nodes or edges. Preserve the renderer-owned `diagram-reveal` wrappers and staggered `--reveal-delay` values; do not add `path-draw` to Excalidraw's coordinated multi-stroke edges because it breaks their masks and arrowheads. Content must remain visible without JavaScript and under `prefers-reduced-motion`.
+## Decisions and technology
 
-## Outside-in slice design
+Record a decision when plausible alternatives produce materially different ownership, compatibility, safety, or delivery cost. State chosen direction, evidence, rejected alternatives, tradeoffs, reversibility, and escalation owner.
 
-Every likely execution slice starts from an external need and works inward. Do not start from tables, classes, or generic domain models.
+Technology choices belong only when they constrain a boundary or materially change delivery/risk. Do not inventory the stack.
 
-Small slice pattern:
+Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it. Link to canonical schemas or contracts rather than copying full field catalogs.
+
+## Architecture diagram gate
+
+Use `system-diagram` only after naming a diagram question. A design diagram is optional.
+
+Create one when:
+
+1. a named architecture question or boundary remains hard to understand in prose/code links;
+2. one small causal path can answer it;
+3. existing prose, code links, or tests are insufficient;
+4. the diagram will unlock a review decision or shared mental model.
+
+Prefer one legible path over a mega-map. When Excalidraw is selected, follow `system-diagram`'s top-to-bottom spacing, node-padding, and arrow-legibility contract so architecture content does not crowd the figure. The diagram's renderer is a presentation choice, not an architecture requirement.
+
+## Outside-in slices
+
+Add slices only when sequencing, delegation, approval, or tracer-bullet delivery matters. Each slice must be an independently reviewable architecture question or an approved child outcome.
+
+A slice starts from external need and observable proof, then pulls in only the transport, seam, policy, state, and dependency required for that outcome. Task execution steps and proof results stay in task packets.
+
+Never create layer phases such as “database task,” “service task,” and “UI task” for one inseparable outcome.
+
+## ADRs and tasks
+
+Create or update an ADR only for architecture-significant decisions: public contracts, auth/security/privacy, persistence/migration, compatibility/rollout, cross-service ownership, or major module boundaries.
+
+Create task packets only when execution needs approval, splitting, delegation, resumption, or a task loop. The design owns intended boundaries; task packets own commands, implementation steps, feedback loops, and actual result evidence.
+
+## Progressive disclosure
+
+Keep the main path and chosen tradeoff visible. Put raw research, exhaustive contract fields, secondary failure modes, and supporting evidence behind links or meaningful disclosures.
+
+A reviewer should be able to understand the thesis without opening every detail. Do not hide the recommendation, invariant, risk, or recovery path.
+
+## Research rule
+
+Use repository prior art first. Research external tools or patterns only when it can change the decision. Capture:
 
 ```text
-SLICE-001 — {slice name}
-External need: {user/API/message/job/module} needs {capability} to get {observable outcome}.
-Entry point: {UI action | route | command | event | public function}.
-Acceptance boundary: prove from outside with {BDD/API/CLI/browser/contract check}.
-Small design:
-  1. Product/interface contract: {selected PRD UI option, screen/TUI/document state, visible response, accessibility/motion constraints}.
-  2. Delivery/contract: {handler/component/controller/consumer and response/error states}.
-  3. Application seam: {use case/service/command that coordinates behavior}.
-  4. Domain behavior pulled by need: {rules/entities/value objects needed now, plus entity interaction verbs and state/effect changes}.
-  5. Ports/adapters: {repositories/clients/queues/files/external systems needed now}.
-  6. Persistence/data: {minimal read/write shape and migration concern, if any}.
-Feedback hook: {fastest proof}.
-Escalate/spike if: {unknown that should not be mixed with delivery}.
+source → relevant constraint or capability → design impact
 ```
 
-A good slice gives an implementation agent the entry point, contract, collaborators, and feedback loop without prescribing patches.
+Prefer primary documentation. Separate observed facts from interpretation.
 
-## ADR rule
-
-Create/update an ADR only for architecture-significant decisions: API contracts, auth/security/privacy, persistence/migration, rollout strategy, cross-service ownership, or major module boundaries.
-
-Use area files when needed:
-
-```text
-docs/adrs/architecture.md
-docs/adrs/api.md
-docs/adrs/web.md
-```
-
-Do not use ADRs as running notes or task history.
-
-## Tasks rule
-
-Create `.features/{feature}/tasks/` only when execution needs approval, splitting, delegation, loop execution, or resumption. Each task should inherit one outside-in slice and get its own `## Feedback loop` and `## Result`.
-
-Small approved features may skip task briefs and execute from the PRD/design plus an inline feedback loop.
-
-## Quality checklist
+## Quality gate
 
 Before finishing:
 
-- [ ] The design says what pieces exist/new/change and how they talk.
-- [ ] A non-engineer can follow the main scenario and diagram.
-- [ ] Every product claim traces to the PRD or named source.
-- [ ] The PRD is approved and all blocking product decisions are resolved before design begins.
-- [ ] The selected PRD UI option, post-story flows, domain interactions, and review gaps are consumed or explicitly blocked.
-- [ ] Existing sufficient mockups are reused; any new design-stage mockup unlocks a named implementation-facing decision and does not reopen product choice.
-- [ ] Domain entity interactions show verbs/actions, ownership, state/effect changes, and invariants; not just entity nouns.
-- [ ] Interface/library/style/motion decisions are implementation-facing and trace to product-visible UI states.
-- [ ] Diagrams teach semantics; they are not decorative.
-- [ ] Diagrams reveal flow in reading order and honor reduced motion.
-- [ ] Slices map to PRD stories/requirements/acceptance criteria.
-- [ ] Each slice starts from an external need and acceptance boundary.
-- [ ] Data/API/domain contracts are conceptual and minimal.
-- [ ] Operational risks are called out when relevant.
-- [ ] ADR need is considered for architecture-significant choices.
-- [ ] Task execution details and verification evidence stay in tasks.
-- [ ] `data-review-id` anchors are stable and unique.
-- [ ] HTML validation passes when available.
-
-## Smells to fix
-
-- Design invents product behavior not in the PRD.
-- Design starts from a Review-status PRD or treats a recommended option as approved.
-- Design ignores PRD UI options/mockups or silently chooses among unresolved review gaps.
-- Design redraws sufficient PRD mockups without a new implementation-facing decision.
-- Design lists domain entities but does not show how they interact, what action verbs connect them, or what state/effect changes.
-- Interface details name libraries/styles/motion without tying them to a visible product state.
-- The first diagram is too dense to explain aloud.
-- Diagrams reveal everything at once instead of teaching the flow step by step.
-- Slices are technical layers instead of user/system increments.
-- A slice starts from database/domain/classes before defining the caller and acceptance boundary.
-- Decisions list only the chosen option, not tradeoffs or rejected alternatives.
-- Report styling rules are copied here instead of delegated to `html-report-designer`.
-- Task-level patches or test evidence crowd out architecture.
+- [ ] The design traces to an approved PRD or explicit approved product authority.
+- [ ] The architecture pressure and chosen seam are explicit.
+- [ ] One causal path reaches an observable result.
+- [ ] Ownership, state, boundary crossings, and material failure/recovery are understandable.
+- [ ] Decisions show tradeoffs and credible alternatives rather than foregone conclusions.
+- [ ] Optional detail exists only because it changes architecture review.
+- [ ] Diagrams, when used, answer a named question and remain understandable as text.
+- [ ] Slices are vertical outcomes, not layers.
+- [ ] ADR need is considered without turning ADRs into running notes.
+- [ ] Task execution detail and result evidence stay out of `design.html`.
+- [ ] Stable review anchors mark consequential claims.
+- [ ] HTML is self-contained, accessible, and validated.
 
 ## Output
 
 End with:
 
 ```text
-Design gate: {satisfied | blocked pending PRD/architecture clarification}
-Research: {sources reviewed | skipped with reason}
-Sources reviewed: {paths/docs/web sources}
+Design gate: {satisfied | blocked pending product/architecture clarification}
 Design updated: docs/features/{feature}/design.html {opened/reviewed | not opened + reason}
+Architecture thesis: {one sentence}
+Research: {sources reviewed | skipped with reason}
+Optional artifacts: {none | artifact + question unlocked}
+ADRs: {none | paths}
+Slices/tasks: {none | paths or proposed outcomes}
 Validation: {passed | not run + reason | failed + key issue}
-PRD UI option/gaps: {consumed | blocked + GAP IDs | not user-facing}
-Domain interactions: {consumed | blocked + GAP IDs | not applicable + reason}
-ADRs: {none | docs/adrs/architecture.md | docs/adrs/api.md | docs/adrs/web.md}
-Tasks: {none | .features/{feature}/tasks/...}
-Next: {review design.html | execute directly | create/review tasks | resolve questions | define task feedback loops}
+Next: {review design | resolve question | create task packets | define feedback loop | execute directly}
 ```

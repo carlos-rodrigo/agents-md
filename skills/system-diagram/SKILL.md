@@ -1,393 +1,243 @@
 ---
 name: system-diagram
-description: "Create reviewable HTML/SVG system diagrams and diagram-led report pages for application flows, call chains, component communication, architecture boundaries, domain concepts, and system mental models. Use when asked for system diagram, flow diagram, architecture/data-flow/sequence diagram, component map, domain model, or before/after system story."
+description: "Create a question-driven, evidence-backed system diagram as accessible inline SVG. Use for causal flows, boundaries, ownership, state, sequence, domain behavior, or architecture paths only when a visual unlocks understanding that prose/code links do not. Supports authored and auto-layout tool selection."
 argument-hint: "[feature-or-doc-path]"
-allowed-tools: Read Write Edit Bash Grep Glob
 ---
 
 # System Diagram
 
-Create a clean, reviewable **System Diagram** that helps the user understand how part of a software system works. Use `html-report-designer` when the diagram is part of a durable PRD/design/report page.
+Create a learning artifact that answers one system question. The diagram is not a completeness signal or decoration.
 
-A System Diagram can explain either:
+This skill owns the diagram's question, evidence, semantics, and reading order. `html-report-designer` owns the surrounding static document shell and figure frame when the diagram is embedded in a durable report.
 
-1. **Code flow** — classes, methods, functions, calls, events, jobs, and data passed between components.
-2. **System design** — parts of the product/system, domain concepts, states, ownership boundaries, and how they relate.
+## Gate
 
-The diagram is a **learning artifact**, not decoration. It should help the user explain:
+Before drawing, state:
 
-- what exists in the system,
-- how the parts communicate,
-- where responsibilities and boundaries live,
-- which domain concepts/entities are being introduced,
-- how domain entities interact through verbs/actions and state/effect changes,
-- how data/state moves,
-- which strategic decisions or feedback-loop evidence matter.
+```text
+Diagram question: What one question must the figure answer?
+Decision or understanding unlocked: What becomes reviewable after seeing it?
+Evidence gap: Why are existing prose, code links, tests, screenshots, or diagrams insufficient?
+Audience: Who needs to explain or decide this?
+Scope: What is included and intentionally excluded?
+```
 
-## When to Use
+Do not draw when the evidence gap is empty. Reuse or improve an existing figure when it already answers the question.
 
-Use this skill when the user asks for:
+A PRD diagram is optional. It must resolve a named product uncertainty where existing prose or evidence is insufficient, not make the PRD feel substantial.
 
-- a System Diagram,
-- an Excalidraw-style/sketchy/visual diagram,
-- a flow diagram for part of an application,
-- a class/method/function call diagram,
-- a component communication map,
-- a domain model or concept relationship diagram,
-- a current-flow / intended-flow comparison,
-- an architecture/data-flow/sequence diagram,
-- a feature mental model,
-- a learning-oriented HTML page with a diagram,
-- a polished reviewable diagram/report experience.
+A design diagram is optional. It must resolve a named architecture question, not inventory the system.
 
-## Diagram Modes
+## Architecture diagram gate
 
-Pick the smallest mode that teaches the user what they need.
+Create a design-stage diagram only when all are true:
 
-| Need | Diagram mode | Shows |
-| --- | --- | --- |
-| Understand implementation flow | Code Flow | class/function/method calls, events, jobs, payloads |
-| Understand how components talk | Component Communication | modules/services/components, protocols, boundaries |
-| Understand product concepts | Domain Concept Model | entities/concepts/states and relationships |
-| Understand domain behavior | Domain Building-Block / Evolution Map | owned concepts and boundaries, source → verb/effect → target state, invariant/policy rail, and extension path |
-| Understand current vs intended behavior | Before/After System Story | old flow next to new flow |
-| Understand ownership | Ownership/Lane Map | runtime/team/module responsibility |
-| Understand strategic choices | Decision Map | options, tradeoffs, escalation points |
-| Understand lifecycle | State/Lifecycle Diagram | states, transitions, triggers, terminal states |
-| Compare UI placement/workflow | UI Decision Comparison | one existing product shell, 2-3 highlighted deltas, and the shared action/outcome path |
+1. A named architecture question affects ownership, boundary, state, sequence, failure, or tradeoff.
+2. One small causal path can teach the answer.
+3. Existing prose, code links, or tests are insufficient.
+4. The evidence supports real nodes and edges.
+5. The figure unlocks a specific review decision or shared explanation.
 
-## Core Principles
+Otherwise use concise prose and source links. The gate is intentionally strict: one small causal path is useful only when existing prose, code links, or tests are insufficient.
 
-### 1. Inspect reality before drawing
+## Brief
 
-Do not infer ownership or call flow from folder names alone. For UI decision comparisons, inspect the real product shell, navigation, page hierarchy, visual tokens, controls, and states; Excalidraw must continue the product rather than replace it with a generic sketch UI. Read/search actual source, tests, routes, docs, and types first.
+Complete the smallest useful brief before choosing a renderer:
 
-Before drawing, identify:
+```text
+Question:
+Decision/understanding unlocked:
+Audience:
+Mode:
+Evidence:
+Main path:
+Nodes:
+Labelled edges:
+Boundaries/ownership:
+State or payload:
+Failure/recovery:
+Uncertainty:
+Reading order:
+Text equivalent:
+```
 
-- real actors and triggers,
-- real classes/functions/modules/routes/events,
-- call order and data passed between calls,
-- domain concepts and their relationships,
-- domain interactions: which entity/concept triggers an action, what target entity/state/effect changes, and which rule or authority allows it,
-- state transitions and persistence points,
-- runtime/process/service boundaries,
-- error/retry/recovery paths,
-- intentionally absent or removed paths if they explain confusion.
+If key ownership or call order cannot be established from evidence, ask one focused question rather than drawing a plausible fiction.
 
-### 2. Color by ownership/responsibility
+## Inspect reality
 
-Color means **where responsibility lives**, not what looks nice. Define a legend for every diagram.
+Read the smallest set of source, tests, routes, types, docs, and logs needed to verify:
 
-Suggested generic palette:
+- actor and trigger;
+- real entry point;
+- owner of coordination and policy;
+- state/persistence owner;
+- calls, events, protocols, payloads, or transitions;
+- runtime/process/team boundaries;
+- observable result;
+- material failure, retry, recovery, or uncertainty.
 
-- Green = primary app/domain owner
-- Purple = secondary module/service/runtime
-- Orange = async worker/job/background runtime
-- Blue dashed arrows = network/API/process boundary
-- Red dashed arrows = error/recovery/cancellation/removed path
-- Black/gray arrows = same-runtime calls or local handoff
+Do not infer call flow from folder names alone. Distinguish observation, interpretation, assumption, and proposed design.
 
-Adapt labels/colors to the project, but keep them consistent within the diagram.
+## Choose a mode
 
-### 3. Show real names plus plain-language meaning
+Use the smallest mode that answers the question:
 
-For implementation-oriented boxes, include:
+- **Causal/code flow** — functions, methods, events, jobs, payloads, result.
+- **Component communication** — responsibility, protocol, runtime boundary, handoff.
+- **Domain evolution** — source concept → action/verb → target state/effect → invariant.
+- **State/lifecycle** — state, trigger, guard, effect, recovery/terminal path.
+- **Ownership/lane map** — runtime, module, team, or data ownership.
+- **Before/after** — one stable baseline and the smallest causal change.
+- **Decision map** — viable alternatives, evidence, tradeoffs, reversibility.
+- **Outside-in slice** — external need → entry → seam → policy/state → proof.
+
+See `references/diagram-modes.md` for mode-specific guidance.
+
+## Semantic contract
+
+### Nodes
+
+A node earns space only when responsibility, boundary, state ownership, or result changes. Use plain meaning and real names where traceability helps:
 
 ```text
 Human label
-RealClass.realMethod() / realFunctionName()
-owner/runtime/layer
-input/output: important payload or state
+RealClass.method() / route / event
+owner · runtime · important state
 ```
 
-For domain-oriented boxes, include:
+### Edges
+
+Label every meaningful edge with the call, action, event, transition, protocol, payload, or effect. Arrows should explain causality, not merely adjacency.
 
 ```text
-Concept/entity name
-Plain-language meaning
-Key fields/states/rules
-Relationship to other concepts
-Interaction verbs: creates / consumes / transfers / schedules / approves / reconciles / blocks
+POST /api/imports · { fileId }
+SaveUseCase.execute() · durable result
+Sale --decreases--> livestock position
 ```
 
-For domain arrows, label the verb and the observable effect:
+### Boundaries and uncertainty
 
-```text
-Campaign Event --consumes--> Input Inventory
-visible effect: stock down + cost impact
-```
+Show only boundaries relevant to the question. Mark proposed, assumed, blocked, removed, retry, or recovery paths explicitly rather than styling them as settled success.
 
-Use plain language for understanding and real code names for traceability.
+### Color
 
-### 4. Prefer step-by-step learning over dense topology
+Color communicates responsibility or semantic state. Define the local legend and pair color with labels, line style, or shape. Use the Editorial Ink palette from `html-report-designer` for durable generic figures unless the product/repository has a stronger visual authority.
 
-The user should be able to follow the diagram in order. For PRD domain teaching, the building-block/evolution map is primary: show ownership/authority boundaries, verb-labelled arrows, visible state/effect changes, and an invariant/policy rail. Put cards in adjacent HTML only as supporting definitions, and pair the figure with one explicit question, a caption/how-to-read note, and a numbered structured walkthrough.
+## Large high-quality SVGs
 
-Good structures:
+Large means more canvas, not smaller text or more concepts.
 
-- numbered vertical flow,
-- lanes by runtime/module/owner,
-- side-by-side current vs intended flow,
-- domain concept cluster with relationship arrows,
-- small callout rail for writes, external systems, TODOs, removed paths,
-- compact code ownership map with arrows only where they teach something.
+- Default Excalidraw scenes to one top-to-bottom reading spine. Use horizontal composition only for a real comparison, lane, or fan-out that becomes less clear vertically.
+- Size nodes from wrapped text outward. Target at least 24px internal padding around labels, 56px of vertical space between node bounds, and extra route space wherever an arrow turns or carries a label.
+- Keep effective text at least 12px; prefer 14–18px for primary labels. Never reduce text to rescue an overcrowded canvas.
+- Route arrows through whitespace, attach them to an obvious node edge, and leave clear space around arrowheads. Arrows must not cross node text, run beneath labels, or disappear into borders.
+- Put edge labels in the foreground on an opaque or paper-colored background. Keep each label close to its route without touching the line or arrowhead.
+- Use an explicit `viewBox`, stable geometry, generous outer margins, and enough canvas height for the vertical path to breathe.
+- Put wide SVGs in a horizontally scrollable figure frame at narrow widths; do not shrink until labels become unreadable.
+- Keep the source SVG complete and visible without JavaScript.
+- Split independent questions into separate figures. Use overview + focused detail only when both are independently useful.
+- Add a nearby ordered walkthrough that preserves the conclusion when the image is hidden.
+- Verify desktop, 320px reflow/overflow, enlarged text around the figure, print, and SVG-only opening.
 
-Avoid hairballs. If the diagram is crowded, split it into multiple diagrams.
+A static mega-diagram is usually a sign that the question is too broad. A large canvas is appropriate for lanes, timelines, and retained identity—not for dumping every component.
 
-### 5. Label every meaningful arrow
+## Tool selection
 
-For call-flow arrows, label:
+Choose the tool after the semantic brief. No renderer is mandatory.
 
-- method/function/event/job name,
-- payload or argument shape,
-- sync vs async if relevant.
+Current local options:
 
-For cross-boundary arrows, label:
+- **Excalidraw renderer** — best for deliberately authored, sketch-like teaching diagrams and controlled reading order; layout is manual.
+- **Inline authored SVG** — best for a small custom visual with precise editorial treatment.
+- **Graphviz** — strongest simple open-source candidate for deterministic build-time auto-layout of larger static topology/flow graphs.
+- **D2** — concise authoring front end with multiple layout engines and SVG export.
+- **ELK/elkjs** — strongest layout substrate for hierarchy, ports, and orthogonal routing, but it requires a custom SVG renderer/postprocessor.
+- **Mermaid or PlantUML** — convenient for familiar sequence/state/UML forms; inspect and postprocess exported SVG before embedding.
+- **Cytoscape.js** — better for interactive graph exploration than static document output.
+- **GoJS** — capable integrated commercial option; requires procurement/license approval.
 
-- protocol/mechanism,
-- route/topic/event/job name,
-- important payload shape,
-- response/signal when relevant.
+Do not add a dependency or build pipeline only for one diagram without approval. Read `references/diagram-tool-research.md` for official sources, tradeoffs, and the recommended adoption sequence.
 
-Examples:
+## Build paths
 
-```text
-ShippingService.book(loadId)
-→ emits LoadBooked(load_id)
-```
+### Existing Excalidraw path
 
-```text
-HTTP POST /api/runs
-body: { operationName, input }
-```
-
-```text
-queue job: ProcessImportJob
-args: { importId }
-```
-
-### 6. Make strategic ambiguity visible
-
-If product/system behavior is unresolved, show it as a decision node or callout, not as settled implementation.
-
-Use labels such as:
-
-- `decision needed`,
-- `agent must escalate`,
-- `assumption`,
-- `unproven`,
-- `not used / removed`.
-
-## Diagram brief contract
-
-Before drawing, write a compact brief. The final diagram must make this brief obvious in the page:
-
-```markdown
-Diagram question: What single question should this diagram answer?
-Decision unlocked: What reviewer choice becomes possible after seeing it, and why do existing artifacts not already suffice?
-Reading spine: What must be understood first, which exceptions/details follow, and what reviewer next action closes the story?
-Audience: Who needs to understand it?
-Mode: Context | Flow | Sequence | State | Ownership | Slice | Decision
-Scope: What is included and intentionally excluded?
-Evidence: Which files/docs/tests/logs back this drawing?
-Nodes: What actors/components/concepts must appear?
-Domain interactions: Which source entity → verb/action → target entity/state/effect relationships must be shown?
-Edges: What calls/events/transitions/interactions must be labelled?
-Boundaries: What runtime/team/module/process boundaries matter?
-Motion/read order: In what sequence should nodes, edges, labels, and risk paths reveal so the diagram teaches the flow?
-Uncertainty: What is assumed, unresolved, removed, risky, or decision-needed?
-```
-
-If the brief cannot be filled from repo/product context, ask one focused question instead of drawing a vague topology.
-
-## UI decision artifact gate
-
-Do not create UI mockups automatically. First name the next visual decision and check whether existing screenshots or wireframes already make it reviewable. If they do, reuse them. Non-visual policy decisions need selectors, not screens.
-
-When an additional Excalidraw UI artifact is justified, make it the smallest comparison that unlocks the decision:
-
-- one shared representation of the existing product shell/baseline;
-- 2-3 option deltas showing only changed placement, hierarchy, entry point, or page/dialog flow;
-- one shared action/outcome path drawn once when all options use it;
-- exact option names and stable review anchors matching the PRD selector;
-- no duplicated detailed states already covered by existing mockups.
-
-In the PRD page, present that baseline once and stack full-width Option A/B/C rows. Each row owns its decision sentence, delta, full-size wireframe figure, workflow/outcomes, tradeoff, and selector; never turn the options into a responsive multi-column card gallery. Rich HTML wireframes use `<figure>`/`<figcaption>`, not `role="img"` wrappers.
-
-Excalidraw is the medium, not the design direction. Preserve the existing product's recognizable navigation, colors, density, control shapes, and copy. Use HTML/CSS or screenshots instead when pixel-level comparison—not placement/workflow—is the actual decision.
-
-## Workflow
-
-### Step 1: Define the diagram question
-
-State the question the diagram should answer, for example:
-
-- “Which classes and methods run when a user submits this form?”
-- “How does this event move from controller → service → job → subscriber?”
-- “What domain concepts are introduced by this feature and how do they relate?”
-- “How does one domain entity change, create, block, consume, or reconcile another?”
-- “How do PRDs, design.html, ADRs, task briefs, and task results communicate?”
-
-If the question is unclear, ask one focused clarifying question before drawing.
-
-### Step 2: Inspect the system
-
-Use targeted reads/searches. Capture evidence while exploring.
-
-A useful exploration checklist:
-
-```markdown
-Diagram question:
-- ...
-
-Actors / triggers:
-- ...
-
-Code anchors:
-- path:function — why it matters
-
-Calls / handoffs:
-- caller → callee — payload/state
-
-Domain concepts:
-- concept/entity — meaning — relationships
-
-Domain interactions:
-- source entity → verb/action → target entity/state/effect — rule/authority
-
-Boundaries:
-- runtime/service/module/persistence boundary
-
-Unclear or strategic decisions:
-- ...
-```
-
-### Step 3: Choose the diagram mode
-
-Use the table above. Prefer one clear diagram over a generic mega-diagram.
-
-For complex features, create a small set of diagram sections inside the main report by default:
-
-```text
-current-flow
-intended-flow
-code-flow
-domain-model
-communication-map
-```
-
-Create sibling `diagrams/{name}.html` files only when a diagram needs its own focused review page.
-
-### Step 4: Create the artifact
-
-Preferred outputs:
-
-- `docs/features/{feature}/design.html` for the main feature design review artifact
-- `docs/features/{feature}/prd.html` only when the PRD itself needs a product behavior/scope diagram
-- `docs/features/{feature}/diagrams/{name}.html` for optional supporting diagrams when a single design page would be crowded
-- `docs/architecture/{name}.html` for cross-feature architecture diagrams
-- another durable docs folder if the project already has one
-
-Use a self-contained HTML file with inline SVG and CSS.
-
-Use authentic build-time Excalidraw export as the default diagram treatment. Keep the semantic contract strict even though geometry is hand-drawn: technical labels remain readable, color communicates ownership or state, and callouts stay brief. Use whiteboard looseness for early exploration and tighter spacing/alignment for durable technical docs.
-
-Finished diagrams still must be self-contained inline SVG/CSS: no remote runtime, no Mermaid runtime, and no decorative roughness that makes labels or arrows harder to read.
-
-- For durable report pages, start from `../html-report-designer/resources/report-template.html` and embed the SVG as a figure.
-- For diagram-only pages, start from `resources/system-diagram-template.html` when helpful.
-
-### Step 5: Open or report the view
-
-If local UI/browser access is available, open the HTML file. Otherwise, report the path and how to open it.
+For an authored diagram, create an explicitly positioned JSON scene using the vertical spacing and arrow-legibility contract above, then run:
 
 ```bash
-open docs/features/<feature>/design.html
+node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg
 ```
 
-### Step 6: Iterate for ownership clarity
+Preserve title/description, searchable text, provenance, review IDs, edge labels, and renderer-owned `.diagram-reveal` groups. The renderer is an available medium, not a reason to create a diagram. See `references/renderer-workflow.md` for its exact regeneration and embedding contract.
 
-When the user says a layer, responsibility, domain relationship, or call arrow feels wrong, re-check the source and update the diagram. The goal is clarity and truth, not defending the first layout.
+### Other SVG generators
 
-## HTML/SVG Drawing Rules
+Generate at build time, then normalize the SVG before embedding:
 
-- Use inline SVG inside self-contained HTML.
-- Treat the diagram as an informational figure with a title, caption, legend, and “How to read this” note.
-- Use the `html-report-designer` shell for polished long-form pages: breadcrumbs, collapsible left sidebar, no top menu/right rail, semantic sections, feedback, provenance, and print styles.
-- Use `resources/system-diagram-template.html` for diagram-only pages. It uses build-time Tailwind and inline compiled CSS; edit `resources/system-diagram.tailwind.css`, then run `npm run build:report-css` from `/Users/carlosrodrigo/agents` before handoff/commit.
-- Do not use Tailwind CDN/runtime, remote fonts, Mermaid, D2, Graphviz, or external CSS in finished diagrams or their build pipeline. Excalidraw is the sole diagram renderer.
-- Use the existing build-time Excalidraw renderer for diagrams; do not rewrite or bypass its API. Create an explicitly positioned JSON scene, run `node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg`, inspect spacing/labels, then inline the SVG. The renderer embeds Virgil, semantic text, accessibility metadata, stable review IDs, labelled edge groups, provenance, and reading-order reveal wrappers. `reviewId` and `reviewIds` values are namespace-relative suffixes; `reviewPrefix` plus the required unique `id` scopes them when several diagrams are inlined.
-- A finished PRD must include one authentic renderer SVG inside `user-flows` or `domain-interactions`. Preserve `<!-- svg-source:excalidraw -->`, root `role="img"`/`aria-labelledby`, `<title>`/`<desc>`, stable review IDs, labelled edges, and `.diagram-reveal` groups. Unrelated SVG, wireframes, or hand-authored lookalikes do not count; there is no self-issued exemption.
-- Use a tokenized Vercel-style diagram system: semantic surfaces, text ranks, borders, neutral default, status colors, spacing, radius, focus rings, and reduced-motion-safe motion.
-- Use subtle scroll appearance and SVG node/edge-group reveal when it teaches reading order; do not let complex diagrams simply appear all at once. The intended motion is actor/context → labelled edge/action → next node/state → recovery/risk path. Keep content visible without JavaScript and honor `prefers-reduced-motion`.
-- Keep text readable; do not shrink below 12px effective size in SVG.
-- Prefer semantic HTML text around the SVG over packing every explanation into SVG labels.
-- Use `foreignObject` only when necessary, and give it extra height to avoid clipping.
-- Use numbered steps for the main story when order matters.
-- Preserve the Excalidraw renderer's stable `--reveal-delay` wrappers. Do not apply `.path-draw` to exported multi-stroke edges; reveal each coordinated edge group as one authored mark.
-- Keep side effects inside cards as chips/callouts instead of drawing every side-effect arrow.
-- Use red dashed arrows only for exceptional paths.
-- Add a legend that defines colors for this specific diagram.
-- Add stable `data-review-id` anchors to major sections and meaningful SVG groups/nodes.
-- Include accessible SVG `<title>` and `<desc>` plus a visible figure caption/legend.
-- Avoid decorative complexity that makes the system harder to understand.
+- remove remote assets and runtime dependencies;
+- add or verify `viewBox`, `<title>`, `<desc>`, and accessible naming;
+- keep text searchable or provide a complete local text equivalent;
+- normalize fonts/colors to document tokens where practical;
+- add stable review IDs to consequential groups;
+- inspect edge routes, labels, clipping, mobile overflow, and print;
+- inline the final SVG in the HTML artifact.
 
-## Diagram primitives
+Do not make core meaning depend on pan/zoom JavaScript. Optional controls may enhance a complete static figure.
 
-Use these reusable primitives instead of ad hoc boxes:
+## Motion and reading order
 
-- **Lanes/boundaries** — dashed rounded regions for actor, system/module, external dependency, worker/process, or team ownership.
-- **Nodes** — rounded cards with a human label, real symbol/path when known, owner/runtime/layer, and important input/output/state.
-- **Edges** — labelled arrows; neutral for local/same-runtime handoffs, blue for boundary/API/process crossings, and red for risk/recovery/removed paths. Route Excalidraw arrows explicitly and leave enough space for every label. Keep exported label groups in the foreground so they are never hidden behind nodes or clipped by nearby components.
-- **Decision/callout nodes** — amber cards for unresolved decisions, assumptions, unproven claims, or escalation triggers.
-- **Legend** — visible semantic color/line guide tied to this diagram, not a generic decorative palette.
+Motion is optional. Use it only when causal sequence, state transition, or retained identity becomes clearer.
 
-For design reports, reuse the same semantics in embedded architecture and slice diagrams even when the SVG is smaller.
+For a scroll-paced figure, order groups in source and visual space as:
 
-## Diagram quality gate
-
-Before handoff, check:
-
-- the diagram answers one explicit question and unlocks a named decision, not a vague topic;
-- existing artifacts were checked first so the diagram does not duplicate sufficient mockups;
-- UI comparisons preserve the existing product shell and show only option deltas plus shared flow;
-- option labels/anchors exactly match the PRD selector when the diagram supports a PRD decision;
-- source evidence was inspected for real actors, calls, state, and boundaries;
-- every color has a responsibility meaning documented in the legend;
-- domain diagrams show owned building blocks/boundaries, verb/action labels, state/effect outcomes, and an invariant/policy rail—not generic noun boxes or actor→system skeletons;
-- each complex figure owns its question, caption/how-to-read note, and adjacent numbered structured walkthrough;
-- every meaningful arrow is labeled with call/event/protocol/payload or domain interaction verb/effect;
-- diagram spacing and arrow routes are explicit in the Excalidraw scene and remain readable at desktop, mobile overflow, and print sizes;
-- key SVG groups/nodes have stable `data-review-id` anchors;
-- SVG has `<title>` and `<desc>` and a visible caption/how-to-read note;
-- text remains readable at the expected viewport and is at least 12px effective size;
-- uncertainty, removed paths, recovery, or decision-needed paths are visible instead of implied;
-- progressive motion reveals the diagram in reading order and respects `prefers-reduced-motion`;
-- final HTML has no external CSS/JS/runtime assets;
-- build-time Tailwind CSS is current (`npm run check:report-css` in `/Users/carlosrodrigo/agents`);
-- diagram-only pages pass `node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs --allow-placeholders resources/system-diagram-template.html` when validating templates, and finished diagrams pass without `--allow-placeholders`.
-
-## Output Format
-
-When done, report:
-
-```markdown
-Created: <path>
-Opened in browser: yes/no
-Diagram mode: <Code Flow | Component Communication | Domain Concept Model | ...>
-Diagram question: <question answered>
-Motion/read order: <how the diagram reveals the flow, or why motion was intentionally skipped>
-Key ownership/concept decisions:
-- ...
-What this should help you explain:
-- ...
-Uncertainty / follow-up:
-- ...
+```text
+context/actor → action/edge label → owner/state → result → recovery/risk
 ```
 
-## Safety Rules
+The source SVG remains visible. Preserve renderer-owned groups, avoid path-draw effects that break coordinated strokes, and honor reduced motion and print. See `references/drawing-and-accessibility.md`.
 
-- Documentation/diagram generation only.
-- Do not change runtime behavior while using this skill.
-- Do not call production services, send emails, publish webhooks, or run destructive commands.
-- If runtime validation is needed, use tests, local logs, or ask for explicit approval.
+## Output locations
+
+Prefer:
+
+```text
+docs/features/{feature}/prd.html
+docs/features/{feature}/design.html
+docs/features/{feature}/diagrams/{name}.html
+docs/architecture/{name}.html
+```
+
+Embed in the owning document when the figure exists only to support that narrative. Create a focused sibling page when the diagram has an independent audience or would crowd the parent.
+
+## Quality gate
+
+Before handoff:
+
+- [ ] The figure answers one explicit question and names what it unlocks.
+- [ ] Source evidence supports real nodes, edges, ownership, and state.
+- [ ] The main path can be narrated in order.
+- [ ] Every meaningful edge has a verb/call/protocol/effect label.
+- [ ] Boundaries, uncertainty, failure, and recovery are truthful.
+- [ ] The local legend explains semantic color/line meaning.
+- [ ] Text and labels remain readable at expected size.
+- [ ] SVG has a `viewBox`, title, description, accessible naming, and stable review anchors.
+- [ ] A nearby structured walkthrough preserves the conclusion.
+- [ ] Wide/mobile/print/no-JS/reduced-motion states are complete.
+- [ ] The final artifact has no required remote assets or renderer runtime.
+- [ ] The renderer/tool choice is recorded with regeneration source.
+
+## Output
+
+End with:
+
+```text
+Created: {path}
+Diagram question: {question}
+Decision/understanding unlocked: {result}
+Mode: {mode}
+Renderer/layout: {tool + why}
+Evidence: {paths/docs/logs}
+Reading order: {static order + optional motion}
+Validation: {passed | not run + reason | failed + key issue}
+Uncertainty: {none | assumptions/open items}
+```
