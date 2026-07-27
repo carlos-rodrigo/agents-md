@@ -1,0 +1,95 @@
+{
+  "id": "elk-slice-example",
+  "title": "ELK-laid-out outside-in slice diagram",
+  "desc": "Example architecture slice with automatic spacing, routed arrows, and foreground edge-label pills.",
+  "reviewPrefix": "diagram.example",
+  "direction": "RIGHT",
+  "spacing": {
+    "nodeNode": 54,
+    "rank": 76,
+    "edgeNode": 34
+  },
+  "nodes": [
+    {
+      "id": "quick-create",
+      "kind": "entry",
+      "title": "Quick create",
+      "subtitle": "Establishments",
+      "meta": "/establishments/new"
+    },
+    {
+      "id": "endpoint",
+      "title": "createEstablishment",
+      "subtitle": "POST",
+      "meta": "/api/establishments"
+    },
+    {
+      "id": "use-case",
+      "title": "EstablishmentUseCases",
+      "subtitle": "createEstablishment",
+      "meta": "CreateEstablishment"
+    },
+    {
+      "id": "domain",
+      "kind": "domain",
+      "title": "Establishment",
+      "subtitle": "LandBaseline",
+      "meta": "land + owner validity"
+    },
+    {
+      "id": "repository",
+      "kind": "repository",
+      "title": "EstablishmentRepo",
+      "subtitle": "createWithTasks",
+      "meta": "EstablishmentRecord"
+    },
+    {
+      "id": "feedback",
+      "kind": "feedback",
+      "title": "Browser + API fixture",
+      "subtitle": "new shell shows baseline task list",
+      "meta": "feedback gate",
+      "width": 330,
+      "height": 92
+    }
+  ],
+  "edges": [
+    {
+      "id": "route-to-endpoint",
+      "from": "quick-create",
+      "to": "endpoint",
+      "kind": "boundary",
+      "label": "create shell",
+      "detail": "201 + dashboard view model"
+    },
+    {
+      "id": "endpoint-to-use-case",
+      "from": "endpoint",
+      "to": "use-case",
+      "label": "validate command",
+      "detail": "DTO → use-case input"
+    },
+    {
+      "id": "use-case-to-domain",
+      "from": "use-case",
+      "to": "domain",
+      "label": "seed baseline tasks",
+      "detail": "BaselineTaskCreated[]"
+    },
+    {
+      "id": "domain-to-repository",
+      "from": "domain",
+      "to": "repository",
+      "kind": "boundary",
+      "label": "insert establishment",
+      "detail": "establishments, baseline_tasks"
+    },
+    {
+      "id": "use-case-to-feedback",
+      "from": "use-case",
+      "to": "feedback",
+      "label": "prove behavior",
+      "detail": "browser + API check"
+    }
+  ]
+}
