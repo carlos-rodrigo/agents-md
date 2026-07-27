@@ -292,6 +292,16 @@ Do not impose a fixed number of slices, stories, scenarios, steps, options, ques
 
 Use one navigation rail only: the collapsible left index. Do not add a right sidebar. Put review guidance, readiness checks, open-question counts, and related artifacts in the main content flow where they can be reviewed and commented on directly.
 
+Desktop behavior:
+
+- the sidebar remains sticky in the viewport while the document scrolls;
+- long navigation scrolls inside the sidebar rather than moving the sidebar offscreen;
+- the collapse/expand summary remains sticky at the top of that internal scroll area;
+- the active TOC link updates as sections enter the reading zone and the sidebar adjusts its own `scrollTop` to keep that link visible;
+- review-anchor positioning must use low-specificity `:where([data-review-id])` so it cannot override `.side-nav { position: sticky; }`.
+
+At narrow widths, return the sidebar to normal document flow, keep it collapsible, and use the bottom divider instead of a right divider.
+
 ## PRD report pattern
 
 For `docs/features/{feature}/prd.html`, start from the content-neutral shell in `resources/prd-template.html`. The `prd` skill owns content and reading order.

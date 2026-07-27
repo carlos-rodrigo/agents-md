@@ -52,6 +52,7 @@ for (const [label, template, slots] of templates) {
     'class="side-nav"',
     'class="breadcrumbs"',
     'data-artifact-motion="native"',
+    'keepActiveLinkVisible',
     'aria-label="Toggle document sidebar"',
     'class="sidebar-toggle-copy"',
     ...slots,
@@ -88,12 +89,15 @@ for (const cssPath of ['skills/html-report-designer/resources/prd.tailwind.css',
     'max-width: none;',
     'width: 100%;',
     'min-height: calc(100vh - var(--space-8)); max-height: calc(100vh - var(--space-8));',
-    'padding-right: var(--space-4); border-right: 1px solid var(--border);'
+    'padding-right: var(--space-4); border-right: 1px solid var(--border);',
+    ':where([data-review-id]) { position: relative; }',
+    'z-index: 2;'
   ]);
+  assert(!css.includes('[data-review-id] { position: relative; }'), `${cssPath} review anchors must not override sticky positioning`);
   assert(!css.includes('filter: blur('), `${cssPath} should not blur text during reveal motion`);
 }
 
-console.log('PASS: PRD and design generation use content-neutral shells with shared progressive motion and a collapsible sidebar');
+console.log('PASS: PRD and design generation use content-neutral shells with progressive motion and a sticky, active-item-aware collapsible sidebar');
 
 function requireAll(label, content, markers) {
   const missing = markers.filter((marker) => !content.includes(marker));

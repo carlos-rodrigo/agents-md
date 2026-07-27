@@ -50,7 +50,7 @@ A small change may use one compact slice, but it must still answer all five ques
 1. Read the request and the smallest amount of product/repository evidence needed to avoid guessing.
 2. Inspect the existing product interface before describing or changing a visible workflow.
 3. Draft **What**, **Why**, and the ordered product slices in plain text before generating HTML.
-4. For each slice, write its story, scenarios, visible steps or non-visual interactions, rules, and acceptance.
+4. For each slice, write its story, scenarios, visible steps or non-visual interactions, rules, acceptance, and final user-perspective “After this slice” summary.
 5. Create one product-behavior diagram that explains the end-to-end flow across actors, slices, states, or recovery, or record `Diagram not applicable` with a concrete reason.
 6. Ask up to 3 focused questions when missing answers change scope, trust, behavior, or the coherence of the product promise.
 7. Mark unresolved consequential behavior as blocking; do not omit or invent it to complete the document.
@@ -166,6 +166,17 @@ SLICE-* → STORY-* → EX-* → AC-*
 
 Keep IDs stable across revisions. Storyboard steps may use `STEP-*` IDs when reviewers need to discuss individual states.
 
+### 6. After this slice
+
+End every slice with a visually distinct, 1–2 sentence summary in plain user language. State the new capability or understood outcome—not the implementation, requirements, or test mechanics.
+
+```text
+After this slice, {actor} can {new capability or understood outcome}.
+{Optional: They still cannot {nearest meaningful boundary}.}
+```
+
+Use the actor named by the slice. Keep it concrete enough that a reviewer can explain the value without rereading the story or scenarios. Do not repeat the step sequence. In HTML, render it as a compact success callout at the end of the slice with a stable review anchor such as `slice-001.after`.
+
 ## Cross-slice product rules
 
 Use 3–7 outcome-protecting rules when authority, policy, vocabulary, invariants, trust, or recovery applies across slices. Write observable behavior:
@@ -219,6 +230,7 @@ Before finishing:
 - [ ] Important failure, empty, recovery, and permission behavior is specified where it changes trust or scope.
 - [ ] `Then` statements and `AC-*` criteria are observable from the product or stakeholder perspective.
 - [ ] Traceability is intact: `SLICE-* → STORY-* → EX-* → AC-*`.
+- [ ] Every slice ends with a concise “After this slice” statement describing what its actor can now do or understand.
 - [ ] One product-behavior diagram explains a named flow/state question, or `Diagram not applicable` gives a concrete rationale.
 - [ ] The diagram is evidence-backed, labelled, accessible, paired with a walkthrough, and complete on mobile/print/no-JS/reduced-motion.
 - [ ] Multiple UI alternatives appear only for a real unresolved product decision.
@@ -232,7 +244,7 @@ Before finishing:
 After approval:
 
 - use `design-solution` when architecture is non-obvious or a durable design is useful;
-- pass the approved product definition, rationale, slices, stories, scenarios, storyboard states, rules, acceptance, decisions, and boundaries;
+- pass the approved product definition, rationale, slices, after-slice user outcomes, stories, scenarios, storyboard states, rules, acceptance, decisions, and boundaries;
 - use `simple-tasks` for implementation slices and delegation;
 - use `feedback-loop` for task-level verification.
 

@@ -21,6 +21,8 @@ requireAll('prd product contract', prd, [
   '**Then** {observable result}',
   'one compact storyboard panel for every product-visible step',
   'SLICE-* → STORY-* → EX-* → AC-*',
+  '### 6. After this slice',
+  'After this slice, {actor} can {new capability or understood outcome}.',
   'not an implementation layer',
   '3–7 outcome-protecting rules',
   'one product-behavior diagram',
