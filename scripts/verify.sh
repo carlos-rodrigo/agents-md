@@ -11,6 +11,7 @@ node "$ROOT/scripts/render-excalidraw-diagram.mjs" --check \
   "$ROOT/skills/html-report-designer/resources/excalidraw-domain-interaction-example.json" \
   "$ROOT/skills/html-report-designer/resources/excalidraw-domain-interaction-example.svg"
 node "$ROOT/scripts/test-excalidraw-diagram.mjs"
+node "$ROOT/scripts/test-frontend-design-contract.mjs"
 node "$ROOT/scripts/test-concise-prd-contract.mjs"
 node "$ROOT/scripts/test-concise-design-contract.mjs"
 node "$ROOT/scripts/test-prd-design-system.mjs"

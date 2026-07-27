@@ -1,0 +1,22 @@
+[
+  {"query":"Build the new billing settings page in our existing dashboard and keep its current component system.","should_trigger":true},
+  {"query":"Can you redesign this onboarding flow? Users keep missing the permissions step.","should_trigger":true},
+  {"query":"Create a responsive landing page for our telescope scheduling product using the real observing workflow.","should_trigger":true},
+  {"query":"Implement loading, empty, permission and error states for the project members table.","should_trigger":true},
+  {"query":"This mobile form clips translated labels and loses focus after validation; fix the UI.","should_trigger":true},
+  {"query":"Make this frontend feel like the rest of the product and improve its hierarchy.","should_trigger":true},
+  {"query":"Build an accessible command palette component for our web application.","should_trigger":true},
+  {"query":"Create an interactive browser artifact for comparing these scenarios.","should_trigger":true},
+  {"query":"Implement a data-heavy operations dashboard from this approved PRD.","should_trigger":true},
+  {"query":"Give this greenfield portfolio a visual direction and working responsive implementation.","should_trigger":true},
+  {"query":"Review these existing UI files for WCAG issues but do not modify them.","should_trigger":false},
+  {"query":"Optimize the React server component waterfall and reduce the Next.js client bundle.","should_trigger":false},
+  {"query":"Write a PRD for bulk status editing; product behavior is still undecided.","should_trigger":false},
+  {"query":"Create an architecture design for idempotent order acceptance.","should_trigger":false},
+  {"query":"Turn this decision brief into a self-contained reviewable HTML report.","should_trigger":false},
+  {"query":"Draw a system diagram showing the worker retry path.","should_trigger":false},
+  {"query":"Audit this pull request for correctness, testing, and maintainability.","should_trigger":false},
+  {"query":"Add purposeful motion to the existing accepted-to-reversed state transition only.","should_trigger":true},
+  {"query":"Summarize this research document for an executive audience.","should_trigger":false},
+  {"query":"Fix the API authorization bug that lets members edit another tenant.","should_trigger":false}
+]

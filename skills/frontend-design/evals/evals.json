@@ -1,0 +1,40 @@
+{
+  "skill_name": "frontend-design",
+  "evals": [
+    {
+      "id": "established-feature",
+      "prompt": "Add bulk status editing to the existing orders table. Keep the current shell and component library, support partial failures, and show what changed without losing filters.",
+      "expected_output": "A product-continuous implementation that preserves table/filter state and covers selection, pending, partial success, error, and recovery without introducing a new visual identity."
+    },
+    {
+      "id": "operational-form",
+      "prompt": "Build the staff invitation form in our admin app. Invites can fail for duplicate email, permission, or network reasons, and users sometimes paste 30 addresses.",
+      "expected_output": "An accessible operational flow with bulk input resilience, validation, pending/duplicate prevention, permission and network recovery, keyboard support, and existing-system visual continuity, without inventing a required role selector, batch limit, or other business rule."
+    },
+    {
+      "id": "greenfield-persuade",
+      "prompt": "Create a landing page for a local tool that lets conservators compare layers in multispectral scans of paintings. We have real before/after imagery but no established brand.",
+      "expected_output": "A subject-grounded persuasive surface that demonstrates only the confirmed comparison mechanism, uses truthful content and an earned visual direction, and does not invent synchronized navigation, annotation, storage, export, or analysis capabilities."
+    },
+    {
+      "id": "onboarding-story",
+      "prompt": "Design onboarding for a farm operations app. A manager must complete livestock inventory before recording the first sale, and missing data should never look like zero.",
+      "expected_output": "A clear interaction story with the supplied inventory prerequisite, progress, unavailable state, completion, and recovery; no invented livestock categories, fields, workflow steps, or completion rules; purposeful motion only if it clarifies state."
+    },
+    {
+      "id": "content-resilience",
+      "prompt": "Make the incident timeline work for German and Arabic content, 400% zoom, long service identifiers, and a 320px viewport without changing the event model.",
+      "expected_output": "An intrinsic, accessible, RTL-aware implementation with stable reading order, long-content handling, and flow-relative rails/connectors that cannot overlap variable-height content; no absolute semantic rail at narrow or 400% reflow widths."
+    },
+    {
+      "id": "app-like-artifact",
+      "prompt": "Build a self-contained review artifact where a reviewer filters 500 evidence records, compares two scenarios, and exports the chosen subset. It must work offline.",
+      "expected_output": "A justified app-like artifact architecture that considers an accessible bundled UI library, preserves a printable/static summary, and verifies offline, keyboard, performance, and state behavior."
+    },
+    {
+      "id": "scrollytelling-polish",
+      "prompt": "Polish a self-contained product-story scrollytelling artifact whose panels touch, nested shadows compete, headings wrap poorly, and mobile product mockups are scaled until labels are unreadable. Its review tool strips JavaScript.",
+      "expected_output": "A subject-grounded refinement with spacing tokens, real panel gutters, readable measures, restrained elevation, legible reflowed mockups, and rendered verification of the script-stripped CSS/static fallback without changing product behavior."
+    }
+  ]
+}
