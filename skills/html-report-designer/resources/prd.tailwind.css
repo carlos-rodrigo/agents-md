@@ -153,6 +153,20 @@ h2, h3 { color: var(--text); line-height: 1.22; letter-spacing: -.015em; text-wr
 .review-option input[type="text"] { width: 100%; min-width: 0; padding: .42rem .55rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-subtle); color: var(--text); font: inherit; }
 .review-option-custom { grid-template-columns: auto minmax(0, 1fr); }
 @media (max-width: 720px) { .wireframe-layout { grid-template-columns: 1fr; } .wireframe-nav, .wireframe-inspector { border: 0; border-bottom: 1px solid var(--border); } .wireframe-board { grid-template-columns: 1fr; } .wireframe-row { grid-template-columns: 1fr 1fr; } }
+
+figure { margin: var(--space-4) 0 0; }
+.figure-card { padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface-subtle); overflow-x: auto; }
+.figure-card svg { display: block; width: 100%; min-width: min(760px, 100%); height: auto; }
+figcaption, .figure-caption { margin-top: var(--space-3); color: var(--text-muted); font-size: .92rem; }
+.figure-question { margin: 0 0 var(--space-3); color: var(--text); font-weight: 700; }
+.diagram-caption, .legend { display: flex; flex-wrap: wrap; gap: var(--space-3); color: var(--text-muted); font-size: .88rem; }
+.diagram-reveal { opacity: 1; transform: none; filter: none; }
+.js .diagram-reveal { opacity: 0; transform: translateY(12px); filter: blur(2px); transform-box: fill-box; transform-origin: center; transition: opacity 360ms cubic-bezier(.2, .8, .2, 1), transform 420ms cubic-bezier(.2, .8, .2, 1), filter 420ms ease; transition-delay: var(--reveal-delay, 0ms); }
+.js .reveal.is-visible .diagram-reveal, .js .is-visible .diagram-reveal { opacity: 1; transform: translateY(0); filter: blur(0); }
+.path-draw { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.js .path-draw { stroke-dashoffset: 1; transition: stroke-dashoffset 700ms cubic-bezier(.2, .8, .2, 1); transition-delay: var(--reveal-delay, 0ms); }
+.js .reveal.is-visible .path-draw, .js .is-visible .path-draw { stroke-dashoffset: 0; }
+
 .id-chip, .review-label { display: inline-flex; align-items: center; border-radius: 999px; font-family: var(--mono); font-size: .72rem; font-weight: 700; letter-spacing: .02em; }
 .id-chip { margin-right: .35rem; padding: .12rem .44rem; background: var(--accent-soft); color: var(--accent); }
 .review-label { margin-top: var(--space-4); color: var(--text-subtle); }

@@ -19,11 +19,15 @@ requireAll('design-solution', design, [
   'Skip durable design for small clear changes',
   'Design must not invent product behavior',
   'approved PRD',
+  'approved product definition, rationale, product slices, stories, scenarios, observable acceptance',
+  'Missing required PRD behavior blocks design',
   'independently reviewable architecture question or an approved child outcome',
   'Task execution steps and proof results stay in task packets',
   'Technology choices belong only when they constrain a boundary or materially change delivery/risk',
   'Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it',
-  'Use `system-diagram` only after naming a diagram question',
+  'Use `system-diagram` after naming the architecture question the figure must answer',
+  'one high-quality causal architecture diagram',
+  'Diagram not applicable',
   'Create or update an ADR only for architecture-significant decisions',
 ]);
 
@@ -41,14 +45,17 @@ requireAll('html-report-designer', report, [
   'resources/prd-template.html',
   'resources/design-template.html',
   'Start from the most specific template',
+  'scroll-reveal motion',
+  'high-quality explanatory diagram',
 ]);
 
 requireAll('system-diagram', diagram, [
   '## Architecture diagram gate',
-  'A design diagram is optional',
+  'A durable feature design normally includes one causal architecture diagram',
   'named architecture question',
-  'one small causal path',
-  'existing prose, code links, or tests are insufficient',
+  'One small causal path',
+  'existing evidence supports the figure',
+  'Diagram not applicable',
 ]);
 
 forbidAll('design-solution', design, [

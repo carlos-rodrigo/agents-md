@@ -1,12 +1,12 @@
 ---
 name: system-diagram
-description: "Create a question-driven, evidence-backed system diagram as accessible inline SVG. Use for causal flows, boundaries, ownership, state, sequence, domain behavior, or architecture paths only when a visual unlocks understanding that prose/code links do not. Supports authored and auto-layout tool selection."
+description: "Create a question-driven, evidence-backed, high-quality system diagram as accessible inline SVG. Use for PRD product behavior and design architecture paths involving causal flows, boundaries, ownership, state, sequence, domain behavior, or recovery. Supports authored and auto-layout tool selection."
 argument-hint: "[feature-or-doc-path]"
 ---
 
 # System Diagram
 
-Create a learning artifact that answers one system question. The diagram is not a completeness signal or decoration.
+Create a learning artifact that answers one system question. Substantive PRDs and durable designs normally include one explanatory diagram, but the figure must still teach a real path rather than serve as decoration or a completeness signal.
 
 This skill owns the diagram's question, evidence, semantics, and reading order. `html-report-designer` owns the surrounding static document shell and figure frame when the diagram is embedded in a durable report.
 
@@ -16,29 +16,28 @@ Before drawing, state:
 
 ```text
 Diagram question: What one question must the figure answer?
-Decision or understanding unlocked: What becomes reviewable after seeing it?
-Evidence gap: Why are existing prose, code links, tests, screenshots, or diagrams insufficient?
+Decision or understanding unlocked: What becomes reviewable or explainable after seeing it?
+Evidence: What supports the nodes, edges, states, and ownership?
 Audience: Who needs to explain or decide this?
 Scope: What is included and intentionally excluded?
 ```
 
-Do not draw when the evidence gap is empty. Reuse or improve an existing figure when it already answers the question.
+Draw only when a real relationship, sequence, state transition, boundary, ownership path, or recovery path can be taught visually and existing evidence supports the figure. Reuse or improve an existing figure when it already answers the question. Do not draw decoration, unsupported topology, or a feature inventory.
 
-A PRD diagram is optional. It must resolve a named product uncertainty where existing prose or evidence is insufficient, not make the PRD feel substantial.
+A substantive PRD normally includes one product-behavior diagram that teaches how the product works across actors, actions, states, outcomes, or recovery. Use `Diagram not applicable` only when there is no meaningful product path to visualize.
 
-A design diagram is optional. It must resolve a named architecture question, not inventory the system.
+A durable feature design normally includes one causal architecture diagram that teaches the selected seam and path to an observable result. Use `Diagram not applicable` only when there is no meaningful multi-boundary, state, ownership, sequence, or recovery path.
 
 ## Architecture diagram gate
 
-Create a design-stage diagram only when all are true:
+Create a design-stage diagram when all are true:
 
 1. A named architecture question affects ownership, boundary, state, sequence, failure, or tradeoff.
 2. One small causal path can teach the answer.
-3. Existing prose, code links, or tests are insufficient.
-4. The evidence supports real nodes and edges.
-5. The figure unlocks a specific review decision or shared explanation.
+3. Existing evidence supports the figure's real nodes and edges.
+4. The figure unlocks a specific review decision or durable shared explanation.
 
-Otherwise use concise prose and source links. The gate is intentionally strict: one small causal path is useful only when existing prose, code links, or tests are insufficient.
+If these conditions are not met, resolve the evidence/question first or record `Diagram not applicable` with the concrete reason. The gate protects truth and focus, not diagram scarcity.
 
 ## Brief
 
@@ -186,7 +185,7 @@ Do not make core meaning depend on pan/zoom JavaScript. Optional controls may en
 
 ## Motion and reading order
 
-Motion is optional. Use it only when causal sequence, state transition, or retained identity becomes clearer.
+When a diagram is embedded in a PRD or design report, preserve reading-order groups so the report's scroll-reveal motion can teach causal sequence, state transition, or retained identity. Motion remains progressive enhancement: the complete source SVG is visible without JavaScript, in print, and under reduced motion.
 
 For a scroll-paced figure, order groups in source and visual space as:
 
@@ -194,7 +193,7 @@ For a scroll-paced figure, order groups in source and visual space as:
 context/actor → action/edge label → owner/state → result → recovery/risk
 ```
 
-The source SVG remains visible. Preserve renderer-owned groups, avoid path-draw effects that break coordinated strokes, and honor reduced motion and print. See `references/drawing-and-accessibility.md`.
+Use `.diagram-reveal` groups with bounded local delays. Use `.path-draw` only for simple single-stroke authored SVG paths; preserve renderer-owned Excalidraw groups and avoid path-draw effects that break coordinated strokes. Honor reduced motion and print. See `references/drawing-and-accessibility.md`.
 
 ## Output locations
 

@@ -16,39 +16,11 @@
   <div class="doc-shell">
     <aside class="side-nav" aria-label="Document navigation" data-review-id="chrome.side-nav">
       <details class="index-details" open>
-        <summary><span class="nav-title">Design packet</span></summary>
+        <summary><span class="nav-title">Feature design</span></summary>
         <nav aria-label="Table of contents" data-review-id="chrome.index">
-          <ol>
-            <li><a href="#summary">Overview</a></li>
-            <li><a href="#review-path">Review path</a></li>
-            <li><a href="#examples">Examples</a></li>
-            <li><a href="#prd-story-inventory">PRD stories</a></li>
-            <li><a href="#prd-experience-contract">Experience</a></li>
-            <li><a href="#pattern-research">Research</a></li>
-            <li><a href="#design-thesis">Thesis</a></li>
-            <li><a href="#proposed-architecture">System proposal</a></li>
-            <li><a href="#technology-stack">Tech stack</a></li>
-            <li><a href="#interface-implementation">Interface</a></li>
-            <li><a href="#architecture-overview">Architecture</a></li>
-            <li><a href="#architecture-delta">Architecture delta</a></li>
-            <li><a href="#slice-plan">Slice plan</a></li>
-            <li><a href="#component-communication">Boundaries</a></li>
-            <li><a href="#domain-model">Domain</a></li>
-            <li><a href="#domain-interactions">Domain interactions</a></li>
-            <li><a href="#data-contracts">Contracts</a></li>
-            <li><a href="#design-decisions">Decisions</a></li>
-            <li><a href="#tasks-and-feedback">Slice designs</a></li>
-            <li><a href="#story-coverage">Coverage</a></li>
-          </ol>
+          {{DESIGN_TOC}}
         </nav>
-        <div class="nav-group">
-          <h2>Artifacts</h2>
-          <ul>
-            <li><a href="docs/features/{{FEATURE_SLUG}}/prd.html">PRD</a></li>
-            <li><a href="docs/features/{{FEATURE_SLUG}}/design.html">Design</a></li>
-            <li><a href="{{RELATED_ADR_OR_TASK}}">ADR/task</a></li>
-          </ul>
-        </div>
+        {{DESIGN_ARTIFACT_LINKS}}
       </details>
     </aside>
 
@@ -65,598 +37,60 @@
         <header class="article-header" id="summary" data-review-id="summary">
           <div class="article-meta">
             <span class="pill {{STATUS_CLASS}}">{{STATUS}}</span>
-            <span class="pill">Feature Design</span>
+            <span class="pill">Feature design</span>
             <span class="pill">Updated {{UPDATED_DATE}}</span>
           </div>
           <h1>{{FEATURE_NAME}} Design</h1>
           <p class="subtitle">{{DESIGN_SUMMARY}}</p>
+          {{DESIGN_HEADER_SUPPORT}}
         </header>
 
-        <section class="section-card reveal" id="review-path" aria-labelledby="review-path-title" data-review-id="review-path">
-          <span class="section-kicker">Start here</span>
-          <h2 id="review-path-title">What Reviewers Should Decide</h2>
-          <p class="section-summary">{{REVIEW_PATH_SUMMARY}}</p>
-          <ol class="step-list">
-            <li data-review-id="review-path.step-1"><strong>Compare PRD stories to the design thesis.</strong><br />{{REVIEW_STEP_THESIS}}</li>
-            <li data-review-id="review-path.step-2"><strong>Trace architecture overview, deltas, and boundaries.</strong><br />{{REVIEW_STEP_FLOW}}</li>
-            <li data-review-id="review-path.step-3"><strong>Review slice diagrams, coverage, and risks.</strong><br />{{REVIEW_STEP_COVERAGE}}</li>
-          </ol>
-          <div class="callout warning" data-review-id="review-path.decision-needed"><strong>{{DECISION_NEEDED_TITLE}}</strong><p>{{DECISION_NEEDED_BODY}}</p></div>
-          <span class="review-label">review: review-path</span>
-        </section>
-
-        <section class="section-card reveal" id="examples" aria-labelledby="examples-title" data-review-id="examples">
-          <span class="section-kicker">Example-first</span>
-          <h2 id="examples-title">Concrete System Examples</h2>
-          <p class="section-summary">{{EXAMPLES_SUMMARY}}</p>
-          <div class="example-pair">
-            <article class="example-panel" data-review-id="examples.main"><h3>Main user/system scenario</h3><p>{{MAIN_SCENARIO}}</p></article>
-            <article class="example-panel" data-review-id="examples.edge"><h3>Edge / failure scenario</h3><p>{{EDGE_SCENARIO}}</p></article>
-          </div>
-          <div class="before-after" data-review-id="examples.before-after">
-            <article class="example-panel"><h3>Before</h3><p>{{BEFORE_FLOW}}</p></article>
-            <article class="example-panel"><h3>After</h3><p>{{AFTER_FLOW}}</p></article>
-          </div>
-          <span class="review-label">review: examples</span>
-        </section>
-
-        <section class="section-card reveal" id="prd-story-inventory" aria-labelledby="prd-story-title" data-review-id="prd-story-inventory">
-          <span class="section-kicker">PRD extraction</span>
-          <h2 id="prd-story-title">PRD Story And BDD Inventory</h2>
-          <p class="section-summary">{{PRD_STORY_INVENTORY_SUMMARY}}</p>
-          <div class="story-list">
-            <article class="story-card" data-review-id="prd-story-inventory.story-1">
-              <h3><span class="id-chip">{{STORY_1_ID}}</span>{{STORY_1_TITLE}}</h3>
-              <p>{{STORY_1_BDD_SCENARIO}}</p>
-              <p><strong>Acceptance:</strong> {{STORY_1_ACCEPTANCE_IDS}}</p>
-              <p><strong>User flow/UI option:</strong> {{STORY_1_FLOW_AND_UI_OPTION}}</p>
-              <p><strong>Design implication:</strong> {{STORY_1_DESIGN_IMPLICATION}}</p>
-            </article>
-            <article class="story-card" data-review-id="prd-story-inventory.story-2">
-              <h3><span class="id-chip">{{STORY_2_ID}}</span>{{STORY_2_TITLE}}</h3>
-              <p>{{STORY_2_BDD_SCENARIO}}</p>
-              <p><strong>Acceptance:</strong> {{STORY_2_ACCEPTANCE_IDS}}</p>
-              <p><strong>User flow/UI option:</strong> {{STORY_2_FLOW_AND_UI_OPTION}}</p>
-              <p><strong>Design implication:</strong> {{STORY_2_DESIGN_IMPLICATION}}</p>
-            </article>
-          </div>
-          <div class="callout" data-review-id="prd-story-inventory.non-goals">
-            <strong>Non-goals that constrain design</strong>
-            <p>{{PRD_NON_GOALS}}</p>
-          </div>
-          <span class="review-label">review: prd-story-inventory</span>
-        </section>
-
-        <section class="section-card reveal" id="prd-experience-contract" aria-labelledby="experience-contract-title" data-review-id="prd-experience-contract">
-          <span class="section-kicker">Product experience source of truth</span>
-          <h2 id="experience-contract-title">PRD Experience Contract</h2>
-          <p class="section-summary">{{PRD_EXPERIENCE_CONTRACT_SUMMARY}}</p>
-          <div class="card-grid">
-            <article class="decision-card" data-review-id="prd-experience-contract.selected-ui-option">
-              <h3>Selected PRD UI option</h3>
-              <p><strong>Option:</strong> {{SELECTED_UI_OPTION_ID}} — {{SELECTED_UI_OPTION_TITLE}}</p>
-              <p><strong>Why it shapes design:</strong> {{SELECTED_UI_OPTION_DESIGN_IMPACT}}</p>
-            </article>
-            <article class="decision-card" data-review-id="prd-experience-contract.user-flows">
-              <h3>Post-story flows to preserve</h3>
-              <p>{{POST_STORY_FLOW_DESIGN_SUMMARY}}</p>
-              <p><strong>Stories:</strong> {{POST_STORY_FLOW_IDS}}</p>
-            </article>
-            <article class="decision-card" data-review-id="prd-experience-contract.visible-states">
-              <h3>Visible states</h3>
-              <p>{{VISIBLE_STATES_SUMMARY}}</p>
-              <p><strong>Must include:</strong> {{VISIBLE_STATES_REQUIRED}}</p>
-            </article>
-            <article class="decision-card" data-review-id="prd-experience-contract.review-gaps">
-              <h3>PRD review gaps</h3>
-              <p>{{PRD_REVIEW_GAPS_SUMMARY}}</p>
-              <p><strong>Design gate:</strong> {{PRD_REVIEW_GAPS_GATE}}</p>
-            </article>
-          </div>
-          <div class="callout warning" data-review-id="prd-experience-contract.blocker-note"><strong>Do not hide product choices in design</strong><p>{{PRD_EXPERIENCE_BLOCKER_NOTE}}</p></div>
-          <span class="review-label">review: prd-experience-contract</span>
-        </section>
-
-        <section class="section-card reveal" id="pattern-research" aria-labelledby="research-title" data-review-id="pattern-research">
-          <span class="section-kicker">Prior art</span>
-          <h2 id="research-title">Pattern Research</h2>
-          <p class="section-summary">{{PATTERN_RESEARCH_SUMMARY}}</p>
-          <div class="example-list">
-            <article class="evidence-card" data-review-id="pattern-research.source-1">
-              <h3>{{SOURCE_1}}</h3>
-              <p><strong>Insight:</strong> {{SOURCE_INSIGHT_1}}</p>
-              <p><strong>Design impact:</strong> {{SOURCE_IMPACT_1}}</p>
-            </article>
-            <article class="evidence-card" data-review-id="pattern-research.source-2">
-              <h3>{{SOURCE_2}}</h3>
-              <p><strong>Insight:</strong> {{SOURCE_INSIGHT_2}}</p>
-              <p><strong>Design impact:</strong> {{SOURCE_IMPACT_2}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: pattern-research</span>
-        </section>
-
-        <section class="section-card reveal" id="design-thesis" aria-labelledby="thesis-title" data-review-id="design-thesis">
-          <span class="section-kicker">Chosen shape</span>
-          <h2 id="thesis-title">Design Thesis</h2>
-          <p class="section-summary">{{DESIGN_THESIS}}</p>
-          <div class="tabs" data-review-id="design-thesis.tabs">
-            <input type="radio" id="report-tab-overview" name="report-tabs" checked />
-            <input type="radio" id="report-tab-evidence" name="report-tabs" />
-            <div class="tab-list" role="tablist" aria-label="Design thesis details">
-              <label for="report-tab-overview" role="tab">Thesis</label>
-              <label for="report-tab-evidence" role="tab">Evidence</label>
-            </div>
-            <div class="tab-panel" id="report-panel-overview" role="tabpanel"><p>{{THESIS_DETAILS}}</p></div>
-            <div class="tab-panel" id="report-panel-evidence" role="tabpanel"><p>{{THESIS_EVIDENCE}}</p></div>
-          </div>
-          <span class="review-label">review: design-thesis</span>
-        </section>
-
-        <section class="section-card reveal" id="proposed-architecture" aria-labelledby="proposed-architecture-title" data-review-id="proposed-architecture">
-          <span class="section-kicker">System proposal</span>
-          <h2 id="proposed-architecture-title">Architecture Proposal</h2>
-          <p class="section-summary">{{PROPOSED_ARCHITECTURE_SUMMARY}}</p>
-          <div class="card-grid">
-            <article class="component-card" data-review-id="proposed-architecture.monorepo">
-              <h3>Monorepo / package shape</h3>
-              <p>{{MONOREPO_SHAPE}}</p>
-              <p><strong>Boundaries:</strong> {{MONOREPO_BOUNDARIES}}</p>
-            </article>
-            <article class="component-card" data-review-id="proposed-architecture.layers">
-              <h3>Layers</h3>
-              <p>{{LAYERING_PROPOSAL}}</p>
-              <p><strong>Dependency rule:</strong> {{DEPENDENCY_RULE}}</p>
-            </article>
-            <article class="component-card" data-review-id="proposed-architecture.runtime">
-              <h3>Runtime boundaries</h3>
-              <p>{{RUNTIME_BOUNDARIES}}</p>
-              <p><strong>Integration style:</strong> {{INTEGRATION_STYLE}}</p>
-            </article>
-            <article class="component-card" data-review-id="proposed-architecture.data-ownership">
-              <h3>Data ownership</h3>
-              <p>{{DATA_OWNERSHIP}}</p>
-              <p><strong>Persistence model:</strong> {{PERSISTENCE_MODEL}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: proposed-architecture</span>
-        </section>
-
-        <section class="section-card reveal" id="technology-stack" aria-labelledby="technology-stack-title" data-review-id="technology-stack">
-          <span class="section-kicker">Technology decisions</span>
-          <h2 id="technology-stack-title">Technology Stack</h2>
-          <p class="section-summary">{{TECH_STACK_SUMMARY}}</p>
-          <div class="card-grid">
-            <article class="component-card" data-review-id="technology-stack.frontend-api">
-              <h3>Frontend + API</h3>
-              <p><strong>Choice:</strong> {{TECH_FRONTEND}} with {{TECH_API_APPLICATION}}</p>
-              <p><strong>Why:</strong> {{TECH_FRONTEND_WHY}} {{TECH_API_APPLICATION_WHY}}</p>
-              <p><strong>Tradeoff:</strong> {{TECH_FRONTEND_TRADEOFF}} {{TECH_API_APPLICATION_TRADEOFF}}</p>
-            </article>
-            <article class="component-card" data-review-id="technology-stack.domain-persistence">
-              <h3>Domain + Persistence</h3>
-              <p><strong>Choice:</strong> {{TECH_DOMAIN}} with {{TECH_PERSISTENCE}}</p>
-              <p><strong>Why:</strong> {{TECH_DOMAIN_WHY}} {{TECH_PERSISTENCE_WHY}}</p>
-              <p><strong>Tradeoff:</strong> {{TECH_DOMAIN_TRADEOFF}} {{TECH_PERSISTENCE_TRADEOFF}}</p>
-            </article>
-            <article class="component-card" data-review-id="technology-stack.testing">
-              <h3>Feedback</h3>
-              <p><strong>Choice:</strong> {{TECH_TESTING}}</p>
-              <p><strong>Why:</strong> {{TECH_TESTING_WHY}}</p>
-              <p><strong>Tradeoff:</strong> {{TECH_TESTING_TRADEOFF}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: technology-stack</span>
-        </section>
-
-        <section class="section-card reveal" id="interface-implementation" aria-labelledby="interface-implementation-title" data-review-id="interface-implementation">
-          <span class="section-kicker">How the selected UI gets built</span>
-          <h2 id="interface-implementation-title">Interface Implementation Strategy</h2>
-          <p class="section-summary">{{INTERFACE_IMPLEMENTATION_SUMMARY}}</p>
-          <div class="card-grid">
-            <article class="component-card" data-review-id="interface-implementation.surfaces">
-              <h3>Surfaces and composition</h3>
-              <p><strong>Entry surfaces:</strong> {{INTERFACE_SURFACES}}</p>
-              <p><strong>Composition rule:</strong> {{INTERFACE_COMPOSITION_RULE}}</p>
-            </article>
-            <article class="component-card" data-review-id="interface-implementation.state-model">
-              <h3>State, loading, and recovery</h3>
-              <p>{{INTERFACE_STATE_MODEL}}</p>
-              <p><strong>Edge states:</strong> {{INTERFACE_EDGE_STATES}}</p>
-            </article>
-            <article class="component-card" data-review-id="interface-implementation.style-motion">
-              <h3>Style, libraries, and motion</h3>
-              <p><strong>Choices:</strong> {{INTERFACE_STYLE_LIBRARY_MOTION_CHOICES}}</p>
-              <p><strong>Why:</strong> {{INTERFACE_STYLE_LIBRARY_MOTION_WHY}}</p>
-            </article>
-            <article class="component-card" data-review-id="interface-implementation.accessibility">
-              <h3>Accessibility and responsiveness</h3>
-              <p>{{INTERFACE_ACCESSIBILITY_RESPONSIVE}}</p>
-              <p><strong>Feedback hook:</strong> {{INTERFACE_FEEDBACK_HOOK}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: interface-implementation</span>
-        </section>
-
-        <section class="section-card reveal" id="architecture-overview" aria-labelledby="architecture-title" data-review-id="architecture-overview">
-          <span class="section-kicker">How the system fits together</span>
-          <h2 id="architecture-title">High-Level Architecture Overview</h2>
-          <p class="section-summary">{{ARCHITECTURE_OVERVIEW_SUMMARY}}</p>
-          <figure class="figure-card diagram-figure" data-review-id="architecture-overview.figure">
-            <svg viewBox="0 0 1280 680" role="img" aria-labelledby="architecture-diagram-title architecture-diagram-desc" xmlns="http://www.w3.org/2000/svg" data-review-id="architecture-overview.svg">
-              <title id="architecture-diagram-title">{{ARCHITECTURE_DIAGRAM_TITLE}}</title>
-              <desc id="architecture-diagram-desc">Proposed monorepo, runtime, application, domain, and persistence architecture with labelled foreground edge labels.</desc>
-              <defs>
-                <marker id="architecture-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker>
-                <marker id="architecture-boundary-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--info)" /></marker>
-              </defs>
-              <rect class="diagram-bg" x="0" y="0" width="1280" height="680" />
-              <g class="diagram-reveal" style="--reveal-delay: 0ms" data-review-id="architecture-overview.boundary-web"><rect class="diagram-boundary" x="40" y="58" width="250" height="510" rx="18" stroke="var(--info)"/><text class="diagram-lane-title" x="64" y="92">{{ARCH_WEB_PACKAGE}}</text></g>
-              <g class="diagram-reveal" style="--reveal-delay: 70ms" data-review-id="architecture-overview.boundary-api"><rect class="diagram-boundary" x="330" y="58" width="250" height="510" rx="18" stroke="var(--border-strong)"/><text class="diagram-lane-title" x="354" y="92">{{ARCH_API_PACKAGE}}</text></g>
-              <g class="diagram-reveal" style="--reveal-delay: 140ms" data-review-id="architecture-overview.boundary-domain"><rect class="diagram-boundary" x="620" y="58" width="280" height="510" rx="18" stroke="var(--success)"/><text class="diagram-lane-title" x="644" y="92">{{ARCH_DOMAIN_PACKAGE}}</text></g>
-              <g class="diagram-reveal" style="--reveal-delay: 210ms" data-review-id="architecture-overview.boundary-data"><rect class="diagram-boundary" x="940" y="58" width="300" height="510" rx="18" stroke="var(--warning)"/><text class="diagram-lane-title" x="964" y="92">{{ARCH_DATA_PACKAGE}}</text></g>
-
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="architecture-overview.node-route"><rect class="diagram-node-card" x="72" y="140" width="186" height="102" rx="16" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="165" y="170" text-anchor="middle">{{ARCH_ROUTE_NAME}}</text><text class="diagram-node-subtitle" x="165" y="196" text-anchor="middle">{{ARCH_UI_COMPONENT}}</text><text class="diagram-node-meta" x="165" y="220" text-anchor="middle">{{ARCH_ROUTE_PATH}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 480ms" data-review-id="architecture-overview.node-endpoint"><rect class="diagram-node-card" x="362" y="140" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="170" text-anchor="middle">{{ARCH_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="455" y="196" text-anchor="middle">{{ARCH_COMMAND_OR_QUERY}}</text><text class="diagram-node-meta" x="455" y="220" text-anchor="middle">{{ARCH_ENDPOINT_ROUTE}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 680ms" data-review-id="architecture-overview.node-service"><rect class="diagram-node-card" x="362" y="338" width="186" height="102" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="455" y="368" text-anchor="middle">{{ARCH_APP_SERVICE}}</text><text class="diagram-node-subtitle" x="455" y="394" text-anchor="middle">application seam</text><text class="diagram-node-meta" x="455" y="418" text-anchor="middle">{{ARCH_SERVICE_METHOD}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 880ms" data-review-id="architecture-overview.node-domain"><rect class="diagram-node-card" x="660" y="250" width="200" height="118" rx="16" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="760" y="282" text-anchor="middle">{{ARCH_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="760" y="308" text-anchor="middle">{{ARCH_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="760" y="332" text-anchor="middle">{{ARCH_DOMAIN_INVARIANT}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="architecture-overview.node-repository"><rect class="diagram-node-card" x="982" y="180" width="220" height="102" rx="16" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="1092" y="210" text-anchor="middle">{{ARCH_REPOSITORY}}</text><text class="diagram-node-subtitle" x="1092" y="236" text-anchor="middle">{{ARCH_DB_MODEL}}</text><text class="diagram-node-meta" x="1092" y="260" text-anchor="middle">{{ARCH_TABLE_OR_COLLECTION}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1280ms" data-review-id="architecture-overview.node-external"><rect class="diagram-node-card" x="982" y="390" width="220" height="102" rx="16" fill="var(--surface-subtle)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="1092" y="420" text-anchor="middle">{{ARCH_EXTERNAL_SYSTEM}}</text><text class="diagram-node-subtitle" x="1092" y="446" text-anchor="middle">{{ARCH_EXTERNAL_CONTRACT}}</text><text class="diagram-node-meta" x="1092" y="470" text-anchor="middle">{{ARCH_EXTERNAL_PAYLOAD}}</text></g>
-
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 360ms" data-review-id="architecture-overview.edge-route-to-endpoint"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M258 191 C304 191 316 191 362 191" marker-end="url(#architecture-boundary-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 560ms" data-review-id="architecture-overview.edge-endpoint-to-service"><path class="diagram-arrow path-draw" pathLength="1" d="M455 242 L455 338" marker-end="url(#architecture-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 760ms" data-review-id="architecture-overview.edge-service-to-domain"><path class="diagram-arrow path-draw" pathLength="1" d="M548 389 C598 389 612 310 660 310" marker-end="url(#architecture-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 960ms" data-review-id="architecture-overview.edge-domain-to-repository"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 310 C910 310 930 231 982 231" marker-end="url(#architecture-boundary-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 1160ms" data-review-id="architecture-overview.edge-domain-to-external"><path class="diagram-arrow-boundary path-draw" pathLength="1" d="M860 338 C918 338 925 440 982 440" marker-end="url(#architecture-boundary-arrow)"/></g>
-
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 410ms" data-review-id="architecture-overview.edge-label.route-to-endpoint"><rect class="diagram-label-bg" x="230" y="76" width="226" height="50" rx="12"/><text class="diagram-arrow-label" x="343" y="98" text-anchor="middle"><tspan>{{ARCH_EDGE_UI_API}}</tspan><tspan class="diagram-label-detail" x="343" dy="16">{{ARCH_EDGE_UI_API_PAYLOAD}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 610ms" data-review-id="architecture-overview.edge-label.endpoint-to-service"><rect class="diagram-label-bg" x="72" y="270" width="214" height="50" rx="12"/><text class="diagram-arrow-label" x="179" y="292" text-anchor="middle"><tspan>{{ARCH_EDGE_COMMAND}}</tspan><tspan class="diagram-label-detail" x="179" dy="16">{{ARCH_EDGE_COMMAND_SHAPE}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 810ms" data-review-id="architecture-overview.edge-label.service-to-domain"><rect class="diagram-label-bg" x="590" y="382" width="172" height="50" rx="12"/><text class="diagram-arrow-label" x="676" y="404" text-anchor="middle"><tspan>{{ARCH_EDGE_DOMAIN}}</tspan><tspan class="diagram-label-detail" x="676" dy="16">{{ARCH_EDGE_DOMAIN_RULE}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1010ms" data-review-id="architecture-overview.edge-label.repository"><rect class="diagram-label-bg" x="846" y="116" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="961" y="138" text-anchor="middle"><tspan>{{ARCH_EDGE_PERSIST}}</tspan><tspan class="diagram-label-detail" x="961" dy="16">{{ARCH_EDGE_PERSIST_MODEL}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1210ms" data-review-id="architecture-overview.edge-label.external"><rect class="diagram-label-bg" x="848" y="516" width="230" height="50" rx="12"/><text class="diagram-arrow-label" x="963" y="538" text-anchor="middle"><tspan>{{ARCH_EDGE_EXTERNAL}}</tspan><tspan class="diagram-label-detail" x="963" dy="16">{{ARCH_EDGE_EXTERNAL_PAYLOAD}}</tspan></text></g>
-            </svg>
-            <figcaption class="diagram-caption" data-review-id="architecture-overview.legend"><span class="legend-item"><i class="swatch" style="color: var(--info)"></i>UI/web</span><span class="legend-item"><i class="swatch" style="color: var(--success)"></i>domain/application owner</span><span class="legend-item"><i class="swatch" style="color: var(--warning)"></i>persistence/reference state</span><span class="legend-item"><i class="swatch" style="color: var(--info); border-style: dashed"></i>boundary/API/process crossing</span></figcaption>
-          </figure>
-          <span class="review-label">review: architecture-overview</span>
-        </section>
-
-        <section class="section-card reveal" id="architecture-delta" aria-labelledby="architecture-delta-title" data-review-id="architecture-delta">
-          <span class="section-kicker">What we add or change</span>
-          <h2 id="architecture-delta-title">Architecture Delta</h2>
-          <p class="section-summary">{{ARCHITECTURE_DELTA_SUMMARY}}</p>
-          <div class="story-list">
-            <article class="component-card" data-review-id="architecture-delta.change-1">
-              <h3><span class="id-chip">{{ARCH_DELTA_1_KIND}}</span>{{ARCH_DELTA_1_COMPONENT}}</h3>
-              <p><strong>Communicates with:</strong> {{ARCH_DELTA_1_COMMUNICATION}}</p>
-              <p><strong>Stories served:</strong> {{ARCH_DELTA_1_STORIES}}</p>
-            </article>
-            <article class="component-card" data-review-id="architecture-delta.change-2">
-              <h3><span class="id-chip">{{ARCH_DELTA_2_KIND}}</span>{{ARCH_DELTA_2_COMPONENT}}</h3>
-              <p><strong>Communicates with:</strong> {{ARCH_DELTA_2_COMMUNICATION}}</p>
-              <p><strong>Stories served:</strong> {{ARCH_DELTA_2_STORIES}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: architecture-delta</span>
-        </section>
-
-        <section class="section-card reveal" id="slice-plan" aria-labelledby="slice-plan-title" data-review-id="slice-plan">
-          <span class="section-kicker">PRD-derived increments</span>
-          <h2 id="slice-plan-title">Slice Plan</h2>
-          <p class="section-summary">{{SLICE_PLAN_SUMMARY}}</p>
-          <div class="slice-grid">
-            <article class="slice-card" data-review-id="slice-plan.slice-1">
-              <h3><span class="id-chip">SLICE-001</span>{{SLICE_1_NAME}}</h3>
-              <p><strong>Covers:</strong> {{SLICE_1_COVERS}}</p>
-              <p><strong>Architecture delta:</strong> {{SLICE_1_ARCH_DELTA}}</p>
-              <p><strong>Thin because:</strong> {{SLICE_1_THIN_REASON}}</p>
-            </article>
-            <article class="slice-card" data-review-id="slice-plan.slice-2">
-              <h3><span class="id-chip">SLICE-002</span>{{SLICE_2_NAME}}</h3>
-              <p><strong>Covers:</strong> {{SLICE_2_COVERS}}</p>
-              <p><strong>Architecture delta:</strong> {{SLICE_2_ARCH_DELTA}}</p>
-              <p><strong>Thin because:</strong> {{SLICE_2_THIN_REASON}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: slice-plan</span>
-        </section>
-
-        <section class="section-card reveal" id="component-communication" aria-labelledby="communication-title" data-review-id="component-communication">
-          <span class="section-kicker">Boundaries</span>
-          <h2 id="communication-title">Component Communication</h2>
-          <p class="section-summary">{{COMPONENT_COMMUNICATION_SUMMARY}}</p>
-          <div class="card-grid">
-            <article class="component-card" data-review-id="component-communication.component-1">
-              <h3>{{COMPONENT_1}}</h3>
-              <p><strong>Owns:</strong> {{COMPONENT_1_OWNS}}</p>
-              <p><strong>Handoff:</strong> {{COMPONENT_1_HANDOFF}}</p>
-              <p><strong>Boundary:</strong> {{COMPONENT_1_BOUNDARY}}</p>
-            </article>
-            <article class="component-card" data-review-id="component-communication.component-2">
-              <h3>{{COMPONENT_2}}</h3>
-              <p><strong>Owns:</strong> {{COMPONENT_2_OWNS}}</p>
-              <p><strong>Handoff:</strong> {{COMPONENT_2_HANDOFF}}</p>
-              <p><strong>Boundary:</strong> {{COMPONENT_2_BOUNDARY}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: component-communication</span>
-        </section>
-
-        <section class="section-card reveal" id="domain-model" aria-labelledby="domain-title" data-review-id="domain-model">
-          <span class="section-kicker">Concepts</span>
-          <h2 id="domain-title">Domain Model</h2>
-          <p class="section-summary">{{DOMAIN_MODEL_SUMMARY}}</p>
-          <div class="story-list">
-            <article class="story-card" data-review-id="domain-model.concept-1">
-              <h3>{{CONCEPT_1}}</h3>
-              <p>{{CONCEPT_1_MEANING}}</p>
-              <p><strong>States / rules:</strong> {{CONCEPT_1_RULES}}</p>
-            </article>
-            <article class="story-card" data-review-id="domain-model.concept-2">
-              <h3>{{CONCEPT_2}}</h3>
-              <p>{{CONCEPT_2_MEANING}}</p>
-              <p><strong>States / rules:</strong> {{CONCEPT_2_RULES}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: domain-model</span>
-        </section>
-
-        <section class="section-card reveal" id="domain-interactions" aria-labelledby="domain-interactions-title" data-review-id="domain-interactions">
-          <span class="section-kicker">Entity behavior</span>
-          <h2 id="domain-interactions-title">Domain Entity Interactions</h2>
-          <p class="section-summary">{{DOMAIN_INTERACTIONS_SUMMARY}}</p>
-          <figure class="figure-card diagram-figure" data-review-id="domain-interactions.figure">
-            <svg viewBox="0 0 1120 420" role="img" aria-labelledby="domain-interactions-diagram-title domain-interactions-diagram-desc" xmlns="http://www.w3.org/2000/svg" data-review-id="domain-interactions.svg">
-              <title id="domain-interactions-diagram-title">{{DOMAIN_INTERACTIONS_DIAGRAM_TITLE}}</title>
-              <desc id="domain-interactions-diagram-desc">Entity interaction map showing source entity, action verb, target entity state or effect, and policy authority.</desc>
-              <defs><marker id="domain-interactions-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
-              <rect class="diagram-bg" x="0" y="0" width="1120" height="420" />
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="domain-interactions.node-source"><rect class="diagram-node-card" x="70" y="122" width="210" height="112" rx="16" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="175" y="154" text-anchor="middle">{{DOMAIN_SOURCE_ENTITY}}</text><text class="diagram-node-subtitle" x="175" y="182" text-anchor="middle">{{DOMAIN_SOURCE_MEANING}}</text><text class="diagram-node-meta" x="175" y="210" text-anchor="middle">owns: {{DOMAIN_SOURCE_OWNS}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="domain-interactions.node-target"><rect class="diagram-node-card" x="455" y="122" width="210" height="112" rx="16" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="560" y="154" text-anchor="middle">{{DOMAIN_TARGET_ENTITY}}</text><text class="diagram-node-subtitle" x="560" y="182" text-anchor="middle">{{DOMAIN_TARGET_MEANING}}</text><text class="diagram-node-meta" x="560" y="210" text-anchor="middle">changes: {{DOMAIN_TARGET_STATE}}</text></g>
-              <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="domain-interactions.node-effect"><rect class="diagram-node-card" x="840" y="122" width="210" height="112" rx="16" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="945" y="154" text-anchor="middle">{{DOMAIN_EFFECT_ENTITY}}</text><text class="diagram-node-subtitle" x="945" y="182" text-anchor="middle">{{DOMAIN_EFFECT_MEANING}}</text><text class="diagram-node-meta" x="945" y="210" text-anchor="middle">records: {{DOMAIN_EFFECT_STATE}}</text></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 280ms" data-review-id="domain-interactions.edge-source-target"><path class="diagram-arrow path-draw" pathLength="1" d="M280 178 L455 178" marker-end="url(#domain-interactions-arrow)"/></g>
-              <g class="diagram-edge diagram-reveal" style="--reveal-delay: 840ms" data-review-id="domain-interactions.edge-target-effect"><path class="diagram-arrow path-draw" pathLength="1" d="M665 178 L840 178" marker-end="url(#domain-interactions-arrow)"/></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 350ms" data-review-id="domain-interactions.edge-label.source-target"><rect class="diagram-label-bg" x="292" y="70" width="326" height="50" rx="12"/><text class="diagram-arrow-label" x="455" y="92" text-anchor="middle"><tspan>{{DOMAIN_INTERACTION_VERB}}</tspan><tspan class="diagram-label-detail" x="455" dy="16">{{DOMAIN_INTERACTION_RULE}}</tspan></text></g>
-              <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 910ms" data-review-id="domain-interactions.edge-label.target-effect"><rect class="diagram-label-bg" x="680" y="70" width="326" height="50" rx="12"/><text class="diagram-arrow-label" x="843" y="92" text-anchor="middle"><tspan>{{DOMAIN_EFFECT_VERB}}</tspan><tspan class="diagram-label-detail" x="843" dy="16">{{DOMAIN_EFFECT_RULE}}</tspan></text></g>
-              <g class="diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="domain-interactions.policy-callout"><rect x="330" y="282" width="460" height="70" rx="14" fill="var(--warning-soft)" stroke="var(--warning)" stroke-width="1.8"/><text class="diagram-arrow-label" x="560" y="312" text-anchor="middle">{{DOMAIN_POLICY_CALLOUT}}</text><text class="diagram-label-detail" x="560" y="334" text-anchor="middle">{{DOMAIN_POLICY_GAP_OR_INVARIANT}}</text></g>
-            </svg>
-            <figcaption class="diagram-caption" data-review-id="domain-interactions.legend"><span class="legend-item"><i class="swatch" style="color: var(--success)"></i>changed entity/state</span><span class="legend-item"><i class="swatch" style="color: var(--warning)"></i>derived effect/evidence</span><span class="legend-item"><i class="swatch" style="color: var(--text)"></i>verb-labelled domain interaction</span></figcaption>
-          </figure>
-          <div class="story-list">
-            <article class="story-card" data-review-id="domain-interactions.interaction-001">
-              <h3><span class="id-chip">DOMAIN-INT-001</span>{{DOMAIN_INTERACTION_001_TITLE}}</h3>
-              <p><strong>Entities:</strong> {{DOMAIN_INTERACTION_001_ENTITIES}}</p>
-              <p><strong>Verb/effect:</strong> {{DOMAIN_INTERACTION_001_VERB_EFFECT}}</p>
-              <p><strong>Invariant:</strong> {{DOMAIN_INTERACTION_001_INVARIANT}}</p>
-              <p><strong>Persistence/contract implication:</strong> {{DOMAIN_INTERACTION_001_CONTRACT_IMPLICATION}}</p>
-            </article>
-            <article class="story-card" data-review-id="domain-interactions.interaction-002">
-              <h3><span class="id-chip">DOMAIN-INT-002</span>{{DOMAIN_INTERACTION_002_TITLE}}</h3>
-              <p><strong>Entities:</strong> {{DOMAIN_INTERACTION_002_ENTITIES}}</p>
-              <p><strong>Verb/effect:</strong> {{DOMAIN_INTERACTION_002_VERB_EFFECT}}</p>
-              <p><strong>Invariant:</strong> {{DOMAIN_INTERACTION_002_INVARIANT}}</p>
-              <p><strong>Persistence/contract implication:</strong> {{DOMAIN_INTERACTION_002_CONTRACT_IMPLICATION}}</p>
-            </article>
-          </div>
-          <span class="review-label">review: domain-interactions</span>
-        </section>
-
-        <section class="section-card reveal" id="data-contracts" aria-labelledby="contracts-title" data-review-id="data-contracts">
-          <span class="section-kicker">Conceptual contracts</span>
-          <h2 id="contracts-title">Conceptual Data Contracts</h2>
-          <p class="section-summary">{{DATA_CONTRACTS_SUMMARY}}</p>
-          <div class="contract-list" data-review-id="data-contracts.list">
-            <article class="example-card" data-review-id="data-contracts.contract-001">
-              <h3>{{CONTRACT_1_NAME}}</h3>
-              <pre class="schema-code"><code><span class="code-punctuation">{</span>
-  <span class="code-key">{{CONTRACT_1_FIELD_1}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_1_FIELD_2}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_1_STATUS_FIELD}}</span><span class="code-punctuation">:</span> <span class="code-enum">{{CONTRACT_1_STATUS_VALUE_1}}</span> <span class="code-punctuation">|</span> <span class="code-enum">{{CONTRACT_1_STATUS_VALUE_2}}</span>
-<span class="code-punctuation">}</span></code></pre>
-            </article>
-            <article class="example-card" data-review-id="data-contracts.contract-002">
-              <h3>{{CONTRACT_2_NAME}}</h3>
-              <pre class="schema-code"><code><span class="code-punctuation">{</span>
-  <span class="code-key">{{CONTRACT_2_FIELD_1}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_2_FIELD_2}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_2_REFERENCE_FIELD}}</span>
-<span class="code-punctuation">}</span></code></pre>
-            </article>
-            <article class="example-card" data-review-id="data-contracts.contract-003">
-              <h3>{{CONTRACT_3_NAME}}</h3>
-              <pre class="schema-code"><code><span class="code-punctuation">{</span>
-  <span class="code-key">{{CONTRACT_3_FIELD_1}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_3_FIELD_2}}</span><span class="code-punctuation">,</span>
-  <span class="code-key">{{CONTRACT_3_STATUS_FIELD}}</span><span class="code-punctuation">:</span> <span class="code-enum">{{CONTRACT_3_STATUS_VALUE_1}}</span> <span class="code-punctuation">|</span> <span class="code-enum">{{CONTRACT_3_STATUS_VALUE_2}}</span>
-<span class="code-punctuation">}</span></code></pre>
-            </article>
-          </div>
-          <div class="callout" data-review-id="data-contracts.layout-note"><strong>Review layout rule</strong><p>Render conceptual contracts as a vertical list of two-row cards: entity name first, then one full-width code block. In each code block, put one property per line rather than grouping comma-separated properties on the same line.</p></div>
-          <span class="review-label">review: data-contracts</span>
-        </section>
-
-        <section class="section-card reveal" id="design-decisions" aria-labelledby="decisions-title" data-review-id="design-decisions">
-          <span class="section-kicker">Tradeoffs</span>
-          <h2 id="decisions-title">Design Decisions</h2>
-          <p class="section-summary">{{DESIGN_DECISIONS_SUMMARY}}</p>
-          <article class="decision-record-card" data-review-id="design-decisions.decision-1">
-            <h3><span class="id-chip">DEC-001</span>{{DECISION_1_TITLE}}</h3>
-            <p><strong>Chosen direction:</strong> {{DECISION_1_CHOSEN}}</p>
-            <p><strong>Why it fits:</strong> {{DECISION_1_WHY}}</p>
-            <p><strong>Alternatives rejected:</strong> {{DECISION_1_REJECTED}}</p>
-            <p><strong>Tradeoffs:</strong> {{DECISION_1_TRADEOFFS}}</p>
-          </article>
-          <span class="review-label">review: design-decisions</span>
-        </section>
-
-        <section class="section-card reveal" id="operational-concerns" aria-labelledby="operations-title" data-review-id="operational-concerns">
-          <span class="section-kicker">Release safety</span>
-          <h2 id="operations-title">Operational Concerns</h2>
-          <p class="section-summary">{{OPERATIONAL_CONCERNS_SUMMARY}}</p>
-          <ul class="checklist">
-            <li data-review-id="operational-concerns.rollout"><strong>Rollout:</strong> {{ROLLOUT_PLAN}} <span class="status-chip">{{ROLLOUT_SIGNAL}}</span></li>
-            <li data-review-id="operational-concerns.rollback"><strong>Rollback:</strong> {{ROLLBACK_PLAN}} <span class="status-chip">{{ROLLBACK_SIGNAL}}</span></li>
-            <li data-review-id="operational-concerns.observability"><strong>Observability:</strong> {{OBSERVABILITY_PLAN}} <span class="status-chip">{{OBSERVABILITY_SIGNAL}}</span></li>
-          </ul>
-          <span class="review-label">review: operational-concerns</span>
-        </section>
-
-        <section class="section-card reveal" id="tasks-and-feedback" aria-labelledby="tasks-title" data-review-id="tasks-and-feedback">
-          <span class="section-kicker">Outside-in execution</span>
-          <h2 id="tasks-title">Per-Slice Outside-in Designs</h2>
-          <p class="section-summary">{{TASKS_AND_FEEDBACK_SUMMARY}}</p>
-
-          <article class="decision-record-card slice-design-card" data-review-id="slice-designs.slice-001">
-            <h3><span class="id-chip">SLICE-001</span>{{SLICE_1_NAME}}</h3>
-            <p><strong>Covers:</strong> {{SLICE_1_COVERS}}</p>
-            <figure class="figure-card diagram-figure" data-review-id="slice-designs.slice-001.diagram">
-              <svg viewBox="0 0 1120 360" role="img" aria-labelledby="slice-1-diagram-title slice-1-diagram-desc" xmlns="http://www.w3.org/2000/svg" data-review-id="slice-designs.slice-001.svg">
-                <title id="slice-1-diagram-title">{{SLICE_1_DIAGRAM_TITLE}}</title>
-                <desc id="slice-1-diagram-desc">Outside-in architecture additions for SLICE-001 with route, endpoint, service, domain model, repository, and database model.</desc>
-                <defs><marker id="slice-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
-                <rect class="diagram-bg" x="0" y="0" width="1120" height="360" />
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="slice-designs.slice-001.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_1_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_1_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_1_ROUTE_PATH}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="slice-designs.slice-001.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_1_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_1_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_1_ENDPOINT_ROUTE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="slice-designs.slice-001.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_1_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_1_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_1_REQUEST_SHAPE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 840ms" data-review-id="slice-designs.slice-001.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_1_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_1_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_1_DOMAIN_RULE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="slice-designs.slice-001.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_1_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_1_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_1_DB_MODEL}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="slice-designs.slice-001.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_1_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_1_FEEDBACK_SIGNAL}}</text></g>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 140ms" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-trigger-endpoint"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 420ms" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-endpoint-service"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 700ms" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-service-domain"/>
-                <path class="diagram-arrow-boundary path-draw" style="--reveal-delay: 980ms" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-domain-repository"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 1260ms" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-1-arrow)" data-review-id="slice-designs.slice-001.edge-feedback"/>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 210ms" data-review-id="slice-designs.slice-001.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_1_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_1_RESPONSE_SHAPE}}</tspan></text></g>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 770ms" data-review-id="slice-designs.slice-001.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_1_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_1_DOMAIN_EVENT}}</tspan></text></g>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1050ms" data-review-id="slice-designs.slice-001.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_1_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_1_TABLE_OR_COLLECTION}}</tspan></text></g>
-              </svg>
-              <figcaption>{{SLICE_1_DIAGRAM_CAPTION}}</figcaption>
-            </figure>
-            <ul class="checklist slice-design-points">
-              <li data-review-id="slice-designs.slice-001.external-need"><strong>External need:</strong> {{SLICE_1_EXTERNAL_NEED}}</li>
-              <li data-review-id="slice-designs.slice-001.entrypoint"><strong>Entry point:</strong> {{SLICE_1_ENTRYPOINT}} with {{SLICE_1_REQUEST_SHAPE}} → {{SLICE_1_RESPONSE_SHAPE}}</li>
-              <li data-review-id="slice-designs.slice-001.delivery-surface"><strong>Delivery:</strong> <code>{{SLICE_1_ROUTE_PATH}}</code>; <code>{{SLICE_1_HTTP_METHOD}} {{SLICE_1_ENDPOINT_ROUTE}}</code>; handler <code>{{SLICE_1_ENDPOINT_NAME}}</code>.</li>
-              <li data-review-id="slice-designs.slice-001.service-domain"><strong>Service/domain:</strong> <code>{{SLICE_1_SERVICE_NAME}}.{{SLICE_1_SERVICE_METHOD}}</code>; <code>{{SLICE_1_DOMAIN_MODEL}}</code>; {{SLICE_1_DOMAIN_SERVICE}} / {{SLICE_1_DOMAIN_RULE}}.</li>
-              <li data-review-id="slice-designs.slice-001.persistence-model"><strong>Persistence:</strong> <code>{{SLICE_1_REPOSITORY_MODEL}}.{{SLICE_1_REPOSITORY_METHOD}}</code>; <code>{{SLICE_1_DB_MODEL}}</code> / <code>{{SLICE_1_TABLE_OR_COLLECTION}}</code>.</li>
-              <li data-review-id="slice-designs.slice-001.small-design"><strong>Small design:</strong> {{SLICE_1_APPLICATION_SEAM}}; {{SLICE_1_DOMAIN_BEHAVIOR}}; {{SLICE_1_PORTS_ADAPTERS_DATA}}.</li>
-              <li data-review-id="slice-designs.slice-001.feedback"><strong>Feedback/spike:</strong> {{SLICE_1_FEEDBACK}}. Escalate if {{SLICE_1_SPIKE_OR_ESCALATE}}.</li>
-            </ul>
-          </article>
-
-          <article class="decision-record-card slice-design-card" data-review-id="slice-designs.slice-002">
-            <h3><span class="id-chip">SLICE-002</span>{{SLICE_2_NAME}}</h3>
-            <p><strong>Covers:</strong> {{SLICE_2_COVERS}}</p>
-            <figure class="figure-card diagram-figure" data-review-id="slice-designs.slice-002.diagram">
-              <svg viewBox="0 0 1120 360" role="img" aria-labelledby="slice-2-diagram-title slice-2-diagram-desc" xmlns="http://www.w3.org/2000/svg" data-review-id="slice-designs.slice-002.svg">
-                <title id="slice-2-diagram-title">{{SLICE_2_DIAGRAM_TITLE}}</title>
-                <desc id="slice-2-diagram-desc">Outside-in architecture additions for SLICE-002 with route, endpoint, service, domain model, repository, and database model.</desc>
-                <defs><marker id="slice-2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--text)" /></marker></defs>
-                <rect class="diagram-bg" x="0" y="0" width="1120" height="360" />
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 0ms" data-review-id="slice-designs.slice-002.node-trigger"><rect class="diagram-node-card" x="28" y="92" width="148" height="92" rx="14" fill="var(--info-soft)" stroke="var(--info)"/><text class="diagram-node-title" x="102" y="122" text-anchor="middle">{{SLICE_2_TRIGGER_NODE}}</text><text class="diagram-node-subtitle" x="102" y="146" text-anchor="middle">{{SLICE_2_ROUTE_NAME}}</text><text class="diagram-node-meta" x="102" y="168" text-anchor="middle">{{SLICE_2_ROUTE_PATH}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 280ms" data-review-id="slice-designs.slice-002.node-endpoint"><rect class="diagram-node-card" x="220" y="92" width="156" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="298" y="122" text-anchor="middle">{{SLICE_2_ENDPOINT_NAME}}</text><text class="diagram-node-subtitle" x="298" y="146" text-anchor="middle">{{SLICE_2_HTTP_METHOD}}</text><text class="diagram-node-meta" x="298" y="168" text-anchor="middle">{{SLICE_2_ENDPOINT_ROUTE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 560ms" data-review-id="slice-designs.slice-002.node-service"><rect class="diagram-node-card" x="420" y="92" width="160" height="92" rx="14" fill="var(--surface)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="500" y="122" text-anchor="middle">{{SLICE_2_SERVICE_NAME}}</text><text class="diagram-node-subtitle" x="500" y="146" text-anchor="middle">{{SLICE_2_SERVICE_METHOD}}</text><text class="diagram-node-meta" x="500" y="168" text-anchor="middle">{{SLICE_2_REQUEST_SHAPE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 840ms" data-review-id="slice-designs.slice-002.node-domain"><rect class="diagram-node-card" x="624" y="92" width="160" height="92" rx="14" fill="var(--success-soft)" stroke="var(--success)"/><text class="diagram-node-title" x="704" y="122" text-anchor="middle">{{SLICE_2_DOMAIN_MODEL}}</text><text class="diagram-node-subtitle" x="704" y="146" text-anchor="middle">{{SLICE_2_DOMAIN_SERVICE}}</text><text class="diagram-node-meta" x="704" y="168" text-anchor="middle">{{SLICE_2_DOMAIN_RULE}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1120ms" data-review-id="slice-designs.slice-002.node-repository"><rect class="diagram-node-card" x="828" y="92" width="160" height="92" rx="14" fill="var(--warning-soft)" stroke="var(--warning)"/><text class="diagram-node-title" x="908" y="122" text-anchor="middle">{{SLICE_2_REPOSITORY_MODEL}}</text><text class="diagram-node-subtitle" x="908" y="146" text-anchor="middle">{{SLICE_2_REPOSITORY_METHOD}}</text><text class="diagram-node-meta" x="908" y="168" text-anchor="middle">{{SLICE_2_DB_MODEL}}</text></g>
-                <g class="diagram-node diagram-reveal" style="--reveal-delay: 1400ms" data-review-id="slice-designs.slice-002.node-feedback"><rect class="diagram-node-card" x="420" y="238" width="364" height="70" rx="14" fill="var(--accent-soft)" stroke="var(--border-strong)"/><text class="diagram-node-title" x="602" y="266" text-anchor="middle">{{SLICE_2_FEEDBACK_NODE}}</text><text class="diagram-node-meta" x="602" y="290" text-anchor="middle">{{SLICE_2_FEEDBACK_SIGNAL}}</text></g>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 140ms" pathLength="1" d="M176 138 L220 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-trigger-endpoint"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 420ms" pathLength="1" d="M376 138 L420 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-endpoint-service"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 700ms" pathLength="1" d="M580 138 L624 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-service-domain"/>
-                <path class="diagram-arrow-boundary path-draw" style="--reveal-delay: 980ms" pathLength="1" d="M784 138 L828 138" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-domain-repository"/>
-                <path class="diagram-arrow path-draw" style="--reveal-delay: 1260ms" pathLength="1" d="M602 184 L602 238" marker-end="url(#slice-2-arrow)" data-review-id="slice-designs.slice-002.edge-feedback"/>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 210ms" data-review-id="slice-designs.slice-002.edge-label-api"><rect class="diagram-label-bg" x="180" y="42" width="220" height="46" rx="12"/><text class="diagram-arrow-label" x="290" y="62" text-anchor="middle"><tspan>{{SLICE_2_API_LABEL}}</tspan><tspan class="diagram-label-detail" x="290" dy="15">{{SLICE_2_RESPONSE_SHAPE}}</tspan></text></g>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 770ms" data-review-id="slice-designs.slice-002.edge-label-domain"><rect class="diagram-label-bg" x="500" y="42" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="625" y="62" text-anchor="middle"><tspan>{{SLICE_2_DOMAIN_LABEL}}</tspan><tspan class="diagram-label-detail" x="625" dy="15">{{SLICE_2_DOMAIN_EVENT}}</tspan></text></g>
-                <g class="diagram-edge-label diagram-reveal" style="--reveal-delay: 1050ms" data-review-id="slice-designs.slice-002.edge-label-persist"><rect class="diagram-label-bg" x="784" y="188" width="250" height="46" rx="12"/><text class="diagram-arrow-label" x="909" y="208" text-anchor="middle"><tspan>{{SLICE_2_PERSIST_LABEL}}</tspan><tspan class="diagram-label-detail" x="909" dy="15">{{SLICE_2_TABLE_OR_COLLECTION}}</tspan></text></g>
-              </svg>
-              <figcaption>{{SLICE_2_DIAGRAM_CAPTION}}</figcaption>
-            </figure>
-            <ul class="checklist slice-design-points">
-              <li data-review-id="slice-designs.slice-002.external-need"><strong>External need:</strong> {{SLICE_2_EXTERNAL_NEED}}</li>
-              <li data-review-id="slice-designs.slice-002.entrypoint"><strong>Entry point:</strong> {{SLICE_2_ENTRYPOINT}} with {{SLICE_2_REQUEST_SHAPE}} → {{SLICE_2_RESPONSE_SHAPE}}</li>
-              <li data-review-id="slice-designs.slice-002.delivery-surface"><strong>Delivery:</strong> <code>{{SLICE_2_ROUTE_PATH}}</code>; <code>{{SLICE_2_HTTP_METHOD}} {{SLICE_2_ENDPOINT_ROUTE}}</code>; handler <code>{{SLICE_2_ENDPOINT_NAME}}</code>.</li>
-              <li data-review-id="slice-designs.slice-002.service-domain"><strong>Service/domain:</strong> <code>{{SLICE_2_SERVICE_NAME}}.{{SLICE_2_SERVICE_METHOD}}</code>; <code>{{SLICE_2_DOMAIN_MODEL}}</code>; {{SLICE_2_DOMAIN_SERVICE}} / {{SLICE_2_DOMAIN_RULE}}.</li>
-              <li data-review-id="slice-designs.slice-002.persistence-model"><strong>Persistence:</strong> <code>{{SLICE_2_REPOSITORY_MODEL}}.{{SLICE_2_REPOSITORY_METHOD}}</code>; <code>{{SLICE_2_DB_MODEL}}</code> / <code>{{SLICE_2_TABLE_OR_COLLECTION}}</code>.</li>
-              <li data-review-id="slice-designs.slice-002.small-design"><strong>Small design:</strong> {{SLICE_2_APPLICATION_SEAM}}; {{SLICE_2_DOMAIN_BEHAVIOR}}; {{SLICE_2_PORTS_ADAPTERS_DATA}}.</li>
-              <li data-review-id="slice-designs.slice-002.feedback"><strong>Feedback/spike:</strong> {{SLICE_2_FEEDBACK}}. Escalate if {{SLICE_2_SPIKE_OR_ESCALATE}}.</li>
-            </ul>
-          </article>
-
-          <div class="approval-checklist" data-review-id="tasks-and-feedback.approval-checklist">
-            <strong>Outside-in checklist</strong>
-            <ul><li>{{OUTSIDE_IN_CHECK_1}}</li><li>{{OUTSIDE_IN_CHECK_2}}</li><li>{{OUTSIDE_IN_CHECK_3}}</li></ul>
-          </div>
-          <span class="review-label">review: tasks-and-feedback</span>
-        </section>
-
-        <section class="section-card reveal" id="story-coverage" aria-labelledby="coverage-title" data-review-id="story-coverage">
-          <span class="section-kicker">PRD alignment</span>
-          <h2 id="coverage-title">Story → Slice → Architecture Coverage</h2>
-          <p class="section-summary">{{STORY_COVERAGE_SUMMARY}}</p>
-          <table>
-            <caption>Coverage matrix from PRD stories and BDD scenarios to slices, architecture changes, and feedback hooks</caption>
-            <thead><tr><th scope="col">PRD story / BDD / AC</th><th scope="col">Slice</th><th scope="col">Architecture changes</th><th scope="col">Feedback hook</th><th scope="col">Gap</th></tr></thead>
-            <tbody>
-              <tr data-review-id="story-coverage.row-1"><td>{{COVERAGE_STORY_1}}</td><td>{{COVERAGE_SLICE_1}}</td><td>{{COVERAGE_ARCH_CHANGE_1}}</td><td>{{COVERAGE_FEEDBACK_1}}</td><td>{{COVERAGE_GAP_1}}</td></tr>
-              <tr data-review-id="story-coverage.row-2"><td>{{COVERAGE_STORY_2}}</td><td>{{COVERAGE_SLICE_2}}</td><td>{{COVERAGE_ARCH_CHANGE_2}}</td><td>{{COVERAGE_FEEDBACK_2}}</td><td>{{COVERAGE_GAP_2}}</td></tr>
-            </tbody>
-          </table>
-          <span class="review-label">review: story-coverage</span>
-        </section>
-
-        <section class="section-card reveal" id="open-questions" aria-labelledby="questions-title" data-review-id="open-questions">
-          <span class="section-kicker">Blockers</span>
-          <h2 id="questions-title">Open Questions</h2>
-          <p class="section-summary">{{OPEN_QUESTIONS_SUMMARY}}</p>
-          <ul class="question-list">
-            <li data-review-id="open-questions.question-1"><strong>{{QUESTION_1}}</strong><br />Owner: {{QUESTION_OWNER_1}}. Blocks: {{QUESTION_BLOCKS_1}}. Resolution: {{QUESTION_RESOLUTION_1}}.<fieldset class="review-option-selector" data-review-id="open-questions.question-1.options"><legend>Reviewer options</legend><label class="review-option"><input type="radio" name="design-question-1-option" /> <span>{{QUESTION_1_OPTION_A}}</span></label><label class="review-option review-option-custom"><input type="radio" name="design-question-1-option" /> <span>Other / custom answer <input type="text" aria-label="Custom answer for design question 1" placeholder="Write reviewer answer…" /></span></label></fieldset></li>
-            <li data-review-id="open-questions.question-2"><strong>{{QUESTION_2}}</strong><br />Owner: {{QUESTION_OWNER_2}}. Blocks: {{QUESTION_BLOCKS_2}}. Resolution: {{QUESTION_RESOLUTION_2}}.<fieldset class="review-option-selector" data-review-id="open-questions.question-2.options"><legend>Reviewer options</legend><label class="review-option"><input type="radio" name="design-question-2-option" /> <span>{{QUESTION_2_OPTION_A}}</span></label><label class="review-option review-option-custom"><input type="radio" name="design-question-2-option" /> <span>Other / custom answer <input type="text" aria-label="Custom answer for design question 2" placeholder="Write reviewer answer…" /></span></label></fieldset></li>
-          </ul>
-          <span class="review-label">review: open-questions</span>
-        </section>
-
-        <nav class="prev-next" aria-label="Previous and next documents" data-review-id="related.prev-next">
-          <a href="docs/features/{{FEATURE_SLUG}}/prd.html"><span class="panel-title">Previous</span><br />PRD</a>
-          <a href="{{NEXT_DOC_PATH}}"><span class="panel-title">Next</span><br />{{NEXT_DOC_TITLE}}</a>
-        </nav>
-
-        <section class="related-links" aria-labelledby="related-title" data-review-id="related-links">
-          <h2 id="related-title" class="panel-title">Related Links</h2>
-          <ul><li><a href="docs/features/{{FEATURE_SLUG}}/prd.html">PRD</a></li><li><a href="{{RELATED_ADR_OR_TASK}}">ADR or task brief</a></li></ul>
-        </section>
+        {{COMPOSED_DESIGN_CONTENT}}
 
         <section class="feedback-widget" id="feedback" aria-labelledby="feedback-title" data-review-id="feedback">
           <h2 id="feedback-title" class="panel-title">Was this design useful?</h2>
           <p class="feedback-note">{{FEEDBACK_PROMPT}}</p>
           <div class="feedback-actions"><button type="button" data-feedback="yes">Yes</button><button type="button" data-feedback="no">No</button></div>
+          <p class="feedback-result" aria-live="polite"></p>
         </section>
       </article>
     </main>
-
   </div>
 
   <a class="back-to-top" href="#main" aria-label="Back to top">↑</a>
   <footer data-review-id="provenance">
-    <p>Generated/updated {{UPDATED_DATE}} as a self-contained Vercel-style docs design packet. Preserve <code>data-review-id</code> anchors for review comments.</p>
+    <p>Generated/updated {{UPDATED_DATE}} as a self-contained design. Preserve <code>data-review-id</code> anchors for review comments.</p>
   </footer>
 
-  <script>
-    document.documentElement.classList.add('js');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const revealItems = Array.from(document.querySelectorAll('.reveal'));
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      revealItems.forEach((item) => item.classList.add('is-visible'));
-    } else {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
-      revealItems.forEach((item) => observer.observe(item));
-    }
+  <script data-artifact-motion="native">
+/* artifact-motion:start */
+document.documentElement.classList.add('js');
 
+const revealItems = Array.from(document.querySelectorAll('.reveal'));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const showAll = () => revealItems.forEach((item) => item.classList.add('is-visible'));
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  showAll();
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  revealItems.forEach((item) => observer.observe(item));
+  window.addEventListener('beforeprint', showAll, { once: true });
+}
+/* artifact-motion:end */
+  </script>
+  <script>
+    const navigationReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const tocLinks = Array.from(document.querySelectorAll('nav[aria-label="Table of contents"] a[href^="#"]'));
     const tocTargets = tocLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
-    if (!reduceMotion && 'IntersectionObserver' in window && tocTargets.length > 0) {
+    if (!navigationReduceMotion && 'IntersectionObserver' in window && tocTargets.length > 0) {
       const tocObserver = new IntersectionObserver((entries) => {
         const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (!visible) return;
@@ -665,22 +99,12 @@
       tocTargets.forEach((target) => tocObserver.observe(target));
     }
 
-    document.querySelectorAll('[data-copy-target]').forEach((button) => {
-      button.addEventListener('click', async () => {
-        const target = document.getElementById(button.dataset.copyTarget);
-        if (!target) return;
-        try {
-          await navigator.clipboard.writeText(target.textContent || '');
-          button.textContent = 'Copied';
-        } catch {
-          button.textContent = 'Copy failed';
-        }
-      });
-    });
-
     document.querySelectorAll('[data-feedback]').forEach((button) => {
       button.addEventListener('click', () => {
-        button.closest('.feedback-widget')?.setAttribute('data-feedback', button.dataset.feedback);
+        const widget = button.closest('.feedback-widget');
+        widget?.setAttribute('data-feedback', button.dataset.feedback);
+        const result = widget?.querySelector('.feedback-result');
+        if (result) result.textContent = button.dataset.feedback === 'yes' ? 'Marked useful.' : 'Marked for follow-up.';
       });
     });
   </script>

@@ -117,8 +117,8 @@ Every HTML report should be:
 
 Every generated report must pass this definition of done before handoff:
 
-- first viewport states the reader goal, current review state, what the reviewer should focus on, and any UI option/gap decision needed without using a dashboard-style metric strip;
-- Vercel-like docs shell exists: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, prev/next, related links, feedback widget, and back-to-top affordance;
+- first viewport states the reader goal, current review state, what the reviewer should focus on, and any blocking product decision without using a dashboard-style metric strip;
+- Vercel-like docs shell exists: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, feedback widget, and back-to-top affordance; add prev/next or related links only when those destinations exist;
 - no unresolved `{{PLACEHOLDER}}` tokens remain in generated docs;
 - exactly one `<h1>`, a skip link to `<main id="main">`, semantic landmarks, and non-skipping heading order;
 - stable, unique `data-review-id` anchors on sections, cards, tables rows, and important diagram groups;
@@ -127,7 +127,9 @@ Every generated report must pass this definition of done before handoff:
 - assumptions, facts, decisions, risks, and open questions are visually separated;
 - motion is optional progressive enhancement and respects `prefers-reduced-motion`;
 - print view is usable;
-- PRDs and designs include a domain interaction map when meaningful, or an explicit “not applicable” note: source entity/concept → verb/action → target entity/state/effect, with ownership/rules and unresolved vocabulary/policy gaps.
+- PRD and design top-level sections use `reveal` and the shared scroll-reveal runtime, while no-JS, reduced-motion, and print show all content immediately;
+- each substantive PRD or durable design includes the high-quality explanatory diagram required by its owning skill, or its explicit `Diagram not applicable` rationale;
+- product or design visuals render only content required by the owning skill; a report shell never creates a domain map, story, option, or other substantive section to fill a visual component;
 - PRDs do not leak architecture and designs do not invent product behavior.
 
 When available, run the validator on generated reports:
@@ -181,8 +183,8 @@ Required landmarks and shell components:
 - one `<main id="main">`,
 - one article header for title/summary/status/meta,
 - meaningful `<section aria-labelledby="..." data-review-id="...">` blocks,
-- previous/next document links,
-- related links/artifacts block,
+- previous/next document links when those documents exist,
+- related links/artifacts block when there are real destinations,
 - feedback widget,
 - one `<footer>` for provenance/update info when useful.
 
@@ -206,9 +208,9 @@ The first screen should include:
 - status pill: Draft / Review / Approved / Blocked / Superseded,
 - owner/audience when known,
 - one-paragraph summary,
-- 3-5 key takeaways or decisions,
-- next review action,
-- source links/paths.
+- concise review-critical context or decisions when present, without a fixed item count,
+- next review action when known,
+- source links/paths when available.
 
 ### Main body
 
@@ -218,16 +220,18 @@ Use these named components instead of inventing one-off containers:
 
 - **Docs shell**: `.breadcrumbs`, `.doc-shell`, `.side-nav`, `.index-details`, `.prev-next`, `.related-links`, `.feedback-widget`, `.back-to-top`.
 - **Article metadata** for status/date/type as compact pills; avoid owner/outcome/next-action metric-card strips unless explicitly requested.
-- **Takeaway list** for 3-5 review-critical points in the first viewport.
+- **Takeaway list** for sourced review-critical points in the first viewport; omit it when the summary is sufficient.
 - **Step lists** for review paths, setup/review sequence, and approval flow.
 - **Tabs** for paired perspectives such as scenario/evidence, current/intended, or decision/alternative.
 - **Copyable code/evidence blocks** for prompts, commands, API examples, or exact source snippets.
 - **Conceptual contract lists** for multiple code-like data shapes; stack them in a single column with `contract-list` instead of a multi-column card grid. Each item is two rows: entity name, then one full-width colored `schema-code` block.
 - **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
-- **Requirement/story cards** for PRD behavior with stable STORY/REQ/AC IDs.
-- **Post-story flow cards/timelines** for every PRD story: entry → action → visible response → next user decision → review gap.
-- **Domain interaction maps/cards** for PRDs and designs: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps. Use “not applicable” only with a visible rationale.
-- **UI option wireframes** for 2-3 user-facing directions with detailed HTML/SVG wireframes, labelled regions, representative copy, state changes, step-by-step usage, expected outcome per step, best-fit context, tradeoff, and selected/recommended/pending status.
+- **Product slice sections** for PRD behavior with stable `SLICE-*`, `STORY-*`, `EX-*`, `STEP-*`, and `AC-*` IDs.
+- **Requirement/story cards** inside their owning product slice; do not separate stories from the scenarios, storyboard, and acceptance that explain them.
+- **Intended-flow storyboards** for user-facing product slices: one compact semantic wireframe panel per product-visible step, showing context/state → action → visible response → next decision/outcome.
+- **Non-visual interaction strips** when UI is not applicable: actor → trigger/action → stakeholder-observable state/effect, plus the reason no screen is shown.
+- **Domain interaction maps/cards** only when the owning PRD or design calls for one: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps.
+- **UI option wireframes** only for a real unresolved product decision, comparing the smallest material alternatives with labelled regions, representative copy, state changes, expected outcomes, tradeoffs, and selected/recommended/pending status.
 - **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
 - **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option so the selected answer can become part of the review record.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
@@ -258,26 +262,29 @@ Bake these patterns into every future generated report:
 - **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
 - **Tables only for true matrices** — use tables for comparison/traceability, not as the default section shape. Prefer prose, bullets, cards, examples, and diagrams for explanation. A normal design should have 0-2 tables; if there are more, collapse reference detail into cards, lists, or `<details>`.
 - **Code blocks follow code-block convention** — code-like snippets need enough horizontal room, should not be clipped, and should not be placed in responsive multi-column grids. If a section has several code/data shapes, render them as a vertical list (`contract-list`): first row is the entity name, second row is a colored `schema-code` block, and each property appears on its own line. Use restrained spans: `code-key` for properties, `code-enum` for enum/status values, and `code-punctuation` for braces, commas, colons, and union bars.
-- **Wireframe-first UI options** — product-facing UI choices should use screen-like wireframes, not plain text boxes. Include header/navigation/content/detail regions, representative copy, controls, state chips, empty/loading/error/success states when relevant, and enough structure for the reviewer to comment on specific regions. Each option must also include a short numbered use flow where every step states the user action and expected visible outcome.
+- **Storyboard-first product flows** — render the intended user-facing flow before considering alternatives. Use one small screen-like semantic wireframe per product-visible step, with representative copy, action, visible response, and next outcome. Reuse the existing shell when available. Show multiple UI alternatives only when an unresolved product decision requires comparison; do not manufacture options to fill a report component.
 - **Domain interaction before implementation detail** — when domain concepts matter, show verbs and effects between entities before data contracts or components. Reviewers should be able to say “this entity changes that state because of this business action.”
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, uncertainty if relevant, and progressive reading-order motion.
-- **ELK-laid-out architecture diagrams** — for multi-node architecture/slice diagrams, prefer the build-time ELK renderer (`scripts/render-elk-diagram.mjs`) over hand-positioning. It produces inline SVG with automatic spacing, orthogonal routed arrows, foreground edge-label pills, reading-order reveal delays, path draw-in motion, and the shared diagram CSS primitives.
+- **Renderer-backed diagrams** — choose the renderer through `system-diagram`. Prefer the existing build-time Excalidraw renderer for authored teaching diagrams; use another installed build-time SVG generator only when its layout better answers the question. Never reference a renderer that is not available in the repository.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
 
-### Example-first requirement
+### Content ownership requirement
 
-Every PRD or design report must include these concrete review aids before abstract detail:
+Presentation must not determine PRD substance. The `prd` skill owns which product slices, stories, scenarios, storyboards, rules, and acceptance criteria exist. The `design-solution` skill owns design substance. This skill renders those decisions accessibly and reviewably; it never adds a scenario, visual, alternative, or ceremony merely because the template or component inventory contains one.
 
-- one main scenario showing the happy path;
-- one edge/error/empty/loading/permission scenario, or an explicit “not applicable” note;
-- a before/after panel describing what changes for the user or system;
-- for PRDs, a post-story flow for every story and 2-3 detailed UI wireframe options with step-by-step use and expected outcomes when the change is user-facing;
-- for PRDs and designs, a domain interaction map/cards when domain entities/concepts matter, or a visible “not applicable” rationale;
-- for designs, the selected PRD UI option plus interface state/style/motion/library implications;
-- a “what reviewers should decide” review path;
-- an evidence/source-anchor block tying claims to code, research, tests, screenshots, logs, or source docs.
+For PRDs, support the owning content contract with:
+
+- one evidence-backed product-behavior diagram, or the owning skill's explicit not-applicable rationale;
+- the main Given/When/Then scenario inside each product slice;
+- one intended-flow storyboard per user-facing product slice, with a compact semantic wireframe for every product-visible step;
+- a non-visual interaction/state strip and rationale when UI is not applicable;
+- multiple UI alternatives only when an unresolved product decision requires comparison;
+- traceable review anchors for `SLICE-*`, `STORY-*`, `EX-*`, `STEP-*`, and `AC-*`;
+- source/evidence anchors tying consequential claims to code, research, screenshots, analytics, logs, or source documents.
+
+Do not impose a fixed number of slices, stories, scenarios, steps, options, questions, or acceptance criteria. The sourced product behavior determines cardinality.
 
 ### Navigation rail
 
@@ -285,11 +292,31 @@ Use one navigation rail only: the collapsible left index. Do not add a right sid
 
 ## PRD report pattern
 
-For `docs/features/{feature}/prd.html`, start from `resources/prd-template.html`. The owning `prd` skill decides which content roles exist and their order. Treat the restored template's sections, cards, flows, wireframes, selectors, and navigation entries as a visual component inventory—not a content checklist. Retain only components justified by sourced PRD content, remove unused sections and matching navigation links, and preserve the restored shell, embedded CSS, and component classes.
+For `docs/features/{feature}/prd.html`, start from the content-neutral shell in `resources/prd-template.html`. The `prd` skill owns content and reading order.
+
+1. Compose the PRD in product order before touching the shell.
+2. Generate `{{PRD_TOC}}` from the composed top-level sections.
+3. Use `{{PRD_ARTIFACT_LINKS}}` only for real related documents; an empty string is valid.
+4. Use `{{PRD_HEADER_SUPPORT}}` only for sourced review-critical context; an empty string is valid.
+5. Insert the complete semantic section markup at `{{COMPOSED_PRD_CONTENT}}`; add `reveal` to every top-level composed section.
+6. Reuse the shell's component classes for slices, scenarios, storyboards, diagrams, decisions, and acceptance without copying sample content or fixed counts.
+7. Replace every placeholder and validate the finished file.
+
+The shell contains no sample stories, scenarios, domain sections, UI alternatives, readiness checklist, or acceptance count. Presentation must follow the PRD; the PRD must never be reverse-engineered from the template.
 
 ## Design report pattern
 
-For `docs/features/{feature}/design.html`, start from `resources/design-template.html`. The owning `design-solution` skill decides which architecture roles exist and their order. Treat the restored template's sections, cards, tables, diagrams, slices, and navigation entries as a visual component inventory—not a required design outline. Retain only components justified by the approved product promise and architecture question, remove unused sections and matching navigation links, and preserve the restored shell, embedded CSS, and component classes.
+For `docs/features/{feature}/design.html`, start from the content-neutral shell in `resources/design-template.html`. The `design-solution` skill owns content and reading order.
+
+1. Compose the design before touching the shell.
+2. Generate `{{DESIGN_TOC}}` from the composed top-level sections.
+3. Use `{{DESIGN_ARTIFACT_LINKS}}` only for real related documents; an empty string is valid.
+4. Use `{{DESIGN_HEADER_SUPPORT}}` only for sourced review-critical context; an empty string is valid.
+5. Insert the complete semantic section markup at `{{COMPOSED_DESIGN_CONTENT}}`; add `reveal` to every top-level composed section.
+6. Reuse the shell's component classes for the causal diagram, decisions, risks, contracts, and slices without copying sample content or fixed counts.
+7. Replace every placeholder and validate the finished file.
+
+The shell contains no sample architecture, hard-coded nodes, diagrams, slices, contracts, or decisions. Presentation must follow the design; architecture must never be reverse-engineered from the template.
 
 ## Visual modes
 
@@ -333,7 +360,7 @@ Avoid:
 
 ## Motion and scroll appearance
 
-Motion is allowed when it improves orientation, especially for long reports and diagrams, but it must be progressive enhancement.
+Generated PRD and design reports use subtle scroll-reveal motion for top-level sections. Diagrams may reveal in causal reading order. Motion is always progressive enhancement: it must improve orientation without becoming required for meaning.
 
 Use motion for:
 
@@ -354,37 +381,24 @@ Do not use motion for:
 Implementation rules:
 
 - Default content must be visible without JavaScript.
-- If JavaScript is used, add a `.js` class and reveal `.reveal` elements with `IntersectionObserver`.
-- For inline SVG, wrap readable groups in `.diagram-reveal`, paths in `.path-draw` with `pathLength="1"`, and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story.
+- Use the shared `resources/artifact-motion.js` runtime already embedded by the PRD and design templates; do not fork per-report reveal logic.
+- For inline SVG, wrap readable groups in `.diagram-reveal` and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story. Add `.path-draw` with `pathLength="1"` only to simple single-stroke authored SVG paths, never coordinated multi-stroke Excalidraw edges.
 - Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
 - Keep reveal distance small: `8–16px` vertical movement.
 - Keep reveal duration short: `160–260ms` for cards, `260–420ms` for diagram groups.
 - Stagger only within a local group; avoid long page-wide choreography.
 - Use `:focus-visible` rings on links, summaries, buttons, and review anchors.
 
-Recommended pattern:
+Recommended composition:
 
 ```html
 <section class="section-card reveal" data-review-id="scope">...</section>
-<script>
-  document.documentElement.classList.add('js');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const items = document.querySelectorAll('.reveal');
-  if (reduce || !('IntersectionObserver' in window)) {
-    items.forEach((el) => el.classList.add('is-visible'));
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    items.forEach((el) => observer.observe(el));
-  }
-</script>
+<section class="section-card reveal" data-review-id="diagram.product-flow">
+  <figure class="figure-card">...inline accessible SVG...</figure>
+</section>
 ```
+
+The template's managed `<script data-artifact-motion="native">` observes these sections. Default CSS shows content; the `.js` class enables motion only after the runtime loads.
 
 ## Voice and content
 
@@ -439,7 +453,7 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- For architecture/slice diagrams, prefer build-time ELK layout: create a JSON spec, run `node scripts/render-elk-diagram.mjs spec.json output.svg`, inspect the output, then inline the SVG into the HTML report. Keep the generated `diagram-reveal`, `path-draw`, foreground label groups, and reveal delays intact so diagrams animate in reading order. Keep the JSON spec near the feature/task when it should be regenerated.
+- For diagrams, use the renderer selected by `system-diagram`. With the existing Excalidraw path, keep the JSON source near the feature when regeneration matters, run `scripts/render-excalidraw-diagram.mjs`, inspect the SVG, and inline it. Preserve generated `diagram-reveal` groups, foreground labels, and reveal delays; do not add `.path-draw` to coordinated multi-stroke Excalidraw edges.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.

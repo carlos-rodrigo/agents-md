@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="/Users/carlosrodrigo/agents"
 
 node "$ROOT/scripts/test-restored-report-routing.mjs"
+node "$ROOT/scripts/test-artifact-motion.mjs"
 node "$ROOT/scripts/build-html-report-css.mjs" --check
 node "$ROOT/scripts/render-excalidraw-diagram.mjs" --check \
   "$ROOT/skills/system-diagram/resources/excalidraw-slice-example.json" \

@@ -1,6 +1,6 @@
 ---
 name: design-solution
-description: "Create or update a feature's concise high-level design.html from an approved PRD. Use for architecture pressure, boundaries, causal system paths, tradeoffs, risks, and optional delivery slices. HTML presentation comes from html-report-designer; diagrams are question-driven and optional. Triggers on: create design, design this, design.html, architecture design, solution design, slice plan."
+description: "Create or update a feature's concise high-level design.html from an approved PRD. Use for architecture pressure, boundaries, causal system paths, tradeoffs, risks, high-quality explanatory diagrams, and optional delivery slices. HTML presentation comes from html-report-designer. Triggers on: create design, design this, design.html, architecture design, solution design, slice plan."
 ---
 
 # Feature Design
@@ -18,19 +18,19 @@ docs/adrs/                          # optional durable decisions
 .features/{feature}/tasks/          # optional execution packets
 ```
 
-## Restored report template lock
+## Content ownership and report shell
 
-Every new or regenerated feature design must use the report presentation restored from commit `ce8aab10f17fb9365533ee225bd5c2ce663a897f`:
+This skill owns all design substance and reading order. `html-report-designer` supplies only the self-contained shell, visual components, scroll motion, accessibility, and validation workflow.
+
+Use:
 
 ```text
 skills/html-report-designer/resources/design-template.html
 ```
 
-Start from a byte-for-byte copy of this template. Keep its embedded style block and visual component classes unchanged. Replace placeholders with sourced design content, remove unused sample sections and their navigation links, and leave no unresolved placeholders. Do not substitute another report shell, recipe, or visual system unless the user explicitly replaces this lock.
+The template exposes `{{DESIGN_TOC}}`, `{{DESIGN_ARTIFACT_LINKS}}`, `{{DESIGN_HEADER_SUPPORT}}`, and `{{COMPOSED_DESIGN_CONTENT}}` composition slots. Compose the sourced design before fitting it to the shell. Generate navigation from sections that actually exist. Use artifact links only for real related documents; empty support slots are valid. The template must not add, remove, reorder, or multiply architecture decisions, paths, diagrams, risks, or slices.
 
-The template controls presentation, not architecture scope: do not invent content merely to fill its available components.
-
-This skill owns the design's content structure. `html-report-designer` owns the static shell, visual tokens, accessibility, generation, and validation—not architecture content or section order.
+Keep the embedded style block and visual component classes. Replace every placeholder, add `reveal` to top-level composed sections, preserve semantic HTML and stable review IDs, and leave no unresolved placeholders. Never invent architecture to fill a component.
 
 ## Architecture narrative
 
@@ -44,7 +44,7 @@ Use feature-specific headings and any useful order. Omit a role entirely when it
 
 Read the approved PRD or explicit approved product brief first. Design must not invent product behavior.
 
-Proceed when product promise, observable proof, scope, constraints, and blocking decisions are clear. Consume optional PRD evidence that is present. The absence of optional UI, domain, story, or diagram sections is not a blocker.
+Proceed when the approved product definition, rationale, product slices, stories, scenarios, observable acceptance, scope, constraints, and blocking decisions are clear. Consume those product contracts without rewriting them. Missing required PRD behavior blocks design; optional UI alternatives and domain maps do not.
 
 Skip durable design for small clear changes when one obvious seam satisfies the approved behavior and an implementation feedback loop can carry the remaining detail.
 
@@ -63,11 +63,12 @@ Create or update `design.html` when architecture merits durable review, for exam
 3. Name the architecture pressure that makes the obvious implementation insufficient.
 4. Choose the narrowest seam that owns the change.
 5. Trace one causal system path from external trigger to observable result.
-6. Record consequential tradeoffs, risks, proof strategy, and meaningful boundaries.
-7. Add optional contracts, diagrams, operations, or slices only when the architecture question needs them.
-8. Generate `design.html` through `html-report-designer` without surrendering content order.
-9. Validate claims against code/docs and the artifact against shared quality gates.
-10. Stop before line-by-line patches or execution evidence.
+6. Create one high-quality causal architecture diagram that teaches that path, or record `Diagram not applicable` with a concrete reason.
+7. Record consequential tradeoffs, risks, proof strategy, and meaningful boundaries.
+8. Add optional contracts, operations, or slices only when the architecture question needs them.
+9. Generate `design.html` through `html-report-designer` without surrendering content order.
+10. Validate claims against code/docs and the artifact against shared quality gates.
+11. Stop before line-by-line patches or execution evidence.
 
 ## Architecture core
 
@@ -85,7 +86,7 @@ Do not paste the PRD. Link to it and extract only facts that shape architecture.
 
 Compose only the roles needed for the current architecture question. A small internal behavior may need the core, one path, and proof. A persistence boundary may need contracts, migration, recovery, and an ADR. A user-facing cross-boundary change may need interface consequences and one system path.
 
-Do not add architecture inventory, technology sections, domain models, matrices, risks, slices, or diagrams merely because a report template can render them.
+Do not add architecture inventory, technology sections, domain models, matrices, risks, or slices merely because a report template can render them. The expected causal diagram must teach the chosen path rather than inventorying the system.
 
 Load `references/optional-design-recipes.md` only for the role that is actually needed:
 
@@ -122,18 +123,21 @@ Technology choices belong only when they constrain a boundary or materially chan
 
 Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it. Link to canonical schemas or contracts rather than copying full field catalogs.
 
-## Architecture diagram gate
+## Architecture diagram expectation
 
-Use `system-diagram` only after naming a diagram question. A design diagram is optional.
+A durable feature design normally includes one high-quality causal architecture diagram. Use `system-diagram` after naming the architecture question the figure must answer.
 
-Create one when:
+The figure should teach:
 
-1. a named architecture question or boundary remains hard to understand in prose/code links;
-2. one small causal path can answer it;
-3. existing prose, code links, or tests are insufficient;
-4. the diagram will unlock a review decision or shared mental model.
+```text
+external trigger → entry/transport → owning seam → policy/state → dependency/persistence → observable result
+```
 
-Prefer one legible path over a mega-map. When Excalidraw is selected, follow `system-diagram`'s top-to-bottom spacing, node-padding, and arrow-legibility contract so architecture content does not crowd the figure. The diagram's renderer is a presentation choice, not an architecture requirement.
+Include a material failure or recovery branch only when it changes ownership or the product contract. Prefer one legible path over a topology inventory or mega-map. Every meaningful edge needs a verb, call, protocol, payload, transition, or effect label.
+
+Use an explicit `Diagram not applicable` rationale only when the durable design has no meaningful multi-boundary, state, ownership, sequence, or recovery path to visualize. Concise prose is not by itself a reason to omit a useful shared mental model.
+
+Follow `system-diagram`'s semantic brief, evidence, top-to-bottom spacing, node padding, arrow/label legibility, accessible SVG, walkthrough, responsive overflow, and validation contract. Preserve `.diagram-reveal` reading-order groups so the figure can progress when its section enters the viewport; the static SVG must remain complete without JavaScript.
 
 ## Outside-in slices
 
@@ -175,7 +179,8 @@ Before finishing:
 - [ ] Ownership, state, boundary crossings, and material failure/recovery are understandable.
 - [ ] Decisions show tradeoffs and credible alternatives rather than foregone conclusions.
 - [ ] Optional detail exists only because it changes architecture review.
-- [ ] Diagrams, when used, answer a named question and remain understandable as text.
+- [ ] One causal diagram answers a named architecture question, or `Diagram not applicable` gives a concrete rationale.
+- [ ] The diagram uses evidence-backed nodes and labelled edges, remains understandable as text, and passes mobile/print/no-JS/reduced-motion checks.
 - [ ] Slices are vertical outcomes, not layers.
 - [ ] ADR need is considered without turning ADRs into running notes.
 - [ ] Task execution detail and result evidence stay out of `design.html`.
@@ -191,7 +196,7 @@ Design gate: {satisfied | blocked pending product/architecture clarification}
 Design updated: docs/features/{feature}/design.html {opened/reviewed | not opened + reason}
 Architecture thesis: {one sentence}
 Research: {sources reviewed | skipped with reason}
-Optional artifacts: {none | artifact + question unlocked}
+Diagram: {path/section + question answered | not applicable + reason}
 ADRs: {none | paths}
 Slices/tasks: {none | paths or proposed outcomes}
 Validation: {passed | not run + reason | failed + key issue}
