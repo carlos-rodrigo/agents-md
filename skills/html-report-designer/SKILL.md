@@ -105,7 +105,7 @@ Hierarchy rules:
 Every HTML report should be:
 
 1. **Glanceable** — the first viewport answers: what is this, why it matters, and what decision/review is needed.
-2. **Navigable** — sticky table of contents, semantic headings, stable anchors, and skip link.
+2. **Navigable** — sticky, fully collapsible table of contents, semantic headings, stable anchors, and skip link.
 3. **Scannable** — short sections, bullets, cards, labels, tables, and callouts instead of walls of text.
 4. **Reviewable** — stable `data-review-id` anchors on sections/cards/diagram nodes; visible anchor labels when helpful.
 5. **Truthful** — product facts, assumptions, open questions, and design decisions are clearly separated.
@@ -178,7 +178,9 @@ Required landmarks and shell components:
 
 - no top navigation menu unless the user explicitly asks for one,
 - breadcrumbs before the article header,
-- one collapsible left sidebar/document index grouped by reader journey,
+- a full-width shell with no centered outer left/right margin; use responsive internal padding for readable edge clearance,
+- one collapsible left sidebar/document index grouped by reader journey, separated from content by a subtle right border; closing it must reclaim its page width rather than only hiding its contents,
+- a native labelled `<details>/<summary>` toggle that remains keyboard-operable and reduces to a clear compact menu affordance when closed,
 - one `<nav aria-label="Table of contents">` inside the left index for active in-page headings,
 - one `<main id="main">`,
 - one article header for title/summary/status/meta,
@@ -325,11 +327,12 @@ Default mode: **Vercel docs packet**.
 Use this for PRDs, feature designs, decision packets, and most durable docs. It should feel closer to Vercel Docs than a slide/report export:
 
 - breadcrumbs,
-- collapsible sticky left sidebar with active heading state,
+- full-width shell without centered outer margins,
+- collapsible sticky left sidebar with active heading state and a subtle right divider,
 - no right-side rail,
 - Vercel-like content area: black/gray neutral palette, Geist/system typography, tight page header, spacious prose, clean section dividers, and almost no shadows,
 - restrained monochrome accent by default; use blue only for links/focus or status when useful,
-- subtle CSS/IntersectionObserver motion for section reveal and hover affordances, always disabled under `prefers-reduced-motion`,
+- noticeable but restrained CSS/IntersectionObserver motion for section reveal and hover affordances, always disabled under `prefers-reduced-motion`,
 - fewer heavy cards and lighter borders,
 - examples, steps, callouts, tabs, and matrices as first-class components only when they clarify the content,
 - prev/next links, related artifacts, feedback, and provenance.
@@ -360,7 +363,7 @@ Avoid:
 
 ## Motion and scroll appearance
 
-Generated PRD and design reports use subtle scroll-reveal motion for top-level sections. Diagrams may reveal in causal reading order. Motion is always progressive enhancement: it must improve orientation without becoming required for meaning.
+Generated PRD and design reports use clearly perceptible but restrained scroll-reveal motion for top-level sections. Diagrams may reveal in causal reading order. Motion is always progressive enhancement: it must improve orientation without becoming required for meaning.
 
 Use motion for:
 
@@ -373,6 +376,7 @@ Use motion for:
 
 Do not use motion for:
 
+- blur or filter transitions on text, sections, cards, or diagram labels,
 - looping decoration,
 - parallax that competes with reading,
 - moving text while the user is trying to inspect it,
@@ -384,8 +388,9 @@ Implementation rules:
 - Use the shared `resources/artifact-motion.js` runtime already embedded by the PRD and design templates; do not fork per-report reveal logic.
 - For inline SVG, wrap readable groups in `.diagram-reveal` and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story. Add `.path-draw` with `pathLength="1"` only to simple single-stroke authored SVG paths, never coordinated multi-stroke Excalidraw edges.
 - Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
-- Keep reveal distance small: `8–16px` vertical movement.
-- Keep reveal duration short: `160–260ms` for cards, `260–420ms` for diagram groups.
+- Use opacity and translation only for reveal motion; keep text and diagram labels crisp throughout.
+- Keep top-level section reveal distance around `20–24px`; local card/diagram movement stays within `8–16px`.
+- Keep top-level section reveal around `500–560ms`; local cards and diagram groups stay around `260–420ms`.
 - Stagger only within a local group; avoid long page-wide choreography.
 - Use `:focus-visible` rings on links, summaries, buttons, and review anchors.
 

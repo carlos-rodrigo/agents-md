@@ -52,6 +52,8 @@ for (const [label, template, slots] of templates) {
     'class="side-nav"',
     'class="breadcrumbs"',
     'data-artifact-motion="native"',
+    'aria-label="Toggle document sidebar"',
+    'class="sidebar-toggle-copy"',
     ...slots,
   ]);
 }
@@ -78,10 +80,20 @@ for (const cssPath of ['skills/html-report-designer/resources/prd.tailwind.css',
     '@media (prefers-reduced-motion: reduce)',
     '.diagram-reveal',
     '.path-draw',
+    '.doc-shell:has(.index-details:not([open]))',
+    '.index-details:not([open]) > summary::before',
+    '.sidebar-toggle-copy::before',
+    'content: "Collapse"',
+    'transition: grid-template-columns',
+    'max-width: none;',
+    'width: 100%;',
+    'min-height: calc(100vh - var(--space-8)); max-height: calc(100vh - var(--space-8));',
+    'padding-right: var(--space-4); border-right: 1px solid var(--border);'
   ]);
+  assert(!css.includes('filter: blur('), `${cssPath} should not blur text during reveal motion`);
 }
 
-console.log('PASS: PRD and design generation use content-neutral shells with shared progressive motion');
+console.log('PASS: PRD and design generation use content-neutral shells with shared progressive motion and a collapsible sidebar');
 
 function requireAll(label, content, markers) {
   const missing = markers.filter((marker) => !content.includes(marker));
