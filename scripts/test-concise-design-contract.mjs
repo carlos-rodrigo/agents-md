@@ -56,6 +56,8 @@ requireAll('system-diagram', diagram, [
   'One small causal path',
   'existing evidence supports the figure',
   'Diagram not applicable',
+  '## Required renderer',
+  "Use the repository's build-time Excalidraw renderer for every diagram",
 ]);
 
 forbidAll('design-solution', design, [
@@ -71,7 +73,14 @@ forbidAll('html-report-designer', report, [
 ]);
 forbidAll('system-diagram', diagram, [
   'For complex features, create a small set of diagram sections inside the main report by default',
-  'Use authentic build-time Excalidraw export as the default diagram treatment',
+  'No renderer is mandatory',
+  'Inline authored SVG',
+  '**Graphviz**',
+  '**D2**',
+  '**ELK/elkjs**',
+  '**Mermaid or PlantUML**',
+  '**Cytoscape.js**',
+  '**GoJS**',
 ]);
 
 console.log('PASS: concise composition-neutral design guidance is aligned across owning and consuming skills');

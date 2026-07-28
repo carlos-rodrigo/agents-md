@@ -1,6 +1,6 @@
 ---
 name: system-diagram
-description: "Create a question-driven, evidence-backed, high-quality system diagram as accessible inline SVG. Use for PRD product behavior and design architecture paths involving causal flows, boundaries, ownership, state, sequence, domain behavior, or recovery. Supports authored and auto-layout tool selection."
+description: "Create a question-driven, evidence-backed, high-quality system diagram with the required build-time Excalidraw renderer and accessible inline SVG output. Use for PRD product behavior and design architecture paths involving causal flows, boundaries, ownership, state, sequence, domain behavior, or recovery."
 argument-hint: "[feature-or-doc-path]"
 ---
 
@@ -41,7 +41,7 @@ If these conditions are not met, resolve the evidence/question first or record `
 
 ## Brief
 
-Complete the smallest useful brief before choosing a renderer:
+Complete the smallest useful brief before authoring the Excalidraw scene:
 
 ```text
 Question:
@@ -140,46 +140,21 @@ Large means more canvas, not smaller text or more concepts.
 
 A static mega-diagram is usually a sign that the question is too broad. A large canvas is appropriate for lanes, timelines, and retained identity—not for dumping every component.
 
-## Tool selection
+## Required renderer
 
-Choose the tool after the semantic brief. No renderer is mandatory.
+Use the repository's build-time Excalidraw renderer for every diagram. Do not hand-author the final SVG or use any alternative renderer or browser diagram runtime. One renderer keeps generation, review IDs, typography, accessibility, motion groups, provenance, and regeneration deterministic.
 
-Current local options:
+Excalidraw layout is deliberately authored rather than automatic. If a scene becomes too dense to lay out legibly, split the question into smaller figures instead of changing renderers, shrinking text, or introducing an alternate pipeline.
 
-- **Excalidraw renderer** — best for deliberately authored, sketch-like teaching diagrams and controlled reading order; layout is manual.
-- **Inline authored SVG** — best for a small custom visual with precise editorial treatment.
-- **Graphviz** — strongest simple open-source candidate for deterministic build-time auto-layout of larger static topology/flow graphs.
-- **D2** — concise authoring front end with multiple layout engines and SVG export.
-- **ELK/elkjs** — strongest layout substrate for hierarchy, ports, and orthogonal routing, but it requires a custom SVG renderer/postprocessor.
-- **Mermaid or PlantUML** — convenient for familiar sequence/state/UML forms; inspect and postprocess exported SVG before embedding.
-- **Cytoscape.js** — better for interactive graph exploration than static document output.
-- **GoJS** — capable integrated commercial option; requires procurement/license approval.
+## Build path
 
-Do not add a dependency or build pipeline only for one diagram without approval. Read `references/diagram-tool-research.md` for official sources, tradeoffs, and the recommended adoption sequence.
-
-## Build paths
-
-### Existing Excalidraw path
-
-For an authored diagram, create an explicitly positioned JSON scene using the vertical spacing and arrow-legibility contract above, then run:
+Create an explicitly positioned JSON scene using the vertical spacing and arrow-legibility contract above, then run:
 
 ```bash
 node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg
 ```
 
-Preserve title/description, searchable text, provenance, review IDs, edge labels, and renderer-owned `.diagram-reveal` groups. The renderer is an available medium, not a reason to create a diagram. See `references/renderer-workflow.md` for its exact regeneration and embedding contract.
-
-### Other SVG generators
-
-Generate at build time, then normalize the SVG before embedding:
-
-- remove remote assets and runtime dependencies;
-- add or verify `viewBox`, `<title>`, `<desc>`, and accessible naming;
-- keep text searchable or provide a complete local text equivalent;
-- normalize fonts/colors to document tokens where practical;
-- add stable review IDs to consequential groups;
-- inspect edge routes, labels, clipping, mobile overflow, and print;
-- inline the final SVG in the HTML artifact.
+Preserve title/description, searchable text, provenance, review IDs, edge labels, and renderer-owned `.diagram-reveal` groups. Excalidraw is the required medium, not a reason to create a diagram. See `references/renderer-workflow.md` for its exact regeneration and embedding contract.
 
 Do not make core meaning depend on pan/zoom JavaScript. Optional controls may enhance a complete static figure.
 
@@ -223,7 +198,7 @@ Before handoff:
 - [ ] A nearby structured walkthrough preserves the conclusion.
 - [ ] Wide/mobile/print/no-JS/reduced-motion states are complete.
 - [ ] The final artifact has no required remote assets or renderer runtime.
-- [ ] The renderer/tool choice is recorded with regeneration source.
+- [ ] The Excalidraw JSON regeneration source is retained and the generated SVG is current.
 
 ## Output
 
@@ -234,7 +209,7 @@ Created: {path}
 Diagram question: {question}
 Decision/understanding unlocked: {result}
 Mode: {mode}
-Renderer/layout: {tool + why}
+Renderer/layout: Excalidraw + {layout rationale}
 Evidence: {paths/docs/logs}
 Reading order: {static order + optional motion}
 Validation: {passed | not run + reason | failed + key issue}

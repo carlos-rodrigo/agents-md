@@ -1,6 +1,6 @@
 # Renderer Workflow
 
-Use the existing build-time Excalidraw renderer when a hand-drawn semantic figure is justified. Do not rewrite or bypass its API.
+Use the existing build-time Excalidraw renderer for every diagram. Do not rewrite or bypass its API, hand-author the final SVG, or use an alternative renderer.
 
 ## Outputs
 

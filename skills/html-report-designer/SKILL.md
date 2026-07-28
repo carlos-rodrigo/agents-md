@@ -267,7 +267,7 @@ Bake these patterns into every future generated report:
 - **Storyboard-first product flows** — render the intended user-facing flow before considering alternatives. Use one small screen-like semantic wireframe per product-visible step, with representative copy, action, visible response, and next outcome. Reuse the existing shell when available. Show multiple UI alternatives only when an unresolved product decision requires comparison; do not manufacture options to fill a report component.
 - **Domain interaction before implementation detail** — when domain concepts matter, show verbs and effects between entities before data contracts or components. Reviewers should be able to say “this entity changes that state because of this business action.”
 - **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, uncertainty if relevant, and progressive reading-order motion.
-- **Renderer-backed diagrams** — choose the renderer through `system-diagram`. Prefer the existing build-time Excalidraw renderer for authored teaching diagrams; use another installed build-time SVG generator only when its layout better answers the question. Never reference a renderer that is not available in the repository.
+- **Excalidraw-rendered diagrams** — create every diagram through `system-diagram` and the repository's build-time Excalidraw renderer. Keep the JSON regeneration source and inline the generated accessible SVG; never hand-author SVG or use another diagram renderer.
 - **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
 - **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
 - **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
@@ -469,7 +469,7 @@ Before finishing, check:
 
 - Use one final `.html` file with inline compiled CSS.
 - Use inline SVG for diagrams.
-- For diagrams, use the renderer selected by `system-diagram`. With the existing Excalidraw path, keep the JSON source near the feature when regeneration matters, run `scripts/render-excalidraw-diagram.mjs`, inspect the SVG, and inline it. Preserve generated `diagram-reveal` groups, foreground labels, and reveal delays; do not add `.path-draw` to coordinated multi-stroke Excalidraw edges.
+- For every diagram, use `system-diagram` and the required build-time Excalidraw renderer. Keep the JSON source near the feature, run `scripts/render-excalidraw-diagram.mjs`, inspect the SVG, and inline it. Preserve generated `diagram-reveal` groups, foreground labels, provenance, and reveal delays; do not add `.path-draw` to coordinated multi-stroke Excalidraw edges.
 - Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
 - Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
 - If adding JavaScript, it must be optional enhancement only.

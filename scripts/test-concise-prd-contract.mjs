@@ -71,6 +71,7 @@ requireAll('system-diagram', diagram, [
   'A durable feature design normally includes one causal architecture diagram',
   'Diagram not applicable',
   'existing evidence supports the figure',
+  "Use the repository's build-time Excalidraw renderer for every diagram",
 ]);
 
 forbidAll('prd', prd, [
@@ -79,6 +80,17 @@ forbidAll('prd', prd, [
 ]);
 forbidAll('html-report-designer', report, [
   '2-3 detailed UI wireframe options with step-by-step use and expected outcomes when the change is user-facing',
+  'use another installed build-time SVG generator',
+]);
+forbidAll('system-diagram', diagram, [
+  'No renderer is mandatory',
+  'Inline authored SVG',
+  '**Graphviz**',
+  '**D2**',
+  '**ELK/elkjs**',
+  '**Mermaid or PlantUML**',
+  '**Cytoscape.js**',
+  '**GoJS**',
 ]);
 
 console.log('PASS: PRD guidance requires product-complete slices while the HTML shell remains content-neutral');
