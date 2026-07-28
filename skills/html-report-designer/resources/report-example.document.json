@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "canonical-report-example",
+    "kind": "report",
+    "status": "Review",
+    "title": "One Canonical Report Boundary",
+    "summary": "Structured content renders through one portable HTML template, shared component system, and validation path.",
+    "reviewFocus": "Confirm that content changes the report without changing its shell or CSS.",
+    "updated": "2026-07-28",
+    "sources": ["skills/html-report-designer/SKILL.md"],
+    "feature": "HTML reports"
+  },
+  "sections": [
+    {
+      "id": "report.contract",
+      "role": "contract",
+      "kicker": "Canonical boundary",
+      "title": "The renderer owns presentation",
+      "summary": "Document skills supply validated meaning rather than freehand HTML.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "report.contract.facts",
+          "items": [
+            ["Input", "canonical-report-v1 DocumentSpec"],
+            ["Renderer", "Bundled skill-relative script"],
+            ["Output", "Self-contained reviewable HTML"]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "report.contract.boundary",
+          "tone": "success",
+          "title": "One shell",
+          "text": "PRDs, designs, research briefs, decisions, and diagram packets use the same report template."
+        },
+        {
+          "type": "scenario",
+          "id": "report.contract.scenario",
+          "title": "Structured content changes",
+          "given": "a valid canonical report source",
+          "when": "an author changes a supported content block",
+          "then": "the renderer preserves the same managed shell while updating only the composed report content"
+        },
+        {
+          "type": "code",
+          "id": "report.contract.command",
+          "label": "Deterministic render command",
+          "content": "node <html-report-designer-dir>/scripts/render-canonical-report.mjs source.document.json report.html"
+        },
+        {
+          "type": "quote",
+          "id": "report.contract.quote",
+          "text": "Meaning belongs to the authoring skill; presentation belongs to the canonical renderer.",
+          "cite": "Canonical report boundary"
+        }
+      ]
+    }
+  ]
+}

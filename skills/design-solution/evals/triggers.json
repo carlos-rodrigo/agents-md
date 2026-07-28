@@ -1,0 +1,14 @@
+[
+  { "query": "Translate the approved import PRD into a technical design with ownership, recovery, and contracts.", "should_trigger": true },
+  { "query": "Create design.html for this approved feature; persistence and rollout boundaries need review.", "should_trigger": true },
+  { "query": "Decide which service should own the state transition described by the approved PRD.", "should_trigger": true },
+  { "query": "Design the causal system path and tradeoffs for the approved authorization workflow.", "should_trigger": true },
+  { "query": "Review architecture alternatives for the approved feature before task planning.", "should_trigger": true },
+  { "query": "Write a PRD because the product workflow and acceptance are still unclear.", "should_trigger": false },
+  { "query": "Create implementation tasks from this already approved design.", "should_trigger": false },
+  { "query": "Implement the repository adapter described in TASK-003.", "should_trigger": false },
+  { "query": "Fix this local null check using the existing obvious seam.", "should_trigger": false },
+  { "query": "Review the visual styling and accessibility of this report.", "should_trigger": false },
+  { "query": "Summarize design.html without changing architecture.", "should_trigger": false },
+  { "query": "Compare UI layouts while product placement is still undecided.", "should_trigger": false }
+]

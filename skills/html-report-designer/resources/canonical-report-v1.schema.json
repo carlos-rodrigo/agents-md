@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carlosrodrigo.dev/schemas/canonical-report-v1.schema.json",
+  "title": "Canonical Report DocumentSpec v1",
+  "$comment": "The bundled canonical-report.mjs validator is authoritative for cross-section roles, review ID uniqueness, approval state, PRD slice completeness, accepted decisions, and Excalidraw file provenance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "document", "sections"],
+  "properties": {
+    "schemaVersion": { "const": "canonical-report-v1" },
+    "document": { "$ref": "#/$defs/document" },
+    "sections": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/section" } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$" },
+    "text": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "status", "title", "summary", "updated", "sources"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "kind": { "enum": ["prd", "design", "report", "diagram", "research", "decision"] },
+        "lang": { "type": "string", "pattern": "^[a-z]{2}(?:-[A-Z]{2})?$" },
+        "status": { "enum": ["Draft", "Review", "Approved", "Blocked"] },
+        "title": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/text" },
+        "reviewFocus": { "$ref": "#/$defs/text" },
+        "updated": { "type": "string", "format": "date" },
+        "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approvedBy", "approvedAt"],
+          "properties": { "approvedBy": { "$ref": "#/$defs/text" }, "approvedAt": { "type": "string", "format": "date" } }
+        },
+        "feature": { "$ref": "#/$defs/text" },
+        "docsHome": { "$ref": "#/$defs/text" },
+        "featureHome": { "$ref": "#/$defs/text" },
+        "relatedArtifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "href"],
+            "properties": { "label": { "$ref": "#/$defs/text" }, "href": { "$ref": "#/$defs/text" } }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "Approved" } }, "required": ["status"] },
+          "then": { "required": ["approval"] },
+          "else": { "not": { "required": ["approval"] } }
+        }
+      ]
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "title", "blocks"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "role": { "$ref": "#/$defs/id" },
+        "kicker": { "$ref": "#/$defs/text" },
+        "title": { "$ref": "#/$defs/text" },
+        "summary": { "$ref": "#/$defs/text" },
+        "blocks": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/block" } }
+      }
+    },
+    "block": {
+      "oneOf": [
+        { "$ref": "#/$defs/paragraph" },
+        { "$ref": "#/$defs/list" },
+        { "$ref": "#/$defs/facts" },
+        { "$ref": "#/$defs/steps" },
+        { "$ref": "#/$defs/callout" },
+        { "$ref": "#/$defs/scenario" },
+        { "$ref": "#/$defs/slice" },
+        { "$ref": "#/$defs/decision" },
+        { "$ref": "#/$defs/diagram" },
+        { "$ref": "#/$defs/code" },
+        { "$ref": "#/$defs/quote" }
+      ]
+    },
+    "paragraph": { "type": "object", "additionalProperties": false, "required": ["type", "text"], "properties": { "type": { "const": "paragraph" }, "id": { "$ref": "#/$defs/id" }, "text": { "$ref": "#/$defs/text" } } },
+    "list": { "type": "object", "additionalProperties": false, "required": ["type", "items"], "properties": { "type": { "const": "list" }, "id": { "$ref": "#/$defs/id" }, "style": { "enum": ["bullets", "checks", "numbered"] }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } } } },
+    "facts": { "type": "object", "additionalProperties": false, "required": ["type", "items"], "properties": { "type": { "const": "facts" }, "id": { "$ref": "#/$defs/id" }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/pair" } } } },
+    "steps": { "type": "object", "additionalProperties": false, "required": ["type", "items"], "properties": { "type": { "const": "steps" }, "id": { "$ref": "#/$defs/id" }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/namedText" } } } },
+    "callout": { "type": "object", "additionalProperties": false, "required": ["type", "title", "text"], "properties": { "type": { "const": "callout" }, "id": { "$ref": "#/$defs/id" }, "tone": { "enum": ["warning", "danger", "success", "risk", "tip"] }, "title": { "$ref": "#/$defs/text" }, "text": { "$ref": "#/$defs/text" } } },
+    "scenario": { "type": "object", "additionalProperties": false, "required": ["type", "id", "title", "given", "when", "then"], "properties": { "type": { "const": "scenario" }, "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "given": { "$ref": "#/$defs/text" }, "when": { "$ref": "#/$defs/text" }, "then": { "$ref": "#/$defs/text" } } },
+    "slice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "title", "outcome", "boundary", "story", "scenarios", "mode", "steps", "acceptance", "after"],
+      "properties": {
+        "type": { "const": "slice" },
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "$ref": "#/$defs/text" },
+        "outcome": { "$ref": "#/$defs/text" },
+        "boundary": { "$ref": "#/$defs/text" },
+        "story": {
+          "type": "object", "additionalProperties": false, "required": ["id", "actor", "capability", "outcome"],
+          "properties": { "id": { "$ref": "#/$defs/id" }, "actor": { "$ref": "#/$defs/text" }, "capability": { "$ref": "#/$defs/text" }, "outcome": { "$ref": "#/$defs/text" } }
+        },
+        "scenarios": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scenarioWithoutType" } },
+        "mode": { "enum": ["visual", "non-visual"] },
+        "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/storyboardStep" } },
+        "acceptance": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/acceptance" } },
+        "after": { "$ref": "#/$defs/text" }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "question", "status", "options", "owner", "blocking"],
+      "properties": {
+        "type": { "const": "decision" }, "id": { "$ref": "#/$defs/id" }, "question": { "$ref": "#/$defs/text" },
+        "status": { "enum": ["open", "proposed", "accepted"] },
+        "options": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/option" } },
+        "selectedOptionId": { "$ref": "#/$defs/id" }, "customAnswer": { "$ref": "#/$defs/text" }, "rationale": { "$ref": "#/$defs/text" },
+        "owner": { "$ref": "#/$defs/text" }, "blocking": { "type": "boolean" }, "approvedBy": { "$ref": "#/$defs/text" }, "approvedAt": { "type": "string", "format": "date" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "open" } }, "required": ["status"] },
+          "then": { "not": { "anyOf": [{ "required": ["selectedOptionId"] }, { "required": ["customAnswer"] }, { "required": ["rationale"] }, { "required": ["approvedBy"] }, { "required": ["approvedAt"] }] } }
+        },
+        {
+          "if": { "properties": { "status": { "const": "proposed" } }, "required": ["status"] },
+          "then": { "required": ["selectedOptionId", "rationale"], "not": { "anyOf": [{ "required": ["approvedBy"] }, { "required": ["approvedAt"] }] } }
+        },
+        {
+          "if": { "properties": { "status": { "const": "accepted" } }, "required": ["status"] },
+          "then": { "required": ["selectedOptionId", "rationale", "approvedBy", "approvedAt"] }
+        },
+        {
+          "if": { "properties": { "selectedOptionId": { "const": "other" } }, "required": ["selectedOptionId"] },
+          "then": { "required": ["customAnswer"] }
+        }
+      ]
+    },
+    "diagram": { "type": "object", "additionalProperties": false, "required": ["type", "id", "question", "caption", "svgPath", "sourcePath", "walkthrough"], "properties": { "type": { "const": "diagram" }, "id": { "$ref": "#/$defs/id" }, "question": { "$ref": "#/$defs/text" }, "caption": { "$ref": "#/$defs/text" }, "svgPath": { "$ref": "#/$defs/text" }, "sourcePath": { "$ref": "#/$defs/text" }, "walkthrough": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } } } },
+    "code": { "type": "object", "additionalProperties": false, "required": ["type", "label", "content"], "properties": { "type": { "const": "code" }, "id": { "$ref": "#/$defs/id" }, "label": { "$ref": "#/$defs/text" }, "content": { "$ref": "#/$defs/text" } } },
+    "quote": { "type": "object", "additionalProperties": false, "required": ["type", "text"], "properties": { "type": { "const": "quote" }, "id": { "$ref": "#/$defs/id" }, "text": { "$ref": "#/$defs/text" }, "cite": { "$ref": "#/$defs/text" } } },
+    "pair": { "type": "array", "prefixItems": [{ "$ref": "#/$defs/text" }, { "$ref": "#/$defs/text" }], "items": false },
+    "namedText": { "type": "object", "additionalProperties": false, "required": ["id", "title", "text"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "text": { "$ref": "#/$defs/text" } } },
+    "acceptance": { "type": "object", "additionalProperties": false, "required": ["id", "text"], "properties": { "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "pattern": "^ac-[0-9]{3,}$" }] }, "text": { "$ref": "#/$defs/text" } } },
+    "scenarioWithoutType": { "type": "object", "additionalProperties": false, "required": ["id", "title", "given", "when", "then"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "given": { "$ref": "#/$defs/text" }, "when": { "$ref": "#/$defs/text" }, "then": { "$ref": "#/$defs/text" } } },
+    "storyboardStep": { "type": "object", "additionalProperties": false, "required": ["id", "title", "context", "action", "response", "outcome"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "context": { "$ref": "#/$defs/text" }, "action": { "$ref": "#/$defs/text" }, "response": { "$ref": "#/$defs/text" }, "outcome": { "$ref": "#/$defs/text" } } },
+    "option": { "type": "object", "additionalProperties": false, "required": ["id", "label"], "properties": { "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "not": { "const": "other" } }] }, "label": { "$ref": "#/$defs/text" } } }
+  }
+}

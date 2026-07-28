@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createHash } from 'node:crypto';
 import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -16,6 +17,7 @@ const domainSpec = JSON.parse(readFileSync(domainSpecPath, 'utf8'));
 const domainSvg = readFileSync(domainSvgPath, 'utf8');
 
 assert(/<title\b/.test(svg) && /<desc\b/.test(svg), 'SVG requires title and description');
+assert(svg.includes(`<!-- svg-spec-sha256:${digest(specPath)} -->`), 'SVG must identify its exact retained JSON source');
 assert(/role="img"/.test(svg), 'SVG requires role=img');
 assert(/aria-labelledby=/.test(svg), 'SVG requires an accessible name and description');
 assert(/data:font\/woff2;base64,/.test(svg), 'Virgil must be embedded');
@@ -35,6 +37,7 @@ for (const edge of spec.edges) {
 }
 
 assert(/<!--\s*svg-source:excalidraw\s*-->/.test(domainSvg), 'domain fixture requires Excalidraw provenance');
+assert(domainSvg.includes(`<!-- svg-spec-sha256:${digest(domainSpecPath)} -->`), 'domain fixture must match its retained JSON source');
 assert(/<title\b/.test(domainSvg) && /<desc\b/.test(domainSvg), 'domain fixture requires title and description');
 assert(/role="img"/.test(domainSvg) && /aria-labelledby=/.test(domainSvg), 'domain fixture requires accessible SVG semantics');
 assert(/class="diagram-edge-label diagram-reveal"/.test(domainSvg), 'domain fixture requires labelled renderer reveal groups');
@@ -57,7 +60,7 @@ expectSpecError((scene) => { scene.nodes[0].text = '   '; }, 'node quick-create 
 expectSpecError((scene) => { scene.edges[0].label = ''; }, 'edge route-to-endpoint requires a non-empty label');
 expectSpecError((scene) => { scene.edges[0].id = scene.nodes[0].id; }, 'duplicate element id quick-create');
 expectSpecError((scene) => { scene.nodes[0].id = 'Quick Create'; }, 'must use lowercase kebab notation');
-expectSpecError((scene) => { scene.nodes[0].fontFamily = 'helvetica'; }, 'local fonts are not self-contained');
+expectSpecError((scene) => { scene.nodes[0].fontFamily = 'helvetica'; }, 'must be virgil, cascadia, or mono');
 expectSpecError((scene) => {
   scene.nodes[0].reviewId = 'diagram.duplicate';
   scene.nodes[1].reviewId = 'diagram.duplicate';
@@ -118,6 +121,10 @@ try {
 }
 
 console.log('✓ Excalidraw renderer validation, embedded fonts, failure contract, and two-scene ID isolation');
+
+function digest(path) {
+  return createHash('sha256').update(readFileSync(path, 'utf8').trim()).digest('hex');
+}
 
 function expectSpecError(mutate, expectedMessage) {
   const candidate = structuredClone(spec);

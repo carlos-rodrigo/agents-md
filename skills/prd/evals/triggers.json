@@ -1,0 +1,14 @@
+[
+  { "query": "Write a PRD for bulk invoice approval; the actor workflow and error behavior need product-owner review.", "should_trigger": true },
+  { "query": "Create product requirements for a new onboarding recovery flow before we choose architecture.", "should_trigger": true },
+  { "query": "Update prd.html with the approved permission and acceptance decisions for this feature.", "should_trigger": true },
+  { "query": "Plan the product behavior for family calendar sharing; scope and trust rules are unresolved.", "should_trigger": true },
+  { "query": "Document the end-to-end behavior and observable acceptance for this non-trivial system actor workflow.", "should_trigger": true },
+  { "query": "Design the architecture for the already approved import PRD.", "should_trigger": false },
+  { "query": "Split the approved technical design into implementation task briefs.", "should_trigger": false },
+  { "query": "Fix this obvious typo and add a focused regression test.", "should_trigger": false },
+  { "query": "Review the existing PRD for grammar only without changing requirements.", "should_trigger": false },
+  { "query": "Implement TASK-004 and record its feedback-loop evidence.", "should_trigger": false },
+  { "query": "Summarize this approved PRD for an executive briefing.", "should_trigger": false },
+  { "query": "Audit the existing web page for accessibility problems.", "should_trigger": false }
+]

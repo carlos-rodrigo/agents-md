@@ -1,0 +1,26 @@
+{
+  "id": "canonical-rendering-path",
+  "title": "Canonical rendering ownership path",
+  "desc": "A top-to-bottom architecture path from domain-owned DocumentSpec and Excalidraw source through one portable renderer and report template to deterministic self-contained HTML.",
+  "reviewPrefix": "diagram.canonical-renderer",
+  "reviewId": "svg",
+  "backgroundColor": "#fffefa",
+  "padding": 44,
+  "nodes": [
+    { "id": "authority", "kind": "entry", "x": 260, "y": 40, "width": 460, "height": 112, "text": "PRD / Design Solution\nOwn required roles and approved meaning" },
+    { "id": "spec", "kind": "domain", "x": 260, "y": 230, "width": 460, "height": 112, "text": "canonical-report-v1 DocumentSpec\nStrict content and lifecycle contract" },
+    { "id": "figure", "kind": "feedback", "x": 260, "y": 420, "width": 460, "height": 112, "text": "System Diagram\nRetained Excalidraw JSON + generated SVG" },
+    { "id": "renderer", "kind": "repository", "x": 260, "y": 610, "width": 460, "height": 112, "text": "HTML Report Designer renderer\nValidates roles, approval, decisions, provenance" },
+    { "id": "template", "x": 260, "y": 800, "width": 460, "height": 112, "text": "Sole report template\nShared HTML, CSS, navigation, runtimes" },
+    { "id": "artifact", "kind": "domain", "x": 260, "y": 990, "width": 460, "height": 112, "text": "Self-contained HTML\nDeterministic, accessible, reviewable" },
+    { "id": "block", "kind": "risk", "x": 980, "y": 610, "width": 360, "height": 112, "text": "Invalid or missing authority\nGeneration blocks without fallback" }
+  ],
+  "edges": [
+    { "id": "authority-to-spec", "from": "authority", "to": "spec", "x": 490, "y": 152, "points": [[0, 0], [0, 78]], "label": "writes structured truth" },
+    { "id": "spec-to-figure", "from": "spec", "to": "figure", "x": 490, "y": 342, "points": [[0, 0], [0, 78]], "label": "names diagram question" },
+    { "id": "figure-to-renderer", "from": "figure", "to": "renderer", "x": 490, "y": 532, "points": [[0, 0], [0, 78]], "label": "supplies verified JSON / SVG" },
+    { "id": "renderer-to-template", "from": "renderer", "to": "template", "x": 490, "y": 722, "points": [[0, 0], [0, 78]], "label": "fills canonical blocks" },
+    { "id": "template-to-artifact", "from": "template", "to": "artifact", "x": 490, "y": 912, "points": [[0, 0], [0, 78]], "label": "emits one portable artifact" },
+    { "id": "renderer-to-block", "from": "renderer", "to": "block", "kind": "risk", "x": 720, "y": 666, "points": [[0, 0], [260, 0]], "label": "rejects invalid input" }
+  ]
+}

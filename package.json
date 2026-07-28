@@ -2,11 +2,14 @@
   "name": "@carlosrodrigo/agents",
   "private": true,
   "version": "0.1.0",
-  "description": "Personal agent skills and self-contained report templates",
+  "description": "Personal agent skills with one canonical self-contained report renderer",
   "license": "MIT",
+  "engines": { "node": ">=18" },
   "scripts": {
     "build:report-css": "node scripts/build-html-report-css.mjs",
     "check:report-css": "node scripts/build-html-report-css.mjs --check",
+    "test:reports": "node scripts/test-canonical-report-renderer.mjs && node scripts/test-html-report-validator.mjs && node scripts/test-artifact-review-state.mjs && node scripts/test-canonical-report-layout.mjs",
+    "test:skills": "node scripts/test-canonical-report-routing.mjs && node scripts/test-concise-prd-contract.mjs && node scripts/test-concise-design-contract.mjs && node scripts/test-skill-portability.mjs",
     "build:diagram": "node scripts/render-excalidraw-diagram.mjs skills/system-diagram/resources/excalidraw-slice-example.json skills/system-diagram/resources/excalidraw-slice-example.svg",
     "check:diagram": "node scripts/render-excalidraw-diagram.mjs --check skills/system-diagram/resources/excalidraw-slice-example.json skills/system-diagram/resources/excalidraw-slice-example.svg",
     "test:diagram": "node scripts/test-excalidraw-diagram.mjs",
@@ -14,11 +17,11 @@
     "verify": "bash scripts/verify.sh"
   },
   "overrides": {
-    "lodash-es": "4.18.1"
+    "lodash-es": "4.18.1",
+    "marked": "15.0.12"
   },
   "devDependencies": {
     "@excalidraw/excalidraw": "0.18.1",
-    "@tailwindcss/typography": "^0.5.20",
     "esbuild": "^0.25.6",
     "playwright": "1.61.1",
     "react": "18.3.1",

@@ -1,100 +1,50 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
-const design = read('skills/design-solution/SKILL.md');
-const report = read('skills/html-report-designer/SKILL.md');
-const diagram = read('skills/system-diagram/SKILL.md');
-const recipes = read('skills/design-solution/references/optional-design-recipes.md');
+const skill = read('skills/design-solution/SKILL.md');
 
-requireAll('design-solution', design, [
-  'approved product promise → architecture pressure → chosen seam → causal system path → tradeoffs and proof → meaningful boundary',
-  '## Architecture core',
-  '## Composition gate',
-  '## Causal system path',
-  '## Progressive disclosure',
+assert(/^---\n[\s\S]*?name: design-solution\n[\s\S]*?description: [^\n]+\n[\s\S]*?---\n/.test(skill), 'design-solution needs valid frontmatter and a specific description');
+requireAll('design authority and structure', skill, [
+  'Start durable design only from an explicitly human-approved `prd.html`',
+  'Skip a durable design for a tiny clear change',
+  '**Approved** — only after explicit human approval',
+  '**`authority`**', '**`pressure`**', '**`seam`**', '**`path`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**',
   'references/optional-design-recipes.md',
-  'Skip durable design for small clear changes',
-  'Design must not invent product behavior',
-  'approved PRD',
-  'approved product definition, rationale, product slices, stories, scenarios, observable acceptance',
-  'Missing required PRD behavior blocks design',
-  'independently reviewable architecture question or an approved child outcome',
-  'Task execution steps and proof results stay in task packets',
-  'Technology choices belong only when they constrain a boundary or materially change delivery/risk',
-  'Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it',
-  'Use `system-diagram` after naming the architecture question the figure must answer',
-  'one high-quality causal architecture diagram',
-  'Diagram not applicable',
-  'Create or update an ADR only for architecture-significant decisions',
+  'Every durable design must invoke `system-diagram`',
+  'do not use hand-authored SVGs or a `Diagram not applicable` escape',
+  '**Decision recorded**',
+  'New architecture choices remain Proposed until a human accepts them',
+  'docs/adrs/architecture.md',
+  '<html-report-designer-dir>/scripts/render-canonical-report.mjs',
+  'create task files inside this skill',
+]);
+assertInOrder(skill, ['**`authority`**', '**`pressure`**', '**`seam`**', '**`path`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**'], 'design role sequence');
+forbidAll('design presentation and workflow boundary', skill, [
+  'design-template.html', '{{DESIGN_TOC}}', '{{COMPOSED_DESIGN_CONTENT}}', '.diagram-reveal', 'add `reveal`', 'explicit approved product brief', 'Slices/tasks:', 'execute directly',
 ]);
 
-requireAll('optional design recipes', recipes, [
-  '## Interface consequences',
-  '## Contracts, domain, data, and persistence',
-  '## Operations, rollout, and risk',
-  '## Outside-in slice outline',
-  '## Traceability',
-  'A slice is an observable vertical outcome, not a package/layer phase',
-]);
+const reference = 'skills/design-solution/references/optional-design-recipes.md';
+assert(existsSync(join(root, reference)), 'optional design recipes must exist');
+requireAll('optional design recipes', read(reference), ['Interface consequences', 'Contracts, domain, data, and persistence', 'Operations, rollout, and risk', 'Outside-in architecture slice outline', 'Traceability']);
 
-requireAll('html-report-designer', report, [
-  '## Generation quality contract',
-  'resources/prd-template.html',
-  'resources/design-template.html',
-  'Start from the most specific template',
-  'scroll-reveal motion',
-  'high-quality explanatory diagram',
-]);
+const triggers = JSON.parse(read('skills/design-solution/evals/triggers.json'));
+assert(triggers.length >= 10, 'design trigger evals need broad positive/negative coverage');
+assert(triggers.some((item) => item.should_trigger === true), 'design trigger evals need positive cases');
+assert(triggers.some((item) => item.should_trigger === false), 'design trigger evals need negative cases');
+triggers.forEach((item, index) => assertTriggerShape(item, `design trigger[${index}]`));
+assertUnique(triggers.map((item) => item.query), 'design trigger query');
+assertTrigger(triggers, 'Write a PRD because the product workflow and acceptance are still unclear.', false);
+assertTrigger(triggers, 'Translate the approved import PRD into a technical design with ownership, recovery, and contracts.', true);
 
-requireAll('system-diagram', diagram, [
-  '## Architecture diagram gate',
-  'A durable feature design normally includes one causal architecture diagram',
-  'named architecture question',
-  'One small causal path',
-  'existing evidence supports the figure',
-  'Diagram not applicable',
-  '## Required renderer',
-  "Use the repository's build-time Excalidraw renderer for every diagram",
-]);
+console.log('PASS: design-solution has a concise approved-authority, architecture, decision, diagram, trigger, and task-boundary contract');
 
-forbidAll('design-solution', design, [
-  'The design should include only decision-critical material:',
-  'Every likely execution slice starts from an external need',
-  'A non-engineer can follow the main scenario and diagram',
-]);
-forbidAll('html-report-designer', report, [
-  'default to this concise pattern:',
-  'Design reports must be built in this order',
-  'give each slice a small outside-in design and detailed SVG diagram',
-  'architecture-overview       # high-level diagram',
-]);
-forbidAll('system-diagram', diagram, [
-  'For complex features, create a small set of diagram sections inside the main report by default',
-  'No renderer is mandatory',
-  'Inline authored SVG',
-  '**Graphviz**',
-  '**D2**',
-  '**ELK/elkjs**',
-  '**Mermaid or PlantUML**',
-  '**Cytoscape.js**',
-  '**GoJS**',
-]);
-
-console.log('PASS: concise composition-neutral design guidance is aligned across owning and consuming skills');
-
-function requireAll(label, content, markers) {
-  const missing = markers.filter((marker) => !content.includes(marker));
-  assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`);
-}
-
-function forbidAll(label, content, markers) {
-  const found = markers.filter((marker) => content.includes(marker));
-  assert(found.length === 0, `${label} retains mandatory-richness guidance: ${found.join(', ')}`);
-}
-
-function assert(condition, message) {
-  if (!condition) throw new Error(message);
-}
+function requireAll(label, content, markers) { const missing = markers.filter((marker) => !content.includes(marker)); assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`); }
+function forbidAll(label, content, markers) { const found = markers.filter((marker) => content.includes(marker)); assert(found.length === 0, `${label} retains conflicting guidance: ${found.join(', ')}`); }
+function assertTrigger(items, query, expected) { const item = items.find((candidate) => candidate.query === query); assert(item && item.should_trigger === expected, `unexpected trigger contract: ${query}`); }
+function assertTriggerShape(item, label) { assert(item && typeof item === 'object' && !Array.isArray(item), `${label} must be an object`); assert(Object.keys(item).sort().join(',') === 'query,should_trigger', `${label} must contain only query and should_trigger`); assert(typeof item.query === 'string' && item.query.trim(), `${label}.query must be non-empty text`); assert(typeof item.should_trigger === 'boolean', `${label}.should_trigger must be boolean`); }
+function assertUnique(values, label) { assert(new Set(values).size === values.length, `${label}s must be unique`); }
+function assertInOrder(content, markers, label) { const positions = markers.map((marker) => content.indexOf(marker)); assert(positions.every((position) => position >= 0) && positions.every((position, index) => index === 0 || position > positions[index - 1]), `${label} must match the renderer's declared order`); }
+function assert(condition, message) { if (!condition) throw new Error(message); }

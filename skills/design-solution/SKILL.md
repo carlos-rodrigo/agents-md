@@ -1,204 +1,144 @@
 ---
 name: design-solution
-description: "Create or update a feature's concise high-level design.html from an approved PRD. Use for architecture pressure, boundaries, causal system paths, tradeoffs, risks, high-quality explanatory diagrams, and optional delivery slices. HTML presentation comes from html-report-designer. Triggers on: create design, design this, design.html, architecture design, solution design, slice plan."
+description: "Translate an explicitly human-approved PRD into a durable technical design when architecture pressure, ownership, state, contracts, recovery, rollout, or consequential tradeoffs need review. Do not use for product definition, task creation, implementation, tiny changes with one obvious seam, UI styling, or generic planning."
+compatibility: "Requires the html-report-designer and system-diagram skills. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
 ---
 
 # Feature Design
 
-Use this skill to answer one architecture question:
+Answer one architecture question:
 
-> What is the smallest system shape that can keep the approved product promise, and where should responsibility live?
+> What is the smallest system shape that preserves the approved product promise, and where should responsibility live?
 
 Default artifacts:
 
 ```text
-docs/features/{feature}/prd.html    # approved product authority
-docs/features/{feature}/design.html # current intended architecture
-docs/adrs/                          # optional durable decisions
-.features/{feature}/tasks/          # optional execution packets
+docs/features/{feature}/prd.html
+docs/features/{feature}/design.document.json
+docs/features/{feature}/design.html
+docs/adrs/{architecture|api|web}.md
 ```
 
-## Content ownership and report shell
+`design.document.json` is the editable architecture source. `design.html` is its deterministic review projection. Never hand-author or patch report HTML/CSS.
 
-This skill owns all design substance and reading order. `html-report-designer` supplies only the self-contained shell, visual components, scroll motion, accessibility, and validation workflow.
+## Gate
 
-Use:
+Start durable design only from an explicitly human-approved `prd.html` with no blocking product decision. Draft/Review product status, missing acceptance, or unresolved consequential behavior blocks design and returns to product authority.
 
-```text
-skills/html-report-designer/resources/design-template.html
-```
+Skip a durable design for a tiny clear change when inspection finds one obvious existing seam, no public/schema/auth/persistence/rollout decision, and no meaningful ownership or recovery question. Record the gate result and observable proof in the task feedback loop; do not fabricate a design document.
 
-The template exposes `{{DESIGN_TOC}}`, `{{DESIGN_ARTIFACT_LINKS}}`, `{{DESIGN_HEADER_SUPPORT}}`, and `{{COMPOSED_DESIGN_CONTENT}}` composition slots. Compose the sourced design before fitting it to the shell. Generate navigation from sections that actually exist. Use artifact links only for real related documents; empty support slots are valid. The template must not add, remove, reorder, or multiply architecture decisions, paths, diagrams, risks, or slices.
+Create or update `design.document.json` and regenerate `design.html` when competing seams, contracts, state ownership, security/privacy, migration, compatibility, rollout, operations, recovery, or independently reviewable architecture slices matter.
 
-Keep the embedded style block and visual component classes. Replace every placeholder, add `reveal` to top-level composed sections, preserve semantic HTML and stable review IDs, and leave no unresolved placeholders. Never invent architecture to fill a component.
+## Authority and approval
 
-## Architecture narrative
+- `prd.html` owns approved product behavior, scope, acceptance, constraints, and product decisions.
+- `design.document.json` owns editable current feature architecture; `design.html` is its byte-matching review artifact.
+- `docs/adrs/architecture.md`, `api.md`, or `web.md` owns accepted architecture-significant rationale that must outlive the feature.
+- Task briefs own execution steps and planned checks after design approval.
 
-Build the shortest credible design with this spine:
+Status is a human governance contract:
 
-> approved product promise → architecture pressure → chosen seam → causal system path → tradeoffs and proof → meaningful boundary
+- **Draft** — default for new or materially changed technical intent.
+- **Review** — coherent enough for human judgment; not approved.
+- **Approved** — only after explicit human approval recorded in `document.approval`.
+- **Blocked** — a product question or architecture decision prevents a truthful proposal.
 
-Use feature-specific headings and any useful order. Omit a role entirely when it does not help answer the architecture question.
+New architecture choices remain Proposed until a human accepts them. Report `Ready for tasks: yes` only when status is Approved and every blocking decision is Accepted. Browser-exported decisions are review input, not canonical architecture approval.
 
-## Design gate
+## Required report structure
 
-Read the approved PRD or explicit approved product brief first. Design must not invent product behavior.
+Every durable design uses these `section.role` values in causal reading order. Feature-specific headings are encouraged, but core roles may not be omitted:
 
-Proceed when the approved product definition, rationale, product slices, stories, scenarios, observable acceptance, scope, constraints, and blocking decisions are clear. Consume those product contracts without rewriting them. Missing required PRD behavior blocks design; optional UI alternatives and domain maps do not.
+1. **`authority`** — approved PRD promise, acceptance proof, constraints, and links.
+2. **`pressure`** — current system reality and force that makes the obvious solution insufficient.
+3. **`seam`** — chosen owning boundary, responsibility, state ownership, and narrower rejected seams.
+4. **`path`** — external trigger through entry, policy/state, dependency/persistence, and observable result/failure.
+5. **`diagram`** — one evidence-backed causal architecture diagram.
+6. **`decisions`** — chosen seam and every consequential architecture decision with lifecycle.
+7. **`proof`** — tradeoffs, failure/recovery posture, risks, and observable proof strategy.
+8. **`boundary`** — adjacent architecture intentionally unchanged or deferred.
 
-Skip durable design for small clear changes when one obvious seam satisfies the approved behavior and an implementation feedback loop can carry the remaining detail.
-
-Create or update `design.html` when architecture merits durable review, for example:
-
-- responsibility or state ownership is ambiguous;
-- multiple credible seams or integration paths exist;
-- contracts, auth, persistence, migration, compatibility, rollout, or recovery matter;
-- failure/operational behavior changes the solution shape;
-- work should be split into independently reviewable vertical outcomes.
-
-## Process
-
-1. Extract only the approved product promise, observable proof, constraints, and boundary.
-2. Inspect current entry points, owners, data/state, contracts, tests, and relevant ADRs.
-3. Name the architecture pressure that makes the obvious implementation insufficient.
-4. Choose the narrowest seam that owns the change.
-5. Trace one causal system path from external trigger to observable result.
-6. Create one high-quality causal architecture diagram that teaches that path, or record `Diagram not applicable` with a concrete reason.
-7. Record consequential tradeoffs, risks, proof strategy, and meaningful boundaries.
-8. Add optional contracts, operations, or slices only when the architecture question needs them.
-9. Generate `design.html` through `html-report-designer` without surrendering content order.
-10. Validate claims against code/docs and the artifact against shared quality gates.
-11. Stop before line-by-line patches or execution evidence.
-
-## Architecture core
-
-A useful first pass makes these facts obvious:
-
-- **Approved promise:** what product outcome the system must preserve.
-- **Observable proof:** what external behavior makes the architecture credible.
-- **Architecture pressure:** what ownership, timing, scale, reliability, compatibility, or risk makes a design decision necessary.
-- **Chosen seam:** which boundary owns coordination and why it is narrower than alternatives.
-- **Meaningful boundary:** what remains unchanged or deliberately outside this design.
-
-Do not paste the PRD. Link to it and extract only facts that shape architecture.
-
-## Composition gate
-
-Compose only the roles needed for the current architecture question. A small internal behavior may need the core, one path, and proof. A persistence boundary may need contracts, migration, recovery, and an ADR. A user-facing cross-boundary change may need interface consequences and one system path.
-
-Do not add architecture inventory, technology sections, domain models, matrices, risks, or slices merely because a report template can render them. The expected causal diagram must teach the chosen path rather than inventorying the system.
-
-Load `references/optional-design-recipes.md` only for the role that is actually needed:
-
-- interface consequences;
-- contracts/domain/data/persistence;
-- operations/rollout/risk;
-- outside-in slice outline;
-- traceability.
+Optional roles—contracts, interface consequences, operations, architecture slices, and traceability—exist only when they change architecture review. Load [references/optional-design-recipes.md](references/optional-design-recipes.md) for those roles.
 
 ## Causal system path
 
-Trace one small causal path before drawing topology:
+Trace one canonical request or event before listing components:
 
 ```text
-external trigger → entry/transport → owning seam → policy/state transition → dependency or persistence → observable result
+external trigger → entry/transport → owning seam → policy/state transition
+→ dependency/persistence → observable result or material failure/recovery
 ```
 
-Name real symbols or paths when known, but keep the design at boundary level. Include a failure branch only when it changes ownership, contract, recovery, or product-visible behavior.
+Name real symbols and protocols when known, while keeping the first pass boundary-level. A node earns space only when responsibility, state, boundary, or result changes.
 
-A path should answer:
+## Architecture diagram
 
-- who initiates the change;
-- which boundary validates or translates it;
-- where policy and coordination live;
-- who owns state and durability;
-- what result crosses back to the caller;
-- where failure is detected and recovered.
+Every durable design must invoke `system-diagram` after naming the architecture question. The design owns approved architecture semantics, question, scope, and placement. `system-diagram` validates evidence and owns Excalidraw visual encoding, accessibility, and figure reading order.
 
-## Decisions and technology
+The figure must teach the causal path and selected seam—not inventory the topology. Every meaningful edge names the action, call, protocol, payload, transition, or effect. Include failure/recovery only when it changes ownership or product behavior.
 
-Record a decision when plausible alternatives produce materially different ownership, compatibility, safety, or delivery cost. State chosen direction, evidence, rejected alternatives, tradeoffs, reversibility, and escalation owner.
+Retain the Excalidraw JSON source beside the feature, generate the SVG through the bundled renderer, and reference both from the `diagram` block. Durable designs do not use hand-authored SVGs or a `Diagram not applicable` escape.
 
-Technology choices belong only when they constrain a boundary or materially change delivery/risk. Do not inventory the stack.
+## Decisions and ADRs
 
-Data/domain/persistence detail belongs only when ownership, invariants, migration, or recovery depends on it. Link to canonical schemas or contracts rather than copying full field catalogs.
+Every design includes at least one canonical `decision` block for the chosen seam. Add others only when alternatives materially change ownership, compatibility, safety, persistence, rollout, or delivery cost.
 
-## Architecture diagram expectation
+Each decision records stable ID, `open | proposed | accepted` status, options, selected direction when known, evidence/rationale, tradeoffs, owner, blocker state, approver, and date. Every rendered decision has a **Decision recorded** checkbox and Markdown export. Reconcile exported review input into canonical source only after explicit approval.
 
-A durable feature design normally includes one high-quality causal architecture diagram. Use `system-diagram` after naming the architecture question the figure must answer.
+Accepted rationale for public API contracts, auth/security/privacy, persistence/migration, compatibility/rollout, cross-service ownership, or major module boundaries belongs in the topical ADR. `design.html` links the ADR and states its current feature consequence; it does not duplicate the full rationale. Get approval before changing schema, API contracts, auth/financial behavior, infrastructure, or major dependencies.
 
-The figure should teach:
+## Process
 
-```text
-external trigger → entry/transport → owning seam → policy/state → dependency/persistence → observable result
+1. Read the Approved PRD, existing design, relevant ADRs, entry points, owners, state, contracts, and tests.
+2. Return product questions to PRD authority. Label non-blocking technical assumptions with evidence, risk, and validation path.
+3. Name the architecture pressure, choose the narrowest owning seam, and trace one causal path.
+4. Record decisions as Open or Proposed unless explicit human acceptance already exists.
+5. Invoke `system-diagram`; retain and validate its Excalidraw JSON/SVG pair.
+6. Compose the required section roles plus only warranted optional roles in `canonical-report-v1` structured content.
+7. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
+
+```bash
+node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
+  docs/features/{feature}/design.document.json docs/features/{feature}/design.html
+node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
+  docs/features/{feature}/design.html
 ```
 
-Include a material failure or recovery branch only when it changes ownership or the product contract. Prefer one legible path over a topology inventory or mega-map. Every meaningful edge needs a verb, call, protocol, payload, transition, or effect label.
+8. Update a topical ADR when the accepted decision meets the ADR gate.
+9. Open the report for review when possible. Never patch generated HTML.
+10. Stop before task creation, line-by-line patches, test commands, or execution evidence.
 
-Use an explicit `Diagram not applicable` rationale only when the durable design has no meaningful multi-boundary, state, ownership, sequence, or recovery path to visualize. Concise prose is not by itself a reason to omit a useful shared mental model.
+If a companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell or diagram.
 
-Follow `system-diagram`'s semantic brief, evidence, top-to-bottom spacing, node padding, arrow/label legibility, accessible SVG, walkthrough, responsive overflow, and validation contract. Preserve `.diagram-reveal` reading-order groups so the figure can progress when its section enters the viewport; the static SVG must remain complete without JavaScript.
+## Architecture slices
 
-## Outside-in slices
+Use **architecture slice** only for an independently reviewable vertical outcome that helps sequencing, delegation, or approval. It starts from external need and observable proof, then pulls in only necessary entry, seam, policy/state, and dependency boundaries.
 
-Add slices only when sequencing, delegation, approval, or tracer-bullet delivery matters. Each slice must be an independently reviewable architecture question or an approved child outcome.
-
-A slice starts from external need and observable proof, then pulls in only the transport, seam, policy, state, and dependency required for that outcome. Task execution steps and proof results stay in task packets.
-
-Never create layer phases such as “database task,” “service task,” and “UI task” for one inseparable outcome.
-
-## ADRs and tasks
-
-Create or update an ADR only for architecture-significant decisions: public contracts, auth/security/privacy, persistence/migration, compatibility/rollout, cross-service ownership, or major module boundaries.
-
-Create task packets only when execution needs approval, splitting, delegation, resumption, or a task loop. The design owns intended boundaries; task packets own commands, implementation steps, feedback loops, and actual result evidence.
-
-## Progressive disclosure
-
-Keep the main path and chosen tradeoff visible. Put raw research, exhaustive contract fields, secondary failure modes, and supporting evidence behind links or meaningful disclosures.
-
-A reviewer should be able to understand the thesis without opening every detail. Do not hide the recommendation, invariant, risk, or recovery path.
-
-## Research rule
-
-Use repository prior art first. Research external tools or patterns only when it can change the decision. Capture:
-
-```text
-source → relevant constraint or capability → design impact
-```
-
-Prefer primary documentation. Separate observed facts from interpretation.
+Do not call task briefs “slices,” create package/layer phases, or create task files inside this skill.
 
 ## Quality gate
 
-Before finishing:
-
-- [ ] The design traces to an approved PRD or explicit approved product authority.
-- [ ] The architecture pressure and chosen seam are explicit.
-- [ ] One causal path reaches an observable result.
-- [ ] Ownership, state, boundary crossings, and material failure/recovery are understandable.
-- [ ] Decisions show tradeoffs and credible alternatives rather than foregone conclusions.
-- [ ] Optional detail exists only because it changes architecture review.
-- [ ] One causal diagram answers a named architecture question, or `Diagram not applicable` gives a concrete rationale.
-- [ ] The diagram uses evidence-backed nodes and labelled edges, remains understandable as text, and passes mobile/print/no-JS/reduced-motion checks.
-- [ ] Slices are vertical outcomes, not layers.
-- [ ] ADR need is considered without turning ADRs into running notes.
-- [ ] Task execution detail and result evidence stay out of `design.html`.
-- [ ] Stable review anchors mark consequential claims.
-- [ ] HTML is self-contained, accessible, and validated.
+- Approved PRD authority and acceptance are linked and unchanged.
+- Pressure, seam, ownership, state, causal path, proof, and boundary are explicit.
+- Exactly one Excalidraw architecture diagram has JSON/SVG provenance and a walkthrough.
+- Decisions expose credible alternatives, lifecycle, tradeoffs, owner, and approval.
+- Product behavior was not invented or silently changed.
+- Optional contracts, operations, interface consequences, traceability, and architecture slices earn their place.
+- ADR ownership is preserved without duplicated rationale.
+- Task steps and execution evidence are absent.
+- Canonical renderer, design profile validation, accessibility, mobile, print, no-JS, and reduced-motion checks pass.
 
 ## Output
 
-End with:
-
 ```text
-Design gate: {satisfied | blocked pending product/architecture clarification}
-Design updated: docs/features/{feature}/design.html {opened/reviewed | not opened + reason}
-Architecture thesis: {one sentence}
-Research: {sources reviewed | skipped with reason}
-Diagram: {path/section + question answered | not applicable + reason}
-ADRs: {none | paths}
-Slices/tasks: {none | paths or proposed outcomes}
-Validation: {passed | not run + reason | failed + key issue}
-Next: {review design | resolve question | create task packets | define feedback loop | execute directly}
+Design gate: {satisfied | skipped tiny clear change | blocked + owner}
+Design source/report: {document.json path} · {html path}
+Status: {Draft | Review | Approved by whom/when | Blocked}
+Architecture thesis: {pressure → seam → observable effect}
+Decisions: {IDs + lifecycle status}
+Diagram: {question + JSON/SVG paths}
+ADRs: {none | topical paths}
+Validation: {passed | failed + issue | not run + reason}
+Ready for tasks: {yes only when explicitly Approved/no blocker | no + reason}
+Next: {review | resolve decision | return product question | create tasks after approval}
 ```

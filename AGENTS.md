@@ -26,8 +26,8 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 ## Product and Architecture
 
 - Tiny, obvious fixes may proceed after focused inspection and verification planning.
-- Non-trivial product work needs an approved source of truth before coding: `prd.html` for intent and acceptance behavior, then `design.html`, then task briefs when splitting or delegating work.
-- When architecture matters, read the relevant `design.html` and ADRs under `docs/adrs/`. Keep intended architecture in `design.html`; keep implementation detail and feedback loops in task briefs.
+- Non-trivial product work needs approved product truth before coding: review `prd.html` for intent and acceptance, then `design.html`, then task briefs when splitting or delegating work. Edit adjacent `*.document.json` sources and regenerate HTML; never patch report HTML.
+- When architecture matters, read the relevant `design.html` and ADRs under `docs/adrs/`. Keep editable intended architecture in `design.document.json`, regenerate `design.html` for review, and keep implementation detail and feedback loops in task briefs.
 - Preserve architecture-significant rationale in the relevant ADR (`architecture.md`, `api.md`, or `web.md`).
 - Keep task-loop state and large run artifacts under ignored `.features/{feature}/`; write durable docs only for requirements, current architecture, decisions, reusable verification, or non-obvious gotchas.
 - Keep always-loaded instructions short; load playbooks and deeper docs only when relevant.

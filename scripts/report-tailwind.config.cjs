@@ -1,9 +1,6 @@
-/** Tailwind build authority for the HTML report templates restored from ce8aab1. */
+/** Build-time CSS authority for the sole canonical HTML report template. */
 module.exports = {
-  content: [
-    './skills/html-report-designer/resources/*-template.html',
-    './skills/html-report-designer/resources/*.tailwind.css',
-  ],
+  content: [],
   theme: {
     extend: {
       fontFamily: {
@@ -12,5 +9,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [],
 };

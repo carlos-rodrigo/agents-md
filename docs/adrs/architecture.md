@@ -16,8 +16,8 @@ This repository defines shared agent instructions and skills. Earlier workflow d
 Use this documentation architecture:
 
 - `AGENTS.md` contains baseline behavior for all projects.
-- `docs/features/{feature}/prd.html` captures product direction, scope, accepted behavior, and acceptance criteria as a browser-reviewable product source of truth.
-- `docs/features/{feature}/design.html` captures the current intended architecture/design for a feature and is the default visual design review artifact for non-trivial designs.
+- `docs/features/{feature}/prd.document.json` is the editable product source; `prd.html` is its deterministic browser review and approval artifact.
+- `docs/features/{feature}/design.document.json` is the editable architecture source; `design.html` is its deterministic browser review artifact for non-trivial designs.
 - `docs/adrs/` contains system-level ADR files grouped by architectural area:
   - `architecture.md` for whole-system architecture.
   - `api.md` for API boundaries/contracts, created when needed.
@@ -30,7 +30,7 @@ Do not create extra feature-level snapshot files by default.
 ### Consequences
 
 - Agents should reconstruct current architecture from `design.html` and relevant `docs/adrs/` files.
-- Architecture-significant changes update `design.html` and the relevant ADR file.
+- Architecture-significant changes update `design.document.json` and the relevant ADR, then regenerate `design.html` for review.
 - Task verification lives in task feedback loops, close to implementation.
 - ADRs are not a running conversation log; they preserve durable system-level rationale by architectural area.
 
@@ -47,20 +47,49 @@ Research on long-form documentation, accessibility, and dashboard/report design 
 
 ### Decision
 
-Feature PRDs and designs are browser-reviewable, self-contained HTML reports by default:
+Feature PRDs and designs are browser-reviewable, self-contained HTML reports by default. As amended by the 2026-07-28 canonical rendering decision, structured JSON is the sole editable source and HTML is its byte-matching review projection:
 
-- `docs/features/{feature}/prd.html` is the product source of truth.
-- `docs/features/{feature}/design.html` is the high-level architecture/design source of truth.
+- `docs/features/{feature}/prd.document.json` owns editable product content; `prd.html` is the product review and approval artifact.
+- `docs/features/{feature}/design.document.json` owns editable architecture content; `design.html` is the high-level architecture review artifact.
 - `html-report-designer` owns the reusable report shell, visual hierarchy, accessibility, and review anchors.
-- `system-diagram` owns truthful SVG diagrams embedded in those reports.
-- Stable `data-review-id` anchors are required for review-worthy sections, cards, tables, and diagram nodes.
+- `system-diagram` owns retained Excalidraw JSON and generated SVG embedded in those reports.
+- Stable `data-review-id` anchors are required for review-worthy sections, components, decisions, and diagram elements.
 
 ### Consequences
 
 - Feature review should be more visual, scannable, and pleasant.
-- Agents must preserve review anchors when updating HTML artifacts.
+- Agents preserve review anchors by editing structured source and regenerating; generated HTML is never patched.
 - HTML docs must remain portable: inline CSS/SVG, no required external assets, and usable print/accessibility structure.
 - Task briefs remain Markdown because they are agent execution packets, not human review reports.
+
+## Single canonical report rendering boundary
+
+Status: Accepted
+Date: 2026-07-28
+
+### Context
+
+PRD, design, generic report, and standalone diagram templates evolved separate HTML, CSS, components, motion, and review-state behavior. Instructions to copy or imitate the correct shell were CWD-dependent and could not guarantee that a generated report followed the intended visual and interaction contract. Browser-local reviewer selections also needed a clear boundary from canonical approval.
+
+### Decision
+
+This decision amends the editable-source language in the earlier documentation-model and browser-artifact ADRs. Use one production report rendering boundary owned by `html-report-designer`:
+
+- `canonical-report-v1` structured JSON is the editable generation source.
+- `resources/report-template.html` and `report.tailwind.css` are the sole report shell and style family.
+- The bundled skill-relative renderer validates PRD/design section profiles, approval metadata, decision lifecycle, stable review IDs, and Excalidraw provenance before producing self-contained HTML.
+- `prd` and `design-solution` own required meaning and section roles; they never author report markup or CSS.
+- `system-diagram` is the only diagram renderer and retains Excalidraw JSON beside generated SVG.
+- Browser decision recording and Markdown export are review input. Only explicit human approval reconciled into canonical source changes document or decision status.
+- Missing renderers or invalid authority block generation; there is no alternate template or diagram fallback.
+
+### Consequences
+
+- Presentation fixes and accessibility improvements apply to every durable document kind.
+- New semantic components require a shared schema/renderer change rather than one-off HTML.
+- Installed skills must carry their scripts/resources and resolve them relative to their loaded `SKILL.md`.
+- Existing generated HTML remains readable but must be migrated to structured source before canonical regeneration.
+- Repository verification covers deterministic rendering, positive/negative PRD/design profiles, decision persistence/export, Excalidraw freshness, clean-copy portability, and browser fallbacks.
 
 ## Progressive disclosure for agent documentation
 

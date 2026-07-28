@@ -49,12 +49,12 @@ Capture the smallest useful set:
 
 Omit this role for local deterministic changes with no operational consequence.
 
-## Outside-in slice outline
+## Outside-in architecture slice outline
 
-Use when execution benefits from sequencing, delegation, approval, or tracer bullets. A slice is an observable vertical outcome, not a package/layer phase.
+Use when architecture review benefits from sequencing, delegation, approval, or tracer bullets. An architecture slice is an observable vertical outcome, not a task brief or package/layer phase.
 
 ```text
-SLICE-001 — {observable outcome}
+ARCH-SLICE-001 — {observable outcome}
 External need: {caller} needs {capability} to observe {result}.
 Entry point: {UI action | route | command | event | public function}.
 Acceptance boundary: {BDD/API/CLI/browser/contract observation}.

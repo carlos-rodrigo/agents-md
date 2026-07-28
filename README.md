@@ -8,8 +8,10 @@ Default feature workflow is PRD-first: durable feature docs in `docs/features/`,
 
 ```text
 docs/features/{slug}/
-  prd.html          # product source of truth and visual review artifact
-  design.html       # high-level architecture/design source of truth and visual review artifact
+  prd.document.json # editable product source rendered deterministically
+  prd.html          # product review and approval artifact
+  design.document.json # editable architecture source rendered deterministically
+  design.html       # high-level architecture/design review artifact
 ```
 
 ```text
@@ -48,10 +50,10 @@ Durable docs capture product requirements, current architecture, and ADR-worthy 
 | Skill | Description |
 |-------|-------------|
 | **prd** ★ | Create/update feature `prd.html` reports with why, what, scope, BDD requirements, and acceptance criteria |
-| **design-solution** ★ | Create/update `design.html`, system-level ADRs when needed, and optional task briefs |
+| **design-solution** ★ | Create/update design source plus rendered `design.html`, with system ADRs when needed |
 | **html-report-designer** | Create enjoyable, accessible, self-contained HTML reports for PRDs, designs, diagrams, and decision packets |
 | **feedback-loop** | Define task-level feedback loops and task-local results |
-| **system-diagram** | Create reviewable HTML/SVG diagrams for code flow, component communication, domains, and decisions |
+| **system-diagram** | Create retained Excalidraw JSON scenes and accessible, self-contained SVG diagrams |
 
 ### Development
 
@@ -91,6 +93,9 @@ Use this repo as the canonical shared skill location:
 ```bash
 # Pi / shared agent skill location
 cp -r skills/* ~/.agents/skills/
+
+# Install the mandatory Excalidraw renderer dependencies once.
+npm install --prefix ~/.agents/skills/system-diagram
 ```
 
 For Claude Code, either copy skills or symlink/import from this repo:
@@ -109,11 +114,30 @@ Harness evals live under `evals/`. They test agent behavior and model fit, espec
 python3 scripts/evals/run_style_eval.py evals/style/minimal-code-style.json
 ```
 
-HTML report templates and generated reports can be checked with the local validator:
+All durable PRDs, designs, reports, decisions, research briefs, and diagram packets render through one canonical report template. Render and validate with the bundled skill-relative scripts:
 
 ```bash
-node scripts/validate-html-report.mjs --allow-placeholders skills/html-report-designer/resources/report-template.html
-node scripts/validate-html-report.mjs docs/features/<feature>/design.html
+node ~/.agents/skills/html-report-designer/scripts/render-canonical-report.mjs \
+  docs/features/<feature>/design.document.json \
+  docs/features/<feature>/design.html
+node ~/.agents/skills/html-report-designer/scripts/validate-html-report.mjs \
+  docs/features/<feature>/design.html
+```
+
+Focused checks (run the relevant one while iterating):
+
+```bash
+npm run test:reports
+npm run test:skills
+npm run test:diagram
+# Compatibility proof for the documented minimum runtime:
+npx --yes -p node@18 node scripts/test-skill-portability.mjs
+```
+
+Single final gate, which includes the focused suites:
+
+```bash
+npm run verify
 ```
 
 Eval definitions are durable. Raw run notes/logs should stay under ignored `.features/evals/` when needed.

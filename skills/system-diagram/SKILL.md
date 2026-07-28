@@ -1,51 +1,45 @@
 ---
 name: system-diagram
-description: "Create a question-driven, evidence-backed, high-quality system diagram with the required build-time Excalidraw renderer and accessible inline SVG output. Use for PRD product behavior and design architecture paths involving causal flows, boundaries, ownership, state, sequence, domain behavior, or recovery."
-argument-hint: "[feature-or-doc-path]"
+description: "Create an evidence-backed explanatory system diagram for an approved PRD, technical design, or focused diagram packet using the mandatory bundled Excalidraw JSON-to-SVG renderer. Use for causal flows, state transitions, ownership, boundaries, communication, domain effects, or recovery paths. Do not use another renderer or invent product/architecture semantics."
+compatibility: "Requires Node.js 18+, npm-installed bundled dependencies, filesystem access, and Playwright Chromium. Run npm install in this skill directory once after a copied installation."
 ---
 
 # System Diagram
 
-Create a learning artifact that answers one system question. Substantive PRDs and durable designs normally include one explanatory diagram, but the figure must still teach a real path rather than serve as decoration or a completeness signal.
+Create one learning artifact that answers one explicit question. The consuming PRD or design owns approved semantics, applicability, scope, and placement. This skill validates evidence and owns visual encoding, Excalidraw authoring, accessibility, and internal figure reading order.
 
-This skill owns the diagram's question, evidence, semantics, and reading order. `html-report-designer` owns the surrounding static document shell and figure frame when the diagram is embedded in a durable report.
+## Setup
+
+Resolve paths from the directory containing this loaded `SKILL.md`. After copying skills to another location, install this skill's pinned renderer dependencies once:
+
+```bash
+npm install --prefix "<system-diagram-dir>"
+```
+
+Never fall back to hand-authored SVG or another renderer when setup is missing; report the blocker.
 
 ## Gate
 
 Before drawing, state:
 
 ```text
-Diagram question: What one question must the figure answer?
-Decision or understanding unlocked: What becomes reviewable or explainable after seeing it?
-Evidence: What supports the nodes, edges, states, and ownership?
-Audience: Who needs to explain or decide this?
-Scope: What is included and intentionally excluded?
+Diagram question:
+Understanding or decision unlocked:
+Consuming authority and placement:
+Audience:
+Evidence:
+Scope and exclusions:
 ```
 
-Draw only when a real relationship, sequence, state transition, boundary, ownership path, or recovery path can be taught visually and existing evidence supports the figure. Reuse or improve an existing figure when it already answers the question. Do not draw decoration, unsupported topology, or a feature inventory.
+Draw only when a real relationship, sequence, state transition, responsibility boundary, ownership path, or recovery path can be taught from evidence. The consuming PRD/design decides that its mandatory durable diagram applies; this skill must return unsupported semantics as blockers rather than plausibly filling gaps.
 
-A substantive PRD normally includes one product-behavior diagram that teaches how the product works across actors, actions, states, outcomes, or recovery. Use `Diagram not applicable` only when there is no meaningful product path to visualize.
+## Semantic brief
 
-A durable feature design normally includes one causal architecture diagram that teaches the selected seam and path to an observable result. Use `Diagram not applicable` only when there is no meaningful multi-boundary, state, ownership, sequence, or recovery path.
-
-## Architecture diagram gate
-
-Create a design-stage diagram when all are true:
-
-1. A named architecture question affects ownership, boundary, state, sequence, failure, or tradeoff.
-2. One small causal path can teach the answer.
-3. Existing evidence supports the figure's real nodes and edges.
-4. The figure unlocks a specific review decision or durable shared explanation.
-
-If these conditions are not met, resolve the evidence/question first or record `Diagram not applicable` with the concrete reason. The gate protects truth and focus, not diagram scarcity.
-
-## Brief
-
-Complete the smallest useful brief before authoring the Excalidraw scene:
+Complete before authoring geometry:
 
 ```text
 Question:
-Decision/understanding unlocked:
+Understanding unlocked:
 Audience:
 Mode:
 Evidence:
@@ -57,46 +51,31 @@ State or payload:
 Failure/recovery:
 Uncertainty:
 Reading order:
-Text equivalent:
+Text walkthrough:
 ```
 
-If key ownership or call order cannot be established from evidence, ask one focused question rather than drawing a plausible fiction.
+Inspect the smallest relevant source, tests, routes, types, docs, and logs needed to verify actors, triggers, entry point, owner, state, calls/events/protocols, observable result, and material failure/recovery. Do not infer flow from folder names.
 
-## Inspect reality
+## Modes
 
-Read the smallest set of source, tests, routes, types, docs, and logs needed to verify:
+Choose the smallest semantic mode; all modes use the same Excalidraw renderer:
 
-- actor and trigger;
-- real entry point;
-- owner of coordination and policy;
-- state/persistence owner;
-- calls, events, protocols, payloads, or transitions;
-- runtime/process/team boundaries;
-- observable result;
-- material failure, retry, recovery, or uncertainty.
+- causal/code flow;
+- component communication;
+- domain evolution;
+- state/lifecycle;
+- ownership/lane map;
+- before/after;
+- decision map;
+- outside-in architecture slice.
 
-Do not infer call flow from folder names alone. Distinguish observation, interpretation, assumption, and proposed design.
-
-## Choose a mode
-
-Use the smallest mode that answers the question:
-
-- **Causal/code flow** — functions, methods, events, jobs, payloads, result.
-- **Component communication** — responsibility, protocol, runtime boundary, handoff.
-- **Domain evolution** — source concept → action/verb → target state/effect → invariant.
-- **State/lifecycle** — state, trigger, guard, effect, recovery/terminal path.
-- **Ownership/lane map** — runtime, module, team, or data ownership.
-- **Before/after** — one stable baseline and the smallest causal change.
-- **Decision map** — viable alternatives, evidence, tradeoffs, reversibility.
-- **Outside-in slice** — external need → entry → seam → policy/state → proof.
-
-See `references/diagram-modes.md` for mode-specific guidance.
+Read [references/diagram-modes.md](references/diagram-modes.md) only for the selected mode.
 
 ## Semantic contract
 
 ### Nodes
 
-A node earns space only when responsibility, boundary, state ownership, or result changes. Use plain meaning and real names where traceability helps:
+A node earns space only when responsibility, boundary, state ownership, or observable result changes. Use a plain label and real symbol/path where traceability helps:
 
 ```text
 Human label
@@ -106,112 +85,79 @@ owner · runtime · important state
 
 ### Edges
 
-Label every meaningful edge with the call, action, event, transition, protocol, payload, or effect. Arrows should explain causality, not merely adjacency.
-
-```text
-POST /api/imports · { fileId }
-SaveUseCase.execute() · durable result
-Sale --decreases--> livestock position
-```
+Label every meaningful edge with an action, call, event, transition, protocol, payload, or effect. An arrow explains causality, not adjacency.
 
 ### Boundaries and uncertainty
 
-Show only boundaries relevant to the question. Mark proposed, assumed, blocked, removed, retry, or recovery paths explicitly rather than styling them as settled success.
+Show only boundaries relevant to the question. Mark proposed, assumed, blocked, retry, recovery, and failure paths explicitly rather than styling them as settled success.
 
 ### Color
 
-Color communicates responsibility or semantic state. Define the local legend and pair color with labels, line style, or shape. Use the Editorial Ink palette from `html-report-designer` for durable generic figures unless the product/repository has a stronger visual authority.
-
-## Large high-quality SVGs
-
-Large means more canvas, not smaller text or more concepts.
-
-- Default Excalidraw scenes to one top-to-bottom reading spine. Use horizontal composition only for a real comparison, lane, or fan-out that becomes less clear vertically.
-- Size nodes from wrapped text outward. Target at least 24px internal padding around labels, 56px of vertical space between node bounds, and extra route space wherever an arrow turns or carries a label.
-- Keep effective text at least 12px; prefer 14–18px for primary labels. Never reduce text to rescue an overcrowded canvas.
-- Route arrows through whitespace, attach them to an obvious node edge, and leave clear space around arrowheads. Arrows must not cross node text, run beneath labels, or disappear into borders.
-- Put edge labels in the foreground on an opaque or paper-colored background. Keep each label close to its route without touching the line or arrowhead.
-- Use an explicit `viewBox`, stable geometry, generous outer margins, and enough canvas height for the vertical path to breathe.
-- Put wide SVGs in a horizontally scrollable figure frame at narrow widths; do not shrink until labels become unreadable.
-- Keep the source SVG complete and visible without JavaScript.
-- Split independent questions into separate figures. Use overview + focused detail only when both are independently useful.
-- Add a nearby ordered walkthrough that preserves the conclusion when the image is hidden.
-- Verify desktop, 320px reflow/overflow, enlarged text around the figure, print, and SVG-only opening.
-
-A static mega-diagram is usually a sign that the question is too broad. A large canvas is appropriate for lanes, timelines, and retained identity—not for dumping every component.
+Color communicates semantic state or ownership and is paired with text, line style, or shape. Include a local legend when more than one semantic color is used.
 
 ## Required renderer
 
-Use the repository's build-time Excalidraw renderer for every diagram. Do not hand-author the final SVG or use any alternative renderer or browser diagram runtime. One renderer keeps generation, review IDs, typography, accessibility, motion groups, provenance, and regeneration deterministic.
-
-Excalidraw layout is deliberately authored rather than automatic. If a scene becomes too dense to lay out legibly, split the question into smaller figures instead of changing renderers, shrinking text, or introducing an alternate pipeline.
-
-## Build path
-
-Create an explicitly positioned JSON scene using the vertical spacing and arrow-legibility contract above, then run:
+Use only the bundled build-time Excalidraw renderer:
 
 ```bash
-node /Users/carlosrodrigo/agents/scripts/render-excalidraw-diagram.mjs spec.json output.svg
+node "<system-diagram-dir>/scripts/render-excalidraw-diagram.mjs" \
+  path/to/diagram.json path/to/diagram.svg
+node "<system-diagram-dir>/scripts/render-excalidraw-diagram.mjs" --check \
+  path/to/diagram.json path/to/diagram.svg
 ```
 
-Preserve title/description, searchable text, provenance, review IDs, edge labels, and renderer-owned `.diagram-reveal` groups. Excalidraw is the required medium, not a reason to create a diagram. See `references/renderer-workflow.md` for its exact regeneration and embedding contract.
+Keep the JSON source and SVG together when regeneration matters. Preserve `<!-- svg-source:excalidraw -->`, the renderer's JSON source digest, searchable text, embedded fonts, accessible title/description, stable review IDs, foreground edge labels, and renderer-owned `.diagram-reveal` groups.
 
-Do not make core meaning depend on pan/zoom JavaScript. Optional controls may enhance a complete static figure.
+Do not hand-author the final SVG, edit generated SVG, use browser diagram runtimes, or change renderer because a scene is crowded. Split the question into smaller figures instead.
 
-## Motion and reading order
+## Geometry
 
-When a diagram is embedded in a PRD or design report, preserve reading-order groups so the report's scroll-reveal motion can teach causal sequence, state transition, or retained identity. Motion remains progressive enhancement: the complete source SVG is visible without JavaScript, in print, and under reduced motion.
+- Default to one top-to-bottom causal spine; use horizontal layout only for a real comparison, lane, or fan-out.
+- Wrap text first and size nodes outward with at least about 24px internal padding.
+- Leave at least about 56px between node bounds, increasing space for labels and turns.
+- Keep effective text at least 12px; prefer 14–18px primary labels.
+- Route arrows through whitespace with clear approach/departure and arrowhead clearance.
+- Put edge labels in the foreground on opaque/paper backgrounds.
+- Never route through node content or under labels.
+- Use generous margins and an explicit viewBox.
+- Split rather than shrink a crowded figure.
 
-For a scroll-paced figure, order groups in source and visual space as:
+Read [references/drawing-and-accessibility.md](references/drawing-and-accessibility.md) for geometry, accessibility, motion, mobile, and print review. Read [references/renderer-workflow.md](references/renderer-workflow.md) for exact regeneration and embedding rules.
 
-```text
-context/actor → action/edge label → owner/state → result → recovery/risk
-```
+## Report handoff
 
-Use `.diagram-reveal` groups with bounded local delays. Use `.path-draw` only for simple single-stroke authored SVG paths; preserve renderer-owned Excalidraw groups and avoid path-draw effects that break coordinated strokes. Honor reduced motion and print. See `references/drawing-and-accessibility.md`.
+Return the consuming skill:
 
-## Output locations
+- diagram question and understanding unlocked;
+- evidence and uncertainty;
+- JSON source path;
+- generated SVG path;
+- ordered text walkthrough;
+- renderer freshness result.
 
-Prefer:
-
-```text
-docs/features/{feature}/prd.html
-docs/features/{feature}/design.html
-docs/features/{feature}/diagrams/{name}.html
-docs/architecture/{name}.html
-```
-
-Embed in the owning document when the figure exists only to support that narrative. Create a focused sibling page when the diagram has an independent audience or would crowd the parent.
+`html-report-designer` embeds the generated SVG through a canonical `diagram` block. This skill does not own a report template or page shell.
 
 ## Quality gate
 
-Before handoff:
-
-- [ ] The figure answers one explicit question and names what it unlocks.
-- [ ] Source evidence supports real nodes, edges, ownership, and state.
-- [ ] The main path can be narrated in order.
-- [ ] Every meaningful edge has a verb/call/protocol/effect label.
-- [ ] Boundaries, uncertainty, failure, and recovery are truthful.
-- [ ] The local legend explains semantic color/line meaning.
-- [ ] Text and labels remain readable at expected size.
-- [ ] SVG has a `viewBox`, title, description, accessible naming, and stable review anchors.
-- [ ] A nearby structured walkthrough preserves the conclusion.
-- [ ] Wide/mobile/print/no-JS/reduced-motion states are complete.
-- [ ] The final artifact has no required remote assets or renderer runtime.
-- [ ] The Excalidraw JSON regeneration source is retained and the generated SVG is current.
+- One explicit question and understanding unlocked.
+- Evidence supports every real node, edge, state, and owner.
+- Main path can be narrated in order.
+- Every meaningful edge is labelled.
+- Uncertainty and recovery are truthful.
+- Text, padding, routes, labels, and arrowheads remain legible.
+- JSON source is retained; generated SVG is current and carries Excalidraw provenance.
+- SVG has viewBox, title, description, accessible naming, searchable text, and stable review anchors.
+- Nearby walkthrough preserves the conclusion with the image hidden.
+- Desktop, 320px overflow, print, no-JS, and reduced-motion states remain complete.
 
 ## Output
 
-End with:
-
 ```text
-Created: {path}
-Diagram question: {question}
-Decision/understanding unlocked: {result}
-Mode: {mode}
-Renderer/layout: Excalidraw + {layout rationale}
+Created: {JSON path} · {SVG path}
+Question/unlocked: {question} · {understanding}
+Mode/layout: {mode} · {layout rationale}
 Evidence: {paths/docs/logs}
-Reading order: {static order + optional motion}
-Validation: {passed | not run + reason | failed + key issue}
-Uncertainty: {none | assumptions/open items}
+Reading order: {static order + optional progressive groups}
+Validation: {renderer current + accessibility/visual checks}
+Uncertainty: {none | blockers}
 ```

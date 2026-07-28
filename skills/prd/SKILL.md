@@ -1,271 +1,139 @@
 ---
 name: prd
-description: "Create or update a product-complete feature PRD that explains what is being built, why it matters, and how it works through end-to-end product slices, user stories, Given/When/Then scenarios, storyboards, and observable acceptance. Use before design or implementation when product intent, scope, workflows, or acceptance behavior are unclear. Triggers on: create a prd, write prd, prd.html, product requirements, plan feature."
+description: "Create or update an evidence-backed product requirements document when a non-trivial feature's product intent, actor workflow, scope, product decisions, or observable acceptance needs human review and approval before architecture work. Do not use for tiny obvious fixes, architecture, task planning, implementation, technical test plans, or document styling."
+compatibility: "Requires the html-report-designer and system-diagram skills. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
 ---
 
 # Product Requirements Document
 
-Use this skill to answer three product questions:
+Answer one product question:
 
-> What product change are we building, why is it worth building, and how should it work for the people or systems that use it?
+> What product change are we building, why does it matter, how should it work end to end, and what observable result proves it?
 
-Default artifact:
+Default artifacts:
 
 ```text
+docs/features/{feature}/prd.document.json
 docs/features/{feature}/prd.html
 ```
 
-## Content ownership and report shell
+`prd.document.json` is the editable product authority. `prd.html` is its deterministic review and approval projection. Never hand-author or patch report HTML/CSS.
 
-This skill owns all PRD substance and its reading order. `html-report-designer` supplies only the self-contained HTML shell, visual components, accessibility, and validation workflow.
+## Gate
 
-Use:
+Skip a durable PRD for a tiny, obvious change whose user/system outcome, boundary, and acceptance are already explicit. Record the observable outcome in the task feedback loop instead.
 
-```text
-skills/html-report-designer/resources/prd-template.html
-```
+Create or update a PRD when product behavior, scope, trust, workflow, wording, permissions, recovery, or acceptance needs durable review. Draft is the default for new or materially changed product truth.
 
-The template exposes `{{PRD_TOC}}`, `{{PRD_ARTIFACT_LINKS}}`, `{{PRD_HEADER_SUPPORT}}`, and `{{COMPOSED_PRD_CONTENT}}` composition slots. Compose the sourced PRD content before fitting it to the report shell. Generate navigation from the sections that actually exist. Use artifact links only for real related documents; an empty string is valid. The template must not add, remove, reorder, or multiply product requirements, stories, slices, scenarios, decisions, or visuals.
+## Authority and approval
 
-Keep the template's embedded style block and visual component classes. Replace all placeholders, add `reveal` to top-level composed sections, preserve semantic HTML and stable review IDs, and leave no unresolved placeholders. Never invent content to fill a component or sample shape.
+Use authority in this order:
 
-## Product narrative
+1. explicit human product-owner decisions;
+2. current product behavior and durable product documentation;
+3. supplied research, screenshots, analytics, support evidence, or logs;
+4. labeled assumptions and open questions.
 
-Build the shortest complete product story with this spine:
+Do not invent users, emotion, urgency, business rules, roles, validation, limits, metrics, product language, or acceptance behavior.
 
-> product and user → problem and consequence → bounded outcome → product slices and behavior → observable proof → meaningful boundary
+Status is a human governance contract:
 
-A reader should be able to answer, without consulting design or implementation documents:
+- **Draft** — default; assumptions and unresolved decisions remain visible.
+- **Review** — coherent enough for human judgment; not approved.
+- **Approved** — only after explicit human approval recorded in `document.approval`.
+- **Blocked** — missing product truth prevents an honest bounded proposal.
 
-1. What product capability will exist?
-2. Who encounters it, where, and for what job?
-3. Why is the current state worth changing?
-4. What happens from entry through success or recovery?
-5. What proves the intended outcome and what remains unchanged?
+Report `Ready for design: yes` only when status is Approved and no blocking product decision remains. An exported browser decision record is review input, not approval or canonical truth.
 
-A small change may use one compact slice, but it must still answer all five questions.
+## Required report structure
 
-## Process
+Every substantive PRD uses these `section.role` values in a causal reading order. Headings may be feature-specific, but roles may not be omitted:
 
-1. Read the request and the smallest amount of product/repository evidence needed to avoid guessing.
-2. Inspect the existing product interface before describing or changing a visible workflow.
-3. Draft **What**, **Why**, and the ordered product slices in plain text before generating HTML.
-4. For each slice, write its story, scenarios, visible steps or non-visual interactions, rules, acceptance, and final user-perspective “After this slice” summary.
-5. Create one product-behavior diagram that explains the end-to-end flow across actors, slices, states, or recovery, or record `Diagram not applicable` with a concrete reason.
-6. Ask up to 3 focused questions when missing answers change scope, trust, behavior, or the coherence of the product promise.
-7. Mark unresolved consequential behavior as blocking; do not omit or invent it to complete the document.
-8. Compose the approved/sourced content into the content-neutral PRD report shell.
-9. Validate facts, traceability, links, accessibility, HTML, storyboards, and diagram quality.
-10. Stop before architecture, APIs, schemas, component libraries, tasks, rollout mechanics, or task-level test commands.
+1. **`product`** — actor, job/moment, bounded capability, entry point, resulting state.
+2. **`problem`** — current behavior, friction, consequence, evidence, expected outcome.
+3. **`behavior`** — canonical end-to-end workflow and outcome-protecting product rules.
+4. **`diagram`** — one evidence-backed product-behavior diagram.
+5. **`slices`** — one or more complete end-to-end product slices.
+6. **`scope`** — in-scope outcome, adjacent non-goals, assumptions, and sources/boundary.
+7. **`decisions`** — include only when a real product choice is open, proposed, or accepted.
 
-## Source and truth rules
-
-- Do not invent users, workflow steps, business rules, limits, roles, validation, metrics, or acceptance behavior.
-- Distinguish facts, assumptions, recommendations, and unresolved decisions near the claims they affect.
-- A recommended flow is not an approved flow. Label its status and owner.
-- Existing UI, screenshots, product language, support evidence, research, and analytics are product evidence. Cite consequential claims near their source.
-- Product-visible constraints may name an external contract. Files, classes, endpoints, migrations, packages, and storage choices belong in design.
-- If evidence does not support a requested metric, describe the observable outcome and record metric selection as an open decision.
-
-## What we are building
-
-State the product definition explicitly. Include:
-
-- **User or actor:** who encounters the capability.
-- **Job and moment:** what they are trying to accomplish and where the need appears.
-- **Product capability:** what new or changed behavior will exist.
-- **Entry point:** how the actor reaches or triggers it.
-- **Resulting state:** what the actor can observe or do afterward.
-- **Boundary:** the nearest adjacent behavior intentionally unchanged.
-
-Use one direct product statement:
+Open with one direct product statement:
 
 ```text
-For {user/actor} who needs to {job} during {moment}, the product will {capability}
+For {actor} who needs to {job} during {moment}, the product will {capability}
 through {entry point}, resulting in {observable state}; it will not {boundary}.
 ```
 
-Do not substitute a feature inventory, project codename, architecture summary, or generic vision statement.
+## Product slices
 
-## Why we are building it
+A product slice is an ordered, end-to-end increment of user or stakeholder value—not a component, endpoint, package, implementation layer, or task.
 
-Explain the rationale as a causal argument:
+Each slice must contain a sourced story, main Given/When/Then scenario, observable visual/non-visual sequence, stable acceptance criteria, and “After this slice” outcome. Load [references/product-slice-contract.md](references/product-slice-contract.md) when composing slices.
 
-- **Current behavior:** what happens today.
-- **Friction:** what fails, takes effort, creates risk, or blocks progress.
-- **Consequence:** why that friction matters to the user or product.
-- **Evidence:** what supports the claim.
-- **Expected outcome:** what observable change makes the bet worthwhile.
-- **Why now:** include only when timing is sourced and decision-relevant.
+Let sourced behavior determine the number of workflow steps, rules, scenarios, and acceptance criteria. Never invent content to meet a fixed count.
 
-Do not invent quantitative targets. If the desired outcome is qualitative, say exactly what users or reviewers should be able to observe.
+## Product-behavior diagram
 
-## How it should work: product slices
+Every substantive PRD must invoke `system-diagram` after stating the exact product question the figure answers. The PRD owns approved product semantics, applicability, question, and placement. `system-diagram` validates evidence and owns Excalidraw visual encoding, accessibility, and internal reading order.
 
-A product slice is:
-
-> An ordered, end-to-end increment of user value that can be understood and accepted from the product perspective; it is not an implementation layer, package, component, endpoint, or delivery task.
-
-Use one slice for a tiny coherent change. Use multiple slices when value is introduced in meaningful stages or when different outcomes can be reviewed independently. Order slices by the product experience, not the code plan.
-
-Each substantive `SLICE-*` contains the following compact contract.
-
-### 1. Slice outcome and boundary
-
-State the independently understandable value this slice adds, its entry condition, resulting product state, and what it does not yet provide.
-
-### 2. Primary story
-
-Include at least one sourced user or system story:
-
-```text
-STORY-*: As a {actor}, I want {capability}, so that {outcome}.
-```
-
-If there is no human actor, name the system actor or trigger and the stakeholder who observes the result. Do not invent a persona merely to satisfy the format.
-
-### 3. Behavioral specifications
-
-Include one main scenario per slice and only the important sourced edge, empty, error, recovery, or permission scenarios that affect trust or scope:
-
-```text
-EX-* Main scenario
-**Given** {starting context}
-**When** {actor action or trigger}
-**Then** {observable result}
-```
-
-A `Then` must describe product-visible or stakeholder-observable behavior, not an internal call, record, event, or implementation mechanism.
-
-### 4. Product-visible steps and storyboard
-
-For every user-facing slice, show the intended experience from entry to outcome. Include one compact storyboard panel for every product-visible step:
-
-1. **Context/state:** what the user sees before acting.
-2. **Action:** what the user does.
-3. **Visible response:** feedback, changed state, or recovery shown by the product.
-4. **Next decision/outcome:** what the user can do or understand next.
-
-A panel can be a small semantic HTML/CSS wireframe, a faithful existing screenshot with annotations, or a compact before/after state when that fully explains the step. Panels are explanatory product storyboards, not polished design specifications.
-
-When an existing interface exists, preserve its shell, terminology, density, navigation, and controls. Show only the material product delta. Include representative copy and important loading, empty, error, success, or permission states when they change the scenario.
-
-For a non-visual slice, replace the storyboard with a compact actor → trigger/action → observable state/effect strip and state why UI is not applicable. Never fabricate a screen for a background or API-only behavior.
-
-Show multiple UI alternatives only when an unresolved product decision requires comparison. Alternatives are not a substitute for the intended-flow storyboard.
-
-### 5. Acceptance
-
-Give each observable criterion an `AC-*` ID. Acceptance must prove the slice outcome and relevant trust/recovery behavior without prescribing task-level commands.
-
-Maintain lightweight traceability:
-
-```text
-SLICE-* → STORY-* → EX-* → AC-*
-```
-
-Keep IDs stable across revisions. Storyboard steps may use `STEP-*` IDs when reviewers need to discuss individual states.
-
-### 6. After this slice
-
-End every slice with a visually distinct, 1–2 sentence summary in plain user language. State the new capability or understood outcome—not the implementation, requirements, or test mechanics.
-
-```text
-After this slice, {actor} can {new capability or understood outcome}.
-{Optional: They still cannot {nearest meaningful boundary}.}
-```
-
-Use the actor named by the slice. Keep it concrete enough that a reviewer can explain the value without rereading the story or scenarios. Do not repeat the step sequence. In HTML, render it as a compact success callout at the end of the slice with a stable review anchor such as `slice-001.after`.
-
-## Cross-slice product rules
-
-Use 3–7 outcome-protecting rules when authority, policy, vocabulary, invariants, trust, or recovery applies across slices. Write observable behavior:
-
-```text
-When {condition}, {actor} can observe {result}.
-The product must not {harmful or out-of-scope behavior}.
-```
-
-Keep a rule inside one slice when it does not apply elsewhere.
-
-## Product-behavior diagram expectation
-
-A substantive PRD normally includes one product-behavior diagram. Use `system-diagram` with the exact product question the figure must answer.
-
-Prefer a compact causal or state path that shows how the product works across the most important transition:
+The diagram should teach:
 
 ```text
 actor/context → trigger/action → product response/state → next decision → outcome or recovery
 ```
 
-The diagram complements stories, Given/When/Then scenarios, and screen storyboards; it does not duplicate them or introduce architecture. Use real product language, label every meaningful edge with an action or effect, distinguish uncertainty/recovery, and include a nearby ordered text walkthrough.
+It must not introduce architecture. Retain the Excalidraw JSON source beside the feature, generate the SVG through the bundled system-diagram renderer, and reference both from the `diagram` block. A durable substantive PRD does not use a hand-authored SVG or a `Diagram not applicable` escape.
 
-Use `Diagram not applicable` only when the PRD is truly too small or has no meaningful flow, handoff, state transition, relationship, or recovery behavior to visualize. Concise prose alone is not a reason to omit a useful explanatory figure.
+## Decisions
 
-Follow `system-diagram`'s evidence, semantic brief, spacing, arrow/label legibility, accessible inline SVG, responsive overflow, print, and validation contract. Preserve `.diagram-reveal` groups in reading order so the figure can progress when its section enters the viewport; the complete static figure must remain visible without JavaScript.
+Include a canonical `decision` block for every real product decision. Each decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
 
-## Scope, decisions, and evidence
+Every rendered decision includes a **Decision recorded** checkbox. Recording in the browser requires a selection, rationale, and owner, persists locally, and exports Markdown. Reconcile that export into `prd.document.json` only after explicit human approval. Accepted decisions require approver and approval date; Approved PRDs cannot contain open or proposed decisions.
 
-- State the smallest in-scope product outcome and adjacent non-goals.
-- Include a decision block only for a real unresolved product choice. Name the question, evidence, options, impact, owner, blocker state, and resolution path.
-- Keep assumptions and questions beside the affected slice or rule rather than collecting all uncertainty at the end.
-- End with a compact source list.
+## Process
 
-## Outcome-based splitting
+1. Inspect the request, current product surface, and smallest evidence set needed to avoid guessing.
+2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
+3. Compose the required section roles and complete product slices in `canonical-report-v1` structured content.
+4. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
+5. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
-Keep one PRD when the product definition, rationale, slices, and boundary can be approved together. Create a child PRD only when a child outcome is independently valuable, reviewable, releasable, and needs its own product promise and proof.
+```bash
+node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
+  docs/features/{feature}/prd.document.json docs/features/{feature}/prd.html
+node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
+  docs/features/{feature}/prd.html
+```
 
-Never split by package, component, API, persistence layer, or architecture boundary.
+6. Open the report for review when possible. Never patch generated HTML.
+7. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
+
+If either companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell or diagram.
 
 ## Quality gate
 
-Before finishing:
-
-- [ ] **What** names the actor, job/moment, capability, entry point, resulting state, and boundary.
-- [ ] **Why** connects current behavior to friction, consequence, evidence, and expected outcome.
-- [ ] Each substantive slice is an end-to-end product outcome, not a delivery or architecture layer.
-- [ ] Every slice has a sourced `STORY-*` and main Given/When/Then `EX-*` scenario.
-- [ ] Every user-facing slice has one intended-flow storyboard panel per product-visible step.
-- [ ] Every non-visual slice has an interaction/state strip and a truthful UI-not-applicable rationale.
-- [ ] Important failure, empty, recovery, and permission behavior is specified where it changes trust or scope.
-- [ ] `Then` statements and `AC-*` criteria are observable from the product or stakeholder perspective.
-- [ ] Traceability is intact: `SLICE-* → STORY-* → EX-* → AC-*`.
-- [ ] Every slice ends with a concise “After this slice” statement describing what its actor can now do or understand.
-- [ ] One product-behavior diagram explains a named flow/state question, or `Diagram not applicable` gives a concrete rationale.
-- [ ] The diagram is evidence-backed, labelled, accessible, paired with a walkthrough, and complete on mobile/print/no-JS/reduced-motion.
-- [ ] Multiple UI alternatives appear only for a real unresolved product decision.
-- [ ] Every consequential claim is sourced, assumed, recommended, or recorded as an owned question.
-- [ ] The report shell reflects the composed content; it does not dictate sections or placeholder counts.
-- [ ] The PRD contains no architecture or implementation prescription.
-- [ ] Stable review IDs, links, accessibility, self-containment, and HTML validation pass.
+- Product, problem, workflow, diagram, slices, and scope roles are complete and non-duplicative.
+- Every consequential claim is sourced, assumed, recommended, or an owned question.
+- Every slice traces `slice → story → scenario → acceptance` and ends in an observable outcome.
+- Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
+- One Excalidraw product diagram has JSON/SVG provenance and a text walkthrough.
+- Decisions have explicit lifecycle and human approval boundaries.
+- No architecture or implementation prescription leaked in.
+- Canonical renderer, PRD profile validation, accessibility, mobile, print, no-JS, and reduced-motion checks pass.
 
 ## Handoff
 
-After approval:
-
-- use `design-solution` when architecture is non-obvious or a durable design is useful;
-- pass the approved product definition, rationale, slices, after-slice user outcomes, stories, scenarios, storyboard states, rules, acceptance, decisions, and boundaries;
-- use `simple-tasks` for implementation slices and delegation;
-- use `feedback-loop` for task-level verification.
-
-Unresolved consequential product behavior blocks design. Missing decorative visuals or implementation detail does not.
+After explicit PRD approval, pass approved behavior, slices, acceptance, product-visible constraints, accepted decisions, and boundaries to `design-solution`. Do not create tasks directly from the PRD.
 
 ## Output
 
-End with:
-
 ```text
-PRD updated: docs/features/{feature}/prd.html {opened/reviewed | not opened + reason}
-Status: {Draft | Review | Approved | Blocked}
-Product: {what is being built, for whom}
-Why: {problem and expected outcome}
-Product slices: {SLICE IDs + names}
-Traceability: {complete | gaps}
-Sources reviewed: {paths/docs/chat | user request only}
-Open decisions: {none | IDs + owner/blocker state}
-Storyboards: {slice IDs covered | non-visual rationale | gaps}
-Diagram: {section + question answered | not applicable + reason}
-Validation: {passed | not run + reason | failed + key issue}
-Ready for design: {yes | no + blockers}
-Next: {review PRD | resolve decision | create design | define task feedback loop}
+PRD source/report: {document.json path} · {html path}
+Status: {Draft | Review | Approved by whom/when | Blocked}
+Product: {bounded outcome for actor}
+Decisions: {IDs + lifecycle status | none}
+Diagram: {question + JSON/SVG paths}
+Validation: {passed | failed + issue | not run + reason}
+Ready for design: {yes only when explicitly Approved/no blocker | no + reason}
+Next: {review | resolve decision | create design}
 ```

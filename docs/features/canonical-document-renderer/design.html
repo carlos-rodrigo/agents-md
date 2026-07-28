@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en" data-report-template="canonical-report-v1" data-document-kind="design">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="canonical-report" content="canonical-report-v1" />
+  <meta name="canonical-template-digest" content="6551b49150b7ffd7d83d12f802f5f7cd76897e03f4d52dda27c6c829b590fb7a" />
+  <meta name="description" content="PRD and Design Solution own structured meaning, System Diagram owns Excalidraw JSON-to-SVG, and HTML Report Designer validates both before filling one report template." />
+  <title>Put all document presentation behind one portable renderer</title>
+  <style data-tailwind-build="report.tailwind.css">
+/* tailwind-report-css:start */
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Geist,Geist Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}:root{color-scheme:light;--page:#fff;--surface:#fff;--surface-subtle:#fafafa;--text:#000;--text-muted:#666;--text-subtle:#8a8a8a;--border:#eaeaea;--border-strong:#dedede;--accent:#000;--accent-strong:#000;--accent-soft:#f5f5f5;--success:#0070f3;--success-soft:#eef6ff;--warning:#a35200;--warning-soft:#fff7ed;--danger:#e00;--danger-soft:#fff1f1;--info:#0070f3;--info-soft:#eef6ff;--shadow-soft:none;--focus:0 0 0 3px rgba(0,112,243,.24);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--radius-sm:6px;--radius-md:6px;--radius-lg:8px;--content:76ch;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--sans:"Geist","Geist Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);line-height:1.58;text-rendering:optimizeLegibility}a{color:var(--accent-strong);text-underline-offset:.18em}code,kbd{font-family:var(--mono);font-size:.92em}code{padding:.12rem .32rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-subtle);overflow-wrap:anywhere}:where(a,button,summary,input):focus-visible{outline:none;box-shadow:var(--focus)}.skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:30;transform:translateY(-180%);padding:.65rem .9rem;border-radius:999px;background:var(--text);color:var(--surface);text-decoration:none}.skip-link:focus{transform:translateY(0)}.doc-shell{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:clamp(var(--space-6),4vw,var(--space-10));width:100%;max-width:none;margin:0;padding:var(--space-8) clamp(var(--space-4),3vw,var(--space-8)) var(--space-10);align-items:start;transition:grid-template-columns .28s cubic-bezier(.2,.8,.2,1)}.doc-shell:has(.index-details:not([open])){grid-template-columns:44px minmax(0,1fr)}.side-nav{position:sticky;top:var(--space-6);min-height:calc(100vh - var(--space-8));max-height:calc(100vh - var(--space-8));overflow:auto;padding-right:var(--space-4);border-right:1px solid var(--border);transition:padding-right .28s ease}.doc-shell:has(.index-details:not([open])) .side-nav{overflow:visible;padding-right:0}.index-details{margin-top:0;padding:0;border:0;border-radius:0;background:transparent}.index-details>summary{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-3);padding:.4rem .5rem;border:0;border-radius:var(--radius-md);background:var(--page);color:var(--text);cursor:pointer;list-style:none}.index-details>summary:hover{background:var(--surface-subtle)}.index-details>summary::-webkit-details-marker{display:none}.index-details>summary:after{content:"⌄";margin-left:var(--space-1);color:var(--text-subtle);transition:transform .18s ease}.index-details[open]>summary:after{transform:rotate(180deg)}.sidebar-toggle-copy{display:inline-flex;margin-left:auto;padding:.18rem .42rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);font-size:.66rem;font-weight:700;letter-spacing:.02em;text-transform:none}.sidebar-toggle-copy:before{content:"Collapse"}.index-details:not([open])>summary{justify-content:center;width:44px;min-height:44px;margin:0;padding:0}.index-details:not([open])>summary:before{content:"☰";color:var(--text);font-size:1rem;line-height:1}.index-details:not([open])>summary .nav-title,.index-details:not([open])>summary .sidebar-toggle-copy,.index-details:not([open])>summary:after{display:none}.panel-title,.side-nav .nav-title,.side-nav h2{margin:0 0 var(--space-3);color:var(--text-subtle);font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.index-details>summary .nav-title{margin:0;color:var(--text)}.side-nav ol,.side-nav ul{display:grid;gap:2px;margin:0;padding:0;list-style:none}.side-nav a{display:block;padding:.38rem .5rem;border:0;border-radius:var(--radius-md);color:var(--text-muted);font-size:.9rem;text-decoration:none;box-shadow:none}.side-nav a.is-active,.side-nav a:hover{background:var(--surface-subtle);color:var(--text);border:0;box-shadow:none}.side-nav a.is-active{font-weight:700}.side-nav .nav-group{margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--border)}.doc-main{min-width:0}.breadcrumbs{margin-bottom:var(--space-4);color:var(--text-subtle);font-size:.9rem}.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0;padding:0;list-style:none}.breadcrumbs li:not(:last-child):after{content:"/";margin-left:var(--space-2);color:var(--text-subtle)}.breadcrumbs a{color:var(--text-muted);text-decoration:none}.article-header{margin-bottom:var(--space-8);padding:var(--space-6) 0 var(--space-6);border-bottom:1px solid var(--border)}.article-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4)}.pill{display:inline-flex;align-items:center;min-height:26px;padding:.16rem .56rem;border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text-muted);font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.pill.review{background:var(--warning-soft);color:var(--warning);border-color:color-mix(in srgb,var(--warning) 28%,var(--border))}.pill.approved{background:var(--success-soft);color:var(--success);border-color:color-mix(in srgb,var(--success) 28%,var(--border))}.pill.blocked{background:var(--danger-soft);color:var(--danger);border-color:color-mix(in srgb,var(--danger) 28%,var(--border))}.pill.draft{background:var(--info-soft);color:var(--info);border-color:color-mix(in srgb,var(--info) 28%,var(--border))}h1{margin:0;max-width:880px;font-size:clamp(2rem,4vw,3.25rem);line-height:1.05;letter-spacing:-.035em}h1,h2,h3{text-wrap:balance}h2,h3{color:var(--text);line-height:1.22;letter-spacing:-.015em}.subtitle{max-width:760px;margin:var(--space-4) 0 0;color:var(--text-muted);font-size:clamp(1rem,1.2vw,1.14rem)}.callout,.feedback-widget,.slice-card{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.section-card{margin-bottom:var(--space-8);padding:0 0 var(--space-8);scroll-margin-top:var(--space-4);border-bottom:1px solid var(--border)}.section-kicker{display:inline-flex;margin-bottom:var(--space-2);color:var(--accent-strong);font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.section-card h2{margin:0;font-size:clamp(1.45rem,2.5vw,2.25rem)}.section-summary{max-width:var(--content);margin:var(--space-3) 0 0;color:var(--text-muted)}.callout,.slice-card{padding:var(--space-4)}.slice-card h3{margin:0 0 var(--space-2);font-size:1rem}.slice-card p{margin:var(--space-2) 0 0;color:var(--text-muted)}.callout{margin-top:var(--space-4);border-left:4px solid var(--info);background:var(--info-soft)}.callout.success,.callout.tip{border-left-color:var(--success);background:var(--success-soft)}.callout.warning{border-left-color:var(--warning);background:var(--warning-soft)}.callout.danger,.callout.risk{border-left-color:var(--danger);background:var(--danger-soft)}.callout strong{display:block;margin-bottom:var(--space-1)}.step-list{display:grid;gap:var(--space-3);margin:var(--space-4) 0 0;padding:0;counter-reset:step;list-style:none}.step-list li{position:relative;padding:var(--space-4) var(--space-4) var(--space-4) 3.2rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.step-list li:before{counter-increment:step;content:counter(step);position:absolute;left:var(--space-4);top:var(--space-4);display:grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:999px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:800}.copyable-code{position:relative;margin-top:var(--space-4)}blockquote{max-width:var(--content);margin:var(--space-4) 0 0;padding:var(--space-3) var(--space-4);border-left:4px solid var(--border-strong);color:var(--text-muted)}blockquote cite{display:block;margin-top:var(--space-2);color:var(--text-subtle);font-style:normal}pre{margin:0;padding:var(--space-4);overflow:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:#0f172a;color:#e5eefc}pre code{border:0;background:transparent;color:inherit;padding:0}.id-chip,.status-chip{display:inline-flex;align-items:center;border-radius:999px;font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.02em}.id-chip{margin-right:.35rem;padding:.12rem .44rem;background:var(--accent-soft);color:var(--accent-strong)}.status-chip{margin-left:.35rem;padding:.1rem .42rem;border:1px solid var(--border);color:var(--text-muted)}.document-block{max-width:var(--content);margin:var(--space-4) 0 0}.canonical-list{display:grid;gap:var(--space-2);margin:var(--space-3) 0 0;padding-left:1.25rem;color:var(--text-muted)}.canonical-list--checks{list-style:"✓  "}.facts{display:grid;gap:var(--space-2);margin-top:var(--space-4)}.facts>div{display:grid;grid-template-columns:minmax(120px,.35fr) minmax(0,1fr);gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border)}.facts dt{color:var(--text);font-weight:800}.facts dd{margin:0;color:var(--text-muted)}.scenario-panel{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.scenario-panel h3{margin:0 0 var(--space-3)}.scenario-line{display:grid;grid-template-columns:5rem minmax(0,1fr);gap:var(--space-3);margin-top:var(--space-2)}.scenario-line strong{color:var(--text)}.scenario-line span{color:var(--text-muted)}.slice-card{margin-top:var(--space-5)}.slice-card>header{padding-bottom:var(--space-3);border-bottom:1px solid var(--border)}.slice-card>header h3{margin:0}.slice-story{margin-top:var(--space-3);color:var(--text);font-weight:650}.storyboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--space-3);margin-top:var(--space-4)}.storyboard-step{padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-subtle)}.storyboard-step h4{margin:0 0 var(--space-2)}.storyboard-step dl{display:grid;gap:var(--space-2);margin:0}.storyboard-step dl>div{display:grid;gap:2px}.storyboard-step dt{color:var(--text-subtle);font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.storyboard-step dd{margin:0;color:var(--text-muted)}.acceptance-list{display:grid;gap:var(--space-2);margin-top:var(--space-4);padding:0;list-style:none}.acceptance-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-2);padding:var(--space-2) 0;color:var(--text-muted)}.acceptance-list .id-chip{align-self:start}.decision-recorder{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.decision-recorder[data-decision-status=accepted]{border-left:4px solid var(--success);background:var(--success-soft)}.decision-recorder[data-decision-status=open]{border-left:4px solid var(--warning);background:var(--warning-soft)}.decision-recorder legend{padding:0 var(--space-2);font-weight:800}.decision-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:var(--space-2) 0 var(--space-3);color:var(--text-muted);font-size:.85rem}.decision-option,.decision-options{display:grid;gap:var(--space-2)}.decision-option{grid-template-columns:auto minmax(0,1fr);align-items:start;color:var(--text-muted)}.decision-option input{margin-top:.25rem;accent-color:var(--accent)}.decision-custom,.decision-field{display:grid;gap:var(--space-1);margin-top:var(--space-3)}.decision-custom span,.decision-field span{color:var(--text);font-size:.82rem;font-weight:800}.decision-custom input,.decision-field input,.decision-field textarea{width:100%;padding:.55rem .65rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);font:inherit}.decision-record-check{display:flex;gap:var(--space-2);align-items:start;margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--border);color:var(--text);font-weight:750}.decision-record-check input{margin-top:.25rem;accent-color:var(--success)}.decision-status{min-height:1.4em;margin-top:var(--space-2);color:var(--text-muted);font-size:.86rem}.figure-question{margin:0 0 var(--space-3);color:var(--text);font-weight:750}.diagram-walkthrough{display:grid;gap:var(--space-2);margin:var(--space-3) 0 0;padding-left:1.25rem;color:var(--text-muted)}figure{margin:var(--space-4) 0 0}.figure-card{padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle);overflow:auto}.figure-card svg{display:block;width:100%;min-width:min(760px,100%);height:auto}figcaption{margin-top:var(--space-3);color:var(--text-muted);font-size:.92rem}.slice-card+.slice-card{margin-top:var(--space-8)}.diagram-figure{background:var(--surface)}.diagram-edge-label{pointer-events:none}.diagram-reveal{opacity:1;transform:none}.js .diagram-reveal{opacity:0;transform:translateY(12px);transform-box:fill-box;transform-origin:center;transition:opacity .36s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1);transition-delay:var(--reveal-delay,0ms)}.js .is-visible .diagram-reveal,.js .reveal.is-visible .diagram-reveal{opacity:1;transform:translateY(0)}details{margin-top:var(--space-4);padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}summary{cursor:pointer;color:var(--text);font-weight:700}.feedback-widget{margin-top:var(--space-5);padding:var(--space-4)}.feedback-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}.feedback-actions button{border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text);padding:.42rem .72rem;cursor:pointer}.feedback-note{color:var(--text-muted);font-size:.9rem}:where([data-review-id]){position:relative}[data-review-id]:target{outline:3px solid var(--accent);outline-offset:5px}.back-to-top{position:fixed;right:var(--space-5);bottom:var(--space-5);display:grid;place-items:center;width:2.4rem;height:2.4rem;border:1px solid var(--border);border-radius:999px;background:var(--surface);box-shadow:var(--shadow-soft);text-decoration:none}footer{max-width:1580px;margin:0 auto;padding:0 clamp(var(--space-4),3vw,var(--space-8)) var(--space-8);color:var(--text-muted);font-size:.9rem}.reveal{opacity:1;transform:none}.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .52s cubic-bezier(.2,.8,.2,1),transform .56s cubic-bezier(.2,.8,.2,1);will-change:opacity,transform}.js .reveal.is-visible{opacity:1;transform:translateY(0)}@media (max-width:720px){.facts>div,.scenario-line{grid-template-columns:1fr;gap:var(--space-1)}}@media (max-width:960px){.doc-shell,.doc-shell:has(.index-details:not([open])){grid-template-columns:1fr}.side-nav{position:static;min-height:0;max-height:none;padding:0 0 var(--space-4);border-right:0;border-bottom:1px solid var(--border)}.index-details:not([open])>summary{width:100%;justify-content:flex-start;padding:.4rem .5rem}}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.js .reveal{opacity:1;transform:none}}@media print{body{background:#fff;color:#000}.back-to-top,.feedback-widget,.side-nav{display:none}.doc-shell{display:block;max-width:none;padding:0}.article-header,.callout,.decision-recorder,.section-card,.slice-card{box-shadow:none;-moz-column-break-inside:avoid;break-inside:avoid}.diagram-reveal,.reveal{opacity:1!important;transform:none!important}a{color:#000;text-decoration:none}}
+/* tailwind-report-css:end */
+  </style>
+</head>
+<body data-visual-mode="vercel-docs-packet">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="doc-shell">
+    <aside class="side-nav" aria-label="Document navigation" data-review-id="chrome.side-nav">
+      <details class="index-details" open>
+        <summary aria-label="Toggle document sidebar" title="Collapse or expand document sidebar"><span class="nav-title">Feature design</span><span class="sidebar-toggle-copy" aria-hidden="true"></span></summary>
+        <nav aria-label="Table of contents" data-review-id="chrome.index">
+          <ol>
+            <li><a href="#design.authority">One report experience must preserve domain-owned truth</a></li>
+            <li><a href="#design.pressure">CWD-relative templates and parallel render paths made drift inevitable</a></li>
+            <li><a href="#design.seam">HTML Report Designer owns the sole rendering boundary</a></li>
+            <li><a href="#design.path">Validated meaning crosses one rendering seam</a></li>
+            <li><a href="#design.diagram">The renderer seam sees content, figure provenance, and output together</a></li>
+            <li><a href="#design.decisions">The architecture has one production path</a></li>
+            <li><a href="#design.proof">Strict failure is cheaper than silent drift</a></li>
+            <li><a href="#design.boundary">The renderer remains intentionally ignorant of domain decisions</a></li>
+          </ol>
+        </nav>
+        <div class="nav-group"><h2>Related artifacts</h2><ul><li><a href="prd.html">Approved PRD</a></li><li><a href="../../adrs/architecture.md">Architecture ADR</a></li></ul></div>
+      </details>
+    </aside>
+
+    <main id="main" class="doc-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs" data-review-id="summary.breadcrumbs">
+        <ol><li><a href="../../">Docs</a></li><li><a href="./">Canonical document renderer</a></li><li aria-current="page">Feature design</li></ol>
+      </nav>
+
+      <article class="report-article">
+        <header class="article-header" id="summary" data-review-id="summary">
+          <div class="article-meta">
+            <span class="pill approved">Approved</span>
+            <span class="pill">Feature design</span>
+            <span class="pill">Updated 2026-07-28</span>
+          </div>
+          <h1>Put all document presentation behind one portable renderer</h1>
+          <p class="subtitle">PRD and Design Solution own structured meaning, System Diagram owns Excalidraw JSON-to-SVG, and HTML Report Designer validates both before filling one report template.</p>
+          <aside class="callout warning" data-review-id="review.focus"><strong>Review first</strong><p>Verify the renderer seam, strict failure behavior, decision lifecycle, and package-relative installation path.</p></aside>
+<aside class="callout success" data-review-id="approval"><strong>Explicit human approval</strong><p>Approved by Carlos Rodrigo on 2026-07-28.</p></aside>
+        </header>
+
+        <section class="section-card reveal" id="design.authority" aria-labelledby="design.authority-title" data-review-id="design.authority">
+          <span class="section-kicker">Approved authority</span>
+          <h2 id="design.authority-title">One report experience must preserve domain-owned truth</h2>
+          <dl class="facts" data-review-id="design.authority.contract"><div><dt>Product promise</dt><dd>Every durable report uses one dependable shell, decision lifecycle, and Excalidraw figure contract.</dd></div><div><dt>Acceptance</dt><dd>Single production template, deterministic rendering, complete decision export, Excalidraw provenance, and browser resilience.</dd></div><div><dt>Constraint</dt><dd>Presentation must not invent, reorder, or approve product/architecture content.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.pressure" aria-labelledby="design.pressure-title" data-review-id="design.pressure">
+          <span class="section-kicker">Architecture pressure</span>
+          <h2 id="design.pressure-title">CWD-relative templates and parallel render paths made drift inevitable</h2>
+          <p class="section-summary">The obvious approach—telling agents to copy the right template—cannot guarantee consistent output.</p>
+          <dl class="facts" data-review-id="design.pressure.evidence"><div><dt>Ownership pressure</dt><dd>PRD/design skills mixed content policy with shell placeholders and CSS mechanics.</dd></div><div><dt>Portability pressure</dt><dd>Installed skills could not resolve repository-root scripts and assets from unrelated projects.</dd></div><div><dt>Consistency pressure</dt><dd>Separate template/CSS/runtime families evolved independently.</dd></div><div><dt>Trust pressure</dt><dd>Browser selections lacked an explicit canonical approval boundary.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.seam" aria-labelledby="design.seam-title" data-review-id="design.seam">
+          <span class="section-kicker">Chosen seam</span>
+          <h2 id="design.seam-title">HTML Report Designer owns the sole rendering boundary</h2>
+          <dl class="facts" data-review-id="design.seam.ownership"><div><dt>PRD</dt><dd>Owns required product roles, slices, acceptance, and product decision lifecycle.</dd></div><div><dt>Design Solution</dt><dd>Owns required architecture roles, seam, path, proof, and ADR consequences.</dd></div><div><dt>System Diagram</dt><dd>Owns evidence validation and bundled Excalidraw JSON-to-SVG generation.</dd></div><div><dt>HTML Report Designer</dt><dd>Owns schema validation, block rendering, report template, CSS, navigation, review runtime, and report validation.</dd></div><div><dt>Human approver</dt><dd>Owns transition from Draft/Review/Proposed to Approved/Accepted.</dd></div></dl>
+          <aside class="callout warning" data-review-id="design.seam.failure"><strong>No fallback path</strong><p>A missing companion skill, invalid profile, absent Excalidraw provenance, or incomplete approval blocks generation instead of producing a substitute artifact.</p></aside>
+        </section>
+<section class="section-card reveal" id="design.path" aria-labelledby="design.path-title" data-review-id="design.path">
+          <span class="section-kicker">Causal path</span>
+          <h2 id="design.path-title">Validated meaning crosses one rendering seam</h2>
+          <ol class="step-list" data-review-id="design.path.steps"><li data-review-id="design.path.compose"><strong>Compose</strong><br />PRD or Design Solution writes canonical-report-v1 JSON with required section roles, stable IDs, approval state, and decisions.</li><li data-review-id="design.path.figure"><strong>Generate</strong><br />System Diagram validates a bounded question and renders retained Excalidraw JSON into accessible SVG.</li><li data-review-id="design.path.validate"><strong>Validate</strong><br />The canonical renderer rejects unknown fields, missing roles, incomplete slices, invalid decisions, and non-Excalidraw figures.</li><li data-review-id="design.path.render"><strong>Render</strong><br />The renderer fills the sole report template and embeds shared CSS, navigation, decision runtime, DocumentSpec, and template digest.</li><li data-review-id="design.path.review"><strong>Review</strong><br />The human reads self-contained HTML and exports review decisions; an agent reconciles only explicitly accepted truth.</li></ol>
+        </section>
+<section class="section-card reveal" id="design.diagram" aria-labelledby="design.diagram-title" data-review-id="design.diagram">
+          <span class="section-kicker">Architecture path</span>
+          <h2 id="design.diagram-title">The renderer seam sees content, figure provenance, and output together</h2>
+          <figure class="figure-card diagram-figure" data-complex-figure data-review-id="diagram.canonical-rendering-path"><p class="figure-question"><strong>Question:</strong> Where does approved document meaning become deterministic self-contained HTML?</p><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1168 1150" role="img" aria-labelledby="canonical-rendering-path-title canonical-rendering-path-desc" data-review-id="diagram.canonical-renderer.canonical-rendering-path.svg"><title id="canonical-rendering-path-title">Canonical rendering ownership path</title><desc id="canonical-rendering-path-desc">A top-to-bottom architecture path from domain-owned DocumentSpec and Excalidraw source through one portable renderer and report template to deterministic self-contained HTML.</desc><!-- svg-source:excalidraw --><!-- svg-spec-sha256:63a0f5224aa46f90aaa3c364d92cb5829fa53800118b201e02abfa3afe7b1d74 --><metadata></metadata><defs><style class="style-fonts">
+      @font-face { font-family: Virgil; src: url(data:font/woff2;base64,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); }</style></defs><rect x="0" y="0" width="1168" height="1150" fill="#fffefa"></rect><g class="diagram-node diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.authority"><g stroke-linecap="round" transform="translate(44 44) rotate(0 230 56)"><path d="M28 0 C156.07 0.99, 283.23 -1.84, 432 0 C449.17 -1.36, 458.54 10.15, 460 28 C460.5 46.88, 460.8 75.37, 460 84 C461.27 105.8, 447.42 108.6, 432 112 C312.87 115.33, 196.91 116.41, 28 112 C6.12 111.91, 3.11 99.51, 0 84 C2.95 67.27, -2.5 56.7, 0 28 C-2.34 6.88, 7.72 -1.15, 28 0" stroke="none" stroke-width="0" fill="#eaf2f8"></path><path d="M28 0 C171.07 -1.44, 312.97 -2.2, 432 0 M28 0 C119.01 0.05, 209.55 -0.24, 432 0 M432 0 C448.76 1.09, 461.91 10.79, 460 28 M432 0 C452.09 1.48, 460.52 11.02, 460 28 M460 28 C462.17 41.71, 459.2 59.97, 460 84 M460 28 C459.87 45.32, 459.43 60.35, 460 84 M460 84 C458.06 101.32, 452.54 112.34, 432 112 M460 84 C460.81 101.18, 450.86 112.9, 432 112 M432 112 C287.03 112.42, 143.71 113.88, 28 112 M432 112 C287.01 113.15, 141.11 113.37, 28 112 M28 112 C8.36 112.62, -0.98 104.22, 0 84 M28 112 C9.55 112.21, -0.02 102.79, 0 84 M0 84 C0.69 64.67, -1.06 46.59, 0 28 M0 84 C-0.44 67.8, -0.09 52.64, 0 28 M0 28 C0.6 8.67, 10.59 -0.69, 28 0 M0 28 C-2.17 7.72, 10.48 2.09, 28 0" stroke="#285a75" stroke-width="2" fill="none"></path></g><g transform="translate(120.30126953125 77.5) rotate(0 153.69873046875 22.5)"><text x="153.69873046875" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#285a75" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">PRD / Design Solution</text><text x="153.69873046875" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#285a75" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Own required roles and approved meaning</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:230ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.spec"><g stroke-linecap="round" transform="translate(44 234) rotate(0 230 56)"><path d="M28 0 C186.55 -3.08, 346.31 -3.06, 432 0 C450.82 0.69, 462.86 10.89, 460 28 C458.09 47.98, 457.44 72.23, 460 84 C458.82 99.38, 452.24 110.44, 432 112 C315.32 111.35, 197.24 110.82, 28 112 C8.04 109.05, 0.21 102.09, 0 84 C4.22 65.55, 0.15 48.53, 0 28 C2.56 10.93, 11.45 -2.47, 28 0" stroke="none" stroke-width="0" fill="#e8f2eb"></path><path d="M28 0 C128.04 1.44, 227.03 1.07, 432 0 M28 0 C160.09 -1.44, 291.89 -1.37, 432 0 M432 0 C449.31 0.41, 458.78 8.16, 460 28 M432 0 C451.63 -0.06, 460.32 8.91, 460 28 M460 28 C459.45 48.57, 460.76 69.24, 460 84 M460 28 C460.15 46.84, 460.41 63.29, 460 84 M460 84 C460.33 101.59, 448.71 113.69, 432 112 M460 84 C458.7 100.91, 451.24 113.94, 432 112 M432 112 C279.71 109.62, 129.5 109.73, 28 112 M432 112 C335.28 114.43, 237.74 114.43, 28 112 M28 112 C7.78 111.62, -0.19 101.96, 0 84 M28 112 C11.59 109.77, 0.91 102.65, 0 84 M0 84 C0.35 69.12, -1.07 56.57, 0 28 M0 84 C0.66 62.78, 0.71 39.85, 0 28 M0 28 C1.02 9.05, 9.52 -1.14, 28 0 M0 28 C-0.43 8.91, 8.61 -1.35, 28 0" stroke="#276544" stroke-width="2" fill="none"></path></g><g transform="translate(145.802734375 267.5) rotate(0 128.197265625 22.5)"><text x="128.197265625" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#276544" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">canonical-report-v1 DocumentSpec</text><text x="128.197265625" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#276544" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Strict content and lifecycle contract</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:460ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.figure"><g stroke-linecap="round" transform="translate(44 424) rotate(0 230 56)"><path d="M28 0 C180.92 -1.43, 338.02 -0.15, 432 0 C452.4 1.6, 460.45 10.97, 460 28 C459.29 42.49, 460.95 56.65, 460 84 C463.44 99.96, 450.57 111.38, 432 112 C300.82 109.95, 170.11 110.23, 28 112 C8.16 108.55, 0.34 99.62, 0 84 C-1.17 70.15, 3.02 63.16, 0 28 C-1.83 7.45, 7.44 -2.78, 28 0" stroke="none" stroke-width="0" fill="#f1ecf6"></path><path d="M28 0 C168.08 -1.91, 309.5 -2.73, 432 0 M28 0 C113.58 1.34, 198.05 1.38, 432 0 M432 0 C450.32 -1.88, 460.65 10, 460 28 M432 0 C449.19 0.7, 458.96 9.52, 460 28 M460 28 C460.05 43.95, 459.42 58.47, 460 84 M460 28 C459.59 42.58, 459.79 57.26, 460 84 M460 84 C458.49 102.11, 451.48 110.05, 432 112 M460 84 C460.33 103.68, 449.38 112.97, 432 112 M432 112 C321.27 110.02, 213.18 108.77, 28 112 M432 112 C302.56 113.18, 173.33 112.91, 28 112 M28 112 C9.18 111.89, 1.87 101.75, 0 84 M28 112 C9.53 109.79, -1.31 103.89, 0 84 M0 84 C-0.37 69.27, 1.17 53.83, 0 28 M0 84 C0.35 64.01, -0.39 41.44, 0 28 M0 28 C1.96 9.96, 8.88 -0.65, 28 0 M0 28 C-1.42 10.53, 8.44 2.1, 28 0" stroke="#654a80" stroke-width="2" fill="none"></path></g><g transform="translate(110.22021484375 457.5) rotate(0 163.77978515625 22.5)"><text x="163.77978515625" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#654a80" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">System Diagram</text><text x="163.77978515625" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#654a80" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Retained Excalidraw JSON + generated SVG</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:690ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.renderer"><g stroke-linecap="round" transform="translate(44 614) rotate(0 230 56)"><path d="M28 0 C138.97 -2.43, 246.55 -4.15, 432 0 C448.84 -3.44, 461.1 6.16, 460 28 C463.72 39.7, 460.8 47.71, 460 84 C462.76 105.99, 452.74 110.76, 432 112 C294.24 109.65, 152.59 113.17, 28 112 C8.6 113, -2.64 104.2, 0 84 C-0.41 71.07, -2.43 61.51, 0 28 C-2.64 8.78, 6.48 -1.55, 28 0" stroke="none" stroke-width="0" fill="#f8eedb"></path><path d="M28 0 C120.83 -2.65, 214.42 -1.18, 432 0 M28 0 C155.64 -0.38, 284.23 -0.25, 432 0 M432 0 C451.54 -1.51, 458.69 11.11, 460 28 M432 0 C450.15 -0.4, 461.37 9.35, 460 28 M460 28 C461.03 49.44, 461.3 67.9, 460 84 M460 28 C459.21 39.53, 459.05 51.4, 460 84 M460 84 C460.5 103.25, 451.29 113.61, 432 112 M460 84 C459.14 102.11, 452.68 112.62, 432 112 M432 112 C285.83 111.06, 140.83 111.29, 28 112 M432 112 C344.06 110.86, 257.51 110.82, 28 112 M28 112 C9.17 110.64, 0.27 102.62, 0 84 M28 112 C10.07 110.98, -1 100.97, 0 84 M0 84 C1.21 68.04, 1.35 56.38, 0 28 M0 84 C-1.14 71.13, -0.39 60.51, 0 28 M0 28 C0.85 9.1, 9.83 -0.79, 28 0 M0 28 C-1.68 7.17, 10.67 -1.33, 28 0" stroke="#8b4d00" stroke-width="2" fill="none"></path></g><g transform="translate(101.30810546875 647.5) rotate(0 172.69189453125 22.5)"><text x="172.69189453125" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#8b4d00" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">HTML Report Designer renderer</text><text x="172.69189453125" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#8b4d00" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Validates roles, approval, decisions, provenance</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:920ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.template"><g stroke-linecap="round" transform="translate(44 804) rotate(0 230 56)"><path d="M28 0 C170.76 -0.71, 314.24 -2.28, 432 0 C449.07 3.25, 462.12 7.67, 460 28 C461.72 50.4, 464.06 65.69, 460 84 C458.01 99.67, 448.62 112.36, 432 112 C279.58 108.84, 126.57 107.23, 28 112 C9.22 109.45, 1.35 104.9, 0 84 C2.34 60.83, -2.54 45.13, 0 28 C-0.69 5.8, 9.24 0.25, 28 0" stroke="none" stroke-width="0" fill="#fffefa"></path><path d="M28 0 C181.51 0.7, 333.74 -0.76, 432 0 M28 0 C141.45 1.54, 255.18 1.77, 432 0 M432 0 C450.38 1.75, 460.39 9.3, 460 28 M432 0 C451.41 -1.51, 459.02 9.01, 460 28 M460 28 C459.81 43.36, 460.93 57, 460 84 M460 28 C459.71 40.69, 459.9 55.08, 460 84 M460 84 C459.22 101.99, 451.3 110.8, 432 112 M460 84 C461.03 103.06, 450.96 113.93, 432 112 M432 112 C296.29 113.48, 159.48 112.89, 28 112 M432 112 C317.15 111.66, 202.74 112.39, 28 112 M28 112 C8.64 111.4, -1.98 101.87, 0 84 M28 112 C8.6 110.4, 0.23 102.95, 0 84 M0 84 C-1.78 66.62, 0.54 49.32, 0 28 M0 84 C-1.08 69.64, -0.74 56.46, 0 28 M0 28 C-1.77 8.3, 10.95 0.82, 28 0 M0 28 C1.11 7.92, 10.16 1.57, 28 0" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(122.26123046875 837.5) rotate(0 151.73876953125 22.5)"><text x="151.73876953125" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Sole report template</text><text x="151.73876953125" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Shared HTML, CSS, navigation, runtimes</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:1150ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.artifact"><g stroke-linecap="round" transform="translate(44 994) rotate(0 230 56)"><path d="M28 0 C182.41 0.46, 335.85 -0.4, 432 0 C450.66 2.85, 461.16 11, 460 28 C457.67 47.07, 457.62 63.15, 460 84 C457.83 99.16, 447.94 113.18, 432 112 C276.59 113.97, 125.18 116.32, 28 112 C6.49 112.67, 2.31 101.75, 0 84 C-2.4 72.2, 2.32 57.53, 0 28 C2.35 10.08, 12.27 2.62, 28 0" stroke="none" stroke-width="0" fill="#e8f2eb"></path><path d="M28 0 C135.31 0.41, 240.88 0.31, 432 0 M28 0 C120.46 -1.55, 213.22 -1.71, 432 0 M432 0 C452.26 1.1, 460.15 11.08, 460 28 M432 0 C449.56 -2.12, 462.28 8.18, 460 28 M460 28 C460.1 41.43, 459.45 56.33, 460 84 M460 28 C459.5 48.49, 459.27 69.43, 460 84 M460 84 C458.26 103.62, 452.56 110.43, 432 112 M460 84 C459.34 103.51, 451.81 114.03, 432 112 M432 112 C276.16 109.6, 118.88 108.88, 28 112 M432 112 C317.83 112.1, 203.94 112.04, 28 112 M28 112 C8.05 113.18, -0.83 102.79, 0 84 M28 112 C10.35 110.89, -1.52 101.26, 0 84 M0 84 C-0.24 67.92, 1.19 54.39, 0 28 M0 84 C-0.16 69.42, 1.17 52.55, 0 28 M0 28 C-1.41 8.74, 8.54 -0.51, 28 0 M0 28 C-1.13 9.33, 9.03 -1.72, 28 0" stroke="#276544" stroke-width="2" fill="none"></path></g><g transform="translate(140.05908203125 1027.5) rotate(0 133.94091796875 22.5)"><text x="133.94091796875" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#276544" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Self-contained HTML</text><text x="133.94091796875" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#276544" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Deterministic, accessible, reviewable</text></g></g><g class="diagram-node diagram-reveal" style="--reveal-delay:1380ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.node.block"><g stroke-linecap="round" transform="translate(764 614) rotate(0 180 56)"><path d="M28 0 C119.89 1.74, 209.11 -3.04, 332 0 C353.12 -1.21, 363.58 6.7, 360 28 C359.04 41.58, 359.28 58.77, 360 84 C357.77 105.21, 347.43 108.48, 332 112 C270.07 112.8, 203.44 113.8, 28 112 C12.58 114.66, -3.59 99.24, 0 84 C3.69 73.95, 0.88 57.17, 0 28 C1.8 12.63, 8.27 2.45, 28 0" stroke="none" stroke-width="0" fill="#f8e8e5"></path><path d="M28 0 C118.9 1.53, 211.57 0.76, 332 0 M28 0 C137.63 -2.47, 247.69 -2.11, 332 0 M332 0 C350.66 0.01, 358.4 10.48, 360 28 M332 0 C348.73 -0.89, 358.59 7.87, 360 28 M360 28 C359.61 41.72, 359.62 54.41, 360 84 M360 28 C360.04 42.49, 359.94 57.91, 360 84 M360 84 C359.85 102.77, 349.15 111.83, 332 112 M360 84 C362 102.68, 348.69 113.74, 332 112 M332 112 C228.44 113.55, 125.49 112.3, 28 112 M332 112 C220.98 113.08, 109.23 113.83, 28 112 M28 112 C9.62 112.07, -1.67 101.44, 0 84 M28 112 C9.23 113.15, -2.18 100.6, 0 84 M0 84 C-0.47 67.83, -0.6 46.04, 0 28 M0 84 C-0.62 70.17, -0.35 54.17, 0 28 M0 28 C0.74 10.09, 9.06 0.29, 28 0 M0 28 C2.18 9.33, 11.11 -2.11, 28 0" stroke="#a11c1c" stroke-width="2" fill="none"></path></g><g transform="translate(817.2880859375 647.5) rotate(0 126.7119140625 22.5)"><text x="126.7119140625" y="15.858" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#a11c1c" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Invalid or missing authority</text><text x="126.7119140625" y="38.358000000000004" font-family="Virgil, Segoe UI Emoji" font-size="18px" fill="#a11c1c" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Generation blocks without fallback</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:92ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.authority-to-spec"><g mask="url(#mask-canonical-rendering-path--authority-to-spec)" stroke-linecap="round"><g transform="translate(274 156.5) rotate(0 0 38.5)"><path d="M0 0 C-0.47 23.82, -1.28 48.62, 0 77 M0 0 C-0.86 20.58, -0.19 39.38, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 156.5) rotate(0 0 38.5)"><path d="M-8.75 53.58 C-6.23 60.78, -4.32 68.91, 0 77 M-8.75 53.58 C-7.3 60.23, -4.35 65.12, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 156.5) rotate(0 0 38.5)"><path d="M8.35 53.44 C5.54 60.58, 2.13 68.76, 0 77 M8.35 53.44 C5.36 60.15, 3.87 65.08, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--authority-to-spec"><rect x="0" y="0" fill="#fff" width="374" height="333.5"></rect><rect x="207.76708984375" y="185.625" fill="#000" width="132.4658203125" height="18.75" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:142ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.authority-to-spec"><g transform="translate(207.76708984375 185.625) rotate(0 65.88805540858644 9.375)"><text x="66.23291015625" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">writes structured truth</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:322ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.spec-to-figure"><g mask="url(#mask-canonical-rendering-path--spec-to-figure)" stroke-linecap="round"><g transform="translate(274 346.5) rotate(0 0 38.5)"><path d="M0 0 C1.22 25.58, 0.09 52.43, 0 77 M0 0 C0.41 25.68, 0.46 51.44, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 346.5) rotate(0 0 38.5)"><path d="M-8.26 53.41 C-4.28 60.33, -2.52 68.48, 0 77 M-8.26 53.41 C-4.96 61.36, -2.17 69.47, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 346.5) rotate(0 0 38.5)"><path d="M8.84 53.61 C6.83 60.38, 2.61 68.46, 0 77 M8.84 53.61 C6.49 61.67, 3.63 69.71, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--spec-to-figure"><rect x="0" y="0" fill="#fff" width="374" height="523.5"></rect><rect x="201.10205078125" y="375.625" fill="#000" width="145.7958984375" height="18.75" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:372ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.spec-to-figure"><g transform="translate(201.10205078125 375.625) rotate(0 73.17955606575677 9.375)"><text x="72.89794921875" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">names diagram question</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:552ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.figure-to-renderer"><g mask="url(#mask-canonical-rendering-path--figure-to-renderer)" stroke-linecap="round"><g transform="translate(274 536.5) rotate(0 0 38.5)"><path d="M0 0 C1.83 18.43, 0.89 39.08, 0 77 M0 0 C-0.97 20.39, 0.32 41.87, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 536.5) rotate(0 0 38.5)"><path d="M-8.59 53.52 C-4.95 58.26, -3.69 65.18, 0 77 M-8.59 53.52 C-6.93 59.35, -3.3 66.27, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 536.5) rotate(0 0 38.5)"><path d="M8.52 53.5 C7.77 58.18, 4.64 65.1, 0 77 M8.52 53.5 C5.52 59.35, 4.5 66.28, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--figure-to-renderer"><rect x="0" y="0" fill="#fff" width="374" height="713.5"></rect><rect x="200.875" y="556.25" fill="#000" width="146.25" height="37.5" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:602ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.figure-to-renderer"><g transform="translate(200.875 556.25) rotate(0 73.46424372532539 18.75)"><text x="73.125" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">supplies verified JSON /</text><text x="73.125" y="31.965" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">SVG</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:782ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.renderer-to-template"><g mask="url(#mask-canonical-rendering-path--renderer-to-template)" stroke-linecap="round"><g transform="translate(274 726.5) rotate(0 0 38.5)"><path d="M0 0 C-1.06 26.33, -0.3 54.23, 0 77 M0 0 C-0.69 19.52, -0.37 37.74, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 726.5) rotate(0 0 38.5)"><path d="M-8.78 53.59 C-6.32 61.55, -2.55 71.05, 0 77 M-8.78 53.59 C-7.09 60.22, -4.64 65.47, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 726.5) rotate(0 0 38.5)"><path d="M8.32 53.43 C4.91 61.4, 2.81 70.96, 0 77 M8.32 53.43 C5.87 59.95, 4.19 65.24, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--renderer-to-template"><rect x="0" y="0" fill="#fff" width="374" height="903.5"></rect><rect x="210.678466796875" y="755.625" fill="#000" width="126.64306640625" height="18.75" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:832ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.renderer-to-template"><g transform="translate(210.678466796875 755.625) rotate(0 63.04932509836536 9.375)"><text x="63.321533203125" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">fills canonical blocks</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:1012ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.template-to-artifact"><g mask="url(#mask-canonical-rendering-path--template-to-artifact)" stroke-linecap="round"><g transform="translate(274 916.5) rotate(0 0 38.5)"><path d="M0 0 C-1.52 16.36, -0.56 32.28, 0 77 M0 0 C-1.19 16.07, -1.53 34.54, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 916.5) rotate(0 0 38.5)"><path d="M-9.2 53.76 C-8.81 58.64, -5.89 63.16, 0 77 M-9.2 53.76 C-7.87 58.1, -6.19 64.79, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g><g transform="translate(274 916.5) rotate(0 0 38.5)"><path d="M7.89 53.28 C4.66 58.38, 3.95 63, 0 77 M7.89 53.28 C5.48 57.62, 3.41 64.42, 0 77" stroke="#211f1b" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--template-to-artifact"><rect x="0" y="0" fill="#fff" width="374" height="1093.5"></rect><rect x="195.49169921875" y="945.625" fill="#000" width="157.0166015625" height="18.75" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:1062ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.template-to-artifact"><g transform="translate(195.49169921875 945.625) rotate(0 77.99472579176646 9.375)"><text x="78.50830078125" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#211f1b" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">emits one portable artifact</text></g></g><g class="diagram-edge diagram-reveal" style="--reveal-delay:782ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge.renderer-to-block"><g mask="url(#mask-canonical-rendering-path--renderer-to-block)" stroke-linecap="round"><g transform="translate(504.5 670) rotate(0 129.5 0)"><path d="M0 0 C67.27 -0.88, 134.55 -0.48, 259 0 M0 0 C90.73 -1.6, 180.29 -1.13, 259 0" stroke="#a11c1c" stroke-width="2" fill="none"></path></g><g transform="translate(504.5 670) rotate(0 129.5 0)"><path d="M235.42 8.29 C242.11 4.72, 248.88 3.09, 259 0 M235.42 8.29 C244.29 4.83, 251.64 2.53, 259 0" stroke="#a11c1c" stroke-width="2" fill="none"></path></g><g transform="translate(504.5 670) rotate(0 129.5 0)"><path d="M235.6 -8.81 C242.37 -7.98, 249.08 -5.2, 259 0 M235.6 -8.81 C244.28 -6.31, 251.55 -2.65, 259 0" stroke="#a11c1c" stroke-width="2" fill="none"></path></g></g></g><mask id="mask-canonical-rendering-path--renderer-to-block"><rect x="0" y="0" fill="#fff" width="863.5" height="770"></rect><rect x="574.43212890625" y="660.625" fill="#000" width="119.1357421875" height="18.75" opacity="1"></rect></mask><g class="diagram-edge-label diagram-reveal" style="--reveal-delay:832ms" data-review-id="diagram.canonical-renderer.canonical-rendering-path.edge-label.renderer-to-block"><g transform="translate(574.43212890625 660.625) rotate(0 59.56787109375 8.858722578679533)"><text x="59.56787109375" y="13.215" font-family="Virgil, Segoe UI Emoji" font-size="15px" fill="#a11c1c" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">rejects invalid input</text></g></g></svg><figcaption>One portable renderer validates domain-owned DocumentSpec and Excalidraw source/output before filling the sole report template.</figcaption></figure><ol class="diagram-walkthrough" data-figure-walkthrough-for="diagram.canonical-rendering-path"><li>PRD or Design Solution supplies required structured meaning.</li><li>The DocumentSpec makes approval, decisions, roles, and IDs machine-checkable.</li><li>System Diagram supplies retained Excalidraw JSON and generated SVG.</li><li>HTML Report Designer validates both and fills one report template.</li><li>Invalid authority or provenance blocks; valid input emits deterministic portable HTML.</li></ol>
+        </section>
+<section class="section-card reveal" id="design.decisions" aria-labelledby="design.decisions-title" data-review-id="design.decisions">
+          <span class="section-kicker">Accepted decisions</span>
+          <h2 id="design.decisions-title">The architecture has one production path</h2>
+          <fieldset class="decision-recorder" data-review-id="decision.renderer-seam" data-decision-status="accepted" data-decision-source-fingerprint="ec71ec47fcdddaeca34384c24d768a37e78bd0d3354aa47e2083c6ac6421440a" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
+            <legend>Which module owns report markup, CSS, runtime, and profile validation?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.renderer-seam-option" value="html-report-designer" checked disabled /><span>Bundled HTML Report Designer renderer</span></label>
+              <label class="decision-option"><input type="radio" name="decision.renderer-seam-option" value="owning-skills" disabled /><span>PRD/design skills hand-author their own reports</span></label>
+              <label class="decision-option"><input type="radio" name="decision.renderer-seam-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The renderer sees all presentation concerns and can stay portable and deterministic without weakening domain ownership.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite"></p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.structured-source" data-decision-status="accepted" data-decision-source-fingerprint="4a683dd2c688c3fbeff92d64375a2f69b8424332418c0b6b5b58eed0aacb331e" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
+            <legend>What is the editable source of a durable report?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.structured-source-option" value="document-spec" checked disabled /><span>Strict canonical-report-v1 structured JSON</span></label>
+              <label class="decision-option"><input type="radio" name="decision.structured-source-option" value="generated-html" disabled /><span>Generated HTML edited directly</span></label>
+              <label class="decision-option"><input type="radio" name="decision.structured-source-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Structured source makes content profiles, approval, decision lifecycle, deterministic regeneration, and review anchors enforceable.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite"></p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.diagram-boundary" data-decision-status="accepted" data-decision-source-fingerprint="a0b980802d09f697f2a6cd2f5b31911314d562ce5710b8dba18b21fc35c879da" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
+            <legend>How are diagrams supplied to the report renderer?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.diagram-boundary-option" value="excalidraw-pair" checked disabled /><span>System Diagram supplies retained Excalidraw JSON and generated SVG</span></label>
+              <label class="decision-option"><input type="radio" name="decision.diagram-boundary-option" value="inline-shape" disabled /><span>Report renderer or owning skills draw SVG directly</span></label>
+              <label class="decision-option"><input type="radio" name="decision.diagram-boundary-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>A dedicated renderer keeps evidence, geometry, accessibility, provenance, and regeneration consistent.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite"></p>
+          </fieldset>
+        </section>
+<section class="section-card reveal" id="design.proof" aria-labelledby="design.proof-title" data-review-id="design.proof">
+          <span class="section-kicker">Tradeoffs and proof</span>
+          <h2 id="design.proof-title">Strict failure is cheaper than silent drift</h2>
+          <dl class="facts" data-review-id="design.proof.tradeoffs"><div><dt>Cost</dt><dd>A new semantic component requires a shared schema/renderer change and focused tests.</dd></div><div><dt>Benefit</dt><dd>All document kinds receive the same fixes, styles, controls, and fallbacks.</dd></div><div><dt>Failure posture</dt><dd>Invalid roles, approval, decisions, source paths, or provenance fail before output.</dd></div><div><dt>Recovery</dt><dd>Correct structured source or install the declared companion skill; never patch output.</dd></div><div><dt>Proof strategy</dt><dd>Positive/negative profile fixtures, template lock, decision runtime test, copied-skill rendering, deterministic checks, Excalidraw freshness, and desktop/mobile/no-JS/reduced-motion/print browser checks.</dd></div></dl>
+          <aside class="callout risk" data-review-id="design.proof.legacy"><strong>Legacy artifacts</strong><p>Existing reports remain readable, but new validation rejects them as canonical generation sources until migrated.</p></aside>
+        </section>
+<section class="section-card reveal" id="design.boundary" aria-labelledby="design.boundary-title" data-review-id="design.boundary">
+          <span class="section-kicker">Meaningful boundary</span>
+          <h2 id="design.boundary-title">The renderer remains intentionally ignorant of domain decisions</h2>
+          <ul class="canonical-list canonical-list--checks" data-review-id="design.boundary.list"><li>No automatic product or architecture choice from available components.</li><li>No implied approval from completeness, browser persistence, passing tests, or prior implementation.</li><li>No alternate report template, CSS family, diagram renderer, or hand-authored SVG path.</li><li>No task creation, implementation steps, or execution evidence in PRD/design generation.</li><li>No external Pi configuration gate inside this repository&#39;s default verification command.</li></ul>
+          <p class="document-block" data-review-id="design.boundary.adr">The architecture ADR owns the durable single-renderer rationale; this feature design owns the current paths, profiles, and verification consequences.</p>
+        </section>
+
+      </article>
+    </main>
+  </div>
+
+  <a class="back-to-top" href="#main" aria-label="Back to top">↑</a>
+  <footer data-review-id="provenance">
+    <p><strong>Sources reviewed:</strong> docs/features/canonical-document-renderer/prd.html · skills/html-report-designer/SKILL.md · skills/system-diagram/SKILL.md · docs/adrs/architecture.md</p><p>Generated from validated <code>canonical-report-v1</code> structured content through the sole canonical report template. Preserve stable review IDs and reconcile exported decisions into canonical source only after explicit human approval.</p>
+  </footer>
+
+  <script type="application/json" data-document-spec="canonical-report-v1">
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "canonical-document-renderer-design",
+    "kind": "design",
+    "status": "Approved",
+    "title": "Put all document presentation behind one portable renderer",
+    "summary": "PRD and Design Solution own structured meaning, System Diagram owns Excalidraw JSON-to-SVG, and HTML Report Designer validates both before filling one report template.",
+    "reviewFocus": "Verify the renderer seam, strict failure behavior, decision lifecycle, and package-relative installation path.",
+    "updated": "2026-07-28",
+    "sources": [
+      "docs/features/canonical-document-renderer/prd.html",
+      "skills/html-report-designer/SKILL.md",
+      "skills/system-diagram/SKILL.md",
+      "docs/adrs/architecture.md"
+    ],
+    "approval": {
+      "approvedBy": "Carlos Rodrigo",
+      "approvedAt": "2026-07-28"
+    },
+    "feature": "Canonical document renderer",
+    "relatedArtifacts": [
+      {
+        "label": "Approved PRD",
+        "href": "prd.html"
+      },
+      {
+        "label": "Architecture ADR",
+        "href": "../../adrs/architecture.md"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "design.authority",
+      "role": "authority",
+      "kicker": "Approved authority",
+      "title": "One report experience must preserve domain-owned truth",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.authority.contract",
+          "items": [
+            [
+              "Product promise",
+              "Every durable report uses one dependable shell, decision lifecycle, and Excalidraw figure contract."
+            ],
+            [
+              "Acceptance",
+              "Single production template, deterministic rendering, complete decision export, Excalidraw provenance, and browser resilience."
+            ],
+            [
+              "Constraint",
+              "Presentation must not invent, reorder, or approve product/architecture content."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.pressure",
+      "role": "pressure",
+      "kicker": "Architecture pressure",
+      "title": "CWD-relative templates and parallel render paths made drift inevitable",
+      "summary": "The obvious approach—telling agents to copy the right template—cannot guarantee consistent output.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.pressure.evidence",
+          "items": [
+            [
+              "Ownership pressure",
+              "PRD/design skills mixed content policy with shell placeholders and CSS mechanics."
+            ],
+            [
+              "Portability pressure",
+              "Installed skills could not resolve repository-root scripts and assets from unrelated projects."
+            ],
+            [
+              "Consistency pressure",
+              "Separate template/CSS/runtime families evolved independently."
+            ],
+            [
+              "Trust pressure",
+              "Browser selections lacked an explicit canonical approval boundary."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.seam",
+      "role": "seam",
+      "kicker": "Chosen seam",
+      "title": "HTML Report Designer owns the sole rendering boundary",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.seam.ownership",
+          "items": [
+            [
+              "PRD",
+              "Owns required product roles, slices, acceptance, and product decision lifecycle."
+            ],
+            [
+              "Design Solution",
+              "Owns required architecture roles, seam, path, proof, and ADR consequences."
+            ],
+            [
+              "System Diagram",
+              "Owns evidence validation and bundled Excalidraw JSON-to-SVG generation."
+            ],
+            [
+              "HTML Report Designer",
+              "Owns schema validation, block rendering, report template, CSS, navigation, review runtime, and report validation."
+            ],
+            [
+              "Human approver",
+              "Owns transition from Draft/Review/Proposed to Approved/Accepted."
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "design.seam.failure",
+          "tone": "warning",
+          "title": "No fallback path",
+          "text": "A missing companion skill, invalid profile, absent Excalidraw provenance, or incomplete approval blocks generation instead of producing a substitute artifact."
+        }
+      ]
+    },
+    {
+      "id": "design.path",
+      "role": "path",
+      "kicker": "Causal path",
+      "title": "Validated meaning crosses one rendering seam",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "design.path.steps",
+          "items": [
+            {
+              "id": "design.path.compose",
+              "title": "Compose",
+              "text": "PRD or Design Solution writes canonical-report-v1 JSON with required section roles, stable IDs, approval state, and decisions."
+            },
+            {
+              "id": "design.path.figure",
+              "title": "Generate",
+              "text": "System Diagram validates a bounded question and renders retained Excalidraw JSON into accessible SVG."
+            },
+            {
+              "id": "design.path.validate",
+              "title": "Validate",
+              "text": "The canonical renderer rejects unknown fields, missing roles, incomplete slices, invalid decisions, and non-Excalidraw figures."
+            },
+            {
+              "id": "design.path.render",
+              "title": "Render",
+              "text": "The renderer fills the sole report template and embeds shared CSS, navigation, decision runtime, DocumentSpec, and template digest."
+            },
+            {
+              "id": "design.path.review",
+              "title": "Review",
+              "text": "The human reads self-contained HTML and exports review decisions; an agent reconciles only explicitly accepted truth."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.diagram",
+      "role": "diagram",
+      "kicker": "Architecture path",
+      "title": "The renderer seam sees content, figure provenance, and output together",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.canonical-rendering-path",
+          "question": "Where does approved document meaning become deterministic self-contained HTML?",
+          "caption": "One portable renderer validates domain-owned DocumentSpec and Excalidraw source/output before filling the sole report template.",
+          "svgPath": "diagrams/canonical-rendering-path.svg",
+          "sourcePath": "diagrams/canonical-rendering-path.json",
+          "walkthrough": [
+            "PRD or Design Solution supplies required structured meaning.",
+            "The DocumentSpec makes approval, decisions, roles, and IDs machine-checkable.",
+            "System Diagram supplies retained Excalidraw JSON and generated SVG.",
+            "HTML Report Designer validates both and fills one report template.",
+            "Invalid authority or provenance blocks; valid input emits deterministic portable HTML."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.decisions",
+      "role": "decisions",
+      "kicker": "Accepted decisions",
+      "title": "The architecture has one production path",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.renderer-seam",
+          "question": "Which module owns report markup, CSS, runtime, and profile validation?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "html-report-designer",
+              "label": "Bundled HTML Report Designer renderer"
+            },
+            {
+              "id": "owning-skills",
+              "label": "PRD/design skills hand-author their own reports"
+            }
+          ],
+          "selectedOptionId": "html-report-designer",
+          "rationale": "The renderer sees all presentation concerns and can stay portable and deterministic without weakening domain ownership.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-07-28"
+        },
+        {
+          "type": "decision",
+          "id": "decision.structured-source",
+          "question": "What is the editable source of a durable report?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "document-spec",
+              "label": "Strict canonical-report-v1 structured JSON"
+            },
+            {
+              "id": "generated-html",
+              "label": "Generated HTML edited directly"
+            }
+          ],
+          "selectedOptionId": "document-spec",
+          "rationale": "Structured source makes content profiles, approval, decision lifecycle, deterministic regeneration, and review anchors enforceable.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-07-28"
+        },
+        {
+          "type": "decision",
+          "id": "decision.diagram-boundary",
+          "question": "How are diagrams supplied to the report renderer?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "excalidraw-pair",
+              "label": "System Diagram supplies retained Excalidraw JSON and generated SVG"
+            },
+            {
+              "id": "inline-shape",
+              "label": "Report renderer or owning skills draw SVG directly"
+            }
+          ],
+          "selectedOptionId": "excalidraw-pair",
+          "rationale": "A dedicated renderer keeps evidence, geometry, accessibility, provenance, and regeneration consistent.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "id": "design.proof",
+      "role": "proof",
+      "kicker": "Tradeoffs and proof",
+      "title": "Strict failure is cheaper than silent drift",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.proof.tradeoffs",
+          "items": [
+            [
+              "Cost",
+              "A new semantic component requires a shared schema/renderer change and focused tests."
+            ],
+            [
+              "Benefit",
+              "All document kinds receive the same fixes, styles, controls, and fallbacks."
+            ],
+            [
+              "Failure posture",
+              "Invalid roles, approval, decisions, source paths, or provenance fail before output."
+            ],
+            [
+              "Recovery",
+              "Correct structured source or install the declared companion skill; never patch output."
+            ],
+            [
+              "Proof strategy",
+              "Positive/negative profile fixtures, template lock, decision runtime test, copied-skill rendering, deterministic checks, Excalidraw freshness, and desktop/mobile/no-JS/reduced-motion/print browser checks."
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "design.proof.legacy",
+          "tone": "risk",
+          "title": "Legacy artifacts",
+          "text": "Existing reports remain readable, but new validation rejects them as canonical generation sources until migrated."
+        }
+      ]
+    },
+    {
+      "id": "design.boundary",
+      "role": "boundary",
+      "kicker": "Meaningful boundary",
+      "title": "The renderer remains intentionally ignorant of domain decisions",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "design.boundary.list",
+          "style": "checks",
+          "items": [
+            "No automatic product or architecture choice from available components.",
+            "No implied approval from completeness, browser persistence, passing tests, or prior implementation.",
+            "No alternate report template, CSS family, diagram renderer, or hand-authored SVG path.",
+            "No task creation, implementation steps, or execution evidence in PRD/design generation.",
+            "No external Pi configuration gate inside this repository's default verification command."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "id": "design.boundary.adr",
+          "text": "The architecture ADR owns the durable single-renderer rationale; this feature design owns the current paths, profiles, and verification consequences."
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <script data-artifact-motion="native">
+/* artifact-motion:start */
+document.documentElement.classList.add('js');
+
+const revealItems = Array.from(document.querySelectorAll('.reveal'));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const showAll = () => revealItems.forEach((item) => item.classList.add('is-visible'));
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  showAll();
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  revealItems.forEach((item) => observer.observe(item));
+  window.addEventListener('beforeprint', showAll, { once: true });
+}
+/* artifact-motion:end */
+  </script>
+  <script data-document-navigation="progressive">
+/* document-navigation:start */
+const tocLinks = Array.from(document.querySelectorAll('nav[aria-label="Table of contents"] a[href^="#"]'));
+const tocEntries = tocLinks
+  .map((link) => ({ link, target: document.getElementById(decodeURIComponent(link.hash.slice(1))) }))
+  .filter((item) => item.target);
+const sideNav = document.querySelector('.side-nav');
+
+const activateAndScrollTocLinkIntoView = (activeLink) => {
+  tocEntries.forEach(({ link }) => link.classList.toggle('is-active', link === activeLink));
+  if (!activeLink || !sideNav) return;
+  const linkTop = activeLink.offsetTop;
+  const linkBottom = linkTop + activeLink.offsetHeight;
+  if (linkTop < sideNav.scrollTop + 56) sideNav.scrollTop = Math.max(0, linkTop - 72);
+  if (linkBottom > sideNav.scrollTop + sideNav.clientHeight) sideNav.scrollTop = linkBottom - sideNav.clientHeight + 24;
+};
+
+if ('IntersectionObserver' in window && tocEntries.length > 0) {
+  const visibleSectionIds = new Map();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => visibleSectionIds.set(entry.target.id, entry.isIntersecting));
+    const currentTocEntry = tocEntries.find(({ target }) => visibleSectionIds.get(target.id)) ?? [...tocEntries].reverse().find(({ target }) => target.getBoundingClientRect().top <= 160);
+    activateAndScrollTocLinkIntoView(currentTocEntry?.link ?? tocEntries[0].link);
+  }, { rootMargin: '-12% 0px -72% 0px', threshold: [0, 1] });
+  tocEntries.forEach(({ target }) => observer.observe(target));
+} else if (tocEntries.length > 0) {
+  activateAndScrollTocLinkIntoView(tocEntries[0].link);
+}
+
+tocLinks.forEach((link) => link.addEventListener('click', () => activateAndScrollTocLinkIntoView(link)));
+/* document-navigation:end */
+  </script>
+  <script data-artifact-review-state="persistent">
+/* artifact-review-state:start */
+const decisionRecorders = Array.from(document.querySelectorAll('fieldset.decision-recorder'));
+const browserStorage = getStorage();
+const storagePrefix = `artifact-review:${location.pathname || document.title}:`;
+
+for (const [index, recorder] of decisionRecorders.entries()) {
+  const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+  const isCanonicallyAccepted = recorder.dataset.decisionStatus === 'accepted';
+  const optionInputs = Array.from(recorder.querySelectorAll('input[type="radio"]'));
+  const customAnswerInput = recorder.querySelector('[data-decision-custom]');
+  const rationaleInput = recorder.querySelector('[data-decision-rationale]');
+  const ownerInput = recorder.querySelector('[data-decision-owner]');
+  const reviewRecordedCheckbox = recorder.querySelector('[data-decision-recorded]');
+  const decisionStatusMessage = recorder.querySelector('.decision-status');
+  const storageKey = storagePrefix + decisionId;
+  let recordedReviewFingerprint = null;
+  let storageWriteFailed = false;
+
+  const selectedOptionInput = () => optionInputs.find((option) => option.checked);
+  const selectedAnswer = () => {
+    const selectedOption = selectedOptionInput();
+    if (!selectedOption) return '';
+    if (selectedOption.value === 'other') return customAnswerInput?.value.trim() || '';
+    return selectedOption.closest('label')?.querySelector('span')?.textContent?.trim() || selectedOption.value;
+  };
+  const isReviewInputComplete = () => Boolean(selectedAnswer() && rationaleInput?.value.trim() && ownerInput?.value.trim());
+  const contentFingerprint = () => JSON.stringify({
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+  });
+
+  const createDecisionReviewRecord = () => ({
+    reviewId: decisionId,
+    question: recorder.querySelector('legend')?.textContent?.trim() || decisionId,
+    sourceFingerprint: recorder.dataset.decisionSourceFingerprint || '',
+    status: isCanonicallyAccepted ? 'Accepted' : reviewRecordedCheckbox?.checked ? 'Recorded review input' : 'Not recorded',
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+    approvedBy: recorder.dataset.approvedBy || '',
+    approvedAt: recorder.dataset.approvedAt || '',
+    localRecordedAt: !isCanonicallyAccepted && reviewRecordedCheckbox?.checked ? recorder.dataset.localRecordedAt || new Date().toISOString().slice(0, 10) : '',
+  });
+
+  const syncDecisionRecorder = ({ restored = false } = {}) => {
+    if (!isCanonicallyAccepted && reviewRecordedCheckbox) {
+      const currentFingerprint = contentFingerprint();
+      if (reviewRecordedCheckbox.checked && recordedReviewFingerprint && recordedReviewFingerprint !== currentFingerprint) {
+        reviewRecordedCheckbox.checked = false;
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+
+      const reviewInputComplete = isReviewInputComplete();
+      reviewRecordedCheckbox.disabled = !reviewInputComplete;
+      if (!reviewInputComplete) reviewRecordedCheckbox.checked = false;
+      if (reviewRecordedCheckbox.checked) {
+        if (!recorder.dataset.localRecordedAt) recorder.dataset.localRecordedAt = new Date().toISOString().slice(0, 10);
+        if (!recordedReviewFingerprint) recordedReviewFingerprint = currentFingerprint;
+      } else {
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+    }
+
+    const reviewRecord = createDecisionReviewRecord();
+    recorder.dataset.reviewSelection = reviewRecord.selection;
+    recorder.dataset.reviewRecorded = String(reviewRecord.status !== 'Not recorded');
+    if (!isCanonicallyAccepted && browserStorage) {
+      try {
+        browserStorage.setItem(storageKey, JSON.stringify(reviewRecord));
+        storageWriteFailed = false;
+      } catch {
+        storageWriteFailed = true;
+      }
+    }
+
+    if (decisionStatusMessage) {
+      if (isCanonicallyAccepted) decisionStatusMessage.textContent = `Accepted by ${reviewRecord.approvedBy} on ${reviewRecord.approvedAt}.`;
+      else if (reviewRecord.status === 'Recorded review input') decisionStatusMessage.textContent = 'Recorded in this browser. Export it for canonical reconciliation and approval.';
+      else if (!isReviewInputComplete()) decisionStatusMessage.textContent = 'Select an option and provide rationale and owner before recording.';
+      else decisionStatusMessage.textContent = restored ? 'Restored from this browser. Check “Decision recorded” when ready.' : 'Ready to record.';
+      if (!isCanonicallyAccepted && (!browserStorage || storageWriteFailed)) decisionStatusMessage.textContent += ' Browser storage is unavailable; export before closing.';
+    }
+  };
+
+  if (!isCanonicallyAccepted && browserStorage) {
+    try {
+      const savedRecord = JSON.parse(browserStorage.getItem(storageKey) || 'null');
+      if (savedRecord) {
+        const currentQuestion = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+        const savedOption = optionInputs.find((candidate) => candidate.value === savedRecord.optionId);
+        const currentSavedSelection = savedRecord.optionId === 'other'
+          ? savedRecord.customAnswer || ''
+          : savedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || '';
+        const optionStillExists = savedRecord.optionId === '' || Boolean(savedOption);
+        const meaningUnchanged = savedRecord.sourceFingerprint === recorder.dataset.decisionSourceFingerprint
+          && savedRecord.question === currentQuestion
+          && optionStillExists
+          && savedRecord.selection === currentSavedSelection;
+        if (!meaningUnchanged) {
+          browserStorage.removeItem(storageKey);
+        } else {
+          if (savedOption) savedOption.checked = true;
+          if (customAnswerInput && typeof savedRecord.customAnswer === 'string') customAnswerInput.value = savedRecord.customAnswer;
+          if (rationaleInput && typeof savedRecord.rationale === 'string') rationaleInput.value = savedRecord.rationale;
+          if (ownerInput && typeof savedRecord.owner === 'string') ownerInput.value = savedRecord.owner;
+          if (reviewRecordedCheckbox) reviewRecordedCheckbox.checked = savedRecord.status === 'Recorded review input';
+          if (savedRecord.localRecordedAt) recorder.dataset.localRecordedAt = savedRecord.localRecordedAt;
+          if (reviewRecordedCheckbox?.checked) recordedReviewFingerprint = contentFingerprint();
+        }
+      }
+    } catch {
+      try { browserStorage.removeItem(storageKey); } catch { /* browser storage is optional */ }
+    }
+  }
+
+  customAnswerInput?.addEventListener('input', () => {
+    const customOption = optionInputs.find((option) => option.value === 'other');
+    if (customOption) customOption.checked = true;
+  });
+  recorder.addEventListener('input', () => syncDecisionRecorder());
+  recorder.addEventListener('change', () => syncDecisionRecorder());
+  syncDecisionRecorder({ restored: true });
+}
+
+if (decisionRecorders.length > 0) {
+  const exportActions = document.createElement('section');
+  exportActions.className = 'feedback-widget decision-export';
+  exportActions.dataset.reviewId = 'review-decisions.export';
+  exportActions.innerHTML = '<h2 class="panel-title">Decision Review Record</h2><p class="feedback-note">Browser records are review input, not canonical approval. Export them, then reconcile accepted choices into the PRD, design, or ADR.</p><div class="feedback-actions"><button type="button" data-review-copy>Copy Decisions</button><button type="button" data-review-download>Download Markdown</button></div><p class="feedback-result" aria-live="polite"></p>';
+  (document.querySelector('article') || document.body).append(exportActions);
+
+  const buildDecisionExportMarkdown = () => {
+    const lines = [`# Decision review record for ${document.title}`, '', `Source: ${location.pathname || 'inline document'}`, '', '> Review input only. Reconcile explicit human approval into canonical document source.', ''];
+    decisionRecorders.forEach((recorder, index) => {
+      const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+      const question = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+      const selectedOption = recorder.querySelector('input[type="radio"]:checked');
+      const customAnswer = recorder.querySelector('[data-decision-custom]')?.value.trim() || '';
+      const selection = selectedOption?.value === 'other' ? customAnswer : selectedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || 'No selection';
+      const isAccepted = recorder.dataset.decisionStatus === 'accepted';
+      const isLocallyRecorded = recorder.querySelector('[data-decision-recorded]')?.checked;
+      lines.push(
+        `## ${question}`, '',
+        `- Review ID: \`${decisionId}\``,
+        `- Source fingerprint: \`${recorder.dataset.decisionSourceFingerprint || 'unknown'}\``,
+        `- Status: ${isAccepted ? 'Accepted' : isLocallyRecorded ? 'Recorded review input' : 'Not recorded'}`,
+        `- Decision: ${selection}`,
+        `- Rationale: ${recorder.querySelector('[data-decision-rationale]')?.value.trim() || 'Not provided'}`,
+        `- Owner: ${recorder.querySelector('[data-decision-owner]')?.value.trim() || 'Not provided'}`,
+        `- Approved by: ${recorder.dataset.approvedBy || 'Not approved'}`,
+        `- Approved on: ${recorder.dataset.approvedAt || 'Not approved'}`,
+        `- Browser recorded: ${recorder.dataset.localRecordedAt || 'Not recorded'}`,
+        '',
+      );
+    });
+    return lines.join('\n');
+  };
+
+  const exportStatusMessage = exportActions.querySelector('.feedback-result');
+  exportActions.querySelector('[data-review-copy]')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildDecisionExportMarkdown());
+      exportStatusMessage.textContent = 'Decision record copied.';
+    } catch {
+      exportStatusMessage.textContent = 'Copy unavailable. Download the Markdown record instead.';
+    }
+  });
+  exportActions.querySelector('[data-review-download]')?.addEventListener('click', () => {
+    const blob = new Blob([buildDecisionExportMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    const link = document.createElement('a');
+    const slug = (document.title || 'review').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${slug || 'review'}.decision-review.md`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    exportStatusMessage.textContent = 'Markdown decision record downloaded.';
+  });
+}
+
+function getStorage() {
+  try {
+    const key = '__artifact_review_storage_test__';
+    localStorage.setItem(key, key);
+    localStorage.removeItem(key);
+    return localStorage;
+  } catch {
+    return null;
+  }
+}
+/* artifact-review-state:end */
+  </script>
+</body>
+</html>

@@ -1,157 +1,73 @@
 #!/usr/bin/env node
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
 const root = resolve(import.meta.dirname, '..');
 const validator = join(root, 'scripts/validate-html-report.mjs');
+const renderer = join(root, 'scripts/render-canonical-report.mjs');
 const resources = join(root, 'skills/html-report-designer/resources');
-const templates = [
-  ['generic shell', join(resources, 'report-template.html'), '{{COMPOSED_REPORT_CONTENT}}'],
-  ['PRD shell', join(resources, 'prd-template.html'), '{{COMPOSED_PRD_CONTENT}}'],
-  ['design shell', join(resources, 'design-template.html'), '{{COMPOSED_DESIGN_CONTENT}}'],
-];
-const temp = mkdtempSync(join(tmpdir(), 'html-report-validator-'));
+const template = join(resources, 'report-template.html');
+const temp = mkdtempSync(join(tmpdir(), 'canonical-report-validator-'));
 
 try {
-  for (const [label, path] of templates) {
-    assertSuccess(runValidator(path, { allowPlaceholders: true }), `${label} with placeholders`);
-    const finished = finishTemplate(readFileSync(path, 'utf8'));
-    const finishedPath = fixture(`${slug(label)}-finished.html`, finished);
-    assertSuccess(runValidator(finishedPath), `${label} after placeholder replacement and rich-wrapper cleanup`);
-  }
+  assertSuccess(run(validator, ['--allow-placeholders', template]), 'sole template validates with placeholders');
 
-  const baseTemplate = readFileSync(join(resources, 'report-template.html'), 'utf8');
-  const base = replacePlaceholders(baseTemplate);
+  const reportPath = join(temp, 'report.html');
+  assertSuccess(run(renderer, [join(resources, 'report-example.document.json'), reportPath]), 'render base report');
+  const base = readFileSync(reportPath, 'utf8');
+  assertSuccess(run(validator, [reportPath]), 'canonical report validates');
 
-  assertFailureIncludes(
-    runValidator(fixture('missing-doctype.html', base.replace(/<!doctype html>/i, ''))),
-    'missing <!doctype html>',
-    'report without doctype',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('second-h1.html', base.replace('</h1>', '</h1><h1>Duplicate</h1>'))),
-    'expected exactly one <h1>',
-    'report with two h1 elements',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('missing-main.html', base.replace('id="main"', 'id="content"'))),
-    '<main id="main">',
-    'report without main target',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('remote-asset.html', base.replace('</head>', '<link rel="stylesheet" href="https://example.com/report.css" /></head>'))),
-    'remote asset',
-    'report with a remote stylesheet',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('local-image.html', base.replace('</header>', '</header><img src="diagram.png" alt="Diagram" />'))),
-    'not embedded as a data URI',
-    'report with a non-embedded image',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('duplicate-review-id.html', base.replace('</header>', '</header><p data-review-id="summary">Duplicate anchor</p>'))),
-    'duplicate data-review-id',
-    'report with duplicate review anchors',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('invalid-review-id.html', base.replace('data-review-id="summary"', 'data-review-id="Document Outcome"'))),
-    'lowercase kebab/dot notation',
-    'report with an unstable review id',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('rich-role-img.html', insertContent(baseTemplate, '<div role="img"><h2 id="state">State</h2><button>Save</button></div>'))),
-    'rich HTML must not use role="img"',
-    'rich HTML hidden behind role img',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('empty-details.html', insertContent(baseTemplate, '<details><summary> </summary><p>Evidence</p></details>'))),
-    'meaningful non-empty <summary>',
-    'disclosure with empty summary',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('table-without-contract.html', insertContent(baseTemplate, '<table><tr><th>Name</th></tr><tr><td>A</td></tr></table>'))),
-    'non-empty <caption>',
-    'table without caption and scoped headers',
-  );
-  assertFailureIncludes(
-    runValidator(fixture('inaccessible-svg.html', insertContent(baseTemplate, '<figure><svg role="img"><path d="M0 0H10" /></svg><figcaption>Path</figcaption></figure>'))),
-    'non-empty <title>',
-    'informational SVG without accessible naming',
-  );
+  assertFailure('missing-doctype.html', base.replace(/<!doctype html>/i, ''), 'missing <!doctype html>');
+  assertFailure('second-h1.html', base.replace('</h1>', '</h1><h1>Duplicate</h1>'), 'expected exactly one <h1>');
+  assertFailure('missing-main.html', base.replace('id="main"', 'id="content"'), '<main id="main">');
+  assertFailure('remote-asset.html', base.replace('</head>', '<link rel="stylesheet" href="https://example.com/report.css"></head>'), 'remote asset');
+  assertFailure('remote-css-url.html', base.replace('/* tailwind-report-css:end */', 'body{background:url(https://example.com/image.png)}\n/* tailwind-report-css:end */'), 'remote asset');
+  assertFailure('duplicate-review-id.html', base.replace('</header>', '</header><p data-review-id="summary">Duplicate</p>'), 'duplicate data-review-id');
+  assertFailure('invalid-review-id.html', base.replace('data-review-id="summary"', 'data-review-id="Document Outcome"'), 'lowercase kebab/dot notation');
+  assertFailure('missing-canonical.html', base.replace('name="canonical-report"', 'name="legacy-report"'), 'missing canonical-report-v1 metadata');
+  assertFailure('stale-digest.html', base.replace(/name="canonical-template-digest" content="[^"]+"/, 'name="canonical-template-digest" content="stale"'), 'canonical template digest is stale');
+  assertFailure('missing-spec.html', base.replace(/<script type="application\/json"[\s\S]*?<\/script>/, ''), 'missing embedded canonical-report-v1 DocumentSpec');
+  assertFailure('missing-print.html', base.replace(/@media print/g, '@media screen'), 'missing print stylesheet');
+  assertFailure('unmanaged-script.html', base.replace('</article>', '<script>alert(1)</script></article>'), 'unmanaged inline script');
+  assertFailure('inline-handler.html', base.replace('<h1>', '<h1 onclick="alert(1)">'), 'inline event handler');
+  assertFailure('unsafe-href.html', base.replace('href="#main"', 'href="java\tscript:alert(1)"'), 'unsafe href URL scheme');
 
-  const complexWithoutWalkthrough = '<figure data-complex-figure data-review-id="figure.path"><p class="figure-question">How to read: left to right.</p><svg viewBox="0 0 10 10" role="img" aria-labelledby="path-title path-desc"><title id="path-title">Path</title><desc id="path-desc">One path.</desc></svg><figcaption>One path.</figcaption></figure>';
-  assertFailureIncludes(
-    runValidator(fixture('complex-without-walkthrough.html', insertContent(baseTemplate, complexWithoutWalkthrough))),
-    'adjacent structured walkthrough',
-    'complex figure without a text equivalent',
-  );
+  const adjacentSpecPath = join(temp, 'adjacent.document.json');
+  const adjacentHtmlPath = join(temp, 'adjacent.html');
+  writeFileSync(adjacentSpecPath, readFileSync(join(resources, 'report-example.document.json'), 'utf8'));
+  assertSuccess(run(renderer, [adjacentSpecPath, adjacentHtmlPath]), 'render adjacent canonical source');
+  writeFileSync(adjacentHtmlPath, readFileSync(adjacentHtmlPath, 'utf8').replace('The renderer owns presentation', 'Patched generated HTML'));
+  const patchedResult = run(validator, [adjacentHtmlPath]);
+  assert(patchedResult.status !== 0 && `${patchedResult.stdout}${patchedResult.stderr}`.includes('does not byte-match its adjacent DocumentSpec'), 'validator must reject patched durable HTML when adjacent source exists');
 
-  const validComplex = `${complexWithoutWalkthrough}<ol data-figure-walkthrough-for="figure.path"><li>Read the path.</li></ol>`;
-  assertSuccess(
-    runValidator(fixture('valid-complex.html', insertContent(baseTemplate, validComplex))),
-    'optional accessible complex figure',
-  );
+  const prdPath = join(temp, 'prd.html');
+  assertSuccess(run(renderer, [join(resources, 'specs/prd-example.document.json'), prdPath]), 'render PRD fixture');
+  const prd = readFileSync(prdPath, 'utf8');
+  assertSuccess(run(validator, [prdPath]), 'PRD fixture validates');
+  assertFailure('prd-without-excalidraw.html', prd.replace('svg-source:excalidraw', 'svg-source:hand-authored'), 'require Excalidraw SVG provenance');
+  assertFailure('prd-without-decision-recorder.html', prd.replace('class="decision-recorder"', 'class="decision-card"'), 'every DocumentSpec decision must render exactly one decision recorder');
+  assertFailure('prd-without-decision-fingerprint.html', prd.replace(/ data-decision-source-fingerprint="[a-f0-9]{64}"/, ''), 'decision-source fingerprint');
 
-  const goodTable = '<table><caption>Decision evidence</caption><thead><tr><th scope="col">Source</th></tr></thead><tbody><tr><td>Request</td></tr></tbody></table>';
-  assertSuccess(runValidator(fixture('valid-table.html', insertContent(baseTemplate, goodTable))), 'optional accessible table');
+  const notTemplate = join(temp, 'placeholder.html');
+  writeFileSync(notTemplate, readFileSync(template, 'utf8'));
+  const result = run(validator, ['--allow-placeholders', notTemplate]);
+  assert(result.status !== 0 && `${result.stdout}${result.stderr}`.includes('only valid for report-template.html'), 'placeholder mode must be limited to the canonical template');
 
-  const noPrint = base.replace(/@media\s+print/gi, '@media screen');
-  assertFailureIncludes(runValidator(fixture('missing-print.html', noPrint)), 'missing print stylesheet', 'report without print CSS');
-
-  console.log('PASS: HTML validator enforces the shared document system without prescribing content');
+  console.log('PASS: validator enforces canonical shell/profile parity, managed scripts, adjacent-source freshness, decisions, and Excalidraw provenance');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }
 
-function replacePlaceholders(content) {
-  return content.replace(/\{\{[^}]+\}\}/g, 'Fixture');
-}
-
-function finishTemplate(content) {
-  return replacePlaceholders(content)
-    .replace(/(<(?:article|div|figure|section|main|aside)\b[^>]*?)\srole=["']img["']/gi, '$1');
-}
-
-function insertContent(template, content) {
-  const slot = ['{{COMPOSED_REPORT_CONTENT}}', '{{COMPOSED_PRD_CONTENT}}', '{{COMPOSED_DESIGN_CONTENT}}']
-    .find((candidate) => template.includes(candidate));
-  const inserted = slot
-    ? template.replace(slot, content)
-    : template.replace('</article>', `${content}</article>`);
-  assert(inserted !== template, 'template needs a composition slot or article insertion point');
-  return replacePlaceholders(inserted);
-}
-
-function fixture(name, content) {
+function assertFailure(name, html, expected) {
   const path = join(temp, name);
-  mkdirSync(resolve(path, '..'), { recursive: true });
-  writeFileSync(path, content);
-  return path;
-}
-
-function runValidator(path, { allowPlaceholders = false } = {}) {
-  const args = [validator];
-  if (allowPlaceholders) args.push('--allow-placeholders');
-  args.push(path);
-  return spawnSync(process.execPath, args, { encoding: 'utf8' });
-}
-
-function assertFailureIncludes(result, expected, label) {
-  assert(result.status !== 0, `${label} should fail validation`);
+  writeFileSync(path, html);
+  const result = run(validator, [path]);
   const output = `${result.stdout}${result.stderr}`;
-  assert(output.includes(expected), `${label} should explain "${expected}":\n${output}`);
+  assert(result.status !== 0, `${name} should fail`);
+  assert(output.includes(expected), `${name} should explain "${expected}":\n${output}`);
 }
-
-function assertSuccess(result, label) {
-  assert(result.status === 0, `${label} should pass validation:\n${result.stdout}${result.stderr}`);
-}
-
-function slug(value) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-}
-
-function assert(condition, message) {
-  if (!condition) throw new Error(message);
-}
+function run(command, args) { return spawnSync(process.execPath, [command, ...args], { cwd: root, encoding: 'utf8' }); }
+function assertSuccess(result, label) { assert(result.status === 0, `${label}:\n${result.stdout}${result.stderr}`); }
+function assert(condition, message) { if (!condition) throw new Error(message); }

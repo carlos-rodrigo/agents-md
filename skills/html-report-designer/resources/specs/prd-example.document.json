@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "prd-example",
+    "kind": "prd",
+    "status": "Review",
+    "title": "Record reviewer decisions without losing product truth",
+    "summary": "Reviewers can choose, explain, record, and export a real product decision while canonical approval remains explicit.",
+    "reviewFocus": "Choose the retention policy, provide rationale, and verify that browser recording is not treated as approval.",
+    "updated": "2026-07-28",
+    "sources": ["skills/prd/SKILL.md", "User-approved decision-recorder requirement"],
+    "feature": "Decision recording"
+  },
+  "sections": [
+    {
+      "id": "prd.product",
+      "role": "product",
+      "kicker": "Product",
+      "title": "Reviewers can create a portable decision record",
+      "blocks": [
+        { "type": "facts", "id": "prd.product.definition", "items": [["Actor", "Document reviewer"], ["Moment", "A PRD contains a real unresolved choice"], ["Capability", "Select, explain, record, and export the choice"], ["Boundary", "Browser state does not approve canonical product truth"]] }
+      ]
+    },
+    {
+      "id": "prd.problem",
+      "role": "problem",
+      "kicker": "Why",
+      "title": "Selections previously stopped at ephemeral browser state",
+      "blocks": [
+        { "type": "paragraph", "id": "prd.problem.current", "text": "A reviewer could select an option, but the report did not distinguish a saved choice from an explicitly approved product decision." },
+        { "type": "callout", "id": "prd.problem.consequence", "tone": "warning", "title": "Trust gap", "text": "An agent could mistake local completeness for product approval." }
+      ]
+    },
+    {
+      "id": "prd.behavior",
+      "role": "behavior",
+      "kicker": "Behavior",
+      "title": "Recording and approval remain separate actions",
+      "blocks": [
+        { "type": "steps", "id": "prd.behavior.flow", "items": [
+          { "id": "prd.behavior.select", "title": "Select", "text": "The reviewer selects a known option or writes a custom answer." },
+          { "id": "prd.behavior.explain", "title": "Explain", "text": "The reviewer provides rationale and identifies the owner." },
+          { "id": "prd.behavior.record", "title": "Record", "text": "The checkbox persists a portable review record." },
+          { "id": "prd.behavior.reconcile", "title": "Reconcile", "text": "An agent updates canonical source only after explicit approval." }
+        ] }
+      ]
+    },
+    {
+      "id": "prd.diagram",
+      "role": "diagram",
+      "kicker": "Product flow",
+      "title": "A decision moves from question to canonical truth",
+      "blocks": [
+        { "type": "diagram", "id": "diagram.product-decision", "question": "How does a reviewer choice become portable without becoming implicit approval?", "caption": "The review record is exported before explicit approval changes canonical truth.", "svgPath": "../../../system-diagram/resources/excalidraw-domain-interaction-example.svg", "sourcePath": "../../../system-diagram/resources/excalidraw-domain-interaction-example.json", "walkthrough": ["Start from the unresolved reviewer question.", "Record the selected option with rationale and owner.", "Export the portable Markdown review record.", "Apply only explicitly approved choices to canonical source."] }
+      ]
+    },
+    {
+      "id": "prd.slices",
+      "role": "slices",
+      "kicker": "Product slice",
+      "title": "Record one review decision end to end",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "slice-001",
+          "title": "Record and export a reviewer choice",
+          "outcome": "A reviewer leaves a portable, agent-readable decision record.",
+          "boundary": "The action does not mark the PRD Approved or modify its source.",
+          "story": { "id": "story-001", "actor": "a document reviewer", "capability": "record a selected option with rationale", "outcome": "the product owner can reconcile an explicit decision" },
+          "scenarios": [
+            { "id": "ex-001", "title": "Main scenario", "given": "a report contains an unresolved product decision", "when": "the reviewer selects an option, enters rationale and owner, and checks Decision recorded", "then": "the choice persists locally and exports as Markdown marked as review input" },
+            { "id": "ex-002", "title": "Incomplete record", "given": "one required decision field is empty", "when": "the reviewer tries to record the choice", "then": "the checkbox remains unavailable and explains what is missing" }
+          ],
+          "mode": "visual",
+          "steps": [
+            { "id": "step-001", "title": "Choose", "context": "The open decision shows real options and a custom answer.", "action": "The reviewer selects one option.", "response": "The selected option remains visible.", "outcome": "The rationale and owner fields become the next required work." },
+            { "id": "step-002", "title": "Record", "context": "Selection, rationale, and owner are complete.", "action": "The reviewer checks Decision recorded.", "response": "The report confirms local persistence and offers export.", "outcome": "The reviewer downloads an agent-readable Markdown record." }
+          ],
+          "acceptance": [
+            { "id": "ac-001", "text": "Recording is unavailable until selection, rationale, and owner are present." },
+            { "id": "ac-002", "text": "Reloading restores a locally recorded review decision." },
+            { "id": "ac-003", "text": "Export identifies the stable decision ID and states that the record is not approval." }
+          ],
+          "after": "After this slice, a reviewer can leave a portable decision record without silently approving or modifying product truth."
+        }
+      ]
+    },
+    {
+      "id": "prd.scope",
+      "role": "scope",
+      "kicker": "Boundary",
+      "title": "Canonical approval stays outside browser persistence",
+      "blocks": [
+        { "type": "list", "id": "prd.scope.rules", "style": "checks", "items": ["In scope: local persistence and Markdown export.", "In scope: explicit distinction between review input and accepted truth.", "Out of scope: automatic source-file mutation or implied approval."] }
+      ]
+    },
+    {
+      "id": "prd.decisions",
+      "role": "decisions",
+      "kicker": "Decision",
+      "title": "Choose how long local review input remains available",
+      "blocks": [
+        { "type": "decision", "id": "decision.retention", "question": "How long should browser-local review input remain available?", "status": "proposed", "options": [{ "id": "session", "label": "Current browser session only" }, { "id": "persistent", "label": "Persist until manually replaced or cleared" }], "selectedOptionId": "persistent", "rationale": "Review may span reloads before the exported record is reconciled.", "owner": "Product owner", "blocking": false }
+      ]
+    }
+  ]
+}

@@ -1,499 +1,139 @@
 ---
 name: html-report-designer
-description: "Design and generate the self-contained, reviewable HTML shell for PRDs, feature designs, diagrams, research briefs, and decision documents. Use for document UX, accessibility, templates, CSS, review anchors, and validation; use prd/design-solution to decide product or architecture content. Triggers on: html report, report design, reviewable html, document UI/UX."
+description: "Render approved PRD, design, diagram, research, report, or decision content through one portable self-contained HTML report template. Use for canonical DocumentSpec validation, report components, navigation, decision recorders, accessibility, responsive behavior, motion enhancement, print, and deterministic regeneration. Do not decide product or architecture content."
+compatibility: "Requires Node.js 18+ and filesystem access. Non-diagram rendering has no runtime dependencies; diagram reports require the sibling System Diagram skill and its installed package. CSS rebuild and browser checks use the repository toolchain."
 ---
 
 # HTML Report Designer
 
-Use this skill when a durable agent-generated document should be read and reviewed in a browser, not as a flat Markdown file.
+Render approved meaning through one canonical container. This skill owns HTML, CSS, components, navigation, review controls, accessibility, portability, and validation—not product requirements, architecture choices, or diagram semantics.
 
-Default durable artifacts:
+Default artifacts:
 
 ```text
-docs/features/{feature}/prd.html    # product source of truth and review artifact
-docs/features/{feature}/design.html # high-level solution/design source of truth and review artifact
+docs/features/{feature}/{prd|design}.document.json
+docs/features/{feature}/{prd|design}.html
 ```
 
-Markdown variants are legacy/compatibility outputs. Do not create a separate `.md` version by default unless the user asks or the repo already requires one.
+## Sole rendering boundary
 
-## Research basis
+Every new durable report uses:
 
-This skill is grounded in these patterns:
-
-- Google Technical Writing: large docs need a clear outline, useful introduction, task/reader-oriented headings, navigation, signposting, and progressive disclosure.
-- NN/g long-form content research: readers scan; summaries, concise bullets, callouts, selective emphasis, in-page links, and informational visuals improve comprehension and engagement.
-- Diátaxis: choose document form by reader need. PRDs and designs are usually explanation/decision artifacts, not tutorials or reference dumps.
-- web.dev / W3C accessibility guidance: use semantic HTML landmarks, meaningful heading order, lists/tables, skip links, labelled regions, and keyboard-friendly structure.
-- Elastic dashboard guidance: understand audience/time/goal, put most important content first, group related panels, use hierarchy/margins, make labels self-explanatory, and use color consistently.
-- Vercel Geist `design.md`: define explicit design tokens, semantic color scales, 4px spacing rhythm, restrained shadows, focus-visible rings, reduced-motion-aware interactions, and precise UI copy.
-- Tailwind Typography / utility layout patterns: use constrained prose where reading matters, responsive `minmax()` grids where cards matter, `overflow-wrap:anywhere` for paths/code, and utilities as a discipline for predictable spacing rather than random one-off CSS.
-- Primer, Carbon, Atlassian, and Radix Themes: production documentation UIs rely on tokens, accessible primitives, concise content labels, clear action states, and themeable components rather than decorative containers.
-- NN/g layer-cake scanning: strong descriptive headings, visible subheads, chunks, labels, and summaries help readers scan long technical documents without reading every word.
-- Mintlify / Stripe / Twilio / Pinecone-style developer docs: organize around real user journeys, make examples and errors first-class, keep search/navigation obvious, and optimize time-to-confidence.
-- Vercel Docs / Primer / Docusaurus / MkDocs Material: use a docs-app shell with collapsible side navigation, breadcrumbs, explicit heading IDs, prev/next links, admonitions, tabs, and feedback affordances. Keep page content clean, default to a Vercel-like light neutral documentation surface, and avoid a top menu or right rail for this template family unless explicitly requested.
-- GitHub Docs content model: keep “get started” content minimal, separate concepts/how-tos/reference, use reusable content patterns, and make next steps obvious.
-- Atlassian Design System: use page headers, breadcrumbs, badges/lozenges, section messages, tables, tabs, focus primitives, and design tokens as composable primitives.
-
-## Report design system
-
-Use a compact token system inspired by Vercel’s `design.md`: explicit tokens first, then components. Do not hand-tune random sizes/colors per report.
-
-Core token families:
-
-```css
-:root {
-  /* surfaces */
-  --surface-100: ...; /* page/card surface */
-  --surface-200: ...; /* subtle separation only */
-  --surface-300: ...; /* raised/selected surface */
-
-  /* text */
-  --text-1000: ...; /* primary */
-  --text-900: ...;  /* secondary */
-  --text-700: ...;  /* disabled/muted */
-
-  /* borders and overlays */
-  --border-400: ...;
-  --border-500: ...;
-  --alpha-100: ...;
-
-  /* semantic accents */
-  --accent-700: ...;
-  --info-700: ...;
-  --success-700: ...;
-  --warning-700: ...;
-  --danger-700: ...;
-
-  /* rhythm */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-16: 64px;
-  --space-24: 96px;
-
-  /* shape */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-full: 9999px;
-}
+```text
+resources/report-template.html
+resources/report.tailwind.css
+resources/canonical-report-v1.schema.json
+scripts/render-canonical-report.mjs
+scripts/validate-html-report.mjs
 ```
 
-Layout rhythm:
+Resolve each path against the directory containing this loaded `SKILL.md`. Never assume the caller's repository contains the renderer. Do not copy a template into the target project, hand-author a shell, add document-local CSS, or patch rendered HTML.
 
-- `8px` inside tight groups.
-- `16px` between related groups.
-- `24px` card padding.
-- `32–40px` between report sections.
-- `64–96px` for major page breaks or hero spacing.
+`report-template.html` is the only production template for PRDs, designs, diagram packets, research briefs, reports, and decision packets. Document kind changes structured content and validation—not the shell, style family, or runtime.
 
-Hierarchy rules:
+## Ownership
 
-- Prefer tonal surfaces, borders, spacing, and type scale before heavy shadows.
-- Use one radius family per report; do not mix very sharp and very rounded shapes without reason.
-- Use no more than two font weights in the same view unless code/metadata requires it.
-- Use solid accent color only for state, focus, and the most important review action.
-- Pair every color state with text/icon/pattern; color alone is not enough.
+- `prd` owns product truth, required PRD roles, slices, acceptance, and product decisions.
+- `design-solution` owns architecture truth, required design roles, decisions, and ADR consequences.
+- `system-diagram` owns evidence validation and Excalidraw JSON→SVG generation.
+- This skill owns the report frame and rendering of already-approved structured blocks.
+
+A consuming skill supplies section roles, stable IDs, approved facts, decision lifecycle, and Excalidraw source/output paths. This skill must not add, remove, reorder, or multiply substantive content to fill a component.
+
+## DocumentSpec
+
+Author `canonical-report-v1` JSON against `resources/canonical-report-v1.schema.json`. The bundled runtime additionally enforces:
+
+- strict unknown-field rejection;
+- stable unique review IDs;
+- explicit approval metadata for Approved documents;
+- required PRD/design section roles in their owning skill's declared order;
+- complete PRD product slices;
+- exactly one Excalidraw diagram in its owning `diagram` role for substantive PRDs, designs, and standalone diagram packets;
+- at least one architecture decision for designs;
+- accepted decisions in Approved documents;
+- Excalidraw JSON/SVG provenance at render time.
+
+Use `resources/report-example.document.json` only as a block-shape example, never as a section inventory.
+
+## Canonical components
+
+The renderer provides structured blocks for:
+
+- paragraphs, lists, facts, steps, callouts, quotes, and code;
+- Given/When/Then scenarios;
+- product slices with stories, observable sequences, acceptance, and after-slice outcomes;
+- decision recorders with options, custom answer, rationale, owner, lifecycle, checkbox, persistence, and Markdown export;
+- Excalidraw figures with question, caption, stable anchors, and ordered walkthrough.
+
+Add a new block type only when a current approved document cannot express required meaning with existing blocks. A component is not a reason to create content.
+
+## Decision recorder contract
+
+Every `decision` block renders a **Decision recorded** checkbox.
+
+- Open/Proposed controls require a selected option or custom answer, rationale, and owner before recording.
+- Browser state persists locally and exports a Markdown review record tied to the exact decision-source fingerprint; changed decision meaning invalidates prior recorded state.
+- Browser recording is review input only; it never changes the source JSON, rendered HTML, approval status, or ADR.
+- Accepted decisions render checked and read-only, and require canonical approver/date metadata.
+- Consuming skills reconcile exported stable IDs into canonical source only after explicit human approval.
+
+## Diagram contract
+
+A report `diagram` block references an Excalidraw JSON source and its generated SVG. A standalone `document.kind: "diagram"` packet must contain exactly one such block under its `diagram` section role. The renderer embeds the SVG only when it contains `<!-- svg-source:excalidraw -->`, the exact retained-JSON source digest, accessible SVG metadata, a valid source scene, and byte-exact output verified by the sibling bundled Excalidraw renderer. It never draws, lays out, or semantically changes a diagram.
 
 ## UX contract
 
-Every HTML report should be:
+Every report is:
 
-1. **Glanceable** — the first viewport answers: what is this, why it matters, and what decision/review is needed.
-2. **Navigable** — sticky, fully collapsible table of contents, semantic headings, stable anchors, and skip link.
-3. **Scannable** — short sections, bullets, cards, labels, tables, and callouts instead of walls of text.
-4. **Reviewable** — stable `data-review-id` anchors on sections/cards/diagram nodes; visible anchor labels when helpful.
-5. **Truthful** — product facts, assumptions, open questions, and design decisions are clearly separated.
-6. **Enjoyable** — an intentional visual point of view: editorial, calm, warm, and precise; not a generic white-page dump.
-7. **Portable** — one self-contained `.html` file with inline CSS/SVG and no required external network assets.
-8. **Accessible** — semantic HTML, contrast-safe colors, keyboard navigation, reduced-motion respect, and no text trapped only in images.
+1. **Glanceable** — title, status, summary, review focus, and approval state appear first.
+2. **Navigable** — one collapsible sticky index generated from actual sections.
+3. **Scannable** — descriptive headings and bounded components support retrieval.
+4. **Reviewable** — stable conceptual `data-review-id` anchors and portable decision exports.
+5. **Truthful** — facts, assumptions, risks, proposals, and accepted decisions remain distinct.
+6. **Portable** — self-contained HTML with no network or runtime dependency.
+7. **Accessible** — semantic landmarks, keyboard focus, contrast, text equivalents, reduced motion, no-JS visibility, and print completeness.
 
-## Generation quality contract
+Motion is optional progressive enhancement. Static source order is complete. Never blur meaning-bearing text, require JavaScript for content, or add decorative motion.
 
-Every generated report must pass this definition of done before handoff:
+## Workflow
 
-- first viewport states the reader goal, current review state, what the reviewer should focus on, and any blocking product decision without using a dashboard-style metric strip;
-- Vercel-like docs shell exists: breadcrumbs, collapsible left sidebar, no top menu, no right sidebar, feedback widget, and back-to-top affordance; add prev/next or related links only when those destinations exist;
-- no unresolved `{{PLACEHOLDER}}` tokens remain in generated docs;
-- exactly one `<h1>`, a skip link to `<main id="main">`, semantic landmarks, and non-skipping heading order;
-- stable, unique `data-review-id` anchors on sections, cards, tables rows, and important diagram groups;
-- no external network assets are required to read or print the report;
-- tables have captions and scoped headers; SVG diagrams have `<title>`/`<desc>` or a surrounding figure caption;
-- assumptions, facts, decisions, risks, and open questions are visually separated;
-- motion is optional progressive enhancement and respects `prefers-reduced-motion`;
-- print view is usable;
-- PRD and design top-level sections use `reveal` and the shared scroll-reveal runtime, while no-JS, reduced-motion, and print show all content immediately;
-- each substantive PRD or durable design includes the high-quality explanatory diagram required by its owning skill, or its explicit `Diagram not applicable` rationale;
-- product or design visuals render only content required by the owning skill; a report shell never creates a domain map, story, option, or other substantive section to fill a visual component;
-- PRDs do not leak architecture and designs do not invent product behavior.
-
-When available, run the validator on generated reports:
+1. Receive approved structured content from its owning skill.
+2. Validate section roles, IDs, approval/decision state, and diagram JSON/SVG references.
+3. Render from any project working directory:
 
 ```bash
-node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/prd.html
-node /Users/carlosrodrigo/agents/scripts/validate-html-report.mjs docs/features/{feature}/design.html
+node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
+  path/to/document.json path/to/report.html
+node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
+  path/to/report.html
+node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" --check \
+  path/to/document.json path/to/report.html
 ```
 
-Use `--allow-placeholders` only for validating templates, never for finished reports.
-
-## When to use
-
-Use for:
-
-- PRDs (`prd.html`),
-- feature designs (`design.html`),
-- system/architecture diagram pages,
-- research briefs,
-- ADR explainers or decision review packets,
-- any long-form agent output the user will review visually.
-
-Do not use for tiny notes, task briefs, or throwaway logs. Task briefs stay Markdown under `.features/{feature}/tasks/` because agents read them more than humans do.
-
-## Page architecture
-
-Use a self-contained Vercel-like docs shell:
-
-```html
-<body data-visual-mode="vercel-docs-packet">
-  <a class="skip-link" href="#main">Skip to content</a>
-  <div class="doc-shell">
-    <aside class="side-nav" aria-label="Document navigation">
-      <details class="index-details" open>
-        <summary><span class="nav-title">Document</span></summary>
-        <nav aria-label="Table of contents">...</nav>
-      </details>
-    </aside>
-    <main id="main">...</main>
-  </div>
-  <a class="back-to-top" href="#main">...</a>
-</body>
-```
-
-Required landmarks and shell components:
-
-- no top navigation menu unless the user explicitly asks for one,
-- breadcrumbs before the article header,
-- a full-width shell with no centered outer left/right margin; use responsive internal padding for readable edge clearance,
-- one collapsible left sidebar/document index grouped by reader journey, separated from content by a subtle right border; closing it must reclaim its page width rather than only hiding its contents,
-- a native labelled `<details>/<summary>` toggle that remains keyboard-operable and reduces to a clear compact menu affordance when closed,
-- one `<nav aria-label="Table of contents">` inside the left index for active in-page headings,
-- one `<main id="main">`,
-- one article header for title/summary/status/meta,
-- meaningful `<section aria-labelledby="..." data-review-id="...">` blocks,
-- previous/next document links when those documents exist,
-- related links/artifacts block when there are real destinations,
-- feedback widget,
-- one `<footer>` for provenance/update info when useful.
-
-Template starting points:
-
-```text
-resources/report-template.html # shared component system and generic review packet
-resources/prd-template.html    # PRD-specific product review packet
-resources/design-template.html # design-specific architecture review packet
-```
-
-Start from the most specific template. Use `report-template.html` when creating research, ADR, decision, or custom review packets.
-
-## Information design pattern
-
-### Top viewport
-
-The first screen should include:
-
-- document title,
-- status pill: Draft / Review / Approved / Blocked / Superseded,
-- owner/audience when known,
-- one-paragraph summary,
-- concise review-critical context or decisions when present, without a fixed item count,
-- next review action when known,
-- source links/paths when available.
-
-### Main body
-
-Prefer sections with a one-sentence point at the top, then details.
-
-Use these named components instead of inventing one-off containers:
-
-- **Docs shell**: `.breadcrumbs`, `.doc-shell`, `.side-nav`, `.index-details`, `.prev-next`, `.related-links`, `.feedback-widget`, `.back-to-top`.
-- **Article metadata** for status/date/type as compact pills; avoid owner/outcome/next-action metric-card strips unless explicitly requested.
-- **Takeaway list** for sourced review-critical points in the first viewport; omit it when the summary is sufficient.
-- **Step lists** for review paths, setup/review sequence, and approval flow.
-- **Tabs** for paired perspectives such as scenario/evidence, current/intended, or decision/alternative.
-- **Copyable code/evidence blocks** for prompts, commands, API examples, or exact source snippets.
-- **Conceptual contract lists** for multiple code-like data shapes; stack them in a single column with `contract-list` instead of a multi-column card grid. Each item is two rows: entity name, then one full-width colored `schema-code` block.
-- **Decision cards** for chosen direction, rejected alternatives, tradeoffs, and open risks.
-- **Product slice sections** for PRD behavior with stable `SLICE-*`, `STORY-*`, `EX-*`, `STEP-*`, and `AC-*` IDs.
-- **Requirement/story cards** inside their owning product slice; do not separate stories from the scenarios, storyboard, and acceptance that explain them.
-- **Intended-flow storyboards** for user-facing product slices: one compact semantic wireframe panel per product-visible step, showing context/state → action → visible response → next decision/outcome.
-- **Non-visual interaction strips** when UI is not applicable: actor → trigger/action → stakeholder-observable state/effect, plus the reason no screen is shown.
-- **Domain interaction maps/cards** only when the owning PRD or design calls for one: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps.
-- **UI option wireframes** only for a real unresolved product decision, comparing the smallest material alternatives with labelled regions, representative copy, state changes, expected outcomes, tradeoffs, and selected/recommended/pending status.
-- **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
-- **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option. The shared review-state runtime saves selections in browser storage immediately and offers Copy/Download Markdown actions; reviewers must export the choices when they need a portable agent-readable review record.
-- **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
-- **Example pairs / before-after panels** for concrete behavioral or system changes.
-- **Acceptance checklists** for concise `AC-*` criteria; use matrices only when traceability would otherwise be unclear.
-- **Design coverage matrices** only when traceability would otherwise be unclear: PRD story/BDD/acceptance → selected UI option/user flow → slice → architecture delta → feedback hook.
-- **Interface implementation cards** for design reports: component/surface plan, state model, library/style/motion choices, accessibility/responsiveness, and feedback hooks.
-- **Approval checklists** for review readiness and release confidence.
-- **Architecture overview figures** for existing/new/changed components, boundaries, and communication direction.
-- **Architecture delta cards/lists** for added/changed packages, controllers, APIs, jobs, events, ports, adapters, and data stores.
-- **Outside-in slice design cards/lists and SVG diagrams** for `SLICE-*` narratives: external need → route/endpoint/API contract → application service/use case → domain model/service/rule → repository/DB model/table → observable feedback hook → spike/escalation condition.
-- **Scope/non-goal lists** for adjacent behavior intentionally out of scope.
-- **Open-question lists** with owner, blocker status, impact, resolution path, and a reviewer option selector with a free-text option when reviewer input is needed. Use a compact table only when there are many owners/statuses to compare and no immediate choice is requested.
-- **Evidence cards** for source anchors, examples, logs, tests, or research observations.
-- **Flow panels / figure cards** for current/intended behavior and component communication.
-- **Callouts/admonitions** for note, tip, warning, danger, success, assumption, risk, blocker, and readiness.
-- **Details disclosures** for long examples, raw evidence, or lower-priority scenarios.
-- **Source/provenance lists** for paths, ADRs, tasks, changelog/update state, and validation state.
-
-### Visual/UX patterns from research
-
-Bake these patterns into every future generated report:
-
-- **Focused first viewport** — title, concise summary, compact status metadata, and key takeaways before long-form content; do not add a dashboard/status-strip row by default.
-- **Layer-cake scanning** — heading → one-sentence summary → prose/bullets/examples → optional details. Do not bury the point in large tables.
-- **Diátaxis-specific shapes** — PRDs are product explanation/acceptance packets; designs are architecture decision/communication packets.
-- **Review-first anchors** — review IDs are visible enough for humans to reference and stable enough for `/review` comments.
-- **Decision cards over paragraphs** — architecture/product choices should show chosen direction, why, alternatives, tradeoffs, and risks.
-- **Tables only for true matrices** — use tables for comparison/traceability, not as the default section shape. Prefer prose, bullets, cards, examples, and diagrams for explanation. A normal design should have 0-2 tables; if there are more, collapse reference detail into cards, lists, or `<details>`.
-- **Code blocks follow code-block convention** — code-like snippets need enough horizontal room, should not be clipped, and should not be placed in responsive multi-column grids. If a section has several code/data shapes, render them as a vertical list (`contract-list`): first row is the entity name, second row is a colored `schema-code` block, and each property appears on its own line. Use restrained spans: `code-key` for properties, `code-enum` for enum/status values, and `code-punctuation` for braces, commas, colons, and union bars.
-- **Storyboard-first product flows** — render the intended user-facing flow before considering alternatives. Use one small screen-like semantic wireframe per product-visible step, with representative copy, action, visible response, and next outcome. Reuse the existing shell when available. Show multiple UI alternatives only when an unresolved product decision requires comparison; do not manufacture options to fill a report component.
-- **Domain interaction before implementation detail** — when domain concepts matter, show verbs and effects between entities before data contracts or components. Reviewers should be able to say “this entity changes that state because of this business action.”
-- **Diagram-as-figure** — every diagram needs a title, how-to-read note or caption, legend, review IDs, uncertainty if relevant, and progressive reading-order motion.
-- **Excalidraw-rendered diagrams** — create every diagram through `system-diagram` and the repository's build-time Excalidraw renderer. Keep the JSON regeneration source and inline the generated accessible SVG; never hand-author SVG or use another diagram renderer.
-- **Tokenized visual system** — use semantic tokens and component classes; avoid local color/spacing improvisation.
-- **Editorial technical atlas aesthetic** — warm paper, high-contrast ink, restrained accent, calm density, first-class diagrams.
-- **Trust/provenance layer** — generated/updated date, source paths, related docs, owners, assumptions, open questions, and validation state.
-
-### Content ownership requirement
-
-Presentation must not determine PRD substance. The `prd` skill owns which product slices, stories, scenarios, storyboards, rules, and acceptance criteria exist. The `design-solution` skill owns design substance. This skill renders those decisions accessibly and reviewably; it never adds a scenario, visual, alternative, or ceremony merely because the template or component inventory contains one.
-
-For PRDs, support the owning content contract with:
-
-- one evidence-backed product-behavior diagram, or the owning skill's explicit not-applicable rationale;
-- the main Given/When/Then scenario inside each product slice;
-- one intended-flow storyboard per user-facing product slice, with a compact semantic wireframe for every product-visible step;
-- a non-visual interaction/state strip and rationale when UI is not applicable;
-- multiple UI alternatives only when an unresolved product decision requires comparison;
-- traceable review anchors for `SLICE-*`, `STORY-*`, `EX-*`, `STEP-*`, and `AC-*`;
-- source/evidence anchors tying consequential claims to code, research, screenshots, analytics, logs, or source documents.
-
-Do not impose a fixed number of slices, stories, scenarios, steps, options, questions, or acceptance criteria. The sourced product behavior determines cardinality.
-
-### Navigation rail
-
-Use one navigation rail only: the collapsible left index. Do not add a right sidebar. Put review guidance, readiness checks, open-question counts, and related artifacts in the main content flow where they can be reviewed and commented on directly.
-
-Desktop behavior:
-
-- the sidebar remains sticky in the viewport while the document scrolls;
-- long navigation scrolls inside the sidebar rather than moving the sidebar offscreen;
-- the collapse/expand summary remains sticky at the top of that internal scroll area;
-- the active TOC link updates as sections enter the reading zone and the sidebar adjusts its own `scrollTop` to keep that link visible;
-- review-anchor positioning must use low-specificity `:where([data-review-id])` so it cannot override `.side-nav { position: sticky; }`.
-
-At narrow widths, return the sidebar to normal document flow, keep it collapsible, and use the bottom divider instead of a right divider.
-
-## PRD report pattern
-
-For `docs/features/{feature}/prd.html`, start from the content-neutral shell in `resources/prd-template.html`. The `prd` skill owns content and reading order.
-
-1. Compose the PRD in product order before touching the shell.
-2. Generate `{{PRD_TOC}}` from the composed top-level sections.
-3. Use `{{PRD_ARTIFACT_LINKS}}` only for real related documents; an empty string is valid.
-4. Use `{{PRD_HEADER_SUPPORT}}` only for sourced review-critical context; an empty string is valid.
-5. Insert the complete semantic section markup at `{{COMPOSED_PRD_CONTENT}}`; add `reveal` to every top-level composed section.
-6. Reuse the shell's component classes for slices, scenarios, storyboards, diagrams, decisions, and acceptance without copying sample content or fixed counts.
-7. Replace every placeholder and validate the finished file.
-
-The shell contains no sample stories, scenarios, domain sections, UI alternatives, readiness checklist, or acceptance count. Presentation must follow the PRD; the PRD must never be reverse-engineered from the template.
-
-## Design report pattern
-
-For `docs/features/{feature}/design.html`, start from the content-neutral shell in `resources/design-template.html`. The `design-solution` skill owns content and reading order.
-
-1. Compose the design before touching the shell.
-2. Generate `{{DESIGN_TOC}}` from the composed top-level sections.
-3. Use `{{DESIGN_ARTIFACT_LINKS}}` only for real related documents; an empty string is valid.
-4. Use `{{DESIGN_HEADER_SUPPORT}}` only for sourced review-critical context; an empty string is valid.
-5. Insert the complete semantic section markup at `{{COMPOSED_DESIGN_CONTENT}}`; add `reveal` to every top-level composed section.
-6. Reuse the shell's component classes for the causal diagram, decisions, risks, contracts, and slices without copying sample content or fixed counts.
-7. Replace every placeholder and validate the finished file.
-
-The shell contains no sample architecture, hard-coded nodes, diagrams, slices, contracts, or decisions. Presentation must follow the design; architecture must never be reverse-engineered from the template.
-
-## Visual modes
-
-Default mode: **Vercel docs packet**.
-
-Use this for PRDs, feature designs, decision packets, and most durable docs. It should feel closer to Vercel Docs than a slide/report export:
-
-- breadcrumbs,
-- full-width shell without centered outer margins,
-- collapsible sticky left sidebar with active heading state and a subtle right divider,
-- no right-side rail,
-- Vercel-like content area: black/gray neutral palette, Geist/system typography, tight page header, spacious prose, clean section dividers, and almost no shadows,
-- restrained monochrome accent by default; use blue only for links/focus or status when useful,
-- noticeable but restrained CSS/IntersectionObserver motion for section reveal and hover affordances, always disabled under `prefers-reduced-motion`,
-- fewer heavy cards and lighter borders,
-- examples, steps, callouts, tabs, and matrices as first-class components only when they clarify the content,
-- prev/next links, related artifacts, feedback, and provenance.
-
-Secondary mode: **editorial technical atlas**.
-
-Use only when the user asks for an intentionally visual narrative or when diagrams are the primary artifact. It may use warmer paper, larger headings, and richer figure treatment, but it must keep accessible docs navigation and review anchors.
-
-Optional diagram treatment: **handmade technical sketch**.
-
-Use only when the user asks for handmade/sketchy/Excalidraw-like diagrams or for early-domain exploration. Keep the report shell accessible and precise, but allow diagrams to use imperfect/double strokes, hachure fills, sticky-note callouts, and warmer paper/ink tokens. Sketch treatment must never reduce arrow/label readability, semantic color meaning, review anchors, or no-external-runtime portability.
-
-Avoid:
-
-- generic purple/blue gradient SaaS look,
-- automatic dark-mode pages unless the user explicitly asks,
-- oversized hero sections that push useful content below the fold,
-- card-heavy report dashboards when prose would read better,
-- too many bordered cards per section,
-- tiny SVG text,
-- giant walls of text,
-- low-contrast pastel labels,
-- decorative visuals that do not explain anything,
-- top navigation menus with unclear purpose,
-- hidden navigation,
-- remote fonts/images required to read the doc,
-- JavaScript-only content.
-
-## Motion and scroll appearance
-
-Generated PRD and design reports use clearly perceptible but restrained scroll-reveal motion for top-level sections. Diagrams may reveal in causal reading order. Motion is always progressive enhancement: it must improve orientation without becoming required for meaning.
-
-Use motion for:
-
-- section/card reveal as the reader scrolls,
-- diagram node reveal in reading order,
-- diagram path draw-in so the edge motion shows how the flow progresses from one node/state to the next,
-- UI mockup/state cards that clarify before → after or loading → success → recovery,
-- anchor-target emphasis after following a TOC/review link,
-- small disclosure transitions around optional details.
-
-Do not use motion for:
-
-- blur or filter transitions on text, sections, cards, or diagram labels,
-- looping decoration,
-- parallax that competes with reading,
-- moving text while the user is trying to inspect it,
-- hiding content until JavaScript loads.
-
-Implementation rules:
-
-- Default content must be visible without JavaScript.
-- Use the shared `resources/artifact-motion.js` runtime already embedded by the PRD and design templates; do not fork per-report reveal logic.
-- Keep `resources/artifact-review-state.js` embedded in report templates so reviewer option selections persist across reloads and can be exported as Markdown. Browser persistence alone does not modify the source HTML or `.review.md` sidecar.
-- For inline SVG, wrap readable groups in `.diagram-reveal` and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story. Add `.path-draw` with `pathLength="1"` only to simple single-stroke authored SVG paths, never coordinated multi-stroke Excalidraw edges.
-- Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
-- Use opacity and translation only for reveal motion; keep text and diagram labels crisp throughout.
-- Keep top-level section reveal distance around `20–24px`; local card/diagram movement stays within `8–16px`.
-- Keep top-level section reveal around `500–560ms`; local cards and diagram groups stay around `260–420ms`.
-- Stagger only within a local group; avoid long page-wide choreography.
-- Use `:focus-visible` rings on links, summaries, buttons, and review anchors.
-
-Recommended composition:
-
-```html
-<section class="section-card reveal" data-review-id="scope">...</section>
-<section class="section-card reveal" data-review-id="diagram.product-flow">
-  <figure class="figure-card">...inline accessible SVG...</figure>
-</section>
-```
-
-The template's managed `<script data-artifact-motion="native">` observes these sections. Default CSS shows content; the `.js` class enables motion only after the runtime loads.
-
-## Voice and content
-
-Copy is part of the interface. Keep report text precise and review-oriented.
-
-- Use Title Case for labels, badges, navigation items, and action-like headings.
-- Use sentence case for body text, helper text, and explanations.
-- Name next actions with a verb and noun: `Review Scope`, `Resolve Open Questions`, `Approve PRD`.
-- Write blockers/errors as what happened plus what to do next.
-- Empty states point to the first action: `No open questions. Review acceptance criteria next.`
-- Use numerals for counts: `3 open questions`.
-- Use the ellipsis character for progress states: `Reviewing…`.
-- Avoid filler, “successfully”, “please”, and marketing superlatives.
-
-## Review anchors
-
-Add stable anchors to all review-worthy units:
-
-```html
-<section data-review-id="how.story-001" aria-labelledby="story-001-title">
-<article data-review-id="decision.cache-strategy">
-<g data-review-id="diagram.worker-retry-boundary">
-<tr data-review-id="acceptance.ac-003">
-```
-
-Anchor naming rules:
-
-- use lowercase dot/kebab IDs,
-- tie IDs to durable concepts (`story-001`, `decision.retry-policy`), not visual order,
-- never reuse an ID in the same file,
-- do not use generated/random IDs,
-- preserve IDs when editing so review comments remain meaningful.
-
-## Accessibility checklist
-
-Before finishing, check:
-
-- [ ] exactly one `<h1>`;
-- [ ] heading levels do not skip randomly;
-- [ ] all major regions use semantic landmarks;
-- [ ] skip link exists and targets `<main id="main">`;
-- [ ] color is not the only signal;
-- [ ] contrast is strong enough for body text and labels;
-- [ ] SVG has `<title>`/`<desc>` or surrounding figure caption;
-- [ ] diagram text is at least 12px effective size;
-- [ ] tables use `<caption>`, `<th>`, and `scope` where appropriate;
-- [ ] interactive disclosure uses native `<details>/<summary>`;
-- [ ] print view is usable;
-- [ ] content remains understandable with CSS/JS disabled.
-
-## Build rules
-
-- Use one final `.html` file with inline compiled CSS.
-- Use inline SVG for diagrams.
-- For every diagram, use `system-diagram` and the required build-time Excalidraw renderer. Keep the JSON source near the feature, run `scripts/render-excalidraw-diagram.mjs`, inspect the SVG, and inline it. Preserve generated `diagram-reveal` groups, foreground labels, provenance, and reveal delays; do not add `.path-draw` to coordinated multi-stroke Excalidraw edges.
-- Use Tailwind at build time only: edit `skills/html-report-designer/resources/{prd,report,design}.tailwind.css`, run `npm run build:report-css`, and commit the regenerated inline CSS in the HTML templates. `@tailwindcss/typography` is available for polished prose via compiled classes such as `prose prose-neutral max-w-none`.
-- Do not use Tailwind CDN/runtime, remote fonts, or external CSS in finished reports.
-- If adding JavaScript, it must be optional enhancement only.
-- Prefer native HTML components over custom widgets.
-- Keep source CSS organized with variables, components, motion, and print styles.
-- Include provenance: generated/updated date and source paths.
-- Validate finished reports with `npm run check:report-css` and `scripts/validate-html-report.mjs` when available.
-- Open the file in a browser when possible:
-
-```bash
-open docs/features/{feature}/prd.html
-open docs/features/{feature}/design.html
-```
+4. Inspect desktop, 320px, keyboard, no-JS, reduced-motion, print, and diagram overflow when browser tooling exists.
+5. Fix source JSON, the owning content skill, or this shared renderer. Never fix one generated HTML file directly.
+
+## Quality gate
+
+- One canonical template, CSS source, renderer, schema, and runtime path exist.
+- Template digest and embedded DocumentSpec validate; durable HTML byte-matches adjacent structured source.
+- Exactly one h1, skip link, main landmark, heading order, review-ID uniqueness, self-containment, and print styles pass.
+- Required PRD/design profile behavior passes without teaching the renderer new product or architecture facts.
+- Every decision recorder has complete lifecycle controls and export behavior.
+- Every substantive PRD/design embeds only renderer-produced Excalidraw SVG with retained JSON source.
+- Clean-copy rendering and validation pass from an unrelated working directory.
+- Generated HTML regenerates byte-for-byte.
 
 ## Output
 
-End with:
-
 ```text
-HTML report: {path}
-Mode: {PRD | design | diagram | research | decision}
-Status: {Draft | Review | Approved | Blocked}
-Review anchors: {yes | no + reason}
-Validation: {passed | not run + reason | failed + key issue}
+DocumentSpec/report: {json path} · {html path}
+Kind/status: {kind} · {status}
+Template: canonical-report-v1
+Decisions: {count + lifecycle states}
+Diagram provenance: {Excalidraw JSON/SVG | none for non-PRD/design report}
+Validation: {passed | failed + issue | not run + reason}
 Opened: {yes | no + reason}
-Next review action: {what the user should inspect first}
+Next review action: {action}
 ```

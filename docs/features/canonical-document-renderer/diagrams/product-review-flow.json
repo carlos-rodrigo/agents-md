@@ -1,0 +1,26 @@
+{
+  "id": "product-review-flow",
+  "title": "Product review flow through one canonical report",
+  "desc": "A top-to-bottom product flow from an approved document request through required content, Excalidraw explanation, decision recording, explicit approval, and canonical truth.",
+  "reviewPrefix": "diagram.product-review",
+  "reviewId": "svg",
+  "backgroundColor": "#fffefa",
+  "padding": 44,
+  "nodes": [
+    { "id": "request", "kind": "entry", "x": 260, "y": 40, "width": 440, "height": 112, "text": "Reviewer need\nCreate or update a PRD/design" },
+    { "id": "content", "kind": "domain", "x": 260, "y": 230, "width": 440, "height": 112, "text": "Owning skill\nComposes required sourced meaning" },
+    { "id": "diagram", "kind": "feedback", "x": 260, "y": 420, "width": 440, "height": 112, "text": "System Diagram\nExplains one named question in Excalidraw" },
+    { "id": "report", "kind": "repository", "x": 260, "y": 610, "width": 440, "height": 112, "text": "Canonical report\nShows one shell and decision controls" },
+    { "id": "review", "kind": "entry", "x": 260, "y": 800, "width": 440, "height": 112, "text": "Human review\nRecords and exports decision input" },
+    { "id": "truth", "kind": "domain", "x": 260, "y": 990, "width": 440, "height": 112, "text": "Explicit approval\nUpdates canonical product/design truth" },
+    { "id": "open", "kind": "risk", "x": 980, "y": 800, "width": 360, "height": 112, "text": "Incomplete or unapproved\nDecision remains open" }
+  ],
+  "edges": [
+    { "id": "request-to-content", "from": "request", "to": "content", "x": 480, "y": 152, "points": [[0, 0], [0, 78]], "label": "starts product or design review" },
+    { "id": "content-to-diagram", "from": "content", "to": "diagram", "x": 480, "y": 342, "points": [[0, 0], [0, 78]], "label": "supplies approved semantics" },
+    { "id": "diagram-to-report", "from": "diagram", "to": "report", "x": 480, "y": 532, "points": [[0, 0], [0, 78]], "label": "adds evidence-backed figure" },
+    { "id": "report-to-review", "from": "report", "to": "review", "x": 480, "y": 722, "points": [[0, 0], [0, 78]], "label": "presents consistent review" },
+    { "id": "review-to-truth", "from": "review", "to": "truth", "x": 480, "y": 912, "points": [[0, 0], [0, 78]], "label": "applies explicit approval" },
+    { "id": "review-to-open", "from": "review", "to": "open", "kind": "risk", "x": 700, "y": 856, "points": [[0, 0], [280, 0]], "label": "keeps unapproved input separate" }
+  ]
+}

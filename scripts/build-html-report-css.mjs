@@ -9,34 +9,9 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const checkOnly = process.argv.includes('--check');
 const tailwindBin = join(root, 'node_modules/.bin/tailwindcss');
 const htmlResources = 'skills/html-report-designer/resources';
-const restoredReportConfig = join(root, 'scripts/restored-report-tailwind.config.cjs');
-const defaultConfig = join(root, 'tailwind.config.cjs');
-const groups = [
-  {
-    dir: htmlResources,
-    css: 'report.tailwind.css',
-    html: ['report-template.html'],
-    config: restoredReportConfig,
-  },
-  {
-    dir: htmlResources,
-    css: 'prd.tailwind.css',
-    html: ['prd-template.html'],
-    config: restoredReportConfig,
-  },
-  {
-    dir: htmlResources,
-    css: 'design.tailwind.css',
-    html: ['design-template.html'],
-    config: restoredReportConfig,
-  },
-  {
-    dir: 'skills/system-diagram/resources',
-    css: 'system-diagram.tailwind.css',
-    html: ['system-diagram-template.html'],
-    config: defaultConfig,
-  },
-];
+const reportConfig = join(root, 'scripts/report-tailwind.config.cjs');
+const reportCssName = 'report.tailwind.css';
+const reportTemplateName = 'report-template.html';
 const sharedScripts = [
   {
     attribute: 'data-artifact-motion="native"',
@@ -70,7 +45,7 @@ function compileCss(inputPath, configPath) {
   );
 
   if (result.error?.code === 'ENOENT') {
-    fail('Tailwind CLI is not installed. Run `cd /Users/carlosrodrigo/agents && npm install` once, then retry.');
+    fail(`Tailwind CLI is not installed. Run npm install in ${root}, then retry.`);
   }
   if (result.status !== 0) {
     process.stderr.write(result.stdout || '');
@@ -100,34 +75,23 @@ function inlineSharedScript(html, script) {
   );
 }
 
-let changed = false;
-for (const group of groups) {
-  const resourcesDir = join(root, group.dir);
-  const cssPath = join(resourcesDir, group.css);
-  const css = compileCss(cssPath, group.config);
-  const styleBlock = buildStyleBlock(css, group.css);
+const resourcesDir = join(root, htmlResources);
+const cssPath = join(resourcesDir, reportCssName);
+const htmlPath = join(resourcesDir, reportTemplateName);
+if (!existsSync(htmlPath)) fail(`Missing HTML resource ${htmlPath}`);
 
-  for (const htmlName of group.html) {
-    const htmlPath = join(resourcesDir, htmlName);
-    if (!existsSync(htmlPath)) fail(`Missing HTML resource ${htmlPath}`);
-    const html = readFileSync(htmlPath, 'utf8');
-    let nextHtml = html.replace(/<style(?:\s+[^>]*)?>[\s\S]*?\n\s*<\/style>/, styleBlock);
-    for (const script of sharedScripts) nextHtml = inlineSharedScript(nextHtml, script);
+const styleBlock = buildStyleBlock(compileCss(cssPath, reportConfig), reportCssName);
+const html = readFileSync(htmlPath, 'utf8');
+let nextHtml = html.replace(/<style(?:\s+[^>]*)?>[\s\S]*?\n\s*<\/style>/, styleBlock);
+for (const script of sharedScripts) nextHtml = inlineSharedScript(nextHtml, script);
 
-    if (nextHtml === html) {
-      console.log(`✓ ${htmlName} assets are current`);
-      continue;
-    }
-
-    changed = true;
-    if (checkOnly) {
-      console.error(`✗ ${htmlName} has stale compiled assets. Run \`npm run build:report-css\`.`);
-    } else {
-      writeFileSync(htmlPath, nextHtml);
-      console.log(`✓ rebuilt ${htmlName} from ${group.css} and shared runtimes`);
-    }
-  }
+if (nextHtml === html) {
+  console.log(`✓ ${reportTemplateName} assets are current`);
+  console.log('All HTML report assets are up to date.');
+} else if (checkOnly) {
+  console.error(`✗ ${reportTemplateName} has stale compiled assets. Run \`npm run build:report-css\`.`);
+  process.exit(1);
+} else {
+  writeFileSync(htmlPath, nextHtml);
+  console.log(`✓ rebuilt ${reportTemplateName} from ${reportCssName} and shared runtimes`);
 }
-
-if (checkOnly && changed) process.exit(1);
-if (!changed) console.log('All HTML report assets are up to date.');

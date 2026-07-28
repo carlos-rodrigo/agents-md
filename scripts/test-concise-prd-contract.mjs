@@ -1,110 +1,48 @@
 #!/usr/bin/env node
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
-const prd = read('skills/prd/SKILL.md');
-const report = read('skills/html-report-designer/SKILL.md');
-const design = read('skills/design-solution/SKILL.md');
-const diagram = read('skills/system-diagram/SKILL.md');
-const template = read('skills/html-report-designer/resources/prd-template.html');
+const skill = read('skills/prd/SKILL.md');
 
-requireAll('prd product contract', prd, [
-  '## What we are building',
-  '## Why we are building it',
-  '## How it should work: product slices',
-  'An ordered, end-to-end increment of user value',
-  'As a {actor}, I want {capability}, so that {outcome}.',
-  '**Given** {starting context}',
-  '**When** {actor action or trigger}',
-  '**Then** {observable result}',
-  'one compact storyboard panel for every product-visible step',
-  'SLICE-* → STORY-* → EX-* → AC-*',
-  '### 6. After this slice',
-  'After this slice, {actor} can {new capability or understood outcome}.',
-  'not an implementation layer',
-  '3–7 outcome-protecting rules',
-  'one product-behavior diagram',
-  'Diagram not applicable',
+assert(/^---\n[\s\S]*?name: prd\n[\s\S]*?description: [^\n]+\n[\s\S]*?---\n/.test(skill), 'PRD needs valid frontmatter and a specific description');
+requireAll('PRD authority and structure', skill, [
+  'Skip a durable PRD for a tiny, obvious change',
+  '**Approved** — only after explicit human approval',
+  '**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**',
+  'references/product-slice-contract.md',
+  'Every substantive PRD must invoke `system-diagram`',
+  'does not use a hand-authored SVG or a `Diagram not applicable` escape',
+  '**Decision recorded**',
+  'browser decision record is review input',
+  '<html-report-designer-dir>/scripts/render-canonical-report.mjs',
+  'Do not create tasks directly from the PRD',
 ]);
-requireAll('prd report composition', prd, [
-  '{{PRD_TOC}}',
-  '{{PRD_ARTIFACT_LINKS}}',
-  '{{COMPOSED_PRD_CONTENT}}',
-  'Compose the sourced PRD content before fitting it to the report shell',
-  'The template must not add, remove, reorder, or multiply product requirements',
+assertInOrder(skill, ['**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**', '**`decisions`**'], 'PRD role sequence');
+forbidAll('PRD presentation boundary', skill, [
+  'prd-template.html', '{{PRD_TOC}}', '{{COMPOSED_PRD_CONTENT}}', '.diagram-reveal', 'add `reveal`', '3–7 outcome-protecting rules',
 ]);
 
-requireAll('html report ownership boundary', report, [
-  'Presentation must not determine PRD substance',
-  'The `prd` skill owns which product slices, stories, scenarios, storyboards, rules, and acceptance criteria exist',
-  'one intended-flow storyboard per user-facing product slice',
-  'multiple UI alternatives only when an unresolved product decision requires comparison',
-  'scroll-reveal motion',
-  'high-quality explanatory diagram',
-]);
+const reference = 'skills/prd/references/product-slice-contract.md';
+assert(existsSync(join(root, reference)), 'PRD product-slice reference must exist');
+requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'Primary story', 'Main scenario', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice']);
 
-requireAll('content-neutral PRD template', template, [
-  '{{PRD_TOC}}',
-  '{{PRD_ARTIFACT_LINKS}}',
-  '{{COMPOSED_PRD_CONTENT}}',
-  '{{PRD_HEADER_SUPPORT}}',
-  'data-artifact-motion="native"',
-]);
-forbidAll('content-neutral PRD template', template, [
-  '{{STORY_001_TITLE}}',
-  '{{MAIN_GIVEN}}',
-  '{{UI_OPTION_A_TITLE}}',
-  'id="domain-interactions"',
-  'id="ready-for-design"',
-]);
+const triggers = JSON.parse(read('skills/prd/evals/triggers.json'));
+assert(triggers.length >= 10, 'PRD trigger evals need broad positive/negative coverage');
+assert(triggers.some((item) => item.should_trigger === true), 'PRD trigger evals need positive cases');
+assert(triggers.some((item) => item.should_trigger === false), 'PRD trigger evals need negative cases');
+triggers.forEach((item, index) => assertTriggerShape(item, `PRD trigger[${index}]`));
+assertUnique(triggers.map((item) => item.query), 'PRD trigger query');
+assertTrigger(triggers, 'Design the architecture for the already approved import PRD.', false);
+assertTrigger(triggers, 'Create product requirements for a new onboarding recovery flow before we choose architecture.', true);
 
-requireAll('design-solution', design, [
-  'approved product definition, rationale, product slices, stories, scenarios, observable acceptance',
-  'Missing required PRD behavior blocks design',
-  'optional UI alternatives and domain maps do not',
-  'Design must not invent product behavior',
-]);
-requireAll('system-diagram', diagram, [
-  'A substantive PRD normally includes one product-behavior diagram',
-  'A durable feature design normally includes one causal architecture diagram',
-  'Diagram not applicable',
-  'existing evidence supports the figure',
-  "Use the repository's build-time Excalidraw renderer for every diagram",
-]);
+console.log('PASS: PRD skill has a concise authority, structure, approval, decision, diagram, trigger, and portability contract');
 
-forbidAll('prd', prd, [
-  'Stories, post-story flow rows, domain maps, diagrams, wireframes, UI alternatives, selectors, and readiness ceremony are optional',
-  'Start from a byte-for-byte copy of this template',
-]);
-forbidAll('html-report-designer', report, [
-  '2-3 detailed UI wireframe options with step-by-step use and expected outcomes when the change is user-facing',
-  'use another installed build-time SVG generator',
-]);
-forbidAll('system-diagram', diagram, [
-  'No renderer is mandatory',
-  'Inline authored SVG',
-  '**Graphviz**',
-  '**D2**',
-  '**ELK/elkjs**',
-  '**Mermaid or PlantUML**',
-  '**Cytoscape.js**',
-  '**GoJS**',
-]);
-
-console.log('PASS: PRD guidance requires product-complete slices while the HTML shell remains content-neutral');
-
-function requireAll(label, content, markers) {
-  const missing = markers.filter((marker) => !content.includes(marker));
-  assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`);
-}
-
-function forbidAll(label, content, markers) {
-  const found = markers.filter((marker) => content.includes(marker));
-  assert(found.length === 0, `${label} retains conflicting guidance: ${found.join(', ')}`);
-}
-
-function assert(condition, message) {
-  if (!condition) throw new Error(message);
-}
+function requireAll(label, content, markers) { const missing = markers.filter((marker) => !content.includes(marker)); assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`); }
+function forbidAll(label, content, markers) { const found = markers.filter((marker) => content.includes(marker)); assert(found.length === 0, `${label} retains conflicting guidance: ${found.join(', ')}`); }
+function assertTrigger(items, query, expected) { const item = items.find((candidate) => candidate.query === query); assert(item && item.should_trigger === expected, `unexpected trigger contract: ${query}`); }
+function assertTriggerShape(item, label) { assert(item && typeof item === 'object' && !Array.isArray(item), `${label} must be an object`); assert(Object.keys(item).sort().join(',') === 'query,should_trigger', `${label} must contain only query and should_trigger`); assert(typeof item.query === 'string' && item.query.trim(), `${label}.query must be non-empty text`); assert(typeof item.should_trigger === 'boolean', `${label}.should_trigger must be boolean`); }
+function assertUnique(values, label) { assert(new Set(values).size === values.length, `${label}s must be unique`); }
+function assertInOrder(content, markers, label) { const positions = markers.map((marker) => content.indexOf(marker)); assert(positions.every((position) => position >= 0) && positions.every((position, index) => index === 0 || position > positions[index - 1]), `${label} must match the renderer's declared order`); }
+function assert(condition, message) { if (!condition) throw new Error(message); }

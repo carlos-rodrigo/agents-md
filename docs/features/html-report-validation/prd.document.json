@@ -1,0 +1,353 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "html-report-validation-prd",
+    "kind": "prd",
+    "lang": "en",
+    "status": "Review",
+    "title": "Know when an HTML report is ready to share",
+    "summary": "One validation result combines visual, functional, and declared-browser evidence without treating missing checks as success.",
+    "reviewFocus": "Does this define enough observable evidence for an author to decide whether a generated report is ready to share, without prescribing the validator's implementation?",
+    "updated": "2026-07-28",
+    "feature": "HTML report validation",
+    "docsHome": "../..",
+    "featureHome": ".",
+    "sources": [
+      "User request on 26 Jul 2026: create a PRD for testing generated HTML reports before sharing, with visual, functional, and cross-browser acceptance criteria.",
+      "No product interface or browser support matrix was supplied; interface shape remains a design concern and the browser matrix remains an owned product decision."
+    ]
+  },
+  "sections": [
+    {
+      "id": "product-context",
+      "role": "product",
+      "kicker": "Moment, friction, and bet",
+      "title": "A report can look finished while critical review states remain broken",
+      "summary": "An author has one self-contained HTML artifact and needs evidence strong enough to make a sharing decision.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "context-facts",
+          "items": [
+            [
+              "Moment",
+              "A report author has generated a self-contained HTML document and is preparing to share it with reviewers or stakeholders."
+            ],
+            [
+              "Friction",
+              "A report can appear correct in one browser while hiding clipped content, broken navigation, inaccessible controls, missing fallback behavior, or print defects."
+            ],
+            [
+              "Bet",
+              "Give the author one validation result that combines visual review, functional checks, and evidence from the declared browser matrix."
+            ],
+            [
+              "Proof",
+              "The author can distinguish ready, failed, and incomplete validation without interpreting build logs or assuming that an untested state passed."
+            ],
+            [
+              "Boundary",
+              "Validation determines readiness; it does not author, repair, approve, publish, or distribute the report."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "readiness-problem",
+      "role": "problem",
+      "kicker": "Why this matters",
+      "title": "A convincing default view is not readiness evidence",
+      "summary": "Without explicit state and environment evidence, report authors can mistake omissions for success.",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "problem-signals",
+          "style": "bullets",
+          "items": [
+            "Visual defects can exist only at narrow, short-height, enlarged-text, or print states.",
+            "Keyboard, disclosure, internal-navigation, and fallback behavior can fail while the default desktop view looks correct.",
+            "One browser preview says nothing about a required browser or platform that was never run.",
+            "Raw logs and silent omissions force the author to infer the aggregate result."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "readiness-outcome",
+      "role": "behavior",
+      "kicker": "Validation outcome",
+      "title": "A report earns an explicit readiness result",
+      "summary": "The author never infers success from silence, partial execution, or a single browser preview.",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "readiness-steps",
+          "items": [
+            {
+              "id": "identify-artifact",
+              "title": "Identify the artifact",
+              "text": "Select the finished HTML report and the browser support matrix that applies to it."
+            },
+            {
+              "id": "run-required-checks",
+              "title": "Run required checks",
+              "text": "Evaluate visual, functional, fallback, print, and browser states against the same immutable artifact."
+            },
+            {
+              "id": "review-evidence",
+              "title": "Review evidence",
+              "text": "Show every required check as passed, failed, or not run, with context sufficient to reproduce failures."
+            },
+            {
+              "id": "decide-readiness",
+              "title": "Decide readiness",
+              "text": "Mark ready only when every mandatory check passes; keep failures and missing checks visible."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "readiness-diagram",
+      "role": "diagram",
+      "kicker": "Linchpin visual",
+      "title": "Evidence flows from one immutable artifact to the sharing decision",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "report-validation-flow",
+          "question": "How does a finished report earn a trustworthy readiness result?",
+          "caption": "The validator owns evidence collection and classification; the author owns the sharing decision. The policy rail prevents not-run checks or evidence from another artifact from producing ready.",
+          "svgPath": "diagrams/report-validation-flow.svg",
+          "sourcePath": "diagrams/report-validation-flow.json",
+          "walkthrough": [
+            "The author selects one finished report, establishing the artifact under review.",
+            "The validator evaluates all required states and records an explicit outcome for each.",
+            "The aggregate result is ready, failed, or incomplete and preserves the supporting evidence.",
+            "The result informs—but does not make or approve—the author's sharing decision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "readiness-slices",
+      "role": "slices",
+      "kicker": "End-to-end product slice",
+      "title": "The author makes a defensible sharing decision from one result",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "validate-finished-report",
+          "title": "Validate one finished report before distribution",
+          "outcome": "The author can tell whether the exact report is ready, failed, or incomplete and can act on the unresolved evidence.",
+          "boundary": "One finished self-contained HTML artifact and its declared browser matrix; generation, repair, approval, hosting, and distribution stay outside the slice.",
+          "story": {
+            "id": "story-report-author-readiness",
+            "actor": "report author",
+            "capability": "validate one finished report across all mandatory review states",
+            "outcome": "I can decide whether to share it without interpreting raw build logs or assuming missing evidence passed"
+          },
+          "scenarios": [
+            {
+              "id": "scenario-all-checks-pass",
+              "title": "All mandatory checks pass",
+              "given": "the author selects one immutable report and a complete declared browser matrix",
+              "when": "every required visual, functional, fallback, print, and browser check passes against that artifact",
+              "then": "the result identifies the artifact and matrix and reports ready with all category evidence visible"
+            },
+            {
+              "id": "scenario-check-fails",
+              "title": "A required state fails",
+              "given": "the selected report clips content at a required viewport or has broken keyboard operation",
+              "when": "validation evaluates that state",
+              "then": "the result reports failed, identifies the affected state, and gives enough context to reproduce the defect"
+            },
+            {
+              "id": "scenario-check-not-run",
+              "title": "Required browser evidence is missing",
+              "given": "one browser or platform in the declared matrix is unavailable or omitted",
+              "when": "the result is assembled",
+              "then": "that environment is reported as not run and the overall result remains incomplete rather than ready"
+            }
+          ],
+          "mode": "visual",
+          "steps": [
+            {
+              "id": "slice-select",
+              "title": "Select",
+              "context": "The author has a finished report and an applicable support matrix.",
+              "action": "They submit the exact artifact and matrix for validation.",
+              "response": "The validator identifies both inputs and fixes them as the evidence boundary.",
+              "outcome": "Subsequent checks can be attributed to one artifact and one declared environment set."
+            },
+            {
+              "id": "slice-evaluate",
+              "title": "Evaluate",
+              "context": "The evidence boundary is established.",
+              "action": "Required visual, functional, fallback, print, and browser checks run.",
+              "response": "Each check records passed, failed, or not run with its review state and environment.",
+              "outcome": "Silence and unavailable environments cannot masquerade as success."
+            },
+            {
+              "id": "slice-summarize",
+              "title": "Summarize",
+              "context": "Individual check evidence is available.",
+              "action": "The author opens the validation result.",
+              "response": "The result shows the artifact, validation time, matrix, category outcomes, and unresolved failures or skipped checks.",
+              "outcome": "The author understands both the aggregate state and the evidence behind it."
+            },
+            {
+              "id": "slice-decide",
+              "title": "Decide",
+              "context": "The result is ready, failed, or incomplete.",
+              "action": "The author decides whether to share or resolve the evidence gaps.",
+              "response": "Ready appears only when every mandatory check passed against the same artifact.",
+              "outcome": "The sharing decision is evidence-based and does not imply factual correctness, security, approval, or publication."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-001",
+              "text": "A conforming report that passes every mandatory state in the declared matrix is reported as ready."
+            },
+            {
+              "id": "ac-002",
+              "text": "Clipped content, overlap, unreadable hierarchy, or unintended page-level overflow fails the affected viewport or print state."
+            },
+            {
+              "id": "ac-003",
+              "text": "Intentional wide figures retain readable text through documented overflow treatment rather than unsafe shrinking."
+            },
+            {
+              "id": "ac-004",
+              "text": "Status remains understandable without color alone and focus indicators remain visible."
+            },
+            {
+              "id": "ac-005",
+              "text": "Internal navigation, native disclosures, controls, keyboard focus order, and authored destinations work."
+            },
+            {
+              "id": "ac-006",
+              "text": "The report loads as a self-contained file without remote fonts, styles, scripts, images, frames, or services."
+            },
+            {
+              "id": "ac-007",
+              "text": "No-JavaScript, script-stripped, reduced-motion, and print states preserve every primary fact, conclusion, warning, source, and next action."
+            },
+            {
+              "id": "ac-008",
+              "text": "Each browser result names browser, version, platform, and state; omitted required environments are not run, never passed."
+            },
+            {
+              "id": "ac-009",
+              "text": "A ready result is impossible while any required check has failed or not run."
+            },
+            {
+              "id": "ac-010",
+              "text": "A rerun evaluates the current artifact and does not present prior success as evidence for changed HTML."
+            },
+            {
+              "id": "ac-011",
+              "text": "The final result identifies the artifact, validation time, declared matrix, category outcomes, and unresolved failures or skipped checks."
+            }
+          ],
+          "after": "The author either shares a ready artifact or returns to the report workflow with named failures and missing evidence; validation itself performs no repair or approval."
+        }
+      ]
+    },
+    {
+      "id": "validation-scope",
+      "role": "scope",
+      "kicker": "Smallest useful gate",
+      "title": "Validate one finished report before distribution",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "scope-boundaries",
+          "items": [
+            [
+              "In scope",
+              "One finished self-contained HTML report; visual, functional, accessibility-fallback, print, and declared-browser evidence; a readiness summary with failures and missing checks."
+            ],
+            [
+              "Out of scope",
+              "Report generation, content editing, automatic repair, approval workflow, hosting, distribution, factual accuracy, security, privacy, regulatory compliance, and undeclared browser environments."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trust-rules",
+      "role": "rules",
+      "kicker": "Outcome-protecting rules",
+      "title": "Evidence cannot be implied",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "evidence-rules",
+          "style": "checks",
+          "items": [
+            "Every required check exposes passed, failed, or not run.",
+            "Ready requires all mandatory checks to pass against the same report artifact.",
+            "A failed result identifies the affected review state and provides reproducible context.",
+            "A rerun evaluates the current artifact; prior success is not evidence for changed HTML.",
+            "The validator never claims that content is factually correct, secure, approved, or published."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "observable-acceptance",
+      "role": "acceptance",
+      "kicker": "Observable proof",
+      "title": "The author can make a defensible sharing decision",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "readiness-proof",
+          "style": "checks",
+          "items": [
+            "A complete passing result is visibly ready.",
+            "A visual or functional defect is visibly failed and names its affected state.",
+            "A missing required browser result is visibly incomplete and cannot be mistaken for ready.",
+            "The summary and each category expose enough evidence to explain the aggregate state.",
+            "The result is explicitly evidence about readiness, not approval or broader assurance."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-decisions",
+      "role": "decisions",
+      "kicker": "Blocking product decision",
+      "title": "The browser support matrix needs an authoritative owner",
+      "summary": "Cross-browser readiness has no testable boundary until mandatory versions and platforms are declared.",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision-browser-matrix",
+          "question": "Who declares the mandatory browser, version, and platform matrix for a report?",
+          "status": "open",
+          "options": [
+            {
+              "id": "repository-matrix",
+              "label": "A repository-maintained matrix applies to every report in that repository"
+            },
+            {
+              "id": "artifact-matrix",
+              "label": "Each report author declares the matrix for that artifact"
+            },
+            {
+              "id": "shared-baseline",
+              "label": "A shared baseline applies unless a repository explicitly overrides it"
+            }
+          ],
+          "owner": "Product or repository maintainer",
+          "blocking": true
+        }
+      ]
+    }
+  ]
+}
