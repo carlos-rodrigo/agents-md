@@ -235,7 +235,7 @@ Use these named components instead of inventing one-off containers:
 - **Domain interaction maps/cards** only when the owning PRD or design calls for one: source entity/concept → verb/action → target entity/state/effect, plus rule/authority, ownership, and unresolved vocabulary/policy gaps.
 - **UI option wireframes** only for a real unresolved product decision, comparing the smallest material alternatives with labelled regions, representative copy, state changes, expected outcomes, tradeoffs, and selected/recommended/pending status.
 - **Reviewer gap cards** for UI, wording, flow, or scope choices that must be made during PRD review.
-- **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option so the selected answer can become part of the review record.
+- **Reviewer option selectors** inside review gaps and open questions: show concrete options when known and always include an `Other / custom answer` free-text option. The shared review-state runtime saves selections in browser storage immediately and offers Copy/Download Markdown actions; reviewers must export the choices when they need a portable agent-readable review record.
 - **BDD example panels** for main, edge, error, empty, loading, and permission examples with stable `EX-*` IDs.
 - **Example pairs / before-after panels** for concrete behavioral or system changes.
 - **Acceptance checklists** for concise `AC-*` criteria; use matrices only when traceability would otherwise be unclear.
@@ -396,6 +396,7 @@ Implementation rules:
 
 - Default content must be visible without JavaScript.
 - Use the shared `resources/artifact-motion.js` runtime already embedded by the PRD and design templates; do not fork per-report reveal logic.
+- Keep `resources/artifact-review-state.js` embedded in report templates so reviewer option selections persist across reloads and can be exported as Markdown. Browser persistence alone does not modify the source HTML or `.review.md` sidecar.
 - For inline SVG, wrap readable groups in `.diagram-reveal` and stagger `--reveal-delay` so actor/context → edge/action → target state appears as a story. Add `.path-draw` with `pathLength="1"` only to simple single-stroke authored SVG paths, never coordinated multi-stroke Excalidraw edges.
 - Respect `prefers-reduced-motion: reduce` by disabling animation and showing everything immediately.
 - Use opacity and translation only for reveal motion; keep text and diagram labels crisp throughout.

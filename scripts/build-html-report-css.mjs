@@ -48,6 +48,11 @@ const sharedScripts = [
     marker: 'document-navigation',
     path: join(root, htmlResources, 'document-navigation.js'),
   },
+  {
+    attribute: 'data-artifact-review-state="persistent"',
+    marker: 'artifact-review-state',
+    path: join(root, htmlResources, 'artifact-review-state.js'),
+  },
 ];
 
 function fail(message) {
