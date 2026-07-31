@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "simple-task-review-design",
+    "kind": "design",
+    "status": "Review",
+    "title": "Unapproved calendar deletion workflow",
+    "summary": "Deletion permissions remain unresolved.",
+    "updated": "2026-07-31",
+    "sources": ["Synthetic Simple Tasks negative eval"]
+  },
+  "sections": []
+}

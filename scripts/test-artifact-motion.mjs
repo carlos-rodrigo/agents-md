@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const source = readFileSync(resolve(root, 'skills/html-report-designer/resources/artifact-motion.js'), 'utf8');
 
 const normal = run({ reduced: false, observerAvailable: true });

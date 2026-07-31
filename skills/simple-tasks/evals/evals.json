@@ -1,0 +1,49 @@
+{
+  "skill_name": "simple-tasks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create ready implementation tasks from the explicitly Approved import design. I authorize the resulting tasks for execution. Preserve AC-004, the retry-state seam, rollback invariant, and ADR links.",
+      "expected_output": "Small authorized ready task briefs and an _active.md board that trace to the Approved design without inventing behavior.",
+      "files": ["evals/files/approved-design.document.json", "evals/files/approved-design.html"],
+      "expectations": [
+        "Each ready task records machine-checkable authorization and direct source anchors.",
+        "Tasks are split by observable vertical behavior rather than package or layer.",
+        "The active board and dependencies identify one executable next task."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Split the Approved recovery design into tasks, but do not authorize implementation yet. I want to review the task boundaries first.",
+      "expected_output": "Complete draft task briefs rather than ready tasks, with no implicit authorization.",
+      "files": ["evals/files/approved-design.document.json", "evals/files/approved-design.html"],
+      "expectations": [
+        "Every new task remains draft despite being executable in detail.",
+        "The approved design is linked as authority without treating it as task authorization.",
+        "The board reports review as the next action rather than executable work."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a task to implement calendar event deletion. The design is Draft and the PRD still has an open decision about whether teenagers may delete shared events.",
+      "expected_output": "A draft task-planning result that names the upstream product/design blocker instead of creating ready or blocked implementation work.",
+      "files": ["evals/files/review-design.document.json", "evals/files/review-design.html"],
+      "expectations": [
+        "No task is marked ready.",
+        "The unresolved product permission is not invented in Facts or Required behavior.",
+        "The blocker and authority path are visible on the active board."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "TASK-002 is complete and its Result contains passing fast, user, edge, gate, and review evidence. Update the task status and _active.md, then point to TASK-003 without creating a separate handoff file.",
+      "expected_output": "A consistent done task and active board update with next-task context written directly into TASK-003 if needed.",
+      "files": ["evals/files/completed-task.md", "evals/files/active-before.md", "evals/files/next-task.md"],
+      "expectations": [
+        "TASK-002 is checked off only after its Result receipt is complete.",
+        "The active board current/next fields agree with task frontmatter and dependencies.",
+        "No feature-level result or continuation artifact is created."
+      ]
+    }
+  ]
+}

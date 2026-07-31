@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const skill = read('skills/design-solution/SKILL.md');
 
 assert(/^---\n[\s\S]*?name: design-solution\n[\s\S]*?description: [^\n]+\n[\s\S]*?---\n/.test(skill), 'design-solution needs valid frontmatter and a specific description');
 requireAll('design authority and structure', skill, [
-  'Start durable design only from an explicitly human-approved `prd.html`',
+  'Start durable design only from an explicitly human-approved `prd.document.json`',
   'Skip a durable design for a tiny clear change',
   '**Approved** — only after explicit human approval',
   '**`authority`**', '**`pressure`**', '**`seam`**', '**`path`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**',
@@ -36,8 +37,8 @@ assert(triggers.some((item) => item.should_trigger === true), 'design trigger ev
 assert(triggers.some((item) => item.should_trigger === false), 'design trigger evals need negative cases');
 triggers.forEach((item, index) => assertTriggerShape(item, `design trigger[${index}]`));
 assertUnique(triggers.map((item) => item.query), 'design trigger query');
-assertTrigger(triggers, 'Write a PRD because the product workflow and acceptance are still unclear.', false);
-assertTrigger(triggers, 'Translate the approved import PRD into a technical design with ownership, recovery, and contracts.', true);
+assertTrigger(triggers, 'Write a PRD because the actor workflow, permission behavior, and observable acceptance are still unclear.', false);
+assertTrigger(triggers, 'Translate the Approved import PRD into a technical design with ownership, retry recovery, and contracts.', true);
 
 console.log('PASS: design-solution has a concise approved-authority, architecture, decision, diagram, trigger, and task-boundary contract');
 

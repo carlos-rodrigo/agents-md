@@ -2,9 +2,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chromium } from 'playwright';
+import { fileURLToPath } from 'node:url';
 import { renderCanonicalReport } from './canonical-report.mjs';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const sourcePath = resolve(root, 'skills/html-report-designer/resources/report-example.document.json');
 const documentSpec = JSON.parse(readFileSync(sourcePath, 'utf8'));
 documentSpec.document = { ...documentSpec.document, id: 'decision-test', title: 'Decision Test', summary: 'Generated decision recorder behavior test.' };

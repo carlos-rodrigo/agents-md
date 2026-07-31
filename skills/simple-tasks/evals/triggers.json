@@ -1,0 +1,18 @@
+[
+  { "query": "Create implementation task briefs from the Approved import design and include executable feedback loops.", "should_trigger": true },
+  { "query": "Split this approved vertical outcome into the smallest resumable tasks and update _active.md.", "should_trigger": true },
+  { "query": "List all ready tasks for the calendar-sharing feature and show the current blocker and next task.", "should_trigger": true },
+  { "query": "Mark TASK-003 blocked by the missing fixture, record the owner, and synchronize the active board.", "should_trigger": true },
+  { "query": "Tighten this draft task brief so a fresh agent can execute it without relying on our chat history.", "should_trigger": true },
+  { "query": "Create draft tasks for review from the Approved recovery design, but do not authorize implementation yet.", "should_trigger": true },
+  { "query": "Update TASK-002 to done after checking its Result receipt, then point the board at TASK-003.", "should_trigger": true },
+  { "query": "Add the newly approved chat-only decision to the relevant task Facts and keep adjacent behavior out of scope.", "should_trigger": true },
+  { "query": "Write the product requirements for shared calendars because deletion permissions are still unresolved.", "should_trigger": false },
+  { "query": "Translate the Approved import PRD into architecture ownership, state, recovery, and rollout decisions.", "should_trigger": false },
+  { "query": "Implement TASK-002 now, run its checks, and record actual evidence in the Result section.", "should_trigger": false },
+  { "query": "Run the autonomous task loop in the background for feature campaign-stock-ledger until it blocks.", "should_trigger": false },
+  { "query": "Define better task-level verification commands and expected observations for this existing task brief.", "should_trigger": false },
+  { "query": "Review this pull request against its PRD, design, task contract, and regression evidence.", "should_trigger": false },
+  { "query": "Fix the typo directly; this one-line change does not need sequencing, delegation, or resumption state.", "should_trigger": false },
+  { "query": "Summarize the current task board for an executive without changing task files or lifecycle state.", "should_trigger": false }
+]

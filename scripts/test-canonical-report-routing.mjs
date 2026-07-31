@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const text = (path) => readFileSync(join(root, path), 'utf8');
 const resources = 'skills/html-report-designer/resources';
 
@@ -84,15 +85,23 @@ for (const obsolete of ['Was this report useful?', 'data-feedback=', 'sessionSto
 }
 
 const durableDocs = resolve(root, 'docs/features');
-for (const entry of readdirSync(durableDocs, { recursive: true, withFileTypes: true })) {
-  if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
-  const htmlPath = join(entry.parentPath, entry.name);
+for (const htmlPath of walkFiles(durableDocs).filter((path) => path.endsWith('.html'))) {
   const specPath = htmlPath.replace(/\.html$/, '.document.json');
   assert(existsSync(specPath), `durable report needs adjacent editable source: ${htmlPath}`);
   requireAll(`durable report ${htmlPath}`, readFileSync(htmlPath, 'utf8'), ['name="canonical-report" content="canonical-report-v1"']);
 }
 
 console.log('PASS: every durable document routes through one canonical report template and portable renderer');
+
+function walkFiles(directory) {
+  const files = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...walkFiles(path));
+    else if (entry.isFile()) files.push(path);
+  }
+  return files;
+}
 
 function requireAll(label, content, markers) { const missing = markers.filter((marker) => !content.includes(marker)); assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`); }
 function assert(condition, message) { if (!condition) throw new Error(message); }

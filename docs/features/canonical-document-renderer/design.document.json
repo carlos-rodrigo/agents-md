@@ -7,9 +7,9 @@
     "title": "Put all document presentation behind one portable renderer",
     "summary": "PRD and Design Solution own structured meaning, System Diagram owns Excalidraw JSON-to-SVG, and HTML Report Designer validates both before filling one report template.",
     "reviewFocus": "Verify the renderer seam, strict failure behavior, decision lifecycle, and package-relative installation path.",
-    "updated": "2026-07-28",
-    "sources": ["docs/features/canonical-document-renderer/prd.html", "skills/html-report-designer/SKILL.md", "skills/system-diagram/SKILL.md", "docs/adrs/architecture.md"],
-    "approval": { "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" },
+    "updated": "2026-07-31",
+    "sources": ["docs/features/canonical-document-renderer/prd.document.json", "docs/features/canonical-document-renderer/prd.html", "skills/html-report-designer/SKILL.md", "skills/system-diagram/SKILL.md", "docs/adrs/architecture.md"],
+    "approval": { "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-31" },
     "feature": "Canonical document renderer",
     "relatedArtifacts": [{ "label": "Approved PRD", "href": "prd.html" }, { "label": "Architecture ADR", "href": "../../adrs/architecture.md" }]
   },
@@ -20,7 +20,7 @@
       "kicker": "Approved authority",
       "title": "One report experience must preserve domain-owned truth",
       "blocks": [
-        { "type": "facts", "id": "design.authority.contract", "items": [["Product promise", "Every durable report uses one dependable shell, decision lifecycle, and Excalidraw figure contract."], ["Acceptance", "Single production template, deterministic rendering, complete decision export, Excalidraw provenance, and browser resilience."], ["Constraint", "Presentation must not invent, reorder, or approve product/architecture content."]] }
+        { "type": "facts", "id": "design.authority.contract", "items": [["Product promise", "Every durable report uses one dependable shell, decision lifecycle, and Excalidraw figure contract."], ["Authority source", "Editable approved product truth comes from prd.document.json; prd.html is its current validated review projection."], ["Acceptance", "Single production template, deterministic rendering, complete decision export, Excalidraw provenance, and browser resilience."], ["Constraint", "Presentation must not invent, reorder, or approve product/architecture content."]] }
       ]
     },
     {

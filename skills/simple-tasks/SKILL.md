@@ -1,6 +1,7 @@
 ---
 name: simple-tasks
 description: "Project-local task management in .features/{feature}/tasks/. Use when creating, listing, or updating compact agent-readable task briefs with feedback loops. Triggers on: create tasks, list tasks, task status, task briefs."
+compatibility: "Task validation requires Node.js 18 or newer. Approved-design authorization also requires installed html-report-designer/system-diagram companions and their declared setup."
 ---
 
 # Simple Tasks
@@ -16,10 +17,26 @@ Use tasks only when work needs sequencing, delegation, looping, or resumption. `
 Durable context stays outside tasks:
 
 ```text
+docs/features/{feature}/prd.document.json
 docs/features/{feature}/prd.html
+docs/features/{feature}/design.document.json
 docs/features/{feature}/design.html
 docs/adrs/{architecture,api,web}.md
 ```
+
+## Authority and authorization
+
+Task content must trace to approved authority without silently becoming permission to execute:
+
+- For non-trivial feature work, an Approved design source/report pair supplies acceptance anchors, seam, invariants, accepted decisions, boundaries, proof expectations, and ADR links.
+- For a tiny clear change that legitimately skipped durable design, the explicit user request supplies the bounded behavior and proof authority.
+- New tasks default to `draft`. An Approved design authorizes task drafting; it does not by itself authorize generated task details for execution.
+- A task becomes `ready` only after explicit user authorization. Record `authorized_by`, `authorized_at`, a parseable `authorization_basis`, and the validator-generated `authorization_fingerprint`.
+- Use `authorization_basis: "approved-design: docs/features/{feature}/design.document.json"` for non-trivial work or `authorization_basis: "user-request: {bounded request context}"` for a tiny clear/directly approved change.
+- The fingerprint binds authorization to Goal, Change, Done, authorization basis, and binding Execute behavior/scope/constraints/invariants. Changed binding content requires renewed user authorization and a new fingerprint.
+- A previously authorized task may be restored to `ready` after an agent-owned blocker is removed only when authorization metadata is preserved, upstream authority remains current, the binding task contract is unchanged, and validation passes.
+
+Do not infer or create authorization from completeness, passing checks, prior implementation, or an agent-authored status change.
 
 ## Task prompt design
 
@@ -73,6 +90,10 @@ id: TASK-001
 status: draft # draft | ready | blocked | done
 order: 1
 created: YYYY-MM-DD
+authorized_by: "{human authorizer; required for ready/blocked/done | omit for draft}"
+authorized_at: YYYY-MM-DD # required for ready/blocked/done
+authorization_basis: "{approved-design: project-relative design.document.json | user-request: bounded request context}"
+authorization_fingerprint: "sha256:{validator-generated binding-contract digest}"
 ---
 
 # TASK-001 — {verb + object}
@@ -126,7 +147,9 @@ Optional detail sections: `## Investigation`, `## Fixtures / setup`, `## Rollbac
 
 Before setting `status: ready`, run the **fresh agent readiness check**: can an agent derive the implementation checklist and execute the feedback loop without chat history, broad rediscovery, or invented product behavior?
 
-- Source anchors open directly. If no external source exists, say so and capture the approved brief in `Facts / decisions`; never rely on chat history.
+- Source anchors open directly. Non-trivial work links an Approved design and tiny clear work captures the explicit user request; never rely on chat history.
+- `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` record explicit user authorization before `ready`; completeness alone is insufficient.
+- For `approved-design`, the validator confirms Approved JSON authority and that the adjacent HTML embeds the same canonical DocumentSpec.
 - Every required user/system behavior is a separate bullet, including material failure behavior.
 - In-scope surfaces, adjacent non-goals, and invariants make the stopping boundary explicit.
 - Inspection anchors name likely files and symbols plus a nearby pattern when one exists; they do not mandate edits.
@@ -137,15 +160,27 @@ Before setting `status: ready`, run the **fresh agent readiness check**: can an 
 
 ## Status semantics
 
-- `draft` — not approved for execution.
-- `ready` — approved and executable.
-- `blocked` — waiting on user/dependency/environment.
-- `done` — implementation complete and `## Result` records feedback-loop results.
-- Legacy `open` may be treated as `ready` only when the brief is executable.
+- `draft` — not authorized for execution.
+- `ready` — explicitly user-authorized and executable.
+- `blocked` — previously authorized execution stopped with a complete blocked Result. Work still waiting on upstream authority remains `draft` and records the blocker on `_active.md`.
+- `done` — authorized implementation complete and `## Result` records feedback-loop results.
+- Legacy `open` may be treated as `ready` only when the brief is executable and contains equivalent explicit authorization evidence.
 
 ## Ready gate
 
-`ready` means the loop-ready detail floor and fresh agent readiness check pass. Use `feedback-loop` to tighten proof; otherwise keep the task `draft` or `blocked`.
+`ready` means explicit user authorization, the loop-ready detail floor, upstream authority checks, and the fresh agent readiness check all pass. Use `feedback-loop` to tighten proof; otherwise keep the task `draft` or `blocked`.
+
+After the user authorizes the final binding task content, resolve this loaded skill's directory, generate the fingerprint, write it to frontmatter, and validate:
+
+```bash
+node "<simple-tasks-dir>/scripts/validate-task.mjs" --fingerprint \
+  .features/{feature}/tasks/NNN-title.md
+node "<simple-tasks-dir>/scripts/validate-task.mjs" \
+  .features/{feature}/tasks/NNN-title.md \
+  .features/{feature}/tasks/_active.md
+```
+
+Run the same validator after writing a `done` or `blocked` Result and synchronizing `_active.md`. A validation failure keeps the task non-executable or incomplete.
 
 ---
 
@@ -157,6 +192,11 @@ ls -1 .features/{feature}/tasks/*.md 2>/dev/null | grep -Ev '(_active|README)'
 
 # Find executable task briefs
 grep -El "status: (ready|open)" .features/{feature}/tasks/*.md 2>/dev/null | grep -v '/_active\.md$'
+
+# Validate one task and its active board through the installed skill
+node "<simple-tasks-dir>/scripts/validate-task.mjs" \
+  .features/{feature}/tasks/NNN-title.md \
+  .features/{feature}/tasks/_active.md
 ```
 
 Create the next task as:
@@ -167,18 +207,36 @@ Create the next task as:
 
 Then add/update the matching line in `.features/{feature}/tasks/_active.md` with its status and checklist state.
 
-Append or update the task result as:
+Use the exact Result receipt matching terminal state.
+
+Done:
 
 ```markdown
 ## Result
 
-- Status: done | blocked
+- Status: done
 - Changed: `path`, `path` | none
-- Task contract: binding `Goal` / `Change` / `Done` / `Execute` items → satisfied, or unmet item + owner/reason
+- TDD: acceptance red → inner red/green/refactor → acceptance green | sourced no-op | explicit exception + reason
+- Task contract: binding `Goal` / `Change` / `Done` / `Execute` items → satisfied
 - Feedback loop: `action` → actual observation; evidence path when applicable
-- Gate: `action` → passed/failed/skipped with reason
+- Gate: `action` → passed
 - Review: self/oracle Are You Proud; findings resolved or skipped with reason
 - Follow-up applied to next task: none | `TASK-002`
+```
+
+Blocked after authorized execution starts:
+
+```markdown
+## Result
+
+- Status: blocked
+- Changed: `path`, `path` | none
+- Last failing check: `command/action` → failure summary | not run because ...
+- Attempts: count and what changed | 0 because no safe attempt was possible
+- TDD state: no acceptance boundary | acceptance red | unit red/green | acceptance still failing | exception
+- Blocker owner: user | oracle | environment | upstream
+- Gate: skipped because ...
+- Needed to unblock: ...
 ```
 
 If a later task needs information discovered during execution, write it into that task directly instead of creating a separate handoff/report file.

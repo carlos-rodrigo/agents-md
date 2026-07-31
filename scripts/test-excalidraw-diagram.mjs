@@ -4,9 +4,10 @@ import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { assertSelfContainedSvg, exportedElementId, normalizeSpec, reviewId } from './excalidraw-diagram-spec.mjs';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const specPath = resolve(root, 'skills/system-diagram/resources/excalidraw-slice-example.json');
 const svgPath = resolve(root, 'skills/system-diagram/resources/excalidraw-slice-example.svg');
 const spec = JSON.parse(readFileSync(specPath, 'utf8'));

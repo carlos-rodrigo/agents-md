@@ -118,3 +118,31 @@ Use progressive disclosure across documentation:
 - PRD HTML/design.html/ADRs remain the place for human-oriented rationale.
 - Task files become stable loop inputs for `implement-task` and `loop`.
 - Some nuance may live behind links; task authors must keep links and escalation triggers accurate.
+
+## Task readiness authorization
+
+Status: Accepted
+Date: 2026-07-31
+
+### Context
+
+Task completeness and permission to execute were both represented by `status: ready`. An agent could therefore satisfy the detail floor and self-mark a generated task ready even when the user had approved only upstream product or architecture truth. Conversely, requiring separate human approval for every mechanical task would add ceremony after the user had explicitly authorized a task set.
+
+### Decision
+
+Separate executable completeness from authority to execute:
+
+- New tasks default to `draft`.
+- An Approved design authorizes task drafting, not the generated task details themselves.
+- A task becomes `ready` only after explicit user authorization, recorded as machine-checkable `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` frontmatter.
+- `authorization_basis` uses `approved-design: {project-relative design.document.json}` for non-trivial work or `user-request: {bounded context}` for a tiny clear/directly approved change. Upstream product/design authority remains in Source anchors rather than an overloaded field.
+- The validator confirms Approved design source/report content for `approved-design` and binds authorization to Goal, Change, Done, authorization basis, and binding Execute behavior/scope/constraints/invariants through the fingerprint.
+- An agent may restore a previously authorized blocked task to `ready` only when the blocker is local, authorization metadata is preserved, upstream authority is current, the binding task contract is unchanged, and validation passes.
+- A change to required behavior, scope, implementation constraints, or invariants invalidates the fingerprint and prior task authorization until the user authorizes the revision.
+- `blocked` is reserved for previously authorized execution with a blocked Result. Work still waiting on upstream authority remains `draft` and exposes the blocker on `_active.md`.
+
+### Consequences
+
+- `ready` means both explicitly authorized and executable; neither condition implies the other.
+- `implement-task` and loops block on missing authorization or stale upstream authority rather than inferring permission from completeness, passing tests, or prior implementation.
+- Task files retain lightweight frontmatter rather than introducing a separate approval artifact or task database.

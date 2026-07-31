@@ -1,0 +1,18 @@
+[
+  { "query": "Implement TASK-004 from the active feature, follow its outside-in checks, and update the Result receipt.", "should_trigger": true },
+  { "query": "Execute the authorized ready task for the CLI JSON field and stop if its required gate fails.", "should_trigger": true },
+  { "query": "Code TASK-002 exactly as approved, preserving its invariants and recording user-system evidence afterward.", "should_trigger": true },
+  { "query": "Take the next ready task from this feature and implement only that task with red-green evidence.", "should_trigger": true },
+  { "query": "Resume the blocked implementation task now that the local fixture exists, then rerun the same failing check.", "should_trigger": true },
+  { "query": "Implement this legacy open task if its dependencies, behavior boundaries, and feedback loop are executable.", "should_trigger": true },
+  { "query": "The task's exact regression already passes; audit whether it is already satisfied without inventing more work.", "should_trigger": true },
+  { "query": "Finish TASK-009, run fast, user, edge, and gate checks, then synchronize _active.md.", "should_trigger": true },
+  { "query": "Create implementation task briefs from the Approved design but leave them draft for human review.", "should_trigger": false },
+  { "query": "Run the background loop across every ready task in this feature until completion or a user blocker.", "should_trigger": false },
+  { "query": "Review this branch for correctness and maintainability without making any code or task-file edits.", "should_trigger": false },
+  { "query": "Write a PRD for the unresolved onboarding recovery behavior before choosing any technical approach.", "should_trigger": false },
+  { "query": "Design persistence ownership and rollback for this Approved feature before creating implementation tasks.", "should_trigger": false },
+  { "query": "Define the feedback loop and expected checks for TASK-006, but do not implement the task yet.", "should_trigger": false },
+  { "query": "List ready and blocked task statuses for this feature without changing implementation or lifecycle state.", "should_trigger": false },
+  { "query": "Fix this one-line typo directly; there is no approved task brief and no resumable workflow needed.", "should_trigger": false }
+]

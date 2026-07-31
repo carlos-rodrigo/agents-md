@@ -1,0 +1,60 @@
+{
+  "skill_name": "implement-task",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Execute authorized TASK-001 for installed canonical-renderer portability. Run the named focused portability acceptance first; if current behavior already satisfies every binding requirement, follow the sourced no-op path rather than inventing work.",
+      "expected_output": "A validated outside-in execution that chooses focused repair or a sourced no-op from acceptance evidence, then records a complete Result and synchronized board.",
+      "files": ["../../docs/features/canonical-document-renderer/design.document.json", "../../docs/features/canonical-document-renderer/design.html", "evals/files/approved-workflow/task.md", "evals/files/approved-workflow/active.md"],
+      "expectations": [
+        "Authorization, dependencies, scope, and upstream authority are checked before editing.",
+        "The focused portability acceptance runs before edits and determines whether repair or no-op is warranted.",
+        "The task is done only after fast, user/system, edge, gate, contract audit, and review evidence."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Execute authorized TASK-001, but its exact installed-renderer portability check already passes and inspection proves every binding portability requirement is already present on the current branch.",
+      "expected_output": "A sourced no-op completion or stale-task report, not invented behavior or an arbitrarily stricter task.",
+      "files": ["../../docs/features/canonical-document-renderer/design.document.json", "../../docs/features/canonical-document-renderer/design.html", "evals/files/approved-workflow/task.md", "evals/files/approved-workflow/active.md"],
+      "expectations": [
+        "The passing check is audited for discrimination against the exact task contract.",
+        "No new requirement, API, or test expectation is invented merely to force a red state.",
+        "The Result records a no-op or blocker with the evidence that the task was already satisfied."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Execute authorized TASK-001. Its focused portability test passes, but the required repository gate repeatedly fails because of the task's in-scope repair after three distinct attempts.",
+      "expected_output": "A blocked task Result and active board that retain the failing command, attempts, owner, and needed next action.",
+      "files": ["../../docs/features/canonical-document-renderer/design.document.json", "../../docs/features/canonical-document-renderer/design.html", "evals/files/approved-workflow/task.md", "evals/files/approved-workflow/active.md"],
+      "expectations": [
+        "The task is not marked done while the required gate fails.",
+        "The blocked Result records attempts, last failure, TDD state, blocker owner, and needed action.",
+        "The active board agrees with blocked task status."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Implement a task marked ready whose authorization metadata is missing and whose linked design is still Review. The code change itself looks straightforward.",
+      "expected_output": "A blocked start gate with no code edits because ready text alone cannot override missing authorization or unapproved design authority.",
+      "files": ["evals/files/unauthorized-workflow/design.document.json", "evals/files/unauthorized-workflow/design.html", "evals/files/unauthorized-workflow/task.md", "evals/files/unauthorized-workflow/active.md"],
+      "expectations": [
+        "No implementation begins from the unauthorized task.",
+        "The response identifies both missing task authorization and non-Approved design authority.",
+        "The task/board records the human-owned unblock requirement without inventing approval."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Begin authorized TASK-001. The named installed-renderer portability check unexpectedly already passes, but nobody has audited whether it discriminates the approved portability behavior or whether the current branch already satisfies the binding contract.",
+      "expected_output": "An evidence-gathering step that distinguishes a false-positive check from already-satisfied work before choosing red-green implementation, no-op, or blocker.",
+      "files": ["../../docs/features/canonical-document-renderer/design.document.json", "../../docs/features/canonical-document-renderer/design.html", "evals/files/approved-workflow/task.md", "evals/files/approved-workflow/active.md"],
+      "expectations": [
+        "The agent does not immediately tighten the task or invent stricter acceptance.",
+        "The next step audits check discrimination and the current implementation against sourced acceptance.",
+        "A no-op is recorded only if the exact binding contract is proven already satisfied."
+      ]
+    }
+  ]
+}

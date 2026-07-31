@@ -1,0 +1,60 @@
+{
+  "skill_name": "design-solution",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The import feature has an Approved prd.document.json and its current validated prd.html projection. Design ownership of retry state, persistence recovery, and rollout without changing product acceptance.",
+      "expected_output": "A Draft technical design that traces pressure, seam, causal path, decisions, proof, and boundary from validated Approved product authority.",
+      "files": [],
+      "expectations": [
+        "The PRD source/report pair and explicit approval are checked before design begins.",
+        "The design preserves product acceptance and owns only technical choices.",
+        "The output stops before task creation or implementation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create the technical design for calendar sharing. The PRD is still Review and removal permissions remain an open blocking product decision.",
+      "expected_output": "A Blocked design gate that returns the unresolved product decision to PRD authority.",
+      "files": [],
+      "expectations": [
+        "No design is presented as Approved or ready for tasks.",
+        "The unresolved permission behavior is not converted into a technical assumption.",
+        "The product blocker and owner are stated clearly."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The Approved onboarding PRD says recovery must preserve entered data, but it never says whether recovery should be automatic or user-triggered. Choose a service boundary and continue.",
+      "expected_output": "A blocked or returned product question because visible recovery behavior is missing from Approved authority.",
+      "files": [],
+      "expectations": [
+        "Automatic versus user-triggered recovery is recognized as product-visible behavior.",
+        "The design does not invent the missing behavior to choose architecture.",
+        "The response identifies the PRD as the owner of the missing decision."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "An approved settings change adds one existing boolean through the established repository function. Inspection finds one obvious seam and no public API, schema, auth, persistence, recovery, or rollout question. Apply the design gate.",
+      "expected_output": "A tiny clear-change design skip with an observable proof handoff to Simple Tasks when a task brief is warranted.",
+      "files": [],
+      "expectations": [
+        "No durable design or diagram is fabricated.",
+        "The skip rationale names the existing seam and absence of architecture pressure.",
+        "The handoff does not create task files or implementation steps inside Design Solution."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The browser report prd.html displays Approved, but the adjacent prd.document.json is Draft and the canonical render --check reports that the HTML is stale. Create the technical design from the apparently approved report.",
+      "expected_output": "A blocked design gate because editable product authority is not Approved and the review projection is stale.",
+      "files": [],
+      "expectations": [
+        "The generated Approved badge does not override Draft prd.document.json authority.",
+        "The stale source/report pair blocks design before architecture is proposed.",
+        "The response returns the source/report mismatch to product authority with a concrete freshness check."
+      ]
+    }
+  ]
+}

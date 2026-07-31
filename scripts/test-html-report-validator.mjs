@@ -3,8 +3,9 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const validator = join(root, 'scripts/validate-html-report.mjs');
 const renderer = join(root, 'scripts/render-canonical-report.mjs');
 const resources = join(root, 'skills/html-report-designer/resources');

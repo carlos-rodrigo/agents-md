@@ -1,0 +1,49 @@
+{
+  "skill_name": "prd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need family calendar sharing. Parents and teenagers should both use it, but I have not decided who can remove events, what happens when an invitation expires, or whether a child can leave. Create the product requirements without choosing the architecture.",
+      "expected_output": "A Draft or Blocked PRD proposal that separates blocking product questions from labeled assumptions and defers technical choices to design.",
+      "files": [],
+      "expectations": [
+        "The document is not marked Approved or ready for design without explicit human approval.",
+        "Removal, expiry, and leave behavior remain owned product questions rather than invented rules.",
+        "The output defines observable workflow and acceptance without APIs, schemas, services, or implementation tasks."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Update the bulk-invoice approval PRD using the product owner's explicit decision that rejected invoices stay visible with the reviewer's reason. The owner has not approved the complete revised PRD yet.",
+      "expected_output": "A Draft or Review PRD source/report update that records the supplied decision but does not self-approve the document.",
+      "files": [],
+      "expectations": [
+        "The supplied rejected-invoice behavior is preserved as product truth with observable acceptance.",
+        "The PRD remains Draft or Review until explicit approval of the complete revision.",
+        "Browser decision recording is not treated as canonical approval."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The settings page says 'Notifcations'. Correct the spelling and prove it with the existing UI test; no other behavior changes.",
+      "expected_output": "A tiny-change gate result that skips a durable PRD and routes the observable outcome to a task feedback loop when a task is used.",
+      "files": [],
+      "expectations": [
+        "No PRD document or product diagram is fabricated for the tiny obvious change.",
+        "The expected visible text and regression proof are stated concisely.",
+        "The skill does not create architecture or implementation tasks itself."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The import PRD is already explicitly Approved. Decide whether the queue worker or API service should own retry state and document the rollout tradeoffs.",
+      "expected_output": "A handoff to Design Solution rather than a new or modified PRD.",
+      "files": [],
+      "expectations": [
+        "The response recognizes ownership, retry state, and rollout as architecture concerns.",
+        "Approved product behavior is not rewritten or expanded.",
+        "No implementation task is created by the PRD skill."
+      ]
+    }
+  ]
+}

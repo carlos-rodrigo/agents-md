@@ -13,6 +13,7 @@ Answer one architecture question:
 Default artifacts:
 
 ```text
+docs/features/{feature}/prd.document.json
 docs/features/{feature}/prd.html
 docs/features/{feature}/design.document.json
 docs/features/{feature}/design.html
@@ -23,7 +24,14 @@ docs/adrs/{architecture|api|web}.md
 
 ## Gate
 
-Start durable design only from an explicitly human-approved `prd.html` with no blocking product decision. Draft/Review product status, missing acceptance, or unresolved consequential behavior blocks design and returns to product authority.
+Start durable design only from an explicitly human-approved `prd.document.json` with no blocking product decision and its current validated `prd.html` review projection. Before trusting the pair, load `html-report-designer` and verify freshness:
+
+```bash
+node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" --check \
+  docs/features/{feature}/prd.document.json docs/features/{feature}/prd.html
+```
+
+Draft/Review product status, missing acceptance, unresolved consequential behavior, a missing source/report pair, or stale generated HTML blocks design and returns to product authority.
 
 Skip a durable design for a tiny clear change when inspection finds one obvious existing seam, no public/schema/auth/persistence/rollout decision, and no meaningful ownership or recovery question. Record the gate result and observable proof in the task feedback loop; do not fabricate a design document.
 
@@ -31,7 +39,7 @@ Create or update `design.document.json` and regenerate `design.html` when compet
 
 ## Authority and approval
 
-- `prd.html` owns approved product behavior, scope, acceptance, constraints, and product decisions.
+- `prd.document.json` owns approved product behavior, scope, acceptance, constraints, and product decisions; `prd.html` is its current validated review projection.
 - `design.document.json` owns editable current feature architecture; `design.html` is its byte-matching review artifact.
 - `docs/adrs/architecture.md`, `api.md`, or `web.md` owns accepted architecture-significant rationale that must outlive the feature.
 - Task briefs own execution steps and planned checks after design approval.
@@ -89,7 +97,7 @@ Accepted rationale for public API contracts, auth/security/privacy, persistence/
 
 ## Process
 
-1. Read the Approved PRD, existing design, relevant ADRs, entry points, owners, state, contracts, and tests.
+1. Verify and read the Approved PRD source/report pair, existing design, relevant ADRs, entry points, owners, state, contracts, and tests.
 2. Return product questions to PRD authority. Label non-blocking technical assumptions with evidence, risk, and validation path.
 3. Name the architecture pressure, choose the narrowest owning seam, and trace one causal path.
 4. Record decisions as Open or Proposed unless explicit human acceptance already exists.
@@ -116,9 +124,13 @@ Use **architecture slice** only for an independently reviewable vertical outcome
 
 Do not call task briefs “slices,” create package/layer phases, or create task files inside this skill.
 
+## Handoff
+
+After explicit design approval, pass approved acceptance anchors, the chosen seam and ownership, invariants, accepted decisions, boundaries, proof expectations, and ADR links to `simple-tasks` when sequencing, delegation, looping, or resumption warrants task briefs. The approved design authorizes task drafting; only explicit user authorization makes a task `ready`. Do not create task files inside this skill.
+
 ## Quality gate
 
-- Approved PRD authority and acceptance are linked and unchanged.
+- Approved PRD source/report authority is current, validated, linked, and unchanged.
 - Pressure, seam, ownership, state, causal path, proof, and boundary are explicit.
 - Exactly one Excalidraw architecture diagram has JSON/SVG provenance and a walkthrough.
 - Decisions expose credible alternatives, lifecycle, tradeoffs, owner, and approval.

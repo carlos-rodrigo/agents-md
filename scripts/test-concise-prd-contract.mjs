@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(join(root, path), 'utf8');
 const skill = read('skills/prd/SKILL.md');
 
@@ -34,8 +35,8 @@ assert(triggers.some((item) => item.should_trigger === true), 'PRD trigger evals
 assert(triggers.some((item) => item.should_trigger === false), 'PRD trigger evals need negative cases');
 triggers.forEach((item, index) => assertTriggerShape(item, `PRD trigger[${index}]`));
 assertUnique(triggers.map((item) => item.query), 'PRD trigger query');
-assertTrigger(triggers, 'Design the architecture for the already approved import PRD.', false);
-assertTrigger(triggers, 'Create product requirements for a new onboarding recovery flow before we choose architecture.', true);
+assertTrigger(triggers, 'Design the service architecture for the already Approved import PRD, including ownership, state, and rollout.', false);
+assertTrigger(triggers, 'We need a new onboarding recovery flow, but scope and the actor-visible failure behavior are still unresolved.', true);
 
 console.log('PASS: PRD skill has a concise authority, structure, approval, decision, diagram, trigger, and portability contract');
 

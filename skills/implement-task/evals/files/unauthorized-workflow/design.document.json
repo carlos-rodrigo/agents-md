@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "unauthorized-eval-design",
+    "kind": "design",
+    "status": "Review",
+    "title": "Unapproved workflow",
+    "summary": "This design is intentionally not Approved.",
+    "updated": "2026-07-31",
+    "sources": ["Synthetic negative eval"]
+  },
+  "sections": []
+}

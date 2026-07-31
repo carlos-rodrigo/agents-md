@@ -4,9 +4,10 @@ import { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from '
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { renderCanonicalReport, validateDocumentSpec } from './canonical-report.mjs';
 
-const root = resolve(import.meta.dirname, '..');
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const resources = join(root, 'skills/html-report-designer/resources');
 const temp = mkdtempSync(join(tmpdir(), 'canonical-report-test-'));
 

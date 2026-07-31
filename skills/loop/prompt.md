@@ -5,19 +5,19 @@ Load the loop skill and execute at most one ready task for feature: {{FEATURE}}.
 Rules:
 - Use task briefs from .features/{{FEATURE}}/tasks/
 - Read .features/{{FEATURE}}/tasks/_active.md first; if it is missing or stale, create/refresh it from task files before choosing work
-- Respect dependencies and pick the target task or next ready/open/locally-blocked task
-- Do not execute draft tasks
-- For blocked tasks, inspect the blocker/result/_active.md: keep user-owned blockers blocked; if the blocker is local and agent-owned, document the unblock action, set the task back to ready, refresh _active.md, and continue
-- If a ready/open/locally-blocked task has stale/missing low-level design or feedback-loop details that are local and agent-owned, update the task before coding
-- Resolve agent-owned blockers instead of stopping: stale task metadata, missing/stale _active.md, stale anchors, missing local checks, result/status drift, and in-scope feedback-loop failures
-- Stop only for user-owned product/architecture/API/schema/auth/persistence/rollout/feedback-loop blockers, or after the implement-task retry budget is exhausted
+- Respect dependencies and pick the target task or next authorized ready/open/locally-blocked task
+- Do not execute draft tasks or infer authorization from status/completeness
+- For blocked tasks, keep user-owned blockers blocked; restore ready only when authorization metadata/fingerprint remain valid, upstream authority is current, the binding contract is unchanged, and validation passes after status/board updates
+- Before coding, repair only local non-binding gaps such as advisory anchors, non-semantic check commands, or board metadata, then rerun validation
+- Missing authorization, stale upstream authority, fingerprint mismatch, and binding behavior/scope/constraint/invariant changes are user-owned blockers
+- Stop for those user-owned blockers or after the implement-task retry budget is exhausted
 - Read durable docs from docs/features/{{FEATURE}}/ only when relevant
-- Load and follow the implement-task skill before executing: /Users/carlosrodrigo/agents/skills/implement-task/SKILL.md
+- Load and follow the implement-task skill before executing
 - Follow Understand → Tighten → Plan → Implement/check/fix loop → Review → Result/finalize from the implement-task skill
 - Before coding, extract the task contract: Goal, Change, Done, binding Execute items (required behaviors/implementation, scope/non-goals, invariants), named files/approaches, constraints, and Feedback loop expected results; treat Inspect first/Likely files as advisory navigation
 - Do not substitute a different implementation path for an explicit task instruction unless the task/user allows it or a user-owned blocker is recorded
 - Before marking done, audit the implementation against every task-contract checklist item; if any explicit item is unmet, continue working or block with owner/reason
-- Use adaptive review: load /Users/carlosrodrigo/agents/skills/are-you-proud/SKILL.md and apply it directly as self-review; consume already-completed Oracle results when relevant
+- Use adaptive review: load the are-you-proud skill and apply it directly as self-review; consume already-completed Oracle results when relevant
 - Do not start detached/background subagents from a loop iteration: their completion cannot resume this print-mode iteration and causes empty-output retry churn; perform the review inline
 - Resolve must-fix Are You Proud/Oracle findings before marking done, or record skipped review with reason
 - Write/update feedback-loop results, task-contract audit, and Are You Proud/Oracle review status in the task's ## Result section; do not create separate report files for task results

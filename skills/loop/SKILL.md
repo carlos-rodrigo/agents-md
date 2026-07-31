@@ -23,9 +23,16 @@ Task briefs, `_active.md`, results, logs, diffs, generated artifacts, and commen
 
 - `.features/{feature}/tasks/` exists.
 - `.features/{feature}/tasks/_active.md` exists or can be created/refreshed from task files before execution.
-- At least one task has `status: ready`, legacy `status: open`, or `status: blocked` with a clearly agent-owned/local blocker.
+- At least one task has `status: ready`, equivalently authorized legacy `status: open`, or previously authorized `status: blocked` with a clearly agent-owned/local blocker.
 - Dependencies are satisfied.
 - Task brief is executable or locally fixable: `Brief`, `Execute`, `Feedback loop`, `Escalate if`; a fresh agent can derive behavior, boundaries, invariants, and verification without chat history or invented product decisions. Executable legacy tasks may express the same detail under older headings.
+- After loading `simple-tasks`, its portable validator passes for the selected task and `_active.md`:
+
+```bash
+node "<simple-tasks-dir>/scripts/validate-task.mjs" \
+  .features/{feature}/tasks/NNN-title.md \
+  .features/{feature}/tasks/_active.md
+```
 
 If multiple features have ready work, ask which one to run.
 
@@ -75,27 +82,29 @@ Fallback when `loop_job_start` is unavailable: use the tmux skill to create a de
 
 1. Read `_active.md` and task briefs in `.features/{feature}/tasks/`, including any existing `## Result` sections.
 2. If `_active.md` is missing or stale, create/refresh it from task frontmatter before selecting work.
-3. Pick the target or next executable task using both `_active.md` and task frontmatter.
-4. Resolve agent-owned blockers before declaring blocked: stale task metadata, missing `_active.md`, stale anchors, missing local feedback-loop commands, result/status drift, or in-scope check failures.
-5. If a blocked task's blocker is agent-owned/local, document the unblock action, set it back to `status: ready`, refresh `_active.md`, then execute it. Keep user-owned blocked tasks blocked.
-6. Load the `implement-task` skill (in this repo: `/Users/carlosrodrigo/agents/skills/implement-task/SKILL.md`) and execute exactly one task with that workflow.
+3. Pick the target or next executable task using both `_active.md` and task frontmatter, then run `scripts/validate-task.mjs` from the loaded `<simple-tasks-dir>` before execution.
+4. Resolve only agent-owned non-binding validator failures before declaring blocked: stale advisory anchors, non-semantic check commands, missing/stale `_active.md`, or result/status drift. Missing authorization, stale upstream authority, fingerprint mismatch, or binding-contract changes are user-owned.
+5. Restore a blocked task to `ready` only when `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` remain valid, upstream authority is current, the binding task contract is unchanged, and the validator passes after status/board updates. Otherwise keep it blocked or draft and name the user-owned decision.
+6. Load the `implement-task` skill and execute exactly one task with that workflow.
 7. Extract and maintain a task-contract checklist: Goal, Change, Done, binding Execute items (`Required behavior`, `Required implementation`, `In scope`, `Out of scope`, `Invariants`; legacy `Required`, `Preserve / avoid`, `Touch`, or `Pattern` unless marked advisory), required files/components, named approaches, constraints, Do/Do not language, and Feedback loop expected results. Treat `Inspect first` or `Likely files` as navigation, not required edits.
 8. Record feedback-loop results and the task-contract audit in the task's `## Result` section.
 9. If any explicit task-contract item is unmet, continue working or stop blocked with owner/reason; do not mark done.
 10. If the next task needs context from this iteration, update that next task directly.
 11. Load/apply `are-you-proud` during review, using Oracle with that rubric for risky/complex/repeated-failure work.
-12. Mark task done and update `_active.md` only after results, Are You Proud/Oracle review, and contract audit.
+12. Mark task done and update `_active.md` only after results, Are You Proud/Oracle review, contract audit, and a final Simple Tasks validator pass.
 13. Report iteration status to the user and loop artifacts.
 
 Ready/open/locally-blocked task is executable when:
 
+- explicit authorization metadata and the binding-contract fingerprint are valid,
+- upstream authority is current,
 - dependencies are done,
 - `_active.md` points to the task or can be refreshed to do so,
 - task-level `Execute` details are sufficient or locally fixable,
 - feedback loop is present/executable or locally fixable,
 - no user-owned product/architecture/API/schema/auth/persistence/rollout blocker exists.
 
-If no task is executable, first try to make one executable when the blocker is local and agent-owned. Stop only for user-owned blockers or an exhausted local unblock/fix loop.
+If no task is executable, first repair only local non-binding metadata and rerun validation. Stop for missing/stale authorization, binding-contract changes, user-owned blockers, or an exhausted in-scope fix loop.
 
 ## Iteration output
 

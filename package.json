@@ -9,7 +9,7 @@
     "build:report-css": "node scripts/build-html-report-css.mjs",
     "check:report-css": "node scripts/build-html-report-css.mjs --check",
     "test:reports": "node scripts/test-canonical-report-renderer.mjs && node scripts/test-html-report-validator.mjs && node scripts/test-artifact-review-state.mjs && node scripts/test-canonical-report-layout.mjs",
-    "test:skills": "node scripts/test-canonical-report-routing.mjs && node scripts/test-concise-prd-contract.mjs && node scripts/test-concise-design-contract.mjs && node scripts/test-skill-portability.mjs",
+    "test:skills": "node scripts/test-canonical-report-routing.mjs && node scripts/test-concise-prd-contract.mjs && node scripts/test-concise-design-contract.mjs && node scripts/test-workflow-skill-evals.mjs && node scripts/test-workflow-authority-contract.mjs && node scripts/test-task-validator.mjs && node scripts/test-implement-task-contract.mjs && node scripts/test-skill-portability.mjs",
     "build:diagram": "node scripts/render-excalidraw-diagram.mjs skills/system-diagram/resources/excalidraw-slice-example.json skills/system-diagram/resources/excalidraw-slice-example.svg",
     "check:diagram": "node scripts/render-excalidraw-diagram.mjs --check skills/system-diagram/resources/excalidraw-slice-example.json skills/system-diagram/resources/excalidraw-slice-example.svg",
     "test:diagram": "node scripts/test-excalidraw-diagram.mjs",
