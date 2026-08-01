@@ -211,7 +211,7 @@ function renderBlock(block, baseDir) {
 
 function renderScenario(scenario, reviewIdAttribute = '') {
   return `          <article class="scenario-panel"${reviewIdAttribute}>
-            <h3>${escapeHtml(scenario.title)}</h3>
+            <h3>Scenario: ${escapeHtml(scenario.title)}</h3>
             <p class="scenario-line"><strong>Given</strong><span>${escapeHtml(scenario.given)}</span></p>
             <p class="scenario-line"><strong>When</strong><span>${escapeHtml(scenario.when)}</span></p>
             <p class="scenario-line"><strong>Then</strong><span>${escapeHtml(scenario.then)}</span></p>
@@ -219,7 +219,7 @@ function renderScenario(scenario, reviewIdAttribute = '') {
 }
 
 function renderSlice(slice) {
-  const storyText = `${slice.story.id}: As ${slice.story.actor}, I want ${slice.story.capability}, so that ${slice.story.outcome}.`;
+  const storyText = `${slice.story.id} · Feature: ${slice.story.actor} can ${slice.story.capability}; outcome: ${slice.story.outcome}.`;
   const scenarioMarkup = slice.scenarios
     .map((scenario) => renderScenario(scenario, ` data-review-id="${escapeAttribute(scenario.id)}"`))
     .join('\n');

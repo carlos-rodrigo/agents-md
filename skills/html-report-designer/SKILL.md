@@ -62,7 +62,7 @@ The renderer provides structured blocks for:
 
 - paragraphs, lists, facts, steps, callouts, quotes, and code;
 - Given/When/Then scenarios;
-- product slices with stories, observable sequences, acceptance, and after-slice outcomes;
+- product slices with compact story traceability, BDD Given/When/Then scenarios, observable sequences, acceptance, and after-slice outcomes;
 - decision recorders with options, custom answer, rationale, owner, lifecycle, checkbox, persistence, and Markdown export;
 - Excalidraw figures with question, caption, stable anchors, and ordered walkthrough.
 

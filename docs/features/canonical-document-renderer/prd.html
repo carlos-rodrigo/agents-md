@@ -87,15 +87,15 @@
           <h2 id="prd.slices-title">Three outcomes make the review system dependable</h2>
           <article class="slice-card" data-review-id="slice-001">
             <header><h3><span class="id-chip">slice-001</span>Render every durable document consistently</h3><p>A reviewer sees one canonical shell, style, navigation, and component language regardless of document kind.</p><p><strong>Boundary:</strong> The renderer does not choose or reorder product and architecture content.</p></header>
-            <p class="slice-story" data-review-id="story-001">story-001: As a document reviewer, I want open any durable agent-generated report in one consistent experience, so that format drift does not obscure the document&#39;s meaning.</p>
+            <p class="slice-story" data-review-id="story-001">story-001 · Feature: a document reviewer can open any durable agent-generated report in one consistent experience; outcome: format drift does not obscure the document&#39;s meaning.</p>
           <article class="scenario-panel" data-review-id="ex-001">
-            <h3>Canonical generation</h3>
+            <h3>Scenario: Canonical generation</h3>
             <p class="scenario-line"><strong>Given</strong><span>an owning skill has complete validated structured content</span></p>
             <p class="scenario-line"><strong>When</strong><span>it invokes HTML Report Designer</span></p>
             <p class="scenario-line"><strong>Then</strong><span>one portable report template produces self-contained HTML with actual-section navigation and stable review anchors</span></p>
           </article>
           <article class="scenario-panel" data-review-id="ex-002">
-            <h3>Renderer unavailable</h3>
+            <h3>Scenario: Renderer unavailable</h3>
             <p class="scenario-line"><strong>Given</strong><span>the canonical renderer cannot be loaded</span></p>
             <p class="scenario-line"><strong>When</strong><span>the agent attempts final report generation</span></p>
             <p class="scenario-line"><strong>Then</strong><span>generation blocks with a setup instruction instead of producing a substitute shell</span></p>
@@ -119,15 +119,15 @@
           </article>
           <article class="slice-card" data-review-id="slice-002">
             <header><h3><span class="id-chip">slice-002</span>Record decisions without implying approval</h3><p>A reviewer can select, explain, record, restore, and export a real decision.</p><p><strong>Boundary:</strong> Recording does not mutate source or change document status to Approved.</p></header>
-            <p class="slice-story" data-review-id="story-002">story-002: As a product or architecture reviewer, I want leave a complete portable decision record, so that an agent can reconcile the exact choice after explicit approval.</p>
+            <p class="slice-story" data-review-id="story-002">story-002 · Feature: a product or architecture reviewer can leave a complete portable decision record; outcome: an agent can reconcile the exact choice after explicit approval.</p>
           <article class="scenario-panel" data-review-id="ex-003">
-            <h3>Complete review record</h3>
+            <h3>Scenario: Complete review record</h3>
             <p class="scenario-line"><strong>Given</strong><span>a report contains an open or proposed decision</span></p>
             <p class="scenario-line"><strong>When</strong><span>the reviewer selects an option, provides rationale and owner, and checks Decision recorded</span></p>
             <p class="scenario-line"><strong>Then</strong><span>the report persists and exports the stable decision record as review input</span></p>
           </article>
           <article class="scenario-panel" data-review-id="ex-004">
-            <h3>Incomplete review record</h3>
+            <h3>Scenario: Incomplete review record</h3>
             <p class="scenario-line"><strong>Given</strong><span>selection, rationale, or owner is missing</span></p>
             <p class="scenario-line"><strong>When</strong><span>the reviewer reaches the recording control</span></p>
             <p class="scenario-line"><strong>Then</strong><span>the checkbox remains unavailable and identifies the missing work</span></p>
@@ -151,15 +151,15 @@
           </article>
           <article class="slice-card" data-review-id="slice-003">
             <header><h3><span class="id-chip">slice-003</span>Use Excalidraw for every system diagram</h3><p>PRD and design diagrams have one evidence, accessibility, visual, and regeneration contract.</p><p><strong>Boundary:</strong> The report renderer embeds figures but does not invent or redraw system semantics.</p></header>
-            <p class="slice-story" data-review-id="story-003">story-003: As a technical or product reviewer, I want follow one clear evidence-backed system path, so that the diagram teaches rather than decorating the report.</p>
+            <p class="slice-story" data-review-id="story-003">story-003 · Feature: a technical or product reviewer can follow one clear evidence-backed system path; outcome: the diagram teaches rather than decorating the report.</p>
           <article class="scenario-panel" data-review-id="ex-005">
-            <h3>Verified figure</h3>
+            <h3>Scenario: Verified figure</h3>
             <p class="scenario-line"><strong>Given</strong><span>the owning skill names a diagram question and approved semantics</span></p>
             <p class="scenario-line"><strong>When</strong><span>System Diagram renders the retained JSON scene</span></p>
             <p class="scenario-line"><strong>Then</strong><span>the report embeds searchable accessible Excalidraw SVG with a text walkthrough</span></p>
           </article>
           <article class="scenario-panel" data-review-id="ex-006">
-            <h3>Unverified figure</h3>
+            <h3>Scenario: Unverified figure</h3>
             <p class="scenario-line"><strong>Given</strong><span>an SVG lacks Excalidraw provenance or source JSON</span></p>
             <p class="scenario-line"><strong>When</strong><span>the canonical report attempts to embed it</span></p>
             <p class="scenario-line"><strong>Then</strong><span>generation fails instead of accepting the alternate figure</span></p>

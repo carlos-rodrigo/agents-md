@@ -1,6 +1,6 @@
 ---
 name: prd
-description: "Create or update an evidence-backed product requirements document when a non-trivial feature's product intent, actor workflow, scope, product decisions, or observable acceptance needs human review and approval before architecture work. Do not use for tiny obvious fixes, architecture, task planning, implementation, technical test plans, or document styling."
+description: "Create or update a direct, concise, evidence-backed product requirements document when a non-trivial feature's product intent, actor workflow, scope, decisions, or observable acceptance needs human review before architecture. Express stories as BDD specifications and include proposed mockups for UI changes or visual suggestions. Do not use for tiny obvious fixes, architecture, task planning, implementation, technical test plans, or document styling."
 compatibility: "Requires the html-report-designer and system-diagram skills, plus frontend-design when the feature implies UI. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
 ---
 
@@ -46,6 +46,18 @@ Status is a human governance contract:
 
 Report `Ready for design: yes` only when status is Approved and no blocking product decision remains. An exported browser decision record is review input, not approval or canonical truth.
 
+## Go to the point
+
+Write for a reviewer who needs one clear, decision-ready product path:
+
+- Lead with the answer: actor, change, outcome, boundary, then proof.
+- State each fact once. Give every section new information instead of restating the summary, workflow, story, or acceptance.
+- Default to one short block per non-slice role. Use `behavior` for cross-slice rules, BDD scenarios for interaction detail, `acceptance` for proof, and `scope` for boundaries—not recaps.
+- Present one recommended product behavior. Do not brainstorm or list alternative approaches; use a decision block only for a real unresolved product choice.
+- Do not use `table` blocks. Prefer short paragraphs, bullets, facts, and BDD scenarios that scan in reading order.
+- Use concrete actors, actions, states, and outcomes. Remove throat-clearing, generic benefits, duplicated context, and implementation commentary.
+- Keep only detail that changes product behavior, scope, trust, acceptance, or a decision.
+
 ## Required report structure
 
 Every substantive PRD uses these `section.role` values in a causal reading order. Headings may be feature-specific, but roles may not be omitted:
@@ -69,9 +81,19 @@ through {entry point}, resulting in {observable state}; it will not {boundary}.
 
 A product slice is an ordered, end-to-end increment of user or stakeholder value—not a component, endpoint, package, implementation layer, or task.
 
-Each slice must contain a sourced story, main Given/When/Then scenario, observable visual/non-visual sequence, stable acceptance criteria, and “After this slice” outcome. Load [references/product-slice-contract.md](references/product-slice-contract.md) when composing slices.
+Explain each slice as a **BDD specification**, not as repetitive “As a / I want / so that” prose. Use:
 
-Let sourced behavior determine the number of workflow steps, rules, scenarios, and acceptance criteria. Never invent content to meet a fixed count.
+```text
+Feature: {bounded actor outcome}
+Scenario: {observable behavior}
+Given {starting state}
+When {actor action or trigger}
+Then {observable result}
+```
+
+The required `story` object is compact traceability metadata; the BDD scenarios explain behavior. Include only material exception scenarios, an observable visual/non-visual sequence, stable acceptance criteria, and a brief “After this slice” outcome. Load [references/product-slice-contract.md](references/product-slice-contract.md) when composing slices.
+
+Let sourced behavior determine the number of workflow steps, rules, scenarios, and acceptance criteria. Never invent content to meet a fixed count or repeat the same outcome across fields.
 
 ## Product-behavior diagram
 
@@ -87,7 +109,7 @@ It must not introduce architecture. Retain the Excalidraw JSON source beside the
 
 ## UI mockups
 
-When a feature adds or materially changes a user-visible interface, the PRD workflow must invoke `frontend-design` and generate proposed high-fidelity mockups before review. Mockups make visual hierarchy, responsive composition, interaction affordances, and consequential states concrete enough for product judgment; wireframes alone do not satisfy this requirement.
+When a feature adds or materially changes a user-visible interface, or the request includes UI changes or visual suggestions, the PRD workflow must invoke `frontend-design` and generate proposed high-fidelity mockups before review. Mockups make hierarchy, responsive composition, affordances, and consequential states concrete enough for product judgment; wireframes alone do not satisfy this requirement.
 
 Create `docs/features/{feature}/mockups.html` as a portable, self-contained artifact and link it from `document.relatedArtifacts`. The canonical PRD profile still contains exactly one Excalidraw product-behavior diagram; do not add extra `diagram` blocks for mockups.
 
@@ -105,7 +127,7 @@ If the feature has no user-visible UI implication, do not generate a mockup shel
 
 ## Decisions
 
-Include a canonical `decision` block for every real product decision. Each decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
+Include a canonical `decision` block only for a real product decision. This is the only place alternative approaches belong. Each decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
 
 Every rendered decision includes a **Decision recorded** checkbox. Recording in the browser requires a selection, rationale, and owner, persists locally, and exports Markdown. Reconcile that export into `prd.document.json` only after explicit human approval. Accepted decisions require approver and approval date; Approved PRDs cannot contain open or proposed decisions.
 
@@ -115,7 +137,7 @@ Every rendered decision includes a **Decision recorded** checkbox. Recording in 
 2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
 3. Compose the required section roles and complete product slices in `canonical-report-v1` structured content.
 4. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
-5. When the feature implies UI, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
+5. When the feature implies UI changes or visual suggestions, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
 6. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
 ```bash
@@ -132,9 +154,10 @@ If any required companion skill or renderer is unavailable, report the blocker. 
 
 ## Quality gate
 
-- Product, problem, workflow, diagram, slices, and scope roles are complete and non-duplicative.
+- Product, problem, workflow, diagram, slices, and scope roles are direct, concise, and non-duplicative.
 - Every consequential claim is sourced, assumed, recommended, or an owned question.
-- Every slice traces `slice → story → scenario → acceptance` and ends in an observable outcome.
+- Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then, and ends in an observable outcome.
+- No tables, speculative alternatives, repeated summaries, or classic As/I want story prose appear.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
 - One Excalidraw product diagram has JSON/SVG provenance and a text walkthrough.
 - UI-bearing features include a linked, self-contained proposed mockup artifact with representative responsive and consequential states; non-UI features state why mockups are not applicable.

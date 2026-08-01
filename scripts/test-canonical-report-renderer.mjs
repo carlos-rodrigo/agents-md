@@ -14,7 +14,7 @@ const temp = mkdtempSync(join(tmpdir(), 'canonical-report-test-'));
 try {
   for (const [name, markers] of [
     ['report-example.document.json', ['data-document-kind="report"', 'The renderer owns presentation', 'class="scenario-panel"', 'class="copyable-code"', '<blockquote']],
-    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'decision.retention', 'svg-source:excalidraw']],
+    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', 'decision.retention', 'svg-source:excalidraw']],
     ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'svg-source:excalidraw']],
   ]) {
     const specPath = join(resources, name);
@@ -33,6 +33,8 @@ try {
 
   const prd = JSON.parse(readFileSync(join(resources, 'specs/prd-example.document.json'), 'utf8'));
   const design = JSON.parse(readFileSync(join(resources, 'specs/design-example.document.json'), 'utf8'));
+  const prdHtml = renderCanonicalReport(prd, { specPath: join(resources, 'specs/prd-example.document.json') });
+  assert(!prdHtml.includes(', I want '), 'PRD slices must explain stories as BDD specifications rather than As/I want prose');
 
   const profileFailures = [
     ['missing PRD role', prd, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'diagram'); }, 'prd documents require a "diagram" section role'],

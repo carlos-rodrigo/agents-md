@@ -19,6 +19,14 @@ requireAll('PRD authority and structure', skill, [
   'browser decision record is review input',
   '<html-report-designer-dir>/scripts/render-canonical-report.mjs',
   'Do not create tasks directly from the PRD',
+  '## Go to the point',
+  'State each fact once',
+  'one recommended product behavior',
+  'Do not use `table` blocks',
+  'BDD specification',
+  'Feature:',
+  'Scenario:',
+  'UI changes or visual suggestions',
 ]);
 assertInOrder(skill, ['**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**', '**`decisions`**'], 'PRD role sequence');
 forbidAll('PRD presentation boundary', skill, [
@@ -27,7 +35,13 @@ forbidAll('PRD presentation boundary', skill, [
 
 const reference = 'skills/prd/references/product-slice-contract.md';
 assert(existsSync(join(root, reference)), 'PRD product-slice reference must exist');
-requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'Primary story', 'Main scenario', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice']);
+requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'BDD specification', 'Feature:', 'Scenario:', 'Given', 'When', 'Then', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice']);
+
+const evals = JSON.parse(read('skills/prd/evals/evals.json'));
+const conciseUiEval = evals.evals.find((item) => item.id === 5);
+assert(conciseUiEval, 'PRD evals need a concise UI-bearing BDD scenario');
+const conciseUiContract = JSON.stringify(conciseUiEval);
+requireAll('concise UI PRD eval', conciseUiContract, ['direct', 'BDD', 'mockup', 'table', 'alternative']);
 
 const triggers = JSON.parse(read('skills/prd/evals/triggers.json'));
 assert(triggers.length >= 10, 'PRD trigger evals need broad positive/negative coverage');

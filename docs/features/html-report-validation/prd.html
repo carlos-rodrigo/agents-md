@@ -84,21 +84,21 @@
           <h2 id="readiness-slices-title">The author makes a defensible sharing decision from one result</h2>
           <article class="slice-card" data-review-id="validate-finished-report">
             <header><h3><span class="id-chip">validate-finished-report</span>Validate one finished report before distribution</h3><p>The author can tell whether the exact report is ready, failed, or incomplete and can act on the unresolved evidence.</p><p><strong>Boundary:</strong> One finished self-contained HTML artifact and its declared browser matrix; generation, repair, approval, hosting, and distribution stay outside the slice.</p></header>
-            <p class="slice-story" data-review-id="story-report-author-readiness">story-report-author-readiness: As report author, I want validate one finished report across all mandatory review states, so that I can decide whether to share it without interpreting raw build logs or assuming missing evidence passed.</p>
+            <p class="slice-story" data-review-id="story-report-author-readiness">story-report-author-readiness · Feature: report author can validate one finished report across all mandatory review states; outcome: I can decide whether to share it without interpreting raw build logs or assuming missing evidence passed.</p>
           <article class="scenario-panel" data-review-id="scenario-all-checks-pass">
-            <h3>All mandatory checks pass</h3>
+            <h3>Scenario: All mandatory checks pass</h3>
             <p class="scenario-line"><strong>Given</strong><span>the author selects one immutable report and a complete declared browser matrix</span></p>
             <p class="scenario-line"><strong>When</strong><span>every required visual, functional, fallback, print, and browser check passes against that artifact</span></p>
             <p class="scenario-line"><strong>Then</strong><span>the result identifies the artifact and matrix and reports ready with all category evidence visible</span></p>
           </article>
           <article class="scenario-panel" data-review-id="scenario-check-fails">
-            <h3>A required state fails</h3>
+            <h3>Scenario: A required state fails</h3>
             <p class="scenario-line"><strong>Given</strong><span>the selected report clips content at a required viewport or has broken keyboard operation</span></p>
             <p class="scenario-line"><strong>When</strong><span>validation evaluates that state</span></p>
             <p class="scenario-line"><strong>Then</strong><span>the result reports failed, identifies the affected state, and gives enough context to reproduce the defect</span></p>
           </article>
           <article class="scenario-panel" data-review-id="scenario-check-not-run">
-            <h3>Required browser evidence is missing</h3>
+            <h3>Scenario: Required browser evidence is missing</h3>
             <p class="scenario-line"><strong>Given</strong><span>one browser or platform in the declared matrix is unavailable or omitted</span></p>
             <p class="scenario-line"><strong>When</strong><span>the result is assembled</span></p>
             <p class="scenario-line"><strong>Then</strong><span>that environment is reported as not run and the overall result remains incomplete rather than ready</span></p>

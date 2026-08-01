@@ -44,6 +44,18 @@
         "Approved product behavior is not rewritten or expanded.",
         "No implementation task is created by the PRD skill."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Create a PRD for a clearer checkout review sidebar. Customers need to understand a declined payment and retry without losing their cart, and I want a visual suggestion for the new error state.",
+      "expected_output": "A direct, concise Draft PRD with one recommended behavior, BDD specifications, and a linked proposed UI mockup.",
+      "files": [],
+      "expectations": [
+        "The PRD goes directly to actor, outcome, workflow, boundary, and observable proof without repeated summaries or table content.",
+        "The user story is explained as Feature/Scenario/Given/When/Then BDD behavior rather than As/I want prose.",
+        "One recommended product behavior is shown; alternative approaches appear only if a real unresolved decision requires them.",
+        "The UI suggestion produces a linked proposed mockup with the main decline and retry states."
+      ]
     }
   ]
 }
