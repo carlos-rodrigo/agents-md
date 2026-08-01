@@ -1,7 +1,7 @@
 ---
 name: prd
 description: "Create or update an evidence-backed product requirements document when a non-trivial feature's product intent, actor workflow, scope, product decisions, or observable acceptance needs human review and approval before architecture work. Do not use for tiny obvious fixes, architecture, task planning, implementation, technical test plans, or document styling."
-compatibility: "Requires the html-report-designer and system-diagram skills. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
+compatibility: "Requires the html-report-designer and system-diagram skills, plus frontend-design when the feature implies UI. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
 ---
 
 # Product Requirements Document
@@ -15,9 +15,10 @@ Default artifacts:
 ```text
 docs/features/{feature}/prd.document.json
 docs/features/{feature}/prd.html
+docs/features/{feature}/mockups.html   # required when the feature implies UI
 ```
 
-`prd.document.json` is the editable product authority. `prd.html` is its deterministic review and approval projection. Never hand-author or patch report HTML/CSS.
+`prd.document.json` is the editable product authority. `prd.html` is its deterministic review and approval projection. Never hand-author or patch report HTML/CSS. `mockups.html` is a linked, self-contained visual review artifact rather than canonical product truth.
 
 ## Gate
 
@@ -84,6 +85,24 @@ actor/context → trigger/action → product response/state → next decision �
 
 It must not introduce architecture. Retain the Excalidraw JSON source beside the feature, generate the SVG through the bundled system-diagram renderer, and reference both from the `diagram` block. A durable substantive PRD does not use a hand-authored SVG or a `Diagram not applicable` escape.
 
+## UI mockups
+
+When a feature adds or materially changes a user-visible interface, the PRD workflow must invoke `frontend-design` and generate proposed high-fidelity mockups before review. Mockups make visual hierarchy, responsive composition, interaction affordances, and consequential states concrete enough for product judgment; wireframes alone do not satisfy this requirement.
+
+Create `docs/features/{feature}/mockups.html` as a portable, self-contained artifact and link it from `document.relatedArtifacts`. The canonical PRD profile still contains exactly one Excalidraw product-behavior diagram; do not add extra `diagram` blocks for mockups.
+
+Mockups must:
+
+- represent the proposed product behavior and information hierarchy without adding unsupported capability;
+- include representative wide and narrow compositions when the surface is responsive;
+- show the main populated state plus material empty, loading, error, permission, partial, or recovery states only where they change trust, scope, or acceptance;
+- use clearly labeled illustrative data when real evidence is unavailable and never present mock values as product truth;
+- preserve accessibility fundamentals, including readable contrast, keyboard-visible controls, non-color meaning, and reduced-motion behavior;
+- carry an explicit **Proposed / not approved** boundary until the human product owner accepts the visual direction;
+- remain review material rather than silently turning styling, layout, or invented content into approved requirements.
+
+If the feature has no user-visible UI implication, do not generate a mockup shell. Report `Mockups: not applicable — {reason}` in the handoff.
+
 ## Decisions
 
 Include a canonical `decision` block for every real product decision. Each decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
@@ -96,7 +115,8 @@ Every rendered decision includes a **Decision recorded** checkbox. Recording in 
 2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
 3. Compose the required section roles and complete product slices in `canonical-report-v1` structured content.
 4. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
-5. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
+5. When the feature implies UI, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
+6. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
 ```bash
 node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
@@ -105,10 +125,10 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-6. Open the report for review when possible. Never patch generated HTML.
-7. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
+7. Open the PRD and, when present, the mockups for review. Never patch generated HTML; update the canonical document source and rerender.
+8. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
-If either companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell or diagram.
+If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.
 
 ## Quality gate
 
@@ -117,6 +137,8 @@ If either companion skill or renderer is unavailable, report the blocker. Do not
 - Every slice traces `slice → story → scenario → acceptance` and ends in an observable outcome.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
 - One Excalidraw product diagram has JSON/SVG provenance and a text walkthrough.
+- UI-bearing features include a linked, self-contained proposed mockup artifact with representative responsive and consequential states; non-UI features state why mockups are not applicable.
+- Mockups contain no unsupported capability, clearly identify illustrative data, and preserve the human approval boundary.
 - Decisions have explicit lifecycle and human approval boundaries.
 - No architecture or implementation prescription leaked in.
 - Canonical renderer, PRD profile validation, accessibility, mobile, print, no-JS, and reduced-motion checks pass.
@@ -133,6 +155,7 @@ Status: {Draft | Review | Approved by whom/when | Blocked}
 Product: {bounded outcome for actor}
 Decisions: {IDs + lifecycle status | none}
 Diagram: {question + JSON/SVG paths}
+Mockups: {linked mockups.html + Proposed/Accepted status | not applicable + reason}
 Validation: {passed | failed + issue | not run + reason}
 Ready for design: {yes only when explicitly Approved/no blocker | no + reason}
 Next: {review | resolve decision | create design}
