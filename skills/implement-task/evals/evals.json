@@ -55,6 +55,17 @@
         "The next step audits check discrimination and the current implementation against sourced acceptance.",
         "A no-op is recorded only if the exact binding contract is proven already satisfied."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Implement the requested CSV export fix using the Implement Task methodology without creating a task.md file. The user request defines the bounded behavior and no durable task workflow exists.",
+      "expected_output": "A direct-request implementation using a compact working contract, outside-in acceptance, focused repair, review, and verification evidence without requiring Simple Tasks metadata or a Result receipt.",
+      "files": [],
+      "expectations": [
+        "The user request is treated as authority only for its explicit bounded behavior, with ambiguity escalated rather than invented.",
+        "The agent uses the same acceptance-first, red-green, edge, review, and gate methodology as task-backed work.",
+        "The final response reports changed files and verification evidence without fabricating a task Result or active board."
+      ]
     }
   ]
 }

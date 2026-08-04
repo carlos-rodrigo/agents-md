@@ -24,7 +24,8 @@ for (const [skillName, coverageTerms] of Object.entries(skills)) {
   if (skillName === 'implement-task') {
     const prompts = suite.evals.map((item) => item.prompt).join('\n');
     assert(!/CLI JSON|TASK-004/.test(prompts), 'implement-task eval prompts must match the committed TASK-001 portability fixture');
-    assert(prompts.includes('TASK-001') && prompts.includes('portability'), 'implement-task eval prompts must name the authorized portability fixture');
+    assert(prompts.includes('TASK-001') && prompts.includes('portability'), 'implement-task eval prompts must retain the authorized portability fixture');
+    assert(prompts.includes('without creating a task.md'), 'implement-task eval prompts must cover direct-request methodology without a task file');
   }
   assertUnique(suite.evals.map((item) => item.id), `${skillName} eval id`);
   suite.evals.forEach((item, index) => {
@@ -33,7 +34,7 @@ for (const [skillName, coverageTerms] of Object.entries(skills)) {
     assertText(item.prompt, `${label}.prompt`);
     assertText(item.expected_output, `${label}.expected_output`);
     assert(Array.isArray(item.files), `${label}.files must be an array`);
-    if (['simple-tasks', 'implement-task'].includes(skillName)) assert(item.files.length > 0, `${label} needs stateful fixture files`);
+    if (skillName === 'simple-tasks') assert(item.files.length > 0, `${label} needs stateful fixture files`);
     item.files.forEach((file) => assert(existsSync(join(root, 'skills', skillName, file)), `${label} fixture does not exist: ${file}`));
     assert(Array.isArray(item.expectations) && item.expectations.length >= 3, `${label}.expectations needs at least three checks`);
     item.expectations.forEach((expectation, expectationIndex) => assertText(expectation, `${label}.expectations[${expectationIndex}]`));

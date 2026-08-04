@@ -7,6 +7,9 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const skill = readFileSync(join(root, 'skills/implement-task/SKILL.md'), 'utf8');
 
 requireAll([
+  'Task-backed mode',
+  'Direct-request mode',
+  'A `task.md` file is optional',
   'Load `simple-tasks`',
   'scripts/validate-task.mjs',
   '`authorization_fingerprint`',
@@ -20,6 +23,8 @@ requireAll([
   'Failed required checks cannot produce `done`',
 ]);
 forbidAll([
+  'Implement exactly one explicitly authorized task',
+  'Requires the simple-tasks skill',
   'If it already passes, tighten the test/task',
   'Refresh semantic index',
 ]);
@@ -27,7 +32,7 @@ forbidAll([
 const lineCount = skill.split('\n').length;
 assert(lineCount <= 220, `Implement Task should remain a lean execution specialization (found ${lineCount} lines, max 220)`);
 
-console.log('PASS: Implement Task handles red, false-positive, no-op, and failure paths without duplicated completion work');
+console.log('PASS: Implement Task is methodology-first with optional task-backed receipts and safe direct-request execution');
 
 function requireAll(markers) {
   const missing = markers.filter((marker) => !skill.includes(marker));
