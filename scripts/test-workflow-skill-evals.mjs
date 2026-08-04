@@ -54,6 +54,8 @@ for (const [skillName, coverageTerms] of Object.entries(skills)) {
 }
 
 const approvedFixture = join(root, 'skills/implement-task/evals/files/approved-workflow');
+const approvedTask = readFileSync(join(approvedFixture, 'task.md'), 'utf8');
+assert(approvedTask.includes('approved-design: skills/implement-task/evals/files/approved-workflow/design.document.json'), 'approved workflow eval must use its self-contained approved design instead of mutable product documentation');
 const fixtureValidation = spawnSync(process.execPath, [
   join(root, 'skills/simple-tasks/scripts/validate-task.mjs'),
   join(approvedFixture, 'task.md'),

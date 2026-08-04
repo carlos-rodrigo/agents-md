@@ -1,0 +1,185 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="216 -4 1198 1278" role="img" aria-labelledby="capability-selection-flow-title capability-selection-flow-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.capability-selection.capability-selection-flow.svg"><title id="capability-selection-flow-title">From an explanatory need to one style-consistent diagram</title><desc id="capability-selection-flow-desc">A top-to-bottom product flow in which PRD or Design Solution owns the situation and evidence, selects the explanatory capability, and gives System Diagram a bounded brief to validate and render in the established infrastructure style, with unsupported semantics returned for refinement.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:47b69419b6f751db5b08f86d690ac39401c4a84408c2c52d7e71fd660549557b --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="capability-selection-flow--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="capability-selection-flow--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="capability-selection-flow--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="216" y="-4" width="1198" height="1278"></rect><rect class="diagram-grid" x="216" y="-4" width="1198" height="1278" fill="url(#capability-selection-flow--grid)"></rect><g class="diagram-groups"></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.situation-to-brief"><path class="diagram-edge__path" d="M510 150L510 220" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.brief-to-choose"><path class="diagram-edge__path" d="M510 330L510 400" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.choose-to-capability"><path class="diagram-edge__path" d="M510 510L510 580" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.capability-to-validate"><path class="diagram-edge__path" d="M510 690L510 760" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.validate-to-render"><path class="diagram-edge__path" d="M510 870L510 940" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--success diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.render-to-review"><path class="diagram-edge__path" d="M510 1050L510 1120" marker-end="url(#capability-selection-flow--arrow-success)"></path></g><g class="diagram-edge diagram-edge--risk diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.validate-to-refine"><path class="diagram-edge__path" d="M760 815L980 815" marker-end="url(#capability-selection-flow--arrow-risk)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.situation" aria-labelledby="capability-selection-flow--situation-text"><rect class="diagram-node__surface" x="260" y="40" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="52" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="57" r="3.5"></circle><text class="diagram-node__kind" x="280" y="63">ENTRY</text><text id="capability-selection-flow--situation-text" class="diagram-node__title" x="280" y="87" font-size="16">Situation needs explanation</text><text class="diagram-node__detail" x="280" y="110" font-size="14"><tspan x="280" y="110">PRD or Design Solution owns the meaning</tspan></text></g><g class="diagram-node diagram-node--domain diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.brief" aria-labelledby="capability-selection-flow--brief-text"><rect class="diagram-node__surface" x="260" y="220" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="232" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="237" r="3.5"></circle><text class="diagram-node__kind" x="280" y="243">DOMAIN</text><text id="capability-selection-flow--brief-text" class="diagram-node__title" x="280" y="267" font-size="16">Evidence-backed brief</text><text class="diagram-node__detail" x="280" y="290" font-size="14"><tspan x="280" y="290">Question · scope · path · recovery</tspan></text></g><g class="diagram-node diagram-node--decision diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.choose" aria-labelledby="capability-selection-flow--choose-text"><rect class="diagram-node__surface" x="260" y="400" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="412" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="417" r="3.5"></circle><text class="diagram-node__kind" x="280" y="423">DECISION</text><text id="capability-selection-flow--choose-text" class="diagram-node__title" x="280" y="447" font-size="16">Choose by explanatory question</text><text class="diagram-node__detail" x="280" y="470" font-size="14"><tspan x="280" y="470">Time · progression · topology · decomposition</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.capability" aria-labelledby="capability-selection-flow--capability-text"><rect class="diagram-node__surface" x="260" y="580" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="592" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="597" r="3.5"></circle><text class="diagram-node__kind" x="280" y="603">SERVICE</text><text id="capability-selection-flow--capability-text" class="diagram-node__title" x="280" y="627" font-size="16">One capability</text><text class="diagram-node__detail" x="280" y="650" font-size="14"><tspan x="280" y="650">Sequence · flow · architecture · component</tspan></text></g><g class="diagram-node diagram-node--policy diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.validate" aria-labelledby="capability-selection-flow--validate-text"><rect class="diagram-node__surface" x="260" y="760" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="772" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="777" r="3.5"></circle><text class="diagram-node__kind" x="280" y="783">POLICY</text><text id="capability-selection-flow--validate-text" class="diagram-node__title" x="280" y="807" font-size="16">System Diagram validates</text><text class="diagram-node__detail" x="280" y="830" font-size="14"><tspan x="280" y="830">Evidence · semantics · limits · uncertainty</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.render" aria-labelledby="capability-selection-flow--render-text"><rect class="diagram-node__surface" x="260" y="940" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="952" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="957" r="3.5"></circle><text class="diagram-node__kind" x="280" y="963">PROOF</text><text id="capability-selection-flow--render-text" class="diagram-node__title" x="280" y="987" font-size="16">Generate deterministic SVG</text><text class="diagram-node__detail" x="280" y="1010" font-size="14"><tspan x="280" y="1010">Existing infrastructure-v1 visual language</tspan></text></g><g class="diagram-node diagram-node--success diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.review" aria-labelledby="capability-selection-flow--review-text"><rect class="diagram-node__surface" x="260" y="1120" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="1132" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="1137" r="3.5"></circle><text class="diagram-node__kind" x="280" y="1143">OUTCOME</text><text id="capability-selection-flow--review-text" class="diagram-node__title" x="280" y="1167" font-size="16">Canonical report embeds the figure</text><text class="diagram-node__detail" x="280" y="1190" font-size="14"><tspan x="280" y="1190">Reviewer can retell the situation</tspan></text></g><g class="diagram-node diagram-node--risk diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.refine" aria-labelledby="capability-selection-flow--refine-text"><rect class="diagram-node__surface" x="980" y="760" width="390" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="980" y="772" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1353" cy="777" r="3.5"></circle><text class="diagram-node__kind" x="1000" y="783">RISK</text><text id="capability-selection-flow--refine-text" class="diagram-node__title" x="1000" y="807" font-size="16">Unsupported or ambiguous</text><text class="diagram-node__detail" x="1000" y="830" font-size="14"><tspan x="1000" y="830">Owning skill refines or splits the brief</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.situation-to-brief"><rect class="diagram-edge-label__surface" x="520" y="171" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="648.6" y="189.76" font-size="14" text-anchor="middle"><tspan x="648.6" y="189.76">states what must be understood</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.brief-to-choose"><rect class="diagram-edge-label__surface" x="520" y="351" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="640.76" y="369.76" font-size="14" text-anchor="middle"><tspan x="640.76" y="369.76">supplies classified evidence</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.choose-to-capability"><rect class="diagram-edge-label__surface" x="520" y="531" width="170.96" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="605.48" y="549.76" font-size="14" text-anchor="middle"><tspan x="605.48" y="549.76">selects one grammar</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.capability-to-validate"><rect class="diagram-edge-label__surface" x="520" y="711" width="233.68" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="636.84" y="729.76" font-size="14" text-anchor="middle"><tspan x="636.84" y="729.76">hands off bounded semantics</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.validate-to-render"><rect class="diagram-edge-label__surface" x="520" y="891" width="218" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="629" y="909.76" font-size="14" text-anchor="middle"><tspan x="629" y="909.76">accepts supported meaning</tspan></text></g><g class="diagram-edge-label diagram-edge-label--success diagram-reveal" style="--reveal-delay:648ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.render-to-review"><rect class="diagram-edge-label__surface" x="520" y="1071" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="648.6" y="1089.76" font-size="14" text-anchor="middle"><tspan x="648.6" y="1089.76">preserves style and provenance</tspan></text></g><g class="diagram-edge-label diagram-edge-label--risk diagram-reveal" style="--reveal-delay:768ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.validate-to-refine"><rect class="diagram-edge-label__surface" x="757.08" y="706" width="225.84" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="870" y="724.76" font-size="14" text-anchor="middle"><tspan x="870" y="724.76">returns a truthful blocker</tspan></text></g></g></svg>

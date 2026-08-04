@@ -29,10 +29,12 @@ for (const required of [
   'docs/features/canonical-document-renderer/diagrams/canonical-rendering-path.svg',
   'docs/features/html-report-validation/diagrams/report-validation-flow.json',
   'docs/features/html-report-validation/diagrams/report-validation-flow.svg',
-  'skills/system-diagram/resources/excalidraw-slice-example.json',
-  'skills/system-diagram/resources/excalidraw-slice-example.svg',
-  'skills/system-diagram/resources/excalidraw-domain-interaction-example.json',
-  'skills/system-diagram/resources/excalidraw-domain-interaction-example.svg',
+  'skills/system-diagram/references/migrating-from-excalidraw.md',
+  'skills/system-diagram/resources/infrastructure-diagram.css',
+  'skills/system-diagram/resources/system-slice-example.json',
+  'skills/system-diagram/resources/system-slice-example.svg',
+  'skills/system-diagram/resources/system-domain-interaction-example.json',
+  'skills/system-diagram/resources/system-domain-interaction-example.svg',
 ]) assert(existsSync(join(root, required)), `missing required durable artifact ${required}`);
 
 for (const legacy of [
@@ -76,7 +78,7 @@ for (const [label, path] of [['PRD', 'skills/prd/SKILL.md'], ['design', 'skills/
   requireAll(`${label} canonical routing`, skill, ['canonical-report-v1', '<html-report-designer-dir>/scripts/render-canonical-report.mjs', 'Never patch generated HTML']);
 }
 const diagramSkill = text('skills/system-diagram/SKILL.md');
-requireAll('system diagram ownership', diagramSkill, ['does not own a report template or page shell', '<system-diagram-dir>/scripts/render-excalidraw-diagram.mjs']);
+requireAll('system diagram ownership', diagramSkill, ['does not own a report template or page shell', '<system-diagram-dir>/scripts/render-system-diagram.mjs']);
 const reviewRuntime = text(`${resources}/artifact-review-state.js`);
 const reportCss = text(`${resources}/report.tailwind.css`);
 for (const obsoleteCss of ['--surface-raised', '--radius-xl', '.approval-checklist', '.related-artifacts', '.path-draw', '.review-option-selector']) assert(!reportCss.includes(obsoleteCss), `canonical CSS retains obsolete selector/token: ${obsoleteCss}`);

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "system-diagram-v1",
+  "id": "sequence-rendering-seam",
+  "title": "Versioned sequence rendering without disturbing the v1 path",
+  "desc": "An architecture path from an owning PRD or Design Solution through source-contract selection. Existing system-diagram-v1 input stays on its frozen validator and renderer, while sequence v2 input passes through strict semantic validation, deterministic layout, and a same-style SVG renderer before both outputs reach version-aware report verification. Invalid v2 input returns a blocker.",
+  "reviewPrefix": "diagram.sequence-rendering-seam",
+  "reviewId": "svg",
+  "canvas": { "grid": true },
+  "padding": 44,
+  "groups": [
+    { "id": "system-diagram-skill", "kind": "ownership", "x": 0, "y": 190, "width": 1520, "height": 750, "label": "System Diagram skill" }
+  ],
+  "nodes": [
+    { "id": "owning-brief", "kind": "entry", "x": 460, "y": 40, "width": 520, "height": 110, "text": "Owning PRD or Design Solution\nApproved question · evidence · semantics" },
+    { "id": "contract-route", "kind": "decision", "x": 460, "y": 220, "width": 520, "height": 110, "text": "Source contract selection\nRoutes before normalization or rendering" },
+    { "id": "v1-renderer", "kind": "service", "x": 40, "y": 430, "width": 380, "height": 110, "text": "Frozen v1 renderer\nCurrent validator · CSS\nMetadata · SVG bytes" },
+    { "id": "sequence-validator", "kind": "policy", "x": 560, "y": 430, "width": 460, "height": 110, "text": "Sequence v2 validator\nStrict fields · references · limits" },
+    { "id": "sequence-layout", "kind": "service", "x": 560, "y": 610, "width": 460, "height": 110, "text": "sequence-v1 layout\nSource order · integer geometry · no iteration" },
+    { "id": "sequence-renderer", "kind": "service", "x": 560, "y": 790, "width": 460, "height": 110, "text": "Sequence SVG renderer\nBase infrastructure CSS + sequence primitives" },
+    { "id": "blocked", "kind": "risk", "x": 1100, "y": 430, "width": 380, "height": 110, "text": "Invalid or excessive source\nReturn exact blocker\nRefine or split the brief" },
+    { "id": "report-verifier", "kind": "feedback", "x": 460, "y": 1000, "width": 520, "height": 110, "text": "Version-aware report verifier\nChecks source · provenance · exact renderer output" },
+    { "id": "review-proof", "kind": "success", "x": 460, "y": 1180, "width": 520, "height": 110, "text": "Canonical report and walkthrough\nReviewer sees one established visual language" }
+  ],
+  "edges": [
+    { "id": "brief-to-contract", "from": "owning-brief", "to": "contract-route", "x": 720, "y": 150, "points": [[0, 0], [0, 70]], "label": "retains typed diagram source" },
+    { "id": "contract-to-v1", "from": "contract-route", "to": "v1-renderer", "kind": "secondary", "x": 460, "y": 275, "points": [[0, 0], [-80, 0], [-80, 210], [-40, 210]], "label": "system-diagram-v1 remains isolated", "labelPosition": [300, 370] },
+    { "id": "contract-to-v2", "from": "contract-route", "to": "sequence-validator", "x": 790, "y": 330, "points": [[0, 0], [0, 100]], "label": "system-diagram-v2 · sequence" },
+    { "id": "validate-to-layout", "from": "sequence-validator", "to": "sequence-layout", "x": 790, "y": 540, "points": [[0, 0], [0, 70]], "label": "normalizes supported semantics" },
+    { "id": "layout-to-render", "from": "sequence-layout", "to": "sequence-renderer", "x": 790, "y": 720, "points": [[0, 0], [0, 70]], "label": "hands off deterministic geometry" },
+    { "id": "render-to-report", "from": "sequence-renderer", "to": "report-verifier", "x": 790, "y": 900, "points": [[0, 0], [0, 40], [-70, 40], [-70, 100]], "label": "emits accessible infrastructure SVG" },
+    { "id": "v1-to-report", "from": "v1-renderer", "to": "report-verifier", "kind": "secondary", "x": 230, "y": 540, "points": [[0, 0], [0, 515], [230, 515]], "label": "verifies existing output unchanged" },
+    { "id": "validate-to-blocked", "from": "sequence-validator", "to": "blocked", "kind": "risk", "x": 1020, "y": 485, "points": [[0, 0], [80, 0]], "label": "rejects before layout", "labelPosition": [1060, 380] },
+    { "id": "report-to-proof", "from": "report-verifier", "to": "review-proof", "kind": "success", "x": 720, "y": 1110, "points": [[0, 0], [0, 70]], "label": "embeds with source-owned walkthrough" }
+  ]
+}

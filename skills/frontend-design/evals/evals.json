@@ -35,6 +35,11 @@
       "id": "scrollytelling-polish",
       "prompt": "Polish a self-contained product-story scrollytelling artifact whose panels touch, nested shadows compete, headings wrap poorly, and mobile product mockups are scaled until labels are unreadable. Its review tool strips JavaScript.",
       "expected_output": "A subject-grounded refinement with spacing tokens, real panel gutters, readable measures, restrained elevation, legible reflowed mockups, and rendered verification of the script-stripped CSS/static fallback without changing product behavior."
+    },
+    {
+      "id": "prd-proposed-mockup",
+      "prompt": "The Draft PRD defines one recommended checkout-recovery behavior and asks for a high-fidelity visual proposal before product approval. Create the linked review mockup without changing application code or inventing alternative concepts.",
+      "expected_output": "One portable self-contained mockups.html that follows the PRD's sourced behavior, shows representative responsive and recovery states, marks illustrative data and Proposed / not approved status, and leaves application code untouched."
     }
   ]
 }

@@ -27,6 +27,14 @@ requireAll('PRD authority and structure', skill, [
   'Feature:',
   'Scenario:',
   'UI changes or visual suggestions',
+  'A top-level source list is not enough',
+  'Use these category names verbatim',
+  'Deduplication pass',
+  'responsive wireframe',
+  'explicit request or evidence establishes',
+  'Preserve accepted decisions',
+  'one evidence-backed proposed mockup',
+  'base-form verb phrase',
 ]);
 assertInOrder(skill, ['**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**', '**`decisions`**'], 'PRD role sequence');
 forbidAll('PRD presentation boundary', skill, [
@@ -35,13 +43,16 @@ forbidAll('PRD presentation boundary', skill, [
 
 const reference = 'skills/prd/references/product-slice-contract.md';
 assert(existsSync(join(root, reference)), 'PRD product-slice reference must exist');
-requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'BDD specification', 'Feature:', 'Scenario:', 'Given', 'When', 'Then', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice']);
+requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'BDD specification', 'Feature:', 'Scenario:', 'Given', 'When', 'Then', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice', 'lowercase common noun or determiner', 'base-form verb phrase', 'independently testable pass/fail conditions', 'Use one step for simple behavior', 'Duplication test']);
 
 const evals = JSON.parse(read('skills/prd/evals/evals.json'));
 const conciseUiEval = evals.evals.find((item) => item.id === 5);
 assert(conciseUiEval, 'PRD evals need a concise UI-bearing BDD scenario');
 const conciseUiContract = JSON.stringify(conciseUiEval);
 requireAll('concise UI PRD eval', conciseUiContract, ['direct', 'BDD', 'mockup', 'table', 'alternative']);
+const separationEval = evals.evals.find((item) => item.id === 6);
+assert(separationEval, 'PRD evals need a diagram/mockup separation and authority-classification scenario');
+requireAll('PRD separation eval', JSON.stringify(separationEval), ['causal product-behavior diagram', 'responsive wireframe', 'human-owned', 'Sourced fact', 'Approved product truth', 'lowercase', 'duplicate']);
 
 const triggers = JSON.parse(read('skills/prd/evals/triggers.json'));
 assert(triggers.length >= 10, 'PRD trigger evals need broad positive/negative coverage');

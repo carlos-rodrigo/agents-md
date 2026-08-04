@@ -28,6 +28,9 @@ documentSpec.sections = [{
   ],
 }];
 const html = renderCanonicalReport(documentSpec, { specPath: sourcePath });
+assert(/data-review-id="decision\.safety"[\s\S]*?data-decision-recorded disabled/.test(html), 'open decisions must render recording disabled before JavaScript validates completeness');
+assert(html.includes('Review input is not recorded. JavaScript must validate completeness before browser recording is available.'), 'open decisions need a truthful no-JS recording fallback');
+assert(html.includes('Accepted by Carlos Rodrigo on 2026-07-28.'), 'accepted decisions must server-render canonical approver/date status');
 let servedHtml = html;
 
 const browser = await chromium.launch({ headless: true });

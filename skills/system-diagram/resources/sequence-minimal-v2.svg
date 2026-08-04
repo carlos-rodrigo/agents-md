@@ -1,0 +1,202 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="803" height="336" viewBox="0 0 803 336" role="img" aria-labelledby="sequence-minimal-title sequence-minimal-desc" data-diagram-style="infrastructure-v1" data-diagram-schema="system-diagram-v2" data-diagram-type="sequence" data-layout-version="sequence-v1" data-review-id="sequence-minimal.svg.svg"><title id="sequence-minimal-title">Order submission</title><desc id="sequence-minimal-desc">Who communicates in what order when a customer submits an order.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:3979d56dae9c808a01db1039c026582cb45cd248eba39ad2832ff14614dadd43 --><metadata>{"schemaVersion":"system-diagram-v2","diagramType":"sequence","layoutVersion":"sequence-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+.sequence-lifeline { stroke: #a1a1a1; stroke-width: 1.5; stroke-dasharray: 5 6; }
+.sequence-message { fill: none; stroke-width: 2; }
+.sequence-message--primary { stroke: #0070f3; }
+.sequence-message--secondary { stroke: #73736f; stroke-dasharray: 6 5; }
+.sequence-message--success { stroke: #047857; }
+.sequence-message--warning { stroke: #b45309; stroke-dasharray: 6 5; }
+.sequence-message--risk { stroke: #dc2626; stroke-dasharray: 6 5; }
+.sequence-activation { fill: #fff; stroke: #73736f; stroke-width: 1.5; }
+.sequence-fragment { fill: #fff; fill-opacity: .82; stroke: #73736f; stroke-width: 1.5; stroke-dasharray: 7 5; }
+.sequence-fragment__rule { stroke: #d4d4d0; stroke-width: 1; }
+.sequence-fragment__label,
+.sequence-note__kind,
+.sequence-message__kind { fill: #52524f; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+.sequence-note { fill: #fff; stroke: #d4d4d0; stroke-width: 1.5; }
+.sequence-note__text,
+.sequence-message__label { fill: #171717; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+.sequence-header { fill: #fff; }
+</style><pattern id="sequence-minimal--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><marker id="sequence-minimal--arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7"></path></marker></defs><rect class="diagram-canvas" x="0" y="0" width="803" height="336"></rect><rect class="diagram-grid" x="0" y="0" width="803" height="336" fill="url(#sequence-minimal--grid)"></rect><g class="sequence-fragments"></g><g class="sequence-messages"><g class="sequence-message diagram-reveal" data-review-id="sequence-minimal.message.submit"><path class="sequence-message sequence-message--primary" d="M136 180L667 180" marker-end="url(#sequence-minimal--arrow)"></path><text class="sequence-message__kind" x="401.5" y="160" text-anchor="middle">SYNC</text><text class="sequence-message__label" x="401.5" y="180" text-anchor="middle">Submit order</text></g><g class="sequence-message diagram-reveal" data-review-id="sequence-minimal.message.ack"><path class="sequence-message sequence-message--success" d="M667 252L136 252" marker-end="url(#sequence-minimal--arrow)"></path><text class="sequence-message__kind" x="401.5" y="232" text-anchor="middle">RETURN</text><text class="sequence-message__label" x="401.5" y="252" text-anchor="middle">Confirm receipt</text></g></g><g class="sequence-notes"></g><g class="sequence-activations"><rect class="sequence-activation diagram-reveal" data-review-id="sequence-minimal.activation.checkout-work" x="683" y="156" width="12" height="120" rx="3"></rect></g><g class="sequence-participants"><g class="sequence-participant diagram-reveal" data-review-id="sequence-minimal.participant.customer"><rect class="sequence-header diagram-node__surface" x="48" y="48" width="176" height="96" rx="10"></rect><text class="diagram-node__kind" x="68" y="71">ACTOR</text><text class="diagram-node__title" x="68" y="103" font-size="16">Customer</text><line class="sequence-lifeline" x1="136" y1="144" x2="136" y2="288"></line></g><g class="sequence-participant diagram-reveal" data-review-id="sequence-minimal.participant.checkout"><rect class="sequence-header diagram-node__surface" x="579" y="48" width="176" height="96" rx="10"></rect><text class="diagram-node__kind" x="599" y="71">SERVICE</text><text class="diagram-node__title" x="599" y="103" font-size="16">Checkout</text><line class="sequence-lifeline" x1="667" y1="144" x2="667" y2="288"></line></g></g></svg>

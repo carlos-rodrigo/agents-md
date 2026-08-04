@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { renderCanonicalReport, templateDigest, validateDocumentSpec } from './canonical-report.mjs';
@@ -13,7 +14,7 @@ if (options.has('--help') || files.length === 0) {
 
 Checks the sole canonical report shell, embedded structured DocumentSpec,
 shared accessibility/portability invariants, decision recorders, and required
-Excalidraw provenance. Use --allow-placeholders only for report-template.html.`);
+System Diagram provenance. Use --allow-placeholders only for report-template.html.`);
   process.exit(files.length === 0 ? 2 : 0);
 }
 
@@ -67,7 +68,10 @@ for (const file of files) {
         const decisionRecorderTags = [...html.matchAll(/<fieldset\b([^>]*class=["'][^"']*\bdecision-recorder\b[^>]*)>/gi)].map((match) => match[1]);
         if (decisionRecorderTags.length !== decisions.length) errors.push('every DocumentSpec decision must render exactly one decision recorder');
         if (decisionRecorderTags.some((attributes) => !/data-decision-source-fingerprint=["'][a-f0-9]{64}["']/i.test(attributes))) errors.push('every decision recorder must carry its exact decision-source fingerprint');
-        if ((embeddedSpec.document.kind === 'prd' || embeddedSpec.document.kind === 'design') && !has(/<!--\s*svg-source:excalidraw\s*-->/i)) errors.push(`${embeddedSpec.document.kind} reports require Excalidraw SVG provenance`);
+        if (embeddedSpec.document.kind === 'prd' || embeddedSpec.document.kind === 'design') {
+          if (!has(/<!--\s*svg-source:system-diagram\s*-->/i)) errors.push(`${embeddedSpec.document.kind} reports require System Diagram SVG provenance`);
+          if (!has(/data-diagram-style=["']infrastructure-v1["']/i)) errors.push(`${embeddedSpec.document.kind} reports require the infrastructure-v1 diagram style`);
+        }
       } catch (error) {
         errors.push(`invalid embedded DocumentSpec: ${error.message}`);
       }
@@ -156,9 +160,16 @@ for (const file of files) {
 
   const figures = [...html.matchAll(/<figure\b([^>]*)>([\s\S]*?)<\/figure>/gi)];
   for (const [index, figure] of figures.entries()) {
+    const attributes = figure[1];
     const body = figure[2];
     if (!/<figcaption\b[^>]*>[\s\S]*?\S[\s\S]*?<\/figcaption>/i.test(body)) {
       errors.push(`figure ${index + 1} needs a non-empty <figcaption>`);
+    }
+    if (/\bdiagram-figure\b/i.test(attributes)) {
+      const expectedDigest = attributes.match(/data-diagram-output-sha256=["']([a-f0-9]{64})["']/i)?.[1];
+      const embeddedSvg = body.match(/<svg\b[\s\S]*?<\/svg>/i)?.[0];
+      if (!expectedDigest) errors.push(`diagram figure ${index + 1} needs an output digest`);
+      else if (!embeddedSvg || createHash('sha256').update(embeddedSvg).digest('hex') !== expectedDigest) errors.push(`diagram figure ${index + 1} output digest does not match its embedded SVG`);
     }
   }
 

@@ -47,7 +47,10 @@ try {
   assertSuccess(run(renderer, [join(resources, 'specs/prd-example.document.json'), prdPath]), 'render PRD fixture');
   const prd = readFileSync(prdPath, 'utf8');
   assertSuccess(run(validator, [prdPath]), 'PRD fixture validates');
-  assertFailure('prd-without-excalidraw.html', prd.replace('svg-source:excalidraw', 'svg-source:hand-authored'), 'require Excalidraw SVG provenance');
+  assertFailure('prd-without-system-diagram.html', prd.replace('svg-source:system-diagram', 'svg-source:hand-authored'), 'require System Diagram SVG provenance');
+  assertFailure('prd-without-diagram-style.html', prd.replace('data-diagram-style="infrastructure-v1"', 'data-diagram-style="custom"'), 'require the infrastructure-v1 diagram style');
+  assertFailure('prd-without-diagram-digest.html', prd.replace(/ data-diagram-output-sha256="[a-f0-9]{64}"/, ''), 'needs an output digest');
+  assertFailure('prd-with-tampered-diagram.html', prd.replace('>Evidence</text>', '>Tampered evidence</text>'), 'output digest does not match its embedded SVG');
   assertFailure('prd-without-decision-recorder.html', prd.replace('class="decision-recorder"', 'class="decision-card"'), 'every DocumentSpec decision must render exactly one decision recorder');
   assertFailure('prd-without-decision-fingerprint.html', prd.replace(/ data-decision-source-fingerprint="[a-f0-9]{64}"/, ''), 'decision-source fingerprint');
 
@@ -56,7 +59,7 @@ try {
   const result = run(validator, ['--allow-placeholders', notTemplate]);
   assert(result.status !== 0 && `${result.stdout}${result.stderr}`.includes('only valid for report-template.html'), 'placeholder mode must be limited to the canonical template');
 
-  console.log('PASS: validator enforces canonical shell/profile parity, managed scripts, adjacent-source freshness, decisions, and Excalidraw provenance');
+  console.log('PASS: validator enforces canonical shell/profile parity, managed scripts, adjacent-source freshness, decisions, and System Diagram provenance');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

@@ -53,7 +53,7 @@ Durable docs capture product requirements, current architecture, and ADR-worthy 
 | **design-solution** ★ | Create/update design source plus rendered `design.html`, with system ADRs when needed |
 | **html-report-designer** | Create enjoyable, accessible, self-contained HTML reports for PRDs, designs, diagrams, and decision packets |
 | **feedback-loop** | Define task-level feedback loops and task-local results |
-| **system-diagram** | Create retained Excalidraw JSON scenes and accessible, self-contained SVG diagrams |
+| **system-diagram** | Create retained structured diagram JSON and clean, accessible, self-contained infrastructure SVGs |
 
 ### Development
 
@@ -94,9 +94,10 @@ Use this repo as the canonical shared skill location:
 # Pi / shared agent skill location
 cp -r skills/* ~/.agents/skills/
 
-# Install the mandatory Excalidraw renderer dependencies once.
-npm install --prefix ~/.agents/skills/system-diagram
+# The System Diagram renderer is dependency-free and needs no install step.
 ```
+
+For retained diagrams from the former Excalidraw backend, follow `skills/system-diagram/references/migrating-from-excalidraw.md` before regeneration.
 
 For Claude Code, either copy skills or symlink/import from this repo:
 
@@ -130,8 +131,8 @@ Focused checks (run the relevant one while iterating):
 npm run test:reports
 npm run test:skills
 npm run test:diagram
-# Compatibility proof for the documented minimum runtime:
-npx --yes -p node@18 node scripts/test-skill-portability.mjs
+# Full compatibility proof for the documented minimum runtime:
+npx --yes -p node@18.20.8 -p npm@10.8.2 -c 'node -v && npm -v && npm ci && npm run verify'
 ```
 
 Single final gate, which includes the focused suites:

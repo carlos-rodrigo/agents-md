@@ -51,7 +51,7 @@
       "kicker": "Product flow",
       "title": "A decision moves from question to canonical truth",
       "blocks": [
-        { "type": "diagram", "id": "diagram.product-decision", "question": "How does a reviewer choice become portable without becoming implicit approval?", "caption": "The review record is exported before explicit approval changes canonical truth.", "svgPath": "../../../system-diagram/resources/excalidraw-domain-interaction-example.svg", "sourcePath": "../../../system-diagram/resources/excalidraw-domain-interaction-example.json", "walkthrough": ["Start from the unresolved reviewer question.", "Record the selected option with rationale and owner.", "Export the portable Markdown review record.", "Apply only explicitly approved choices to canonical source."] }
+        { "type": "diagram", "id": "diagram.product-decision", "question": "How does a reviewer choice become portable without becoming implicit approval?", "caption": "The review record is exported before explicit approval changes canonical truth.", "svgPath": "../../../system-diagram/resources/system-domain-interaction-example.svg", "sourcePath": "../../../system-diagram/resources/system-domain-interaction-example.json", "walkthrough": ["Start from the unresolved reviewer question.", "Record the selected option with rationale and owner.", "Export the portable Markdown review record.", "Apply only explicitly approved choices to canonical source."] }
       ]
     },
     {

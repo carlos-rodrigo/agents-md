@@ -1,11 +1,16 @@
 {
-  "id": "excalidraw-domain-interaction-example",
+  "schemaVersion": "system-diagram-v1",
+  "id": "system-domain-interaction-example",
   "title": "Which domain building blocks own facts, derived state, and planning?",
   "desc": "A product-domain map showing authoritative evidence becoming an accepted fact, derived current state, and a read-only lens while planning stays separate under an invariant rail.",
   "reviewPrefix": "diagram.domain-example",
   "reviewId": "svg",
-  "backgroundColor": "#fffdf8",
+  "canvas": { "grid": true },
   "padding": 20,
+  "groups": [
+    { "id": "domain-ownership", "reviewId": "group-domain-ownership", "label": "Authoritative domain", "kind": "ownership", "x": 260, "y": 30, "width": 520, "height": 390 },
+    { "id": "experience-boundary", "reviewId": "group-experience-boundary", "label": "Product experience", "kind": "boundary", "x": 840, "y": 30, "width": 230, "height": 390 }
+  ],
   "nodes": [
     {
       "id": "authoritative-evidence",
@@ -14,7 +19,7 @@
       "x": 20,
       "y": 60,
       "width": 170,
-      "height": 100,
+      "height": 110,
       "fontSize": 14,
       "text": "Evidence\nOwner: source\ninput boundary"
     },
@@ -22,10 +27,10 @@
       "id": "accepted-fact",
       "reviewId": "node-accepted-fact",
       "kind": "domain",
-      "x": 250,
+      "x": 280,
       "y": 60,
       "width": 170,
-      "height": 100,
+      "height": 110,
       "fontSize": 14,
       "text": "Accepted fact\nOwner: domain\ntruth boundary"
     },
@@ -33,43 +38,41 @@
       "id": "derived-state",
       "reviewId": "node-derived-state",
       "kind": "feedback",
-      "x": 480,
+      "x": 560,
       "y": 60,
       "width": 180,
-      "height": 100,
+      "height": 110,
       "fontSize": 14,
       "text": "Current state\nOwner: read view\nvisible effect"
     },
     {
       "id": "read-only-lens",
       "reviewId": "node-read-only-lens",
-      "x": 730,
+      "x": 870,
       "y": 60,
       "width": 180,
-      "height": 100,
+      "height": 110,
       "fontSize": 14,
       "text": "Read-only lens\nOwner: experience\nnext decision"
     },
     {
       "id": "invariant-rail",
       "reviewId": "node-invariant-rail",
-      "kind": "repository",
-      "x": 250,
+      "kind": "policy",
+      "x": 280,
       "y": 300,
-      "width": 410,
-      "height": 100,
+      "width": 480,
+      "height": 110,
       "fontSize": 14,
       "text": "Invariant / policy rail\nOnly authoritative evidence creates facts\nDerived views never rewrite facts"
     },
     {
       "id": "planning-state",
       "reviewId": "node-planning-state",
-      "fill": "#fff1f1",
-      "stroke": "#b94a42",
-      "x": 730,
+      "x": 870,
       "y": 300,
       "width": 180,
-      "height": 100,
+      "height": 110,
       "fontSize": 14,
       "text": "Planning state\nOwner: planning\nseparate boundary"
     }
@@ -83,11 +86,11 @@
       },
       "from": "authoritative-evidence",
       "to": "accepted-fact",
-      "kind": "boundary",
+      "kind": "primary",
       "x": 190,
       "y": 110,
-      "points": [[0, 0], [60, 0]],
-      "fontSize": 13,
+      "points": [[0, 0], [90, 0]],
+      "fontSize": 14,
       "label": "records"
     },
     {
@@ -99,10 +102,10 @@
       "from": "accepted-fact",
       "to": "derived-state",
       "kind": "feedback",
-      "x": 420,
+      "x": 450,
       "y": 110,
-      "points": [[0, 0], [60, 0]],
-      "fontSize": 13,
+      "points": [[0, 0], [110, 0]],
+      "fontSize": 14,
       "label": "changes"
     },
     {
@@ -113,10 +116,10 @@
       },
       "from": "derived-state",
       "to": "read-only-lens",
-      "x": 660,
+      "x": 740,
       "y": 110,
-      "points": [[0, 0], [70, 0]],
-      "fontSize": 13,
+      "points": [[0, 0], [130, 0]],
+      "fontSize": 14,
       "label": "informs"
     },
     {
@@ -127,11 +130,11 @@
       },
       "from": "invariant-rail",
       "to": "derived-state",
-      "kind": "repository",
-      "x": 570,
+      "kind": "secondary",
+      "x": 650,
       "y": 300,
-      "points": [[0, 0], [0, -140]],
-      "fontSize": 13,
+      "points": [[0, 0], [0, -130]],
+      "fontSize": 14,
       "label": "governs"
     },
     {
@@ -143,10 +146,10 @@
       "from": "invariant-rail",
       "to": "planning-state",
       "kind": "risk",
-      "x": 660,
+      "x": 760,
       "y": 350,
-      "points": [[0, 0], [70, 0]],
-      "fontSize": 13,
+      "points": [[0, 0], [110, 0]],
+      "fontSize": 14,
       "label": "separates"
     }
   ]

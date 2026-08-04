@@ -1,87 +1,20 @@
 {
-  "version": 1,
+  "schemaVersion": "system-diagram-v1",
   "id": "report-validation-flow",
   "title": "How one report earns an explicit readiness result",
   "desc": "A report author selects one finished artifact. The validator runs required visual, functional, and browser-matrix checks against it, records ready, failed, or incomplete evidence, and informs the author's sharing decision. A policy rail states that ready requires every mandatory check to pass and not run never means passed.",
-  "backgroundColor": "#fffdf8",
+  "canvas": { "grid": true },
   "padding": 36,
   "nodes": [
-    {
-      "id": "finished-report",
-      "x": 45,
-      "y": 65,
-      "width": 230,
-      "height": 120,
-      "text": "Finished HTML report\nOwner: report author\nOne immutable artifact",
-      "fill": "#eef7f1"
-    },
-    {
-      "id": "required-checks",
-      "x": 350,
-      "y": 45,
-      "width": 255,
-      "height": 160,
-      "text": "Required checks\nOwner: validator\nVisual · functional\nDeclared browser matrix",
-      "fill": "#edf5fb"
-    },
-    {
-      "id": "readiness-result",
-      "x": 680,
-      "y": 55,
-      "width": 235,
-      "height": 140,
-      "text": "Readiness result\nOwner: validator\nReady · failed · incomplete",
-      "fill": "#fff5dc"
-    },
-    {
-      "id": "sharing-decision",
-      "x": 990,
-      "y": 65,
-      "width": 225,
-      "height": 120,
-      "text": "Sharing decision\nOwner: report author\nShare or resolve evidence",
-      "fill": "#f5effb"
-    },
-    {
-      "id": "readiness-policy",
-      "x": 270,
-      "y": 305,
-      "width": 720,
-      "height": 80,
-      "text": "Invariant / policy rail · Ready only when every mandatory check passes the same artifact · Not run ≠ passed",
-      "fill": "#fff1ee",
-      "fontSize": 17
-    }
+    { "id": "finished-report", "kind": "entry", "x": 60, "y": 40, "width": 300, "height": 120, "text": "Finished HTML report\nOwner: report author\nOne immutable artifact" },
+    { "id": "required-checks", "kind": "service", "x": 60, "y": 230, "width": 300, "height": 160, "text": "Required checks\nOwner: validator\nVisual · functional\nDeclared browser matrix" },
+    { "id": "readiness-result", "kind": "decision", "x": 60, "y": 460, "width": 300, "height": 140, "text": "Readiness result\nOwner: validator\nReady · failed · incomplete" },
+    { "id": "sharing-decision", "kind": "decision", "x": 60, "y": 670, "width": 300, "height": 120, "text": "Sharing decision\nOwner: report author\nShare or resolve evidence" },
+    { "id": "readiness-policy", "kind": "policy", "x": 470, "y": 350, "width": 500, "height": 150, "fontSize": 17, "text": "Invariant / policy rail\nReady requires every mandatory check\nto pass against one artifact\nNot run never means passed" }
   ],
   "edges": [
-    {
-      "id": "selects-artifact",
-      "from": "finished-report",
-      "to": "required-checks",
-      "kind": "boundary",
-      "x": 275,
-      "y": 125,
-      "points": [[0, 0], [75, 0]],
-      "label": "selects artifact"
-    },
-    {
-      "id": "records-evidence",
-      "from": "required-checks",
-      "to": "readiness-result",
-      "x": 605,
-      "y": 125,
-      "points": [[0, 0], [75, 0]],
-      "label": "records evidence"
-    },
-    {
-      "id": "informs-decision",
-      "from": "readiness-result",
-      "to": "sharing-decision",
-      "kind": "feedback",
-      "x": 915,
-      "y": 125,
-      "points": [[0, 0], [75, 0]],
-      "label": "informs decision"
-    }
+    { "id": "selects-artifact", "from": "finished-report", "to": "required-checks", "kind": "primary", "x": 210, "y": 160, "points": [[0, 0], [0, 70]], "label": "selects artifact" },
+    { "id": "records-evidence", "from": "required-checks", "to": "readiness-result", "kind": "primary", "x": 210, "y": 390, "points": [[0, 0], [0, 70]], "label": "records evidence" },
+    { "id": "informs-decision", "from": "readiness-result", "to": "sharing-decision", "kind": "primary", "x": 210, "y": 600, "points": [[0, 0], [0, 70]], "label": "informs decision" }
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "system-diagram-v1",
+  "id": "system-slice-example",
+  "title": "Infrastructure outside-in slice diagram",
+  "desc": "A six-node architecture slice rendered as deterministic SVG with a browser feedback branch.",
+  "reviewPrefix": "diagram.example",
+  "reviewId": "svg",
+  "canvas": { "grid": true },
+  "padding": 30,
+  "nodes": [
+    { "id": "quick-create", "reviewId": "node-quick-create", "kind": "entry", "x": 60, "y": 40, "width": 300, "height": 110, "text": "Quick create\nEstablishments" },
+    { "id": "endpoint", "kind": "service", "x": 60, "y": 220, "width": 300, "height": 110, "fontSize": 16, "text": "createEstablishment\nPOST /api/establishments" },
+    { "id": "use-case", "kind": "service", "x": 60, "y": 400, "width": 300, "height": 110, "fontSize": 16, "text": "EstablishmentUseCases\ncreateEstablishment" },
+    { "id": "domain", "kind": "domain", "x": 60, "y": 580, "width": 300, "height": 110, "text": "Establishment\nland + owner validity" },
+    { "id": "repository", "kind": "repository", "x": 60, "y": 760, "width": 300, "height": 110, "text": "EstablishmentRepo\ncreateWithTasks" },
+    { "id": "feedback", "kind": "feedback", "x": 540, "y": 400, "width": 320, "height": 110, "text": "Browser + API fixture\nshows baseline task list" }
+  ],
+  "edges": [
+    { "id": "route-to-endpoint", "reviewIds": { "edge": "edge-route-to-endpoint", "label": "edge-label-route-to-endpoint" }, "from": "quick-create", "to": "endpoint", "kind": "primary", "x": 210, "y": 150, "points": [[0, 0], [0, 70]], "label": "creates" },
+    { "id": "endpoint-to-use-case", "from": "endpoint", "to": "use-case", "kind": "primary", "x": 210, "y": 330, "points": [[0, 0], [0, 70]], "label": "validates" },
+    { "id": "use-case-to-domain", "from": "use-case", "to": "domain", "kind": "primary", "x": 210, "y": 510, "points": [[0, 0], [0, 70]], "label": "applies rules" },
+    { "id": "domain-to-repository", "from": "domain", "to": "repository", "kind": "primary", "x": 210, "y": 690, "points": [[0, 0], [0, 70]], "label": "records" },
+    { "id": "use-case-to-feedback", "from": "use-case", "to": "feedback", "kind": "feedback", "x": 360, "y": 455, "points": [[0, 0], [180, 0]], "label": "proves behavior" }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "system-diagram-capabilities-design",
+    "kind": "design",
+    "status": "Approved",
+    "title": "Add sequence generation beside a frozen System Diagram v1 path",
+    "summary": "A strict semantic sequence source passes through versioned validation, direct deterministic layout, and an additive same-style SVG renderer, while existing system-diagram-v1 validation, CSS, metadata, CLI behavior, and output bytes remain isolated.",
+    "reviewFocus": "Approve or revise the version-isolation seam, exact sequence source contract, same-style CSS extension, report adapter, deterministic layout constraints, and proof gate before implementation planning.",
+    "updated": "2026-08-03",
+    "approval": {
+      "approvedBy": "Carlos Rodrigo",
+      "approvedAt": "2026-08-03"
+    },
+    "sources": [
+      "docs/features/system-diagram-capabilities/prd.document.json",
+      "docs/features/system-diagram-capabilities/prd.html",
+      ".features/system-diagram-capabilities/research.md",
+      "skills/system-diagram/SKILL.md",
+      "skills/system-diagram/scripts/diagram-spec.mjs",
+      "skills/system-diagram/scripts/render-system-diagram.mjs",
+      "skills/system-diagram/resources/infrastructure-diagram.css",
+      "skills/html-report-designer/scripts/canonical-report.mjs",
+      "scripts/test-system-diagram.mjs",
+      "scripts/test-skill-portability.mjs",
+      "docs/adrs/architecture.md#deterministic-infrastructure-style-system-diagrams"
+    ],
+    "feature": "System Diagram capabilities",
+    "relatedArtifacts": [
+      { "label": "Approved PRD", "href": "prd.html" },
+      { "label": "Architecture ADR", "href": "../../adrs/architecture.md" }
+    ]
+  },
+  "sections": [
+    {
+      "id": "design.authority",
+      "role": "authority",
+      "kicker": "Approved product authority",
+      "title": "The sequence-first product contract is approved and current",
+      "summary": "Design may define implementation ownership without changing which skill owns meaning or which visual language reviewers see.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.authority.contract",
+          "items": [
+            ["Approved source", "docs/features/system-diagram-capabilities/prd.document.json is Approved by Carlos Rodrigo on 2026-08-03; its rendered prd.html is current."],
+            ["Product promise", "PRD and Design Solution decide when and what to illustrate; System Diagram generates sequence, flow, architecture, or component explanations; HTML Report Designer validates and embeds."],
+            ["Immediate architecture scope", "Capability selection plus the complete sequence vertical slice covering PRD AC-001 through AC-007."],
+            ["Approved constraints", "Keep the existing infrastructure-v1 language, preserve v1 output, use sequence first, retain report-owned walkthroughs, and fail rather than compress or invent meaning."],
+            ["Deferred product acceptance", "PRD AC-008 through AC-016 remain approved outcomes, but flow, architecture-view, and component-decomposition implementation require later design amendments after sequence evidence."],
+            ["Design gate", "Satisfied — the approved PRD has no blocking product decision and its source/report pair is byte-current."]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.pressure",
+      "role": "pressure",
+      "kicker": "Architecture pressure",
+      "title": "Temporal semantics must be added without destabilizing a trusted renderer",
+      "summary": "The current path is deterministic and portable, but it is structurally a manually positioned graph renderer.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.pressure.evidence",
+          "items": [
+            ["Sourced fact", "diagram-spec.mjs exposes SCHEMA_VERSION system-diagram-v1 and accepts only positioned groups, nodes, and orthogonal edges."],
+            ["Sourced fact", "render-system-diagram.mjs embeds the complete infrastructure-diagram.css file and fixed v1 metadata into every SVG, so changing that bundle changes retained output bytes."],
+            ["Sourced fact", "canonical-report.mjs accepts only system-diagram-v1 nodes and edges and invokes one hard-coded renderer for exact-output verification."],
+            ["Sequence pressure", "Lifelines, temporal event order, returns, self messages, activations, notes, and fragments cannot be represented truthfully as generic graph adjacency."],
+            ["Compatibility pressure", "Existing fixtures, exported SCHEMA_VERSION and normalizeSpec behavior, report embeddings, and copied-skill rendering already depend on the current v1 path."],
+            ["Portability pressure", "The new path must remain dependency-free under actual Node 18 and current Node execution, not merely the developer's active process version."]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "design.pressure.warning",
+          "tone": "warning",
+          "title": "A shared rewrite is the risky obvious solution",
+          "text": "Routing v1 through a new scene model or modifying its embedded CSS would make byte preservation depend on a broad refactor before sequence generation proves any reusable abstraction."
+        }
+      ]
+    },
+    {
+      "id": "design.seam",
+      "role": "seam",
+      "kicker": "Proposed owning seam",
+      "title": "Version isolation keeps v1 frozen while sequence owns a direct v2 pipeline",
+      "summary": "Proposed recommendation — dispatch occurs at the retained source contract; there is no shared scene IR in the first slice.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.seam.model",
+          "items": [
+            ["Consuming skills", "PRD and Design Solution select the capability and supply an authority-classified semantic brief; their guidance and evals own when sequence applies."],
+            ["Frozen v1 lane", "diagram-spec.mjs, render-system-diagram.mjs, infrastructure-diagram.css, root wrappers, metadata, errors covered by tests, and retained v1 SVG bytes stay unchanged."],
+            ["Sequence contract", "A new strict spec-sequence-v2.mjs validates system-diagram-v2 with diagramType sequence and layoutVersion sequence-v1 before any geometry is created."],
+            ["Sequence layout", "A new layout-sequence-v1.mjs converts source-ordered participants and events into integer lifeline, row, fragment, note, activation, and label geometry with no random or iterative optimization."],
+            ["Sequence renderer", "A new render-sequence-diagram.mjs serializes accessible SVG, reads the frozen base infrastructure CSS plus additive infrastructure-sequence.css, keeps data-diagram-style infrastructure-v1, and emits explicit v2 schema/type/layout root markers."],
+            ["Report adapter", "canonical-report.mjs uses allowlisted SVG root markers only to choose a candidate verifier. A v2 candidate must pass the 64 KiB source stat before parse; parsed source must match the markers and exact renderer. SVG without v2 markers stays on the current v1 branch."],
+            ["Future capabilities", "Flow, architecture view, and component decomposition add bounded contracts only after accepted examples prove their needs; they do not force a shared v2 graph engine into this slice."]
+          ]
+        },
+        {
+          "type": "code",
+          "id": "design.seam.contract-example",
+          "label": "Proposed sequence source envelope",
+          "content": "schema:\nsystem-diagram-v2\ntype: sequence\nlayout: sequence-v1\nmode:\ncomponent-communication\nparticipants:\nordered typed IDs\nevents:\nmessage | note | fragment\nactivations:\nstart and end refs"
+        },
+        {
+          "type": "list",
+          "id": "design.seam.contract-rules",
+          "style": "checks",
+          "items": [
+            "Top-level fields are exactly schemaVersion, diagramType, layoutVersion, mode, id, title, desc, optional reviewPrefix, participants, events, and activations. Authored coordinates, colors, CSS, fonts, icons, URLs, and arbitrary SVG are rejected.",
+            "schemaVersion, diagramType, and layoutVersion are fixed to system-diagram-v2, sequence, and sequence-v1. Mode is exactly component-communication, causal-code-flow, or outside-in-slice; mode remains the semantic question while diagramType is only the rendering grammar.",
+            "A participant contains exactly id, kind, and label. Kind is actor, external, system, service, or store; participant array order is authoritative.",
+            "A message contains exactly id, type message, messageType, from, to, label, kind, and replyTo only for return. messageType is sync, async, return, or self; kind is primary, secondary, success, warning, or risk.",
+            "Self requires identical endpoints. Other messages require distinct endpoints. Return requires replyTo naming an earlier message with reversed endpoints; replyTo is rejected for sync, async, and self.",
+            "A note contains exactly id, type note, text, kind, and exactly one participant or event anchor naming an existing element. Kind uses the same semantic enum as messages.",
+            "A fragment contains exactly id, type fragment, fragmentType, label, kind, and branches. A branch contains exactly id, label, and events. Alt has two to four non-empty labelled branches; opt and loop have exactly one non-empty labelled branch.",
+            "An activation contains exactly id, participant, startEvent, and endEvent. Both endpoints name messages involving that participant, start precedes end, and both belong to the same event container or fragment branch.",
+            "Every participant, event, branch, and activation ID is globally unique lowercase kebab text. Recursive event order and branch order are authoritative; omitted or unsupported fields never receive semantic defaults.",
+            "reviewPrefix is optional lowercase dot and kebab text. Output review IDs combine reviewPrefix, diagram id, element role, and element id; no author-supplied per-element review override is accepted in the initial contract."
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.seam.visual-contract",
+          "items": [
+            ["Visual authority", "The frozen infrastructure CSS supplies canvas, grid, typography, palette, surfaces, shadows, semantic route colors, and minimum text size; the extension may add components but no token or alternate style family."],
+            ["Participants", "Headers reuse the existing white node surface, technical kind label, semantic accent rail, and dot; a neutral dashed lifeline descends from each header."],
+            ["Messages", "Routes reuse primary, secondary, success, warning, and risk treatments. Every label also shows SYNC, ASYNC, RETURN, or SELF so line and color are not the sole meaning; return remains dashed and self uses an orthogonal loop."],
+            ["Activations", "White 12px rails with neutral borders sit on lifelines and use deterministic right offsets for nesting."],
+            ["Fragments", "Neutral infrastructure enclosures carry visible ALT, OPT, or LOOP labels, guard labels, and ruled branch separators; they never resemble report cards or page wireframes."],
+            ["Notes", "Notes reuse paper surfaces and semantic accent cues with a visible NOTE label; text remains searchable and within the established minimum size."]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.path",
+      "role": "path",
+      "kicker": "Key flows",
+      "title": "Source meaning becomes geometry only after strict semantic validation",
+      "summary": "The success, compatibility, and recovery flows share provenance checks but not normalization code.",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "design.path.sequence",
+          "items": [
+            { "id": "design.path.select", "title": "Select", "text": "The owning PRD or Design Solution matches a temporal communication question to sequence and retains its source-classified brief." },
+            { "id": "design.path.preflight", "title": "Preflight", "text": "The sequence renderer rejects raw input over 64 KiB before JSON parsing, then rejects unknown fields and invalid XML text." },
+            { "id": "design.path.validate", "title": "Validate", "text": "The v2 validator resolves participants, recursively counts events and fragments, validates references and branch rules, and returns normalized semantic data or one actionable error." },
+            { "id": "design.path.layout", "title": "Lay out", "text": "sequence-v1 measures text conservatively, sizes participant headers, expands lane gaps for labels, notes, and self messages, assigns one row per ordered event, encloses fragments, and places activation rails." },
+            { "id": "design.path.render", "title": "Render", "text": "The sequence serializer escapes all text and emits source digest, version metadata, stable IDs, title and description, lifelines, messages, fragments, labels, and renderer-owned reveal groups." },
+            { "id": "design.path.embed", "title": "Verify and embed", "text": "HTML Report Designer reads allowlisted root markers, enforces the v2 pre-parse size cap, confirms parsed source and marker agreement, invokes the matching exact renderer, verifies self-containment and infrastructure-v1 metadata, then embeds SVG beside the source-owned walkthrough." },
+            { "id": "design.path.recover", "title": "Recover", "text": "Invalid references, excessive dimensions, collisions, or unsupported topology stop before output; the owning skill refines or splits the brief and reruns the same path." }
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.path.layout-contract",
+          "items": [
+            ["Measurement", "Count Unicode code points with one font em per non-space and one-half em per whitespace, round upward to integer units, wrap greedily at whitespace then by code point, and reject authored line breaks. This deliberately overestimates system-font text."],
+            ["Horizontal order", "Place participant headers in source order at 96px height. Initialize each adjacent lane gap to at least 220px and enough for half-header widths plus 48px clearance."],
+            ["Horizontal expansion", "Process events once in source order. A label, note, or 96px self-message gutter may only increase crossed lane gaps; divide any deficit evenly and assign remainder units to the earliest gaps."],
+            ["Vertical order", "Start events 64px below headers. Messages use 72px rows; note rows use at least 72px; fragment height is its 40px band plus ordered branch content, 24px separators, and 24px bottom clearance."],
+            ["Fragments and activations", "Stack fragment branches and nested events in source order. Activation rails are 12px wide at the participant center; concurrent depth offsets eight units to the right and never exceeds three."],
+            ["Bounds", "Extend lifelines 48px below the final event, add 48px outer padding, then reject any viewBox or SVG above the approved cap. No later pass compacts or reorders geometry."]
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.path.branches",
+          "items": [
+            ["V1 compatibility flow", "system-diagram-v1 continues through the existing renderer and exact report verifier; no v2 normalizer, layout, CSS extension, or metadata touches it."],
+            ["Sequence success flow", "Valid semantic source produces one byte-deterministic SVG and a report that preserves existing visual and walkthrough behavior."],
+            ["Source failure flow", "The first failing contract rule returns its stable field and event context; no partial SVG is written."],
+            ["Tamper or staleness", "A changed JSON digest, modified SVG, wrong renderer metadata, executable content, or unsupported version fails report rendering before HTML output."],
+            ["Dimension recovery", "Layout expands lanes and rows until the approved viewBox cap; it never reorders participants or events or shrinks below established text sizes, and asks for a split when the cap cannot hold the brief."]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.diagram",
+      "role": "diagram",
+      "kicker": "Architecture path",
+      "title": "The source-version seam isolates compatibility from new temporal layout",
+      "summary": "The current v1 renderer and the proposed sequence v2 pipeline converge only at version-aware report verification.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.sequence-rendering-seam",
+          "question": "Where can sequence-v2 validation, layout, and rendering enter System Diagram while preserving v1 bytes, semantic authority, and report verification?",
+          "caption": "Source-contract selection happens before normalization: v1 stays frozen; sequence v2 validates and lays out directly; both must pass matching exact-output verification before report embedding.",
+          "svgPath": "diagrams/sequence-rendering-seam.svg",
+          "sourcePath": "diagrams/sequence-rendering-seam.json",
+          "walkthrough": [
+            "PRD or Design Solution supplies an approved question and evidence-backed semantics.",
+            "The retained source contract routes before normalization or rendering.",
+            "System-diagram-v1 remains on its current validator, CSS, metadata, and renderer path.",
+            "Sequence v2 passes through strict references and limits, then one source-ordered integer layout and an additive same-style SVG serializer.",
+            "Invalid sequence source returns an exact blocker before geometry; valid v1 or v2 output reaches the matching report verifier.",
+            "The canonical report embeds byte-current SVG with its source-owned walkthrough, preserving one visual language for the reviewer."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.decisions",
+      "role": "decisions",
+      "kicker": "Proposed architecture decisions",
+      "title": "Four blocking choices define the implementation boundary",
+      "summary": "Browser recording is review input; these choices become architecture authority only after explicit design approval.",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.version-isolation",
+          "question": "How should sequence generation coexist with system-diagram-v1?",
+          "status": "accepted",
+          "options": [
+            { "id": "isolated-v2", "label": "Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer" },
+            { "id": "shared-ir", "label": "Route v1 and sequence through a new shared scene model and renderer" }
+          ],
+          "selectedOptionId": "isolated-v2",
+          "rationale": "Isolation makes byte compatibility mechanical and lets one temporal slice prove reusable needs before any shared IR exists.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-source",
+          "question": "What should the sequence source own?",
+          "status": "accepted",
+          "options": [
+            { "id": "semantic-order", "label": "Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically" },
+            { "id": "authored-geometry", "label": "Extend v1 with manually positioned lifelines, message paths, and fragment rectangles" }
+          ],
+          "selectedOptionId": "semantic-order",
+          "rationale": "Temporal order and references are reviewable product and design semantics; coordinates are renderer mechanics and should not be reauthored for every sequence.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-style",
+          "question": "How should sequence primitives use the existing visual language without changing v1 bytes?",
+          "status": "accepted",
+          "options": [
+            { "id": "base-plus-extension", "label": "Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output" },
+            { "id": "modify-base", "label": "Add sequence selectors to the base CSS embedded by v1" }
+          ],
+          "selectedOptionId": "base-plus-extension",
+          "rationale": "The v2 artifact receives identical base tokens plus new lifeline, message, and fragment components while retained v1 SVG bytes remain unchanged.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.report-version-adapter",
+          "question": "How should canonical reports accept the new source without moving semantic ownership?",
+          "status": "accepted",
+          "options": [
+            { "id": "internal-adapter", "label": "Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type" },
+            { "id": "new-report-schema", "label": "Create canonical-report-v2 and derive walkthrough content from sequence source" }
+          ],
+          "selectedOptionId": "internal-adapter",
+          "rationale": "The report block contract and walkthrough authority do not change; only provenance verification gains one explicitly supported source and renderer pair.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        }
+      ]
+    },
+    {
+      "id": "design.proof",
+      "role": "proof",
+      "kicker": "Constraints and approval proof",
+      "title": "Implementation planning is credible only with exact limits and observable gates",
+      "summary": "The sequence slice must prove compatibility, semantics, deterministic geometry, portability, security, accessibility, and report integration together.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.proof.limits",
+          "items": [
+            ["Source", "64 KiB raw JSON before parse; strict unknown-field rejection; IDs at most 64 characters; title 120; description 600."],
+            ["Participants and events", "1–8 participants; 1–48 messages; at most 64 recursive events total, counting every message, note, and fragment wrapper but not branch containers."],
+            ["Notes and fragments", "At most 16 notes; 12 fragments; three fragment ancestors; alt has 2–4 branches; opt and loop have exactly 1; every branch contains at least one event."],
+            ["Activations", "At most 16 spans; simultaneous depth three per participant; ordered endpoints in one event container or branch."],
+            ["Text", "Participant labels use 64 characters and 3 lines; message and fragment labels use 120 characters and 2 lines; note text uses 300 characters and 5 lines; authored text remains at least 14px."],
+            ["Geometry", "Integer coordinates; source order is the only tie-breaker; no authored coordinates, randomness, optimization, or iterative pass; viewBox at most 4096 × 8192."],
+            ["Output", "At most 1 MiB SVG; source SHA-256; explicit data-diagram-schema, data-diagram-type, data-layout-version, renderer, and infrastructure-v1 style metadata; stable review IDs; searchable escaped text; title and description; role img; and no remote or executable content."],
+            ["Font guarantee", "A versioned conservative code-point width table owns wrapping and geometry; bytes are cross-machine deterministic, while system-font glyph rasterization is not claimed pixel-identical."]
+          ]
+        },
+        {
+          "type": "list",
+          "id": "design.proof.acceptance",
+          "style": "checks",
+          "items": [
+            "DA-001 — Every retained v1 fixture and canonical report remains byte-identical; SCHEMA_VERSION, normalizeSpec, review-ID helpers, current CLI behavior covered by tests, metadata, and infrastructure-diagram.css remain compatible.",
+            "DA-002 — A minimal sequence fixture and a consequential failure and recovery fixture render participants; sync, async, return, and self messages; notes; activations; and alt, opt, and loop fragments in exact source order.",
+            "DA-003 — Focused invalid fixtures prove each unknown field, limit, duplicate ID, missing reference, return mismatch, fragment rule, activation crossing, source-size, dimension, and output-size failure with stable contextual errors.",
+            "DA-004 — Repeated rendering and --check produce identical bytes under actual Node 18 and the current project Node from the repository and from an allowlisted copied skill that excludes node_modules and external package resolution.",
+            "DA-005 — Canonical reports accept exact v1 and sequence-v2 output, reject stale, tampered, or mismatched renderer output, preserve report-owned walkthroughs, and keep canonical-report-v1 source compatibility.",
+            "DA-006 — Desktop, 320px local overflow, no-JS, reduced-motion, and print checks prove readable text, visible complete static content, no clipping, and no collisions among nodes, headers, messages, labels, fragments, or activations using SVG geometry assertions.",
+            "DA-007 — Hostile labels render only as escaped text; executable or foreign content, external assets, XML-invalid controls, arbitrary style, and oversized input or output fail before report output.",
+            "DA-008 — PRD, Design Solution, and System Diagram guidance plus behavioral evals select sequence only for participant and time interaction and return ambiguous, merely linear, static topology, and one-scope decomposition requests to their proper capability.",
+            "DA-009 — The package and lockfile retain zero runtime dependencies, Node.js >=18, deterministic source provenance, and infrastructure-v1 style parity for palette, grid, typography roles, surfaces, route semantics, and minimum text size."
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.proof.tradeoffs",
+          "items": [
+            ["Accepted cost if approved", "The first slice duplicates a small amount of SVG serialization structure instead of prematurely sharing a scene IR."],
+            ["Readability tradeoff", "Conservative measurement may create wider diagrams; local overflow and split guidance are preferred to smaller or overlapping text."],
+            ["Report coupling", "HTML Report Designer knows an allowlisted source and renderer pair but still does not parse sequence semantics or own the walkthrough."],
+            ["Recovery", "Correct canonical source and regenerate; never patch SVG or HTML. A source or layout version change requires a new explicit version, fixture refresh, and compatibility review."],
+            ["Planning gate", "Task drafting may begin only after this design is Approved, all four blocking decisions are Accepted, and the deterministic System Diagram ADR is amended with the accepted version-isolation rationale."]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.boundary",
+      "role": "boundary",
+      "kicker": "Meaningful boundary",
+      "title": "Sequence proves the extension seam; later grammars remain deliberately unbuilt",
+      "summary": "This design authorizes no generic graph engine, migration, or implementation planning for flow, architecture, or component diagrams.",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "design.boundary.list",
+          "style": "checks",
+          "items": [
+            "Unchanged: product and architecture authority, report-owned walkthroughs, canonical diagram block shape, Editorial Infrastructure reports, infrastructure-v1 visual language, and all current v1 retained sources.",
+            "Immediate design scope: capability-selection guidance and evals, strict sequence-v2 source, sequence-v1 direct layout, additive sequence SVG components, exact report verification, fixtures, and proof gates for PRD AC-001 through AC-007.",
+            "Deferred: flow AC-008–010, architecture-view AC-011–013, and component-decomposition AC-014–016 until real examples choose the next vertical slice and an approved design amendment defines its contract.",
+            "Excluded: shared scene IR, automatic graph optimization, force layout, generic migration, authored styling, remote assets, alternate renderer, derived report walkthroughs, class diagrams, timing diagrams, deployment views, and task creation inside this design.",
+            "ADR consequence: after explicit design approval, amend docs/adrs/architecture.md to preserve the accepted version-isolation, same-style extension, and report-verification rationale before tasks become executable."
+          ]
+        }
+      ]
+    }
+  ]
+}

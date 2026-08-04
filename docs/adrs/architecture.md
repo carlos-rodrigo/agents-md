@@ -52,7 +52,7 @@ Feature PRDs and designs are browser-reviewable, self-contained HTML reports by 
 - `docs/features/{feature}/prd.document.json` owns editable product content; `prd.html` is the product review and approval artifact.
 - `docs/features/{feature}/design.document.json` owns editable architecture content; `design.html` is the high-level architecture review artifact.
 - `html-report-designer` owns the reusable report shell, visual hierarchy, accessibility, and review anchors.
-- `system-diagram` owns retained Excalidraw JSON and generated SVG embedded in those reports.
+- `system-diagram` owns retained `system-diagram-v1` JSON and deterministic infrastructure-style SVG embedded in those reports.
 - Stable `data-review-id` anchors are required for review-worthy sections, components, decisions, and diagram elements.
 
 ### Consequences
@@ -77,9 +77,9 @@ This decision amends the editable-source language in the earlier documentation-m
 
 - `canonical-report-v1` structured JSON is the editable generation source.
 - `resources/report-template.html` and `report.tailwind.css` are the sole report shell and style family.
-- The bundled skill-relative renderer validates PRD/design section profiles, approval metadata, decision lifecycle, stable review IDs, and Excalidraw provenance before producing self-contained HTML.
+- The bundled skill-relative renderer validates PRD/design section profiles, approval metadata, decision lifecycle, stable review IDs, and System Diagram provenance before producing self-contained HTML.
 - `prd` and `design-solution` own required meaning and section roles; they never author report markup or CSS.
-- `system-diagram` is the only diagram renderer and retains Excalidraw JSON beside generated SVG.
+- `system-diagram` is the only diagram renderer and retains strict `system-diagram-v1` JSON beside generated infrastructure-style SVG.
 - Browser decision recording and Markdown export are review input. Only explicit human approval reconciled into canonical source changes document or decision status.
 - Missing renderers or invalid authority block generation; there is no alternate template or diagram fallback.
 
@@ -89,7 +89,63 @@ This decision amends the editable-source language in the earlier documentation-m
 - New semantic components require a shared schema/renderer change rather than one-off HTML.
 - Installed skills must carry their scripts/resources and resolve them relative to their loaded `SKILL.md`.
 - Existing generated HTML remains readable but must be migrated to structured source before canonical regeneration.
-- Repository verification covers deterministic rendering, positive/negative PRD/design profiles, decision persistence/export, Excalidraw freshness, clean-copy portability, and browser fallbacks.
+- Repository verification covers deterministic rendering, positive/negative PRD/design profiles, decision persistence/export, System Diagram freshness, clean-copy portability, and browser fallbacks.
+
+## Editorial Infrastructure global report language
+
+Status: Accepted
+Date: 2026-08-03
+
+### Context
+
+The canonical renderer enforced one shell but its compact documentation styling did not match the approved article-first report study. The user explicitly approved applying Editorial Infrastructure globally, then refined the rendered shell after the gridded navigation canvas and opaque report frame appeared as competing surfaces. The visual language must improve comprehension without moving product, architecture, decision, or approval authority into presentation.
+
+### Decision
+
+`html-report-designer` applies Editorial Infrastructure to every canonical report kind through the sole `report.tailwind.css` source and `report-template.html` shell:
+
+- Use one continuous white square-grid canvas across navigation and report content; do not place the report inside an opaque card.
+- Lead with status, an oversized editorial title, concise summary, and review focus.
+- Render sections as numbered chapters with a compact label rail and stable source order.
+- Render facts as brief ledgers, behavior as ruled sequences, BDD scenarios as specifications, and decisions inline with semantic state colors.
+- Give infrastructure figures full-width ruled stages with local overflow that preserves readable SVG text.
+- Keep sticky generated navigation on wide screens and one-column reading order on narrow screens.
+- Preserve deterministic output, self-containment, keyboard focus, contrast, no-JS completeness, reduced-motion behavior, 320px reflow, and print.
+- Do not let document-local CSS or alternate shells imitate or override this visual language.
+
+### Consequences
+
+- PRDs, designs, research, reports, decisions, and diagram packets share one recognizable editorial hierarchy.
+- Visual changes remain centralized and apply on canonical regeneration; structured source and profile semantics do not change.
+- Report regression tests assert the visual-mode marker, continuous white square-grid canvas, transparent report surface, editorial title scale, chapter rail, and narrow stacking in addition to existing interaction and accessibility checks.
+- Existing generated reports remain readable but are stale until regenerated through the canonical renderer.
+
+## Deterministic infrastructure-style system diagrams
+
+Status: Accepted
+Date: 2026-08-02
+
+### Context
+
+The Excalidraw export backend guaranteed provenance and accessibility, but its hand-drawn paths, embedded sketch font, browser build stage, and scene-level style overrides conflicted with the restrained technical storytelling expected around canonical PRDs and designs. Vercel's [Behind the scenes of Vercel's infrastructure](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure) diagrams provide the primary visual reference: quiet technical grids, mostly white nodes, explicit ownership boundaries, one blue causal route, and restrained semantic exception colors.
+
+### Decision
+
+Keep `system-diagram` as the sole diagram ownership boundary, but replace its rendering backend and source contract:
+
+- Retain strict `system-diagram-v1` JSON beside generated SVG.
+- Render deterministic self-contained SVG directly in Node.js with renderer-owned `resources/infrastructure-diagram.css` embedded into every figure; do not use Excalidraw, a browser export stage, arbitrary scene CSS, or hand-authored final SVG.
+- Mark generated output with `<!-- svg-source:system-diagram -->`, the exact raw-source digest, and `data-diagram-style="infrastructure-v1"`.
+- Keep searchable text, accessible title/description, stable review IDs, labelled orthogonal routes, optional ownership groups, static completeness, and responsive/print behavior.
+- Use white nodes and a quiet grid; reserve blue for the primary path and pair green, amber, and red exception states with text and line styles.
+- `html-report-designer` verifies source schema, provenance, visual-system marker, accessibility, and byte-exact renderer output before embedding; it records an output digest so standalone validation detects modified embedded SVG.
+
+### Consequences
+
+- Diagram rendering no longer needs Playwright, React, esbuild, Excalidraw, embedded sketch fonts, or a package-install step.
+- One visual system applies to every durable diagram; source documents cannot override fonts, roughness, fill, stroke, or CSS.
+- Existing retained diagram JSON is migrated to `system-diagram-v1` before canonical regeneration; old generated HTML remains readable but is not current canonical output.
+- Architecture and product semantics, approval boundaries, text walkthroughs, and the single-renderer ownership model remain unchanged.
 
 ## Progressive disclosure for agent documentation
 
@@ -146,3 +202,29 @@ Separate executable completeness from authority to execute:
 - `ready` means both explicitly authorized and executable; neither condition implies the other.
 - `implement-task` and loops block on missing authorization or stale upstream authority rather than inferring permission from completeness, passing tests, or prior implementation.
 - Task files retain lightweight frontmatter rather than introducing a separate approval artifact or task database.
+
+## Version-isolated sequence capability for System Diagram
+
+Status: Accepted
+Date: 2026-08-03
+
+### Context
+
+The approved System Diagram capability design adds temporal sequence semantics while retained `system-diagram-v1` embeds its stylesheet and fixed metadata into generated SVG. Routing v1 through a new scene model, changing its CSS, or expanding its metadata would invalidate byte compatibility for existing diagrams. The report renderer also owns the walkthrough boundary and must not derive product or architecture meaning from diagram internals.
+
+### Decision
+
+- Dispatch by source `schemaVersion` and `diagramType` before normalization or layout.
+- Keep the v1 validator, renderer, CLI behavior, exported compatibility symbols, metadata, embedded CSS, contract-tested errors, and retained SVG/report bytes isolated and unchanged.
+- Implement the first new capability as `system-diagram-v2` with `diagramType: "sequence"` and pinned `layoutVersion: "sequence-v1"`.
+- Keep sequence source semantic and source-ordered; derive integer geometry deterministically in a direct sequence layout without random, iterative, or general-purpose scene optimization.
+- Use additive sequence SVG primitives that reproduce the approved `infrastructure-v1` palette, grid, typography roles, surfaces, route semantics, accessibility, and minimum text size without modifying the v1 CSS bundle.
+- Extend report verification through an allowlisted version-aware adapter. Keep the canonical diagram block and report-owned walkthrough unchanged; reject unsupported, stale, tampered, oversized, or marker/source-mismatched diagrams.
+- Add flow, architecture view, and component decomposition only as later independently approved vertical slices. Do not introduce a shared scene IR, generic migration, or universal graph engine before accepted examples prove reuse.
+
+### Consequences
+
+- Existing v1 output remains a mechanical compatibility baseline while sequence evolves independently.
+- Sequence diagrams may be wider than generic graphs; local report overflow and split guidance preserve readability instead of shrinking text or inventing layout meaning.
+- Product and architecture authority remains with PRD and Design Solution; System Diagram validates and renders; HTML Report Designer verifies and embeds.
+- A new sequence layout or style contract requires a new explicit version and fixture/provenance review rather than silently changing geometry.

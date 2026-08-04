@@ -1,0 +1,1190 @@
+<!doctype html>
+<html lang="en" data-report-template="canonical-report-v1" data-document-kind="design">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="canonical-report" content="canonical-report-v1" />
+  <meta name="canonical-template-digest" content="67a713861a41e1ec208e0e21fdce600e3e521a4daaee69d8188fc6717f78e0bd" />
+  <meta name="description" content="A strict semantic sequence source passes through versioned validation, direct deterministic layout, and an additive same-style SVG renderer, while existing system-diagram-v1 validation, CSS, metadata, CLI behavior, and output bytes remain isolated." />
+  <title>Add sequence generation beside a frozen System Diagram v1 path</title>
+  <style data-tailwind-build="report.tailwind.css">
+/* tailwind-report-css:start */
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Geist,Geist Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}:root{color-scheme:light;--surface-subtle:#fafafa;--text:#000;--text-muted:#666;--text-subtle:#8a8a8a;--border:#eaeaea;--border-strong:#dedede;--accent:#000;--accent-strong:#000;--accent-soft:#f5f5f5;--success:#0070f3;--success-soft:#eef6ff;--warning:#a35200;--danger:#e00;--danger-soft:#fff1f1;--shadow-soft:none;--focus:0 0 0 3px rgba(0,112,243,.24);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--radius-md:6px;--radius-lg:8px;--content:76ch;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--sans:"Geist","Geist Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);line-height:1.58;text-rendering:optimizeLegibility}a{color:var(--accent-strong);text-underline-offset:.18em}code,kbd{font-family:var(--mono);font-size:.92em}code{padding:.12rem .32rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-subtle);overflow-wrap:anywhere}:where(a,button,summary,input):focus-visible{outline:none;box-shadow:var(--focus)}.skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:30;transform:translateY(-180%);padding:.65rem .9rem;border-radius:999px;background:var(--text);color:var(--surface);text-decoration:none}.skip-link:focus{transform:translateY(0)}.doc-shell{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:clamp(var(--space-6),4vw,var(--space-10));width:100%;max-width:none;margin:0;padding:var(--space-8) clamp(var(--space-4),3vw,var(--space-8)) var(--space-10);align-items:start;transition:grid-template-columns .28s cubic-bezier(.2,.8,.2,1)}.doc-shell:has(.index-details:not([open])){grid-template-columns:44px minmax(0,1fr)}.side-nav{position:sticky;top:var(--space-6);min-height:calc(100vh - var(--space-8));max-height:calc(100vh - var(--space-8));overflow:auto;padding-right:var(--space-4);border-right:1px solid var(--border);transition:padding-right .28s ease}.doc-shell:has(.index-details:not([open])) .side-nav{overflow:visible;padding-right:0}.index-details{margin-top:0;padding:0;border:0;border-radius:0;background:transparent}.index-details>summary{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-3);padding:.4rem .5rem;border:0;border-radius:var(--radius-md);background:var(--page);color:var(--text);cursor:pointer;list-style:none}.index-details>summary:hover{background:var(--surface-subtle)}.index-details>summary::-webkit-details-marker{display:none}.index-details>summary:after{content:"⌄";margin-left:var(--space-1);color:var(--text-subtle);transition:transform .18s ease}.index-details[open]>summary:after{transform:rotate(180deg)}.sidebar-toggle-copy{display:inline-flex;margin-left:auto;padding:.18rem .42rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);font-size:.66rem;font-weight:700;letter-spacing:.02em;text-transform:none}.sidebar-toggle-copy:before{content:"Collapse"}.index-details:not([open])>summary{justify-content:center;width:44px;min-height:44px;margin:0;padding:0}.index-details:not([open])>summary:before{content:"☰";color:var(--text);font-size:1rem;line-height:1}.index-details:not([open])>summary .nav-title,.index-details:not([open])>summary .sidebar-toggle-copy,.index-details:not([open])>summary:after{display:none}.panel-title,.side-nav .nav-title,.side-nav h2{margin:0 0 var(--space-3);color:var(--text-subtle);font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.index-details>summary .nav-title{margin:0;color:var(--text)}.side-nav ol,.side-nav ul{display:grid;gap:2px;margin:0;padding:0;list-style:none}.side-nav a{display:block;padding:.38rem .5rem;border:0;border-radius:var(--radius-md);color:var(--text-muted);font-size:.9rem;text-decoration:none;box-shadow:none}.side-nav a.is-active,.side-nav a:hover{background:var(--surface-subtle);color:var(--text);border:0;box-shadow:none}.side-nav a.is-active{font-weight:700}.side-nav .nav-group{margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--border)}.doc-main{min-width:0}.breadcrumbs{margin-bottom:var(--space-4);font-size:.9rem}.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0;padding:0;list-style:none}.breadcrumbs li:not(:last-child):after{content:"/";margin-left:var(--space-2);color:var(--text-subtle)}.breadcrumbs a{color:var(--text-muted);text-decoration:none}.article-header{margin-bottom:var(--space-8);padding:var(--space-6) 0 var(--space-6);border-bottom:1px solid var(--border)}.article-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4)}.pill{display:inline-flex;align-items:center;min-height:26px;padding:.16rem .56rem;border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text-muted);font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.pill.review{background:var(--warning-soft);border-color:color-mix(in srgb,var(--warning) 28%,var(--border))}.pill.approved{background:var(--success-soft);border-color:color-mix(in srgb,var(--success) 28%,var(--border))}.pill.blocked{background:var(--danger-soft);border-color:color-mix(in srgb,var(--danger) 28%,var(--border))}.pill.draft{background:var(--info-soft);border-color:color-mix(in srgb,var(--info) 28%,var(--border))}h1{margin:0;max-width:880px;font-size:clamp(2rem,4vw,3.25rem);line-height:1.05;letter-spacing:-.035em}h1,h2,h3{text-wrap:balance}h2,h3{color:var(--text);line-height:1.22;letter-spacing:-.015em}.subtitle{max-width:760px;margin:var(--space-4) 0 0;font-size:clamp(1rem,1.2vw,1.14rem)}.callout,.feedback-widget,.slice-card{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.section-card{margin-bottom:var(--space-8);padding:0 0 var(--space-8);scroll-margin-top:var(--space-4)}.section-kicker{display:inline-flex;margin-bottom:var(--space-2);color:var(--accent-strong);font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.section-card h2{margin:0;font-size:clamp(1.45rem,2.5vw,2.25rem)}.section-summary{max-width:var(--content);margin:var(--space-3) 0 0}.callout,.slice-card{padding:var(--space-4)}.slice-card h3{margin:0 0 var(--space-2);font-size:1rem}.slice-card p{margin:var(--space-2) 0 0}.callout{margin-top:var(--space-4);border-left:4px solid var(--info);background:var(--info-soft)}.callout.success,.callout.tip{background:var(--success-soft)}.callout.warning{background:var(--warning-soft)}.callout.danger,.callout.risk{background:var(--danger-soft)}.callout strong{display:block;margin-bottom:var(--space-1)}.step-list{display:grid;gap:var(--space-3);margin:var(--space-4) 0 0;padding:0;counter-reset:step;list-style:none}.step-list li{position:relative;padding:var(--space-4) var(--space-4) var(--space-4) 3.2rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.step-list li:before{counter-increment:step;content:counter(step);position:absolute;left:var(--space-4);top:var(--space-4);display:grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:999px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:800}.copyable-code{position:relative;margin-top:var(--space-4)}blockquote{max-width:var(--content);margin:var(--space-4) 0 0;padding:var(--space-3) var(--space-4);border-left:4px solid var(--border-strong);color:var(--text-muted)}blockquote cite{display:block;margin-top:var(--space-2);color:var(--text-subtle);font-style:normal}pre{margin:0;padding:var(--space-4);overflow:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:#0f172a;color:#e5eefc}pre code{border:0;background:transparent;color:inherit;padding:0}.id-chip,.status-chip{display:inline-flex;align-items:center;border-radius:999px;font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.02em}.id-chip{margin-right:.35rem;padding:.12rem .44rem;background:var(--accent-soft);color:var(--accent-strong)}.status-chip{margin-left:.35rem;padding:.1rem .42rem;border:1px solid var(--border);color:var(--text-muted)}.document-block{max-width:var(--content);margin:var(--space-4) 0 0}.canonical-list{margin:var(--space-3) 0 0;padding-left:1.25rem}.canonical-list,.facts{display:grid;gap:var(--space-2)}.facts{margin-top:var(--space-4)}.facts>div{display:grid;grid-template-columns:minmax(120px,.35fr) minmax(0,1fr);gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border)}.facts dt{color:var(--text);font-weight:800}.facts dd{margin:0}.scenario-panel{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.scenario-panel h3{margin:0 0 var(--space-3)}.scenario-line{display:grid;grid-template-columns:5rem minmax(0,1fr);gap:var(--space-3);margin-top:var(--space-2)}.scenario-line strong{color:var(--text)}.scenario-line span{color:var(--text-muted)}.slice-card{margin-top:var(--space-5)}.slice-card>header{padding-bottom:var(--space-3);border-bottom:1px solid var(--border)}.slice-card>header h3{margin:0}.slice-story{margin-top:var(--space-3);color:var(--text);font-weight:650}.workflow-overview{display:grid;gap:var(--space-2);margin-top:var(--space-4)}.workflow-label{color:var(--text-subtle);font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.workflow-sequence{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin:0;color:var(--text);font-weight:750}.workflow-arrow{color:var(--accent);font-family:var(--mono)}.storyboard{display:grid;grid-template-columns:repeat(var(--workflow-step-count),minmax(0,1fr));margin:var(--space-3) 0 0;padding:var(--space-4) 0 0;border-top:1px solid var(--border-strong);counter-reset:workflow-stage;list-style:none}.storyboard-step{min-width:0;padding:0 var(--space-4);border:0;border-left:1px solid var(--border)}.storyboard-step:first-child{border-left:0}.workflow-step-heading{display:flex;gap:var(--space-2);align-items:baseline;margin-bottom:var(--space-3)}.workflow-step-number{flex:none;color:var(--accent);font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.08em}.storyboard-step h4{margin:0}.storyboard-step dl{display:grid;gap:var(--space-3);margin:0}.workflow-detail{display:grid;gap:2px}.storyboard-step dt{color:var(--text-subtle);font-family:var(--mono);font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.storyboard-step dd{margin:0;color:var(--text-muted)}.workflow-detail--handoff{padding-top:var(--space-2);border-top:1px solid var(--accent)}.workflow-detail--handoff dt{color:var(--accent-strong)}.acceptance-list{display:grid;gap:var(--space-2);margin-top:var(--space-4);padding:0;list-style:none}.acceptance-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-2);padding:var(--space-2) 0;color:var(--text-muted)}.acceptance-list .id-chip{align-self:start}.decision-recorder{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.decision-recorder[data-decision-status=accepted]{border-left:4px solid var(--success)}.decision-recorder[data-decision-status=open]{border-left:4px solid var(--warning);background:var(--warning-soft)}.decision-recorder legend{padding:0 var(--space-2);font-weight:800}.decision-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:var(--space-2) 0 var(--space-3);color:var(--text-muted);font-size:.85rem}.decision-option,.decision-options{display:grid;gap:var(--space-2)}.decision-option{grid-template-columns:auto minmax(0,1fr);align-items:start}.decision-option input{margin-top:.25rem;accent-color:var(--accent)}.decision-custom,.decision-field{display:grid;gap:var(--space-1);margin-top:var(--space-3)}.decision-custom span,.decision-field span{color:var(--text);font-size:.82rem;font-weight:800}.decision-custom input,.decision-field input,.decision-field textarea{width:100%;padding:.55rem .65rem;border:1px solid var(--border);border-radius:var(--radius-sm);font:inherit}.decision-record-check{display:flex;gap:var(--space-2);align-items:start;margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--border);color:var(--text);font-weight:750}.decision-record-check input{margin-top:.25rem;accent-color:var(--success)}.decision-status{min-height:1.4em;margin-top:var(--space-2);color:var(--text-muted);font-size:.86rem}.figure-question{margin:0 0 var(--space-3);color:var(--text);font-weight:750}.diagram-walkthrough{display:grid;gap:var(--space-2);margin:var(--space-3) 0 0;padding-left:1.25rem}figure{margin:var(--space-4) 0 0}.figure-card{padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto}.figure-card svg{display:block;width:100%;min-width:0;max-width:1024px;height:auto}.figure-card svg[data-diagram-type=sequence]{width:auto;min-width:0;max-width:none}@media (max-width:720px){.figure-card svg{min-width:1024px;max-width:none}}@media (min-width:721px){.figure-card svg[data-diagram-type=sequence]{width:100%;max-width:100%}}figcaption{margin-top:var(--space-3);font-size:.92rem}.slice-card+.slice-card{margin-top:var(--space-8)}.diagram-figure{background:var(--surface)}.diagram-edge-label{pointer-events:none}.diagram-reveal{opacity:1;transform:none}.js .diagram-reveal{opacity:0;transform:translateY(12px);transform-box:fill-box;transform-origin:center;transition:opacity .36s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1);transition-delay:var(--reveal-delay,0ms)}.js .is-visible .diagram-reveal,.js .reveal.is-visible .diagram-reveal{opacity:1;transform:translateY(0)}details{margin-top:var(--space-4);padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius-lg)}summary{cursor:pointer;color:var(--text);font-weight:700}.feedback-widget{margin-top:var(--space-5);padding:var(--space-4)}.feedback-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}.feedback-actions button{border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);padding:.42rem .72rem;cursor:pointer}.feedback-note{color:var(--text-muted);font-size:.9rem}:where([data-review-id]){position:relative}[data-review-id]:target{outline:3px solid var(--accent);outline-offset:5px}.back-to-top{position:fixed;right:var(--space-5);bottom:var(--space-5);display:grid;place-items:center;width:2.4rem;height:2.4rem;border:1px solid var(--border);border-radius:999px;text-decoration:none}footer{margin:0 auto;padding:0 clamp(var(--space-4),3vw,var(--space-8)) var(--space-8);color:var(--text-muted);font-size:.9rem}.reveal{opacity:1;transform:none}.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .52s cubic-bezier(.2,.8,.2,1),transform .56s cubic-bezier(.2,.8,.2,1);will-change:opacity,transform}.js .reveal.is-visible{opacity:1;transform:translateY(0)}@media (max-width:720px){.facts>div,.scenario-line{grid-template-columns:1fr;gap:var(--space-1)}}@media (max-width:960px){.doc-shell,.doc-shell:has(.index-details:not([open])){grid-template-columns:1fr}.side-nav{position:static;min-height:0;max-height:none;padding:0 0 var(--space-4);border-right:0;border-bottom:1px solid var(--border)}.index-details:not([open])>summary{width:100%;justify-content:flex-start;padding:.4rem .5rem}}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0ms!important;scroll-behavior:auto!important}.js .diagram-reveal,.js .reveal{opacity:1;transform:none}}@media print{body{background:#fff;color:#000}.back-to-top,.feedback-widget,.side-nav{display:none}.doc-shell{display:block;max-width:none;padding:0}.article-header,.callout,.decision-recorder,.section-card,.slice-card{box-shadow:none;-moz-column-break-inside:avoid;break-inside:avoid}.diagram-reveal,.reveal{opacity:1!important;transform:none!important}.figure-card{overflow:visible}.figure-card svg{min-width:0}a{color:#000;text-decoration:none}}:root{--page:#fff;--surface:#fff;--surface-subtle:#f7f7f5;--text:#171717;--text-muted:#666663;--text-subtle:#6b6b67;--border:#deded9;--border-strong:#c9c9c2;--accent:#0070f3;--accent-strong:#0070f3;--accent-soft:#eef6ff;--success:#047857;--success-soft:#ecfdf5;--warning:#b45309;--warning-soft:#fff7ed;--danger:#dc2626;--danger-soft:#fff1f2;--info:#0070f3;--info-soft:#eef6ff;--shadow-soft:0 24px 70px hsla(0,0%,9%,.08),0 2px 8px hsla(0,0%,9%,.05);--radius-sm:6px;--radius-md:8px;--radius-lg:14px;--content:72ch;--grid-line:hsla(0,0%,9%,.035)}body[data-visual-mode=editorial-infrastructure-v1]{min-width:0;background-color:var(--page);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px}@media (prefers-color-scheme:dark){:root{color-scheme:dark;--page:#111;--surface:#151515;--surface-subtle:#1b1b1a;--text:#f5f5f2;--text-muted:#b8b8b2;--text-subtle:#96968f;--border:#33332f;--border-strong:#484842;--accent:#5ca8ff;--accent-strong:#78b7ff;--accent-soft:#132a43;--success:#50d19a;--success-soft:#102c22;--warning:#f2ad5d;--warning-soft:#352311;--danger:#f77;--danger-soft:#381719;--info:#78b7ff;--info-soft:#132a43;--shadow-soft:0 24px 70px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.2);--grid-line:hsla(0,0%,100%,.045)}}:where(a,button,summary,input,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:3px;box-shadow:none}.doc-shell{grid-template-columns:minmax(210px,240px) minmax(0,1fr);gap:clamp(24px,3vw,44px);width:min(1580px,calc(100% - 32px));max-width:1580px;margin:0 auto;padding:32px 0 72px}.doc-shell:has(.index-details:not([open])){grid-template-columns:52px minmax(0,1fr)}.side-nav{top:24px;min-height:calc(100vh - 48px);max-height:calc(100vh - 48px);padding:0 20px 24px 0;border-right-color:var(--border-strong)}.index-details>summary{padding:8px 0 12px;border-bottom:1px solid var(--border);border-radius:0;background:transparent}.index-details>summary:hover{background:transparent;color:var(--accent)}.index-details>summary .nav-title,.panel-title,.side-nav .nav-title,.side-nav h2{font-family:var(--mono);font-size:11px;letter-spacing:.08em}.sidebar-toggle-copy{padding:0;border:0;border-radius:0;background:transparent;color:var(--text-subtle);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}.side-nav ol,.side-nav ul{gap:0}.side-nav a{padding:9px 0;border-bottom:1px solid transparent;border-radius:0;font-size:13px;line-height:1.35}.side-nav a:hover{border-bottom-color:var(--border)}.side-nav a.is-active,.side-nav a:hover{background:transparent;color:var(--text)}.side-nav a.is-active{border-bottom-color:var(--accent);font-weight:750}.side-nav .nav-group{margin-top:28px;padding-top:20px;border-top-color:var(--border-strong)}.breadcrumbs{margin:0 0 14px;color:var(--text-subtle);font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}.report-article{counter-reset:report-chapter;overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none}.frame-top{display:flex;justify-content:space-between;gap:20px;padding:13px 18px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.frame-top span:last-child{color:var(--accent)}.article-header{margin:0;padding:clamp(40px,6vw,76px);border-bottom:1px solid var(--border-strong)}.article-meta{gap:8px 18px;margin-bottom:34px;color:var(--text-subtle);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}.pill{min-height:0;padding:0;border:0;border-radius:0;color:var(--text-subtle);font:inherit;letter-spacing:inherit}.pill,.pill.review{background:transparent}.pill.review{border:0;color:var(--warning)}.pill.approved{color:var(--success)}.pill.approved,.pill.blocked{border:0;background:transparent}.pill.blocked{color:var(--danger)}.pill.draft{border:0;background:transparent;color:var(--info)}h1{max-width:1040px;font-size:clamp(44px,5.5vw,76px);line-height:.98;letter-spacing:-.055em}.subtitle{max-width:820px;margin-top:24px;color:var(--text-muted);font-size:clamp(18px,1.6vw,22px);line-height:1.42}.article-header>.callout{max-width:780px;margin-top:34px;padding:20px 0 0 24px;border:0;border-top:1px solid var(--border);border-left:3px solid var(--warning);border-radius:0;background:transparent}.article-header>.callout p{margin:0;color:var(--text-muted)}.section-card{counter-increment:report-chapter;display:grid;grid-template-columns:120px minmax(0,1fr);-moz-column-gap:28px;column-gap:28px;margin:0;padding:52px clamp(32px,6vw,76px);border-bottom:1px solid var(--border);scroll-margin-top:24px}.section-card:last-child{border-bottom:0}.section-card>:not(.section-kicker){grid-column:2}.section-kicker{grid-column:1;grid-row:1/span 2;display:block;margin:4px 0 0;color:var(--text-subtle);font-family:var(--mono);font-size:11px;font-weight:750;letter-spacing:.07em}.section-kicker:before{content:counter(report-chapter,decimal-leading-zero) " / ";color:var(--accent)}.section-card h2{max-width:960px;font-size:clamp(28px,3vw,42px);line-height:1.04;letter-spacing:-.04em}.section-summary{margin-top:14px;font-size:17px;line-height:1.55}.document-block,.section-summary{max-width:72ch;color:var(--text-muted)}.document-block{margin-top:26px;font-size:16px}.facts{max-width:900px;gap:0;margin-top:30px;border-top:1px solid var(--text)}.facts>div{grid-template-columns:150px minmax(0,1fr);gap:28px;padding:17px 0;border-bottom-color:var(--border)}.facts dt{font-family:var(--mono);font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}.facts dd{max-width:68ch;color:var(--text-muted)}.callout{max-width:780px;margin-top:28px;padding:20px 24px;border:0;border-top:1px solid var(--border);border-left:3px solid var(--info);border-radius:0;background:linear-gradient(90deg,var(--info-soft),transparent 82%)}.callout.success,.callout.tip{border-left-color:var(--success);background:linear-gradient(90deg,var(--success-soft),transparent 82%)}.callout.warning{border-left-color:var(--warning);background:linear-gradient(90deg,var(--warning-soft),transparent 82%)}.callout.danger,.callout.risk{border-left-color:var(--danger);background:linear-gradient(90deg,var(--danger-soft),transparent 82%)}.callout p{margin:0;color:var(--text-muted)}.step-list{max-width:900px;gap:0;margin-top:30px;border-top:1px solid var(--text)}.step-list li{padding:18px 0 18px 44px;border:0;border-bottom:1px solid var(--border)}.step-list li,.step-list li:before{border-radius:0;background:transparent}.step-list li:before{content:counter(step,decimal-leading-zero);left:0;top:20px;display:block;width:auto;height:auto;color:var(--accent);font-family:var(--mono);font-size:11px}.canonical-list{max-width:820px;gap:10px;margin-top:26px;color:var(--text-muted)}.canonical-list--checks{list-style:"✓  "}.scenario-panel{max-width:880px;margin-top:30px;padding:0;border:0;border-top:1px solid var(--text);border-bottom:1px solid var(--text);border-radius:0;background:transparent}.scenario-panel h3{margin:0;padding:18px 0;font-size:18px}.scenario-line{grid-template-columns:80px minmax(0,1fr);gap:20px;margin:0;padding:12px 0;border-top:1px solid var(--border)}.scenario-line strong{color:var(--accent);font-family:var(--mono);font-size:12px;text-transform:uppercase}.scenario-line:last-child{background:linear-gradient(90deg,var(--success-soft),transparent 78%)}.scenario-line:last-child strong{color:var(--success)}.slice-card{max-width:980px;margin-top:40px;padding:26px 0 0;border:0;border-top:2px solid var(--text);border-radius:0;background:transparent}.slice-card+.slice-card{margin-top:54px}.slice-card>header{padding-bottom:18px;border-bottom-color:var(--border)}.slice-card>header h3{font-size:24px;letter-spacing:-.03em}.slice-card p{color:var(--text-muted)}.slice-story{margin-top:18px;font-size:16px}.workflow-overview{margin-top:24px}.workflow-sequence{gap:10px;font-size:15px}.storyboard{gap:0;margin-top:14px;padding-top:20px}.storyboard-step{padding:0 20px;border-radius:0;background:transparent}.storyboard-step:first-child{padding-left:0}.storyboard-step:last-child{padding-right:0}.workflow-step-heading{margin-bottom:16px}.workflow-detail--handoff{background:linear-gradient(90deg,var(--accent-soft),transparent)}.acceptance-list{max-width:880px;gap:0;margin-top:24px;border-top:1px solid var(--border)}.acceptance-list li{padding:12px 0;border-bottom:1px solid var(--border)}.id-chip{background:transparent;color:var(--accent);padding-left:0}.status-chip{border-color:currentColor;background:var(--surface)}.decision-recorder{max-width:900px;margin-top:34px;padding:24px;border:1px solid #f0c896;border-left:4px solid var(--warning);border-radius:0;background:var(--warning-soft)}.decision-recorder[data-decision-status=accepted]{border-color:#8bd8b9;border-left-color:var(--success);background:var(--success-soft)}.decision-recorder[data-decision-status=accepted] .decision-custom input,.decision-recorder[data-decision-status=accepted] .decision-field input,.decision-recorder[data-decision-status=accepted] .decision-field textarea{border-color:#8bd8b9}.decision-recorder[data-decision-status=accepted] .decision-record-check{border-top-color:#8bd8b9}.decision-recorder[data-decision-status=accepted] input{accent-color:var(--success)}.decision-recorder[data-decision-status=open],.decision-recorder[data-decision-status=proposed]{border-color:#f0c896;border-left-color:var(--warning);background:var(--warning-soft)}.decision-recorder legend{padding:0;font-size:20px;font-weight:760}.decision-meta{gap:8px 16px;margin:10px 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase}.decision-options{gap:12px}.decision-option{gap:10px;color:var(--text-muted)}.decision-option input{accent-color:var(--warning)}.decision-custom span,.decision-field span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}.decision-custom input,.decision-field input,.decision-field textarea{border-color:color-mix(in srgb,var(--warning) 55%,var(--border));border-radius:6px;background:var(--surface);color:var(--text)}.decision-record-check{border-top-color:#edc994}.figure-card{margin-top:34px;padding:18px;border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0;background:var(--surface-subtle)}.figure-question{max-width:900px;font-size:16px}figcaption{font-size:13px}.diagram-walkthrough,figcaption{max-width:900px;color:var(--text-muted)}.diagram-walkthrough{gap:8px;margin-top:16px}blockquote{max-width:72ch;margin-top:26px;padding:18px 0 0 24px;border-top:1px solid var(--border);border-left:3px solid var(--border-strong)}pre{margin-top:24px;border-radius:8px}details{margin-top:26px;background:var(--surface-subtle)}.feedback-widget,details{max-width:900px;border-radius:8px}.feedback-actions button{background:var(--surface);color:var(--text)}.back-to-top{border-color:var(--border-strong);background:var(--surface);box-shadow:var(--shadow-soft)}footer{max-width:1580px;padding:0 16px 40px;font-family:var(--mono);font-size:11px}@media (max-width:1100px){.doc-shell{grid-template-columns:minmax(190px,220px) minmax(0,1fr);gap:24px}.article-header{padding:48px}.section-card{grid-template-columns:100px minmax(0,1fr);padding:44px 48px}}@media (max-width:960px){.doc-shell,.doc-shell:has(.index-details:not([open])){grid-template-columns:1fr;width:min(100% - 24px,900px);padding-top:18px}.side-nav{position:static;min-height:0;max-height:none;padding:0 0 16px;border-right:0;border-bottom:1px solid var(--border-strong)}.index-details>summary{border-bottom:0}.side-nav a{padding:8px 0}.article-header{padding:42px 36px}.section-card{grid-template-columns:92px minmax(0,1fr);padding:40px 36px}}@media (max-width:680px){.doc-shell,.doc-shell:has(.index-details:not([open])){width:min(100% - 20px,680px);gap:12px;padding:10px 0 40px}.breadcrumbs{margin-left:2px}.side-nav nav{overflow:visible}.side-nav nav ol{display:grid;gap:0;padding:0}.side-nav nav li{min-width:0}.side-nav nav a{height:auto;padding:9px 0;border:0;border-bottom:1px solid transparent;border-radius:0;background:transparent;overflow-wrap:anywhere}.side-nav nav a.is-active{border-bottom-color:var(--accent)}.side-nav .nav-group{margin-top:8px;padding-top:12px}.back-to-top{display:none}.frame-top{padding:11px 14px}.frame-top span:last-child{display:none}.article-header{padding:32px 22px}.article-meta{gap:8px 12px;margin-bottom:24px}h1{font-size:42px}.subtitle{font-size:17px}.article-header>.callout{padding-left:18px}.section-card{grid-template-columns:1fr;gap:8px;padding:32px 22px}.section-card>:not(.section-kicker),.section-kicker{grid-column:1;grid-row:auto}.section-kicker{margin:0 0 4px;color:var(--accent)}.section-card h2{font-size:30px}.section-summary{font-size:16px}.facts>div,.scenario-line{grid-template-columns:1fr;gap:7px}.facts>div{padding:14px 0}.step-list li{padding-right:0}.slice-card{padding-top:20px}.workflow-sequence{flex-direction:column;align-items:flex-start;gap:4px}.workflow-arrow{transform:rotate(90deg);transform-origin:center}.storyboard{grid-template-columns:1fr;margin-top:18px;padding:0 0 0 16px;border-top:0;border-left:1px solid var(--border-strong)}.storyboard-step,.storyboard-step:first-child,.storyboard-step:last-child{padding:20px 0 24px 18px;border:0;border-bottom:1px solid var(--border)}.storyboard-step:last-child{padding-bottom:0;border-bottom:0}.decision-recorder{padding:20px 18px}.figure-card{margin-left:0;margin-right:0;padding:14px}footer{padding-left:12px;padding-right:12px}}@media (forced-colors:active){.callout,.decision-recorder,.figure-card,.report-article,.storyboard,.storyboard-step,.workflow-detail--handoff{border-color:CanvasText}.frame-top span:last-child,.section-kicker:before,.workflow-arrow,.workflow-detail--handoff dt,.workflow-step-number{color:LinkText}}@media print{:root{color-scheme:light;--page:#fff;--surface:#fff;--surface-subtle:#f7f7f5;--text:#171717;--text-muted:#666663;--text-subtle:#6b6b67;--border:#deded9;--border-strong:#c9c9c2;--accent:#0070f3;--grid-line:transparent}body[data-visual-mode=editorial-infrastructure-v1]{background:#fff;color:#000}.frame-top{display:none}.report-article{overflow:visible;border:0;border-radius:0;box-shadow:none}.article-header{padding:0 0 28px}.section-card{grid-template-columns:90px minmax(0,1fr);padding:28px 0;-moz-column-break-inside:auto;break-inside:auto}.scenario-panel h3,.section-card h2,.slice-card>header{-moz-column-break-after:avoid;break-after:avoid}.callout,.decision-recorder,.slice-card,.storyboard,.storyboard-step{-moz-column-break-inside:avoid;break-inside:avoid}}
+/* tailwind-report-css:end */
+  </style>
+</head>
+<body data-visual-mode="editorial-infrastructure-v1">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="doc-shell">
+    <aside class="side-nav" aria-label="Document navigation" data-review-id="chrome.side-nav">
+      <details class="index-details" open>
+        <summary aria-label="Toggle document sidebar" title="Collapse or expand document sidebar"><span class="nav-title">Feature design</span><span class="sidebar-toggle-copy" aria-hidden="true"></span></summary>
+        <nav aria-label="Table of contents" data-review-id="chrome.index">
+          <ol>
+            <li><a href="#design.authority">The sequence-first product contract is approved and current</a></li>
+            <li><a href="#design.pressure">Temporal semantics must be added without destabilizing a trusted renderer</a></li>
+            <li><a href="#design.seam">Version isolation keeps v1 frozen while sequence owns a direct v2 pipeline</a></li>
+            <li><a href="#design.path">Source meaning becomes geometry only after strict semantic validation</a></li>
+            <li><a href="#design.diagram">The source-version seam isolates compatibility from new temporal layout</a></li>
+            <li><a href="#design.decisions">Four blocking choices define the implementation boundary</a></li>
+            <li><a href="#design.proof">Implementation planning is credible only with exact limits and observable gates</a></li>
+            <li><a href="#design.boundary">Sequence proves the extension seam; later grammars remain deliberately unbuilt</a></li>
+          </ol>
+        </nav>
+        <div class="nav-group"><h2>Related artifacts</h2><ul><li><a href="prd.html">Approved PRD</a></li><li><a href="../../adrs/architecture.md">Architecture ADR</a></li></ul></div>
+      </details>
+    </aside>
+
+    <main id="main" class="doc-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs" data-review-id="summary.breadcrumbs">
+        <ol><li><a href="../../">Docs</a></li><li><a href="./">System Diagram capabilities</a></li><li aria-current="page">Feature design</li></ol>
+      </nav>
+
+      <article class="report-article">
+        <div class="frame-top" aria-hidden="true"><span>Canonical report</span><span>Editorial Infrastructure</span></div>
+        <header class="article-header" id="summary" data-review-id="summary">
+          <div class="article-meta">
+            <span class="pill approved">Approved</span>
+            <span class="pill">Feature design</span>
+            <span class="pill">Updated 2026-08-03</span>
+          </div>
+          <h1>Add sequence generation beside a frozen System Diagram v1 path</h1>
+          <p class="subtitle">A strict semantic sequence source passes through versioned validation, direct deterministic layout, and an additive same-style SVG renderer, while existing system-diagram-v1 validation, CSS, metadata, CLI behavior, and output bytes remain isolated.</p>
+          <aside class="callout warning" data-review-id="review.focus"><strong>Review first</strong><p>Approve or revise the version-isolation seam, exact sequence source contract, same-style CSS extension, report adapter, deterministic layout constraints, and proof gate before implementation planning.</p></aside>
+<aside class="callout success" data-review-id="approval"><strong>Explicit human approval</strong><p>Approved by Carlos Rodrigo on 2026-08-03.</p></aside>
+        </header>
+
+        <section class="section-card reveal" id="design.authority" aria-labelledby="design.authority-title" data-review-id="design.authority">
+          <span class="section-kicker">Approved product authority</span>
+          <h2 id="design.authority-title">The sequence-first product contract is approved and current</h2>
+          <p class="section-summary">Design may define implementation ownership without changing which skill owns meaning or which visual language reviewers see.</p>
+          <dl class="facts" data-review-id="design.authority.contract"><div><dt>Approved source</dt><dd>docs/features/system-diagram-capabilities/prd.document.json is Approved by Carlos Rodrigo on 2026-08-03; its rendered prd.html is current.</dd></div><div><dt>Product promise</dt><dd>PRD and Design Solution decide when and what to illustrate; System Diagram generates sequence, flow, architecture, or component explanations; HTML Report Designer validates and embeds.</dd></div><div><dt>Immediate architecture scope</dt><dd>Capability selection plus the complete sequence vertical slice covering PRD AC-001 through AC-007.</dd></div><div><dt>Approved constraints</dt><dd>Keep the existing infrastructure-v1 language, preserve v1 output, use sequence first, retain report-owned walkthroughs, and fail rather than compress or invent meaning.</dd></div><div><dt>Deferred product acceptance</dt><dd>PRD AC-008 through AC-016 remain approved outcomes, but flow, architecture-view, and component-decomposition implementation require later design amendments after sequence evidence.</dd></div><div><dt>Design gate</dt><dd>Satisfied — the approved PRD has no blocking product decision and its source/report pair is byte-current.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.pressure" aria-labelledby="design.pressure-title" data-review-id="design.pressure">
+          <span class="section-kicker">Architecture pressure</span>
+          <h2 id="design.pressure-title">Temporal semantics must be added without destabilizing a trusted renderer</h2>
+          <p class="section-summary">The current path is deterministic and portable, but it is structurally a manually positioned graph renderer.</p>
+          <dl class="facts" data-review-id="design.pressure.evidence"><div><dt>Sourced fact</dt><dd>diagram-spec.mjs exposes SCHEMA_VERSION system-diagram-v1 and accepts only positioned groups, nodes, and orthogonal edges.</dd></div><div><dt>Sourced fact</dt><dd>render-system-diagram.mjs embeds the complete infrastructure-diagram.css file and fixed v1 metadata into every SVG, so changing that bundle changes retained output bytes.</dd></div><div><dt>Sourced fact</dt><dd>canonical-report.mjs accepts only system-diagram-v1 nodes and edges and invokes one hard-coded renderer for exact-output verification.</dd></div><div><dt>Sequence pressure</dt><dd>Lifelines, temporal event order, returns, self messages, activations, notes, and fragments cannot be represented truthfully as generic graph adjacency.</dd></div><div><dt>Compatibility pressure</dt><dd>Existing fixtures, exported SCHEMA_VERSION and normalizeSpec behavior, report embeddings, and copied-skill rendering already depend on the current v1 path.</dd></div><div><dt>Portability pressure</dt><dd>The new path must remain dependency-free under actual Node 18 and current Node execution, not merely the developer&#39;s active process version.</dd></div></dl>
+          <aside class="callout warning" data-review-id="design.pressure.warning"><strong>A shared rewrite is the risky obvious solution</strong><p>Routing v1 through a new scene model or modifying its embedded CSS would make byte preservation depend on a broad refactor before sequence generation proves any reusable abstraction.</p></aside>
+        </section>
+<section class="section-card reveal" id="design.seam" aria-labelledby="design.seam-title" data-review-id="design.seam">
+          <span class="section-kicker">Proposed owning seam</span>
+          <h2 id="design.seam-title">Version isolation keeps v1 frozen while sequence owns a direct v2 pipeline</h2>
+          <p class="section-summary">Proposed recommendation — dispatch occurs at the retained source contract; there is no shared scene IR in the first slice.</p>
+          <dl class="facts" data-review-id="design.seam.model"><div><dt>Consuming skills</dt><dd>PRD and Design Solution select the capability and supply an authority-classified semantic brief; their guidance and evals own when sequence applies.</dd></div><div><dt>Frozen v1 lane</dt><dd>diagram-spec.mjs, render-system-diagram.mjs, infrastructure-diagram.css, root wrappers, metadata, errors covered by tests, and retained v1 SVG bytes stay unchanged.</dd></div><div><dt>Sequence contract</dt><dd>A new strict spec-sequence-v2.mjs validates system-diagram-v2 with diagramType sequence and layoutVersion sequence-v1 before any geometry is created.</dd></div><div><dt>Sequence layout</dt><dd>A new layout-sequence-v1.mjs converts source-ordered participants and events into integer lifeline, row, fragment, note, activation, and label geometry with no random or iterative optimization.</dd></div><div><dt>Sequence renderer</dt><dd>A new render-sequence-diagram.mjs serializes accessible SVG, reads the frozen base infrastructure CSS plus additive infrastructure-sequence.css, keeps data-diagram-style infrastructure-v1, and emits explicit v2 schema/type/layout root markers.</dd></div><div><dt>Report adapter</dt><dd>canonical-report.mjs uses allowlisted SVG root markers only to choose a candidate verifier. A v2 candidate must pass the 64 KiB source stat before parse; parsed source must match the markers and exact renderer. SVG without v2 markers stays on the current v1 branch.</dd></div><div><dt>Future capabilities</dt><dd>Flow, architecture view, and component decomposition add bounded contracts only after accepted examples prove their needs; they do not force a shared v2 graph engine into this slice.</dd></div></dl>
+          <figure class="copyable-code" data-review-id="design.seam.contract-example"><figcaption>Proposed sequence source envelope</figcaption><pre><code>schema:
+system-diagram-v2
+type: sequence
+layout: sequence-v1
+mode:
+component-communication
+participants:
+ordered typed IDs
+events:
+message | note | fragment
+activations:
+start and end refs</code></pre></figure>
+          <ul class="canonical-list canonical-list--checks" data-review-id="design.seam.contract-rules"><li>Top-level fields are exactly schemaVersion, diagramType, layoutVersion, mode, id, title, desc, optional reviewPrefix, participants, events, and activations. Authored coordinates, colors, CSS, fonts, icons, URLs, and arbitrary SVG are rejected.</li><li>schemaVersion, diagramType, and layoutVersion are fixed to system-diagram-v2, sequence, and sequence-v1. Mode is exactly component-communication, causal-code-flow, or outside-in-slice; mode remains the semantic question while diagramType is only the rendering grammar.</li><li>A participant contains exactly id, kind, and label. Kind is actor, external, system, service, or store; participant array order is authoritative.</li><li>A message contains exactly id, type message, messageType, from, to, label, kind, and replyTo only for return. messageType is sync, async, return, or self; kind is primary, secondary, success, warning, or risk.</li><li>Self requires identical endpoints. Other messages require distinct endpoints. Return requires replyTo naming an earlier message with reversed endpoints; replyTo is rejected for sync, async, and self.</li><li>A note contains exactly id, type note, text, kind, and exactly one participant or event anchor naming an existing element. Kind uses the same semantic enum as messages.</li><li>A fragment contains exactly id, type fragment, fragmentType, label, kind, and branches. A branch contains exactly id, label, and events. Alt has two to four non-empty labelled branches; opt and loop have exactly one non-empty labelled branch.</li><li>An activation contains exactly id, participant, startEvent, and endEvent. Both endpoints name messages involving that participant, start precedes end, and both belong to the same event container or fragment branch.</li><li>Every participant, event, branch, and activation ID is globally unique lowercase kebab text. Recursive event order and branch order are authoritative; omitted or unsupported fields never receive semantic defaults.</li><li>reviewPrefix is optional lowercase dot and kebab text. Output review IDs combine reviewPrefix, diagram id, element role, and element id; no author-supplied per-element review override is accepted in the initial contract.</li></ul>
+          <dl class="facts" data-review-id="design.seam.visual-contract"><div><dt>Visual authority</dt><dd>The frozen infrastructure CSS supplies canvas, grid, typography, palette, surfaces, shadows, semantic route colors, and minimum text size; the extension may add components but no token or alternate style family.</dd></div><div><dt>Participants</dt><dd>Headers reuse the existing white node surface, technical kind label, semantic accent rail, and dot; a neutral dashed lifeline descends from each header.</dd></div><div><dt>Messages</dt><dd>Routes reuse primary, secondary, success, warning, and risk treatments. Every label also shows SYNC, ASYNC, RETURN, or SELF so line and color are not the sole meaning; return remains dashed and self uses an orthogonal loop.</dd></div><div><dt>Activations</dt><dd>White 12px rails with neutral borders sit on lifelines and use deterministic right offsets for nesting.</dd></div><div><dt>Fragments</dt><dd>Neutral infrastructure enclosures carry visible ALT, OPT, or LOOP labels, guard labels, and ruled branch separators; they never resemble report cards or page wireframes.</dd></div><div><dt>Notes</dt><dd>Notes reuse paper surfaces and semantic accent cues with a visible NOTE label; text remains searchable and within the established minimum size.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.path" aria-labelledby="design.path-title" data-review-id="design.path">
+          <span class="section-kicker">Key flows</span>
+          <h2 id="design.path-title">Source meaning becomes geometry only after strict semantic validation</h2>
+          <p class="section-summary">The success, compatibility, and recovery flows share provenance checks but not normalization code.</p>
+          <ol class="step-list" data-review-id="design.path.sequence"><li data-review-id="design.path.select"><strong>Select</strong><br />The owning PRD or Design Solution matches a temporal communication question to sequence and retains its source-classified brief.</li><li data-review-id="design.path.preflight"><strong>Preflight</strong><br />The sequence renderer rejects raw input over 64 KiB before JSON parsing, then rejects unknown fields and invalid XML text.</li><li data-review-id="design.path.validate"><strong>Validate</strong><br />The v2 validator resolves participants, recursively counts events and fragments, validates references and branch rules, and returns normalized semantic data or one actionable error.</li><li data-review-id="design.path.layout"><strong>Lay out</strong><br />sequence-v1 measures text conservatively, sizes participant headers, expands lane gaps for labels, notes, and self messages, assigns one row per ordered event, encloses fragments, and places activation rails.</li><li data-review-id="design.path.render"><strong>Render</strong><br />The sequence serializer escapes all text and emits source digest, version metadata, stable IDs, title and description, lifelines, messages, fragments, labels, and renderer-owned reveal groups.</li><li data-review-id="design.path.embed"><strong>Verify and embed</strong><br />HTML Report Designer reads allowlisted root markers, enforces the v2 pre-parse size cap, confirms parsed source and marker agreement, invokes the matching exact renderer, verifies self-containment and infrastructure-v1 metadata, then embeds SVG beside the source-owned walkthrough.</li><li data-review-id="design.path.recover"><strong>Recover</strong><br />Invalid references, excessive dimensions, collisions, or unsupported topology stop before output; the owning skill refines or splits the brief and reruns the same path.</li></ol>
+          <dl class="facts" data-review-id="design.path.layout-contract"><div><dt>Measurement</dt><dd>Count Unicode code points with one font em per non-space and one-half em per whitespace, round upward to integer units, wrap greedily at whitespace then by code point, and reject authored line breaks. This deliberately overestimates system-font text.</dd></div><div><dt>Horizontal order</dt><dd>Place participant headers in source order at 96px height. Initialize each adjacent lane gap to at least 220px and enough for half-header widths plus 48px clearance.</dd></div><div><dt>Horizontal expansion</dt><dd>Process events once in source order. A label, note, or 96px self-message gutter may only increase crossed lane gaps; divide any deficit evenly and assign remainder units to the earliest gaps.</dd></div><div><dt>Vertical order</dt><dd>Start events 64px below headers. Messages use 72px rows; note rows use at least 72px; fragment height is its 40px band plus ordered branch content, 24px separators, and 24px bottom clearance.</dd></div><div><dt>Fragments and activations</dt><dd>Stack fragment branches and nested events in source order. Activation rails are 12px wide at the participant center; concurrent depth offsets eight units to the right and never exceeds three.</dd></div><div><dt>Bounds</dt><dd>Extend lifelines 48px below the final event, add 48px outer padding, then reject any viewBox or SVG above the approved cap. No later pass compacts or reorders geometry.</dd></div></dl>
+          <dl class="facts" data-review-id="design.path.branches"><div><dt>V1 compatibility flow</dt><dd>system-diagram-v1 continues through the existing renderer and exact report verifier; no v2 normalizer, layout, CSS extension, or metadata touches it.</dd></div><div><dt>Sequence success flow</dt><dd>Valid semantic source produces one byte-deterministic SVG and a report that preserves existing visual and walkthrough behavior.</dd></div><div><dt>Source failure flow</dt><dd>The first failing contract rule returns its stable field and event context; no partial SVG is written.</dd></div><div><dt>Tamper or staleness</dt><dd>A changed JSON digest, modified SVG, wrong renderer metadata, executable content, or unsupported version fails report rendering before HTML output.</dd></div><div><dt>Dimension recovery</dt><dd>Layout expands lanes and rows until the approved viewBox cap; it never reorders participants or events or shrinks below established text sizes, and asks for a split when the cap cannot hold the brief.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.diagram" aria-labelledby="design.diagram-title" data-review-id="design.diagram">
+          <span class="section-kicker">Architecture path</span>
+          <h2 id="design.diagram-title">The source-version seam isolates compatibility from new temporal layout</h2>
+          <p class="section-summary">The current v1 renderer and the proposed sequence v2 pipeline converge only at version-aware report verification.</p>
+          <figure class="figure-card diagram-figure" data-complex-figure data-diagram-output-sha256="707aed4427f869cd4b893332736af878fbc86eea9d320573ef0d201a1f16b49e" data-review-id="diagram.sequence-rendering-seam"><p class="figure-question"><strong>Question:</strong> Where can sequence-v2 validation, layout, and rendering enter System Diagram while preserving v1 bytes, semantic authority, and report verification?</p><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-44 -4 1608 1338" role="img" aria-labelledby="sequence-rendering-seam-title sequence-rendering-seam-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.svg"><title id="sequence-rendering-seam-title">Versioned sequence rendering without disturbing the v1 path</title><desc id="sequence-rendering-seam-desc">An architecture path from an owning PRD or Design Solution through source-contract selection. Existing system-diagram-v1 input stays on its frozen validator and renderer, while sequence v2 input passes through strict semantic validation, deterministic layout, and a same-style SVG renderer before both outputs reach version-aware report verification. Invalid v2 input returns a blocker.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:54d0722bd27855245b5ec3dad10ceb57127435933c3144dac6c0a017fac1e9e9 --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="sequence-rendering-seam--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="sequence-rendering-seam--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="sequence-rendering-seam--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="-44" y="-4" width="1608" height="1338"></rect><rect class="diagram-grid" x="-44" y="-4" width="1608" height="1338" fill="url(#sequence-rendering-seam--grid)"></rect><g class="diagram-groups"><g class="diagram-group diagram-group--ownership diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.group.system-diagram-skill"><rect class="diagram-group__surface" x="0" y="190" width="1520" height="750" rx="14"></rect><rect class="diagram-group__label-bg" x="14" y="180" width="180.8" height="24" rx="4"></rect><text class="diagram-group__label" x="26" y="198">SYSTEM DIAGRAM SKILL</text></g></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.brief-to-contract"><path class="diagram-edge__path" d="M720 150L720 220" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--secondary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.contract-to-v1"><path class="diagram-edge__path" d="M460 275L380 275L380 485L420 485" marker-end="url(#sequence-rendering-seam--arrow-secondary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.contract-to-v2"><path class="diagram-edge__path" d="M790 330L790 430" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.validate-to-layout"><path class="diagram-edge__path" d="M790 540L790 610" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.layout-to-render"><path class="diagram-edge__path" d="M790 720L790 790" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.render-to-report"><path class="diagram-edge__path" d="M790 900L790 940L720 940L720 1000" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--secondary diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.v1-to-report"><path class="diagram-edge__path" d="M230 540L230 1055L460 1055" marker-end="url(#sequence-rendering-seam--arrow-secondary)"></path></g><g class="diagram-edge diagram-edge--risk diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.validate-to-blocked"><path class="diagram-edge__path" d="M1020 485L1100 485" marker-end="url(#sequence-rendering-seam--arrow-risk)"></path></g><g class="diagram-edge diagram-edge--success diagram-reveal" style="--reveal-delay:960ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.report-to-proof"><path class="diagram-edge__path" d="M720 1110L720 1180" marker-end="url(#sequence-rendering-seam--arrow-success)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.owning-brief" aria-labelledby="sequence-rendering-seam--owning-brief-text"><rect class="diagram-node__surface" x="460" y="40" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="52" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="57" r="3.5"></circle><text class="diagram-node__kind" x="480" y="63">ENTRY</text><text id="sequence-rendering-seam--owning-brief-text" class="diagram-node__title" x="480" y="87" font-size="16">Owning PRD or Design Solution</text><text class="diagram-node__detail" x="480" y="110" font-size="14"><tspan x="480" y="110">Approved question · evidence · semantics</tspan></text></g><g class="diagram-node diagram-node--decision diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.contract-route" aria-labelledby="sequence-rendering-seam--contract-route-text"><rect class="diagram-node__surface" x="460" y="220" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="232" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="237" r="3.5"></circle><text class="diagram-node__kind" x="480" y="243">DECISION</text><text id="sequence-rendering-seam--contract-route-text" class="diagram-node__title" x="480" y="267" font-size="16">Source contract selection</text><text class="diagram-node__detail" x="480" y="290" font-size="14"><tspan x="480" y="290">Routes before normalization or rendering</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.v1-renderer" aria-labelledby="sequence-rendering-seam--v1-renderer-text"><rect class="diagram-node__surface" x="40" y="430" width="380" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="40" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="403" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="60" y="453">SERVICE</text><text id="sequence-rendering-seam--v1-renderer-text" class="diagram-node__title" x="60" y="477" font-size="16">Frozen v1 renderer</text><text class="diagram-node__detail" x="60" y="500" font-size="14"><tspan x="60" y="500">Current validator · CSS</tspan><tspan x="60" y="519">Metadata · SVG bytes</tspan></text></g><g class="diagram-node diagram-node--policy diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-validator" aria-labelledby="sequence-rendering-seam--sequence-validator-text"><rect class="diagram-node__surface" x="560" y="430" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="580" y="453">POLICY</text><text id="sequence-rendering-seam--sequence-validator-text" class="diagram-node__title" x="580" y="477" font-size="16">Sequence v2 validator</text><text class="diagram-node__detail" x="580" y="500" font-size="14"><tspan x="580" y="500">Strict fields · references · limits</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-layout" aria-labelledby="sequence-rendering-seam--sequence-layout-text"><rect class="diagram-node__surface" x="560" y="610" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="622" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="627" r="3.5"></circle><text class="diagram-node__kind" x="580" y="633">SERVICE</text><text id="sequence-rendering-seam--sequence-layout-text" class="diagram-node__title" x="580" y="657" font-size="16">sequence-v1 layout</text><text class="diagram-node__detail" x="580" y="680" font-size="14"><tspan x="580" y="680">Source order · integer geometry · no iteration</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-renderer" aria-labelledby="sequence-rendering-seam--sequence-renderer-text"><rect class="diagram-node__surface" x="560" y="790" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="802" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="807" r="3.5"></circle><text class="diagram-node__kind" x="580" y="813">SERVICE</text><text id="sequence-rendering-seam--sequence-renderer-text" class="diagram-node__title" x="580" y="837" font-size="16">Sequence SVG renderer</text><text class="diagram-node__detail" x="580" y="860" font-size="14"><tspan x="580" y="860">Base infrastructure CSS + sequence primitives</tspan></text></g><g class="diagram-node diagram-node--risk diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.blocked" aria-labelledby="sequence-rendering-seam--blocked-text"><rect class="diagram-node__surface" x="1100" y="430" width="380" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="1100" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1463" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="1120" y="453">RISK</text><text id="sequence-rendering-seam--blocked-text" class="diagram-node__title" x="1120" y="477" font-size="16">Invalid or excessive source</text><text class="diagram-node__detail" x="1120" y="500" font-size="14"><tspan x="1120" y="500">Return exact blocker</tspan><tspan x="1120" y="519">Refine or split the brief</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.report-verifier" aria-labelledby="sequence-rendering-seam--report-verifier-text"><rect class="diagram-node__surface" x="460" y="1000" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="1012" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="1017" r="3.5"></circle><text class="diagram-node__kind" x="480" y="1023">PROOF</text><text id="sequence-rendering-seam--report-verifier-text" class="diagram-node__title" x="480" y="1047" font-size="16">Version-aware report verifier</text><text class="diagram-node__detail" x="480" y="1070" font-size="14"><tspan x="480" y="1070">Checks source · provenance · exact renderer output</tspan></text></g><g class="diagram-node diagram-node--success diagram-reveal" style="--reveal-delay:960ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.review-proof" aria-labelledby="sequence-rendering-seam--review-proof-text"><rect class="diagram-node__surface" x="460" y="1180" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="1192" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="1197" r="3.5"></circle><text class="diagram-node__kind" x="480" y="1203">OUTCOME</text><text id="sequence-rendering-seam--review-proof-text" class="diagram-node__title" x="480" y="1227" font-size="16">Canonical report and walkthrough</text><text class="diagram-node__detail" x="480" y="1250" font-size="14"><tspan x="480" y="1250">Reviewer sees one established visual language</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.brief-to-contract"><rect class="diagram-edge-label__surface" x="730" y="171" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="850.76" y="189.76" font-size="14" text-anchor="middle"><tspan x="850.76" y="189.76">retains typed diagram source</tspan></text></g><g class="diagram-edge-label diagram-edge-label--secondary diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.contract-to-v1"><rect class="diagram-edge-label__surface" x="155.72" y="356" width="288.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="300" y="374.76" font-size="14" text-anchor="middle"><tspan x="300" y="374.76">system-diagram-v1 remains isolated</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.contract-to-v2"><rect class="diagram-edge-label__surface" x="800" y="366" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="920.76" y="384.76" font-size="14" text-anchor="middle"><tspan x="920.76" y="384.76">system-diagram-v2 · sequence</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.validate-to-layout"><rect class="diagram-edge-label__surface" x="800" y="561" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="928.6" y="579.76" font-size="14" text-anchor="middle"><tspan x="928.6" y="579.76">normalizes supported semantics</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.layout-to-render"><rect class="diagram-edge-label__surface" x="800" y="741" width="272.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="936.44" y="759.76" font-size="14" text-anchor="middle"><tspan x="936.44" y="759.76">hands off deterministic geometry</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:648ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.render-to-report"><rect class="diagram-edge-label__surface" x="606.8" y="904" width="296.4" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="755" y="922.76" font-size="14" text-anchor="middle"><tspan x="755" y="922.76">emits accessible infrastructure SVG</tspan></text></g><g class="diagram-edge-label diagram-edge-label--secondary diagram-reveal" style="--reveal-delay:768ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.v1-to-report"><rect class="diagram-edge-label__surface" x="240" y="783.5" width="288.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="384.28" y="802.26" font-size="14" text-anchor="middle"><tspan x="384.28" y="802.26">verifies existing output unchanged</tspan></text></g><g class="diagram-edge-label diagram-edge-label--risk diagram-reveal" style="--reveal-delay:888ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.validate-to-blocked"><rect class="diagram-edge-label__surface" x="966.68" y="366" width="186.64" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="1060" y="384.76" font-size="14" text-anchor="middle"><tspan x="1060" y="384.76">rejects before layout</tspan></text></g><g class="diagram-edge-label diagram-edge-label--success diagram-reveal" style="--reveal-delay:1008ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.report-to-proof"><rect class="diagram-edge-label__surface" x="730" y="1131" width="304.24" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="882.12" y="1149.76" font-size="14" text-anchor="middle"><tspan x="882.12" y="1149.76">embeds with source-owned walkthrough</tspan></text></g></g></svg><figcaption>Source-contract selection happens before normalization: v1 stays frozen; sequence v2 validates and lays out directly; both must pass matching exact-output verification before report embedding.</figcaption></figure><ol class="diagram-walkthrough" data-figure-walkthrough-for="diagram.sequence-rendering-seam"><li>PRD or Design Solution supplies an approved question and evidence-backed semantics.</li><li>The retained source contract routes before normalization or rendering.</li><li>System-diagram-v1 remains on its current validator, CSS, metadata, and renderer path.</li><li>Sequence v2 passes through strict references and limits, then one source-ordered integer layout and an additive same-style SVG serializer.</li><li>Invalid sequence source returns an exact blocker before geometry; valid v1 or v2 output reaches the matching report verifier.</li><li>The canonical report embeds byte-current SVG with its source-owned walkthrough, preserving one visual language for the reviewer.</li></ol>
+        </section>
+<section class="section-card reveal" id="design.decisions" aria-labelledby="design.decisions-title" data-review-id="design.decisions">
+          <span class="section-kicker">Proposed architecture decisions</span>
+          <h2 id="design.decisions-title">Four blocking choices define the implementation boundary</h2>
+          <p class="section-summary">Browser recording is review input; these choices become architecture authority only after explicit design approval.</p>
+          <fieldset class="decision-recorder" data-review-id="decision.version-isolation" data-decision-status="accepted" data-decision-source-fingerprint="d142690b4400f55d7986775b110926875fc5e998b36adf781de237cedb8a602d" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>How should sequence generation coexist with system-diagram-v1?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.version-isolation-option" value="isolated-v2" checked disabled /><span>Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer</span></label>
+              <label class="decision-option"><input type="radio" name="decision.version-isolation-option" value="shared-ir" disabled /><span>Route v1 and sequence through a new shared scene model and renderer</span></label>
+              <label class="decision-option"><input type="radio" name="decision.version-isolation-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Isolation makes byte compatibility mechanical and lets one temporal slice prove reusable needs before any shared IR exists.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.sequence-source" data-decision-status="accepted" data-decision-source-fingerprint="d218256732567cf62ca31b673dd65a8a66668576f5d12f8bbc7a26595592a74b" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>What should the sequence source own?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.sequence-source-option" value="semantic-order" checked disabled /><span>Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-source-option" value="authored-geometry" disabled /><span>Extend v1 with manually positioned lifelines, message paths, and fragment rectangles</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-source-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Temporal order and references are reviewable product and design semantics; coordinates are renderer mechanics and should not be reauthored for every sequence.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.sequence-style" data-decision-status="accepted" data-decision-source-fingerprint="77a5f03f036ce6b5acae1b53db776a3577f5732dde55cf07d4ed608b9b078c88" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>How should sequence primitives use the existing visual language without changing v1 bytes?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.sequence-style-option" value="base-plus-extension" checked disabled /><span>Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-style-option" value="modify-base" disabled /><span>Add sequence selectors to the base CSS embedded by v1</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-style-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The v2 artifact receives identical base tokens plus new lifeline, message, and fragment components while retained v1 SVG bytes remain unchanged.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.report-version-adapter" data-decision-status="accepted" data-decision-source-fingerprint="fa3e743a65105c531aff18fcbc39ae05373479ae7b97c0d19f082e907a4c99b1" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>How should canonical reports accept the new source without moving semantic ownership?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.report-version-adapter-option" value="internal-adapter" checked disabled /><span>Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type</span></label>
+              <label class="decision-option"><input type="radio" name="decision.report-version-adapter-option" value="new-report-schema" disabled /><span>Create canonical-report-v2 and derive walkthrough content from sequence source</span></label>
+              <label class="decision-option"><input type="radio" name="decision.report-version-adapter-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The report block contract and walkthrough authority do not change; only provenance verification gains one explicitly supported source and renderer pair.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+        </section>
+<section class="section-card reveal" id="design.proof" aria-labelledby="design.proof-title" data-review-id="design.proof">
+          <span class="section-kicker">Constraints and approval proof</span>
+          <h2 id="design.proof-title">Implementation planning is credible only with exact limits and observable gates</h2>
+          <p class="section-summary">The sequence slice must prove compatibility, semantics, deterministic geometry, portability, security, accessibility, and report integration together.</p>
+          <dl class="facts" data-review-id="design.proof.limits"><div><dt>Source</dt><dd>64 KiB raw JSON before parse; strict unknown-field rejection; IDs at most 64 characters; title 120; description 600.</dd></div><div><dt>Participants and events</dt><dd>1–8 participants; 1–48 messages; at most 64 recursive events total, counting every message, note, and fragment wrapper but not branch containers.</dd></div><div><dt>Notes and fragments</dt><dd>At most 16 notes; 12 fragments; three fragment ancestors; alt has 2–4 branches; opt and loop have exactly 1; every branch contains at least one event.</dd></div><div><dt>Activations</dt><dd>At most 16 spans; simultaneous depth three per participant; ordered endpoints in one event container or branch.</dd></div><div><dt>Text</dt><dd>Participant labels use 64 characters and 3 lines; message and fragment labels use 120 characters and 2 lines; note text uses 300 characters and 5 lines; authored text remains at least 14px.</dd></div><div><dt>Geometry</dt><dd>Integer coordinates; source order is the only tie-breaker; no authored coordinates, randomness, optimization, or iterative pass; viewBox at most 4096 × 8192.</dd></div><div><dt>Output</dt><dd>At most 1 MiB SVG; source SHA-256; explicit data-diagram-schema, data-diagram-type, data-layout-version, renderer, and infrastructure-v1 style metadata; stable review IDs; searchable escaped text; title and description; role img; and no remote or executable content.</dd></div><div><dt>Font guarantee</dt><dd>A versioned conservative code-point width table owns wrapping and geometry; bytes are cross-machine deterministic, while system-font glyph rasterization is not claimed pixel-identical.</dd></div></dl>
+          <ul class="canonical-list canonical-list--checks" data-review-id="design.proof.acceptance"><li>DA-001 — Every retained v1 fixture and canonical report remains byte-identical; SCHEMA_VERSION, normalizeSpec, review-ID helpers, current CLI behavior covered by tests, metadata, and infrastructure-diagram.css remain compatible.</li><li>DA-002 — A minimal sequence fixture and a consequential failure and recovery fixture render participants; sync, async, return, and self messages; notes; activations; and alt, opt, and loop fragments in exact source order.</li><li>DA-003 — Focused invalid fixtures prove each unknown field, limit, duplicate ID, missing reference, return mismatch, fragment rule, activation crossing, source-size, dimension, and output-size failure with stable contextual errors.</li><li>DA-004 — Repeated rendering and --check produce identical bytes under actual Node 18 and the current project Node from the repository and from an allowlisted copied skill that excludes node_modules and external package resolution.</li><li>DA-005 — Canonical reports accept exact v1 and sequence-v2 output, reject stale, tampered, or mismatched renderer output, preserve report-owned walkthroughs, and keep canonical-report-v1 source compatibility.</li><li>DA-006 — Desktop, 320px local overflow, no-JS, reduced-motion, and print checks prove readable text, visible complete static content, no clipping, and no collisions among nodes, headers, messages, labels, fragments, or activations using SVG geometry assertions.</li><li>DA-007 — Hostile labels render only as escaped text; executable or foreign content, external assets, XML-invalid controls, arbitrary style, and oversized input or output fail before report output.</li><li>DA-008 — PRD, Design Solution, and System Diagram guidance plus behavioral evals select sequence only for participant and time interaction and return ambiguous, merely linear, static topology, and one-scope decomposition requests to their proper capability.</li><li>DA-009 — The package and lockfile retain zero runtime dependencies, Node.js &gt;=18, deterministic source provenance, and infrastructure-v1 style parity for palette, grid, typography roles, surfaces, route semantics, and minimum text size.</li></ul>
+          <dl class="facts" data-review-id="design.proof.tradeoffs"><div><dt>Accepted cost if approved</dt><dd>The first slice duplicates a small amount of SVG serialization structure instead of prematurely sharing a scene IR.</dd></div><div><dt>Readability tradeoff</dt><dd>Conservative measurement may create wider diagrams; local overflow and split guidance are preferred to smaller or overlapping text.</dd></div><div><dt>Report coupling</dt><dd>HTML Report Designer knows an allowlisted source and renderer pair but still does not parse sequence semantics or own the walkthrough.</dd></div><div><dt>Recovery</dt><dd>Correct canonical source and regenerate; never patch SVG or HTML. A source or layout version change requires a new explicit version, fixture refresh, and compatibility review.</dd></div><div><dt>Planning gate</dt><dd>Task drafting may begin only after this design is Approved, all four blocking decisions are Accepted, and the deterministic System Diagram ADR is amended with the accepted version-isolation rationale.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.boundary" aria-labelledby="design.boundary-title" data-review-id="design.boundary">
+          <span class="section-kicker">Meaningful boundary</span>
+          <h2 id="design.boundary-title">Sequence proves the extension seam; later grammars remain deliberately unbuilt</h2>
+          <p class="section-summary">This design authorizes no generic graph engine, migration, or implementation planning for flow, architecture, or component diagrams.</p>
+          <ul class="canonical-list canonical-list--checks" data-review-id="design.boundary.list"><li>Unchanged: product and architecture authority, report-owned walkthroughs, canonical diagram block shape, Editorial Infrastructure reports, infrastructure-v1 visual language, and all current v1 retained sources.</li><li>Immediate design scope: capability-selection guidance and evals, strict sequence-v2 source, sequence-v1 direct layout, additive sequence SVG components, exact report verification, fixtures, and proof gates for PRD AC-001 through AC-007.</li><li>Deferred: flow AC-008–010, architecture-view AC-011–013, and component-decomposition AC-014–016 until real examples choose the next vertical slice and an approved design amendment defines its contract.</li><li>Excluded: shared scene IR, automatic graph optimization, force layout, generic migration, authored styling, remote assets, alternate renderer, derived report walkthroughs, class diagrams, timing diagrams, deployment views, and task creation inside this design.</li><li>ADR consequence: after explicit design approval, amend docs/adrs/architecture.md to preserve the accepted version-isolation, same-style extension, and report-verification rationale before tasks become executable.</li></ul>
+        </section>
+
+      </article>
+    </main>
+  </div>
+
+  <a class="back-to-top" href="#main" aria-label="Back to top">↑</a>
+  <footer data-review-id="provenance">
+    <p><strong>Sources reviewed:</strong> docs/features/system-diagram-capabilities/prd.document.json · docs/features/system-diagram-capabilities/prd.html · .features/system-diagram-capabilities/research.md · skills/system-diagram/SKILL.md · skills/system-diagram/scripts/diagram-spec.mjs · skills/system-diagram/scripts/render-system-diagram.mjs · skills/system-diagram/resources/infrastructure-diagram.css · skills/html-report-designer/scripts/canonical-report.mjs · scripts/test-system-diagram.mjs · scripts/test-skill-portability.mjs · docs/adrs/architecture.md#deterministic-infrastructure-style-system-diagrams</p><p>Generated from validated <code>canonical-report-v1</code> structured content through the sole canonical report template. Preserve stable review IDs and reconcile exported decisions into canonical source only after explicit human approval.</p>
+  </footer>
+
+  <script type="application/json" data-document-spec="canonical-report-v1">
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "system-diagram-capabilities-design",
+    "kind": "design",
+    "status": "Approved",
+    "title": "Add sequence generation beside a frozen System Diagram v1 path",
+    "summary": "A strict semantic sequence source passes through versioned validation, direct deterministic layout, and an additive same-style SVG renderer, while existing system-diagram-v1 validation, CSS, metadata, CLI behavior, and output bytes remain isolated.",
+    "reviewFocus": "Approve or revise the version-isolation seam, exact sequence source contract, same-style CSS extension, report adapter, deterministic layout constraints, and proof gate before implementation planning.",
+    "updated": "2026-08-03",
+    "approval": {
+      "approvedBy": "Carlos Rodrigo",
+      "approvedAt": "2026-08-03"
+    },
+    "sources": [
+      "docs/features/system-diagram-capabilities/prd.document.json",
+      "docs/features/system-diagram-capabilities/prd.html",
+      ".features/system-diagram-capabilities/research.md",
+      "skills/system-diagram/SKILL.md",
+      "skills/system-diagram/scripts/diagram-spec.mjs",
+      "skills/system-diagram/scripts/render-system-diagram.mjs",
+      "skills/system-diagram/resources/infrastructure-diagram.css",
+      "skills/html-report-designer/scripts/canonical-report.mjs",
+      "scripts/test-system-diagram.mjs",
+      "scripts/test-skill-portability.mjs",
+      "docs/adrs/architecture.md#deterministic-infrastructure-style-system-diagrams"
+    ],
+    "feature": "System Diagram capabilities",
+    "relatedArtifacts": [
+      {
+        "label": "Approved PRD",
+        "href": "prd.html"
+      },
+      {
+        "label": "Architecture ADR",
+        "href": "../../adrs/architecture.md"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "design.authority",
+      "role": "authority",
+      "kicker": "Approved product authority",
+      "title": "The sequence-first product contract is approved and current",
+      "summary": "Design may define implementation ownership without changing which skill owns meaning or which visual language reviewers see.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.authority.contract",
+          "items": [
+            [
+              "Approved source",
+              "docs/features/system-diagram-capabilities/prd.document.json is Approved by Carlos Rodrigo on 2026-08-03; its rendered prd.html is current."
+            ],
+            [
+              "Product promise",
+              "PRD and Design Solution decide when and what to illustrate; System Diagram generates sequence, flow, architecture, or component explanations; HTML Report Designer validates and embeds."
+            ],
+            [
+              "Immediate architecture scope",
+              "Capability selection plus the complete sequence vertical slice covering PRD AC-001 through AC-007."
+            ],
+            [
+              "Approved constraints",
+              "Keep the existing infrastructure-v1 language, preserve v1 output, use sequence first, retain report-owned walkthroughs, and fail rather than compress or invent meaning."
+            ],
+            [
+              "Deferred product acceptance",
+              "PRD AC-008 through AC-016 remain approved outcomes, but flow, architecture-view, and component-decomposition implementation require later design amendments after sequence evidence."
+            ],
+            [
+              "Design gate",
+              "Satisfied — the approved PRD has no blocking product decision and its source/report pair is byte-current."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.pressure",
+      "role": "pressure",
+      "kicker": "Architecture pressure",
+      "title": "Temporal semantics must be added without destabilizing a trusted renderer",
+      "summary": "The current path is deterministic and portable, but it is structurally a manually positioned graph renderer.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.pressure.evidence",
+          "items": [
+            [
+              "Sourced fact",
+              "diagram-spec.mjs exposes SCHEMA_VERSION system-diagram-v1 and accepts only positioned groups, nodes, and orthogonal edges."
+            ],
+            [
+              "Sourced fact",
+              "render-system-diagram.mjs embeds the complete infrastructure-diagram.css file and fixed v1 metadata into every SVG, so changing that bundle changes retained output bytes."
+            ],
+            [
+              "Sourced fact",
+              "canonical-report.mjs accepts only system-diagram-v1 nodes and edges and invokes one hard-coded renderer for exact-output verification."
+            ],
+            [
+              "Sequence pressure",
+              "Lifelines, temporal event order, returns, self messages, activations, notes, and fragments cannot be represented truthfully as generic graph adjacency."
+            ],
+            [
+              "Compatibility pressure",
+              "Existing fixtures, exported SCHEMA_VERSION and normalizeSpec behavior, report embeddings, and copied-skill rendering already depend on the current v1 path."
+            ],
+            [
+              "Portability pressure",
+              "The new path must remain dependency-free under actual Node 18 and current Node execution, not merely the developer's active process version."
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "design.pressure.warning",
+          "tone": "warning",
+          "title": "A shared rewrite is the risky obvious solution",
+          "text": "Routing v1 through a new scene model or modifying its embedded CSS would make byte preservation depend on a broad refactor before sequence generation proves any reusable abstraction."
+        }
+      ]
+    },
+    {
+      "id": "design.seam",
+      "role": "seam",
+      "kicker": "Proposed owning seam",
+      "title": "Version isolation keeps v1 frozen while sequence owns a direct v2 pipeline",
+      "summary": "Proposed recommendation — dispatch occurs at the retained source contract; there is no shared scene IR in the first slice.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.seam.model",
+          "items": [
+            [
+              "Consuming skills",
+              "PRD and Design Solution select the capability and supply an authority-classified semantic brief; their guidance and evals own when sequence applies."
+            ],
+            [
+              "Frozen v1 lane",
+              "diagram-spec.mjs, render-system-diagram.mjs, infrastructure-diagram.css, root wrappers, metadata, errors covered by tests, and retained v1 SVG bytes stay unchanged."
+            ],
+            [
+              "Sequence contract",
+              "A new strict spec-sequence-v2.mjs validates system-diagram-v2 with diagramType sequence and layoutVersion sequence-v1 before any geometry is created."
+            ],
+            [
+              "Sequence layout",
+              "A new layout-sequence-v1.mjs converts source-ordered participants and events into integer lifeline, row, fragment, note, activation, and label geometry with no random or iterative optimization."
+            ],
+            [
+              "Sequence renderer",
+              "A new render-sequence-diagram.mjs serializes accessible SVG, reads the frozen base infrastructure CSS plus additive infrastructure-sequence.css, keeps data-diagram-style infrastructure-v1, and emits explicit v2 schema/type/layout root markers."
+            ],
+            [
+              "Report adapter",
+              "canonical-report.mjs uses allowlisted SVG root markers only to choose a candidate verifier. A v2 candidate must pass the 64 KiB source stat before parse; parsed source must match the markers and exact renderer. SVG without v2 markers stays on the current v1 branch."
+            ],
+            [
+              "Future capabilities",
+              "Flow, architecture view, and component decomposition add bounded contracts only after accepted examples prove their needs; they do not force a shared v2 graph engine into this slice."
+            ]
+          ]
+        },
+        {
+          "type": "code",
+          "id": "design.seam.contract-example",
+          "label": "Proposed sequence source envelope",
+          "content": "schema:\nsystem-diagram-v2\ntype: sequence\nlayout: sequence-v1\nmode:\ncomponent-communication\nparticipants:\nordered typed IDs\nevents:\nmessage | note | fragment\nactivations:\nstart and end refs"
+        },
+        {
+          "type": "list",
+          "id": "design.seam.contract-rules",
+          "style": "checks",
+          "items": [
+            "Top-level fields are exactly schemaVersion, diagramType, layoutVersion, mode, id, title, desc, optional reviewPrefix, participants, events, and activations. Authored coordinates, colors, CSS, fonts, icons, URLs, and arbitrary SVG are rejected.",
+            "schemaVersion, diagramType, and layoutVersion are fixed to system-diagram-v2, sequence, and sequence-v1. Mode is exactly component-communication, causal-code-flow, or outside-in-slice; mode remains the semantic question while diagramType is only the rendering grammar.",
+            "A participant contains exactly id, kind, and label. Kind is actor, external, system, service, or store; participant array order is authoritative.",
+            "A message contains exactly id, type message, messageType, from, to, label, kind, and replyTo only for return. messageType is sync, async, return, or self; kind is primary, secondary, success, warning, or risk.",
+            "Self requires identical endpoints. Other messages require distinct endpoints. Return requires replyTo naming an earlier message with reversed endpoints; replyTo is rejected for sync, async, and self.",
+            "A note contains exactly id, type note, text, kind, and exactly one participant or event anchor naming an existing element. Kind uses the same semantic enum as messages.",
+            "A fragment contains exactly id, type fragment, fragmentType, label, kind, and branches. A branch contains exactly id, label, and events. Alt has two to four non-empty labelled branches; opt and loop have exactly one non-empty labelled branch.",
+            "An activation contains exactly id, participant, startEvent, and endEvent. Both endpoints name messages involving that participant, start precedes end, and both belong to the same event container or fragment branch.",
+            "Every participant, event, branch, and activation ID is globally unique lowercase kebab text. Recursive event order and branch order are authoritative; omitted or unsupported fields never receive semantic defaults.",
+            "reviewPrefix is optional lowercase dot and kebab text. Output review IDs combine reviewPrefix, diagram id, element role, and element id; no author-supplied per-element review override is accepted in the initial contract."
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.seam.visual-contract",
+          "items": [
+            [
+              "Visual authority",
+              "The frozen infrastructure CSS supplies canvas, grid, typography, palette, surfaces, shadows, semantic route colors, and minimum text size; the extension may add components but no token or alternate style family."
+            ],
+            [
+              "Participants",
+              "Headers reuse the existing white node surface, technical kind label, semantic accent rail, and dot; a neutral dashed lifeline descends from each header."
+            ],
+            [
+              "Messages",
+              "Routes reuse primary, secondary, success, warning, and risk treatments. Every label also shows SYNC, ASYNC, RETURN, or SELF so line and color are not the sole meaning; return remains dashed and self uses an orthogonal loop."
+            ],
+            [
+              "Activations",
+              "White 12px rails with neutral borders sit on lifelines and use deterministic right offsets for nesting."
+            ],
+            [
+              "Fragments",
+              "Neutral infrastructure enclosures carry visible ALT, OPT, or LOOP labels, guard labels, and ruled branch separators; they never resemble report cards or page wireframes."
+            ],
+            [
+              "Notes",
+              "Notes reuse paper surfaces and semantic accent cues with a visible NOTE label; text remains searchable and within the established minimum size."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.path",
+      "role": "path",
+      "kicker": "Key flows",
+      "title": "Source meaning becomes geometry only after strict semantic validation",
+      "summary": "The success, compatibility, and recovery flows share provenance checks but not normalization code.",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "design.path.sequence",
+          "items": [
+            {
+              "id": "design.path.select",
+              "title": "Select",
+              "text": "The owning PRD or Design Solution matches a temporal communication question to sequence and retains its source-classified brief."
+            },
+            {
+              "id": "design.path.preflight",
+              "title": "Preflight",
+              "text": "The sequence renderer rejects raw input over 64 KiB before JSON parsing, then rejects unknown fields and invalid XML text."
+            },
+            {
+              "id": "design.path.validate",
+              "title": "Validate",
+              "text": "The v2 validator resolves participants, recursively counts events and fragments, validates references and branch rules, and returns normalized semantic data or one actionable error."
+            },
+            {
+              "id": "design.path.layout",
+              "title": "Lay out",
+              "text": "sequence-v1 measures text conservatively, sizes participant headers, expands lane gaps for labels, notes, and self messages, assigns one row per ordered event, encloses fragments, and places activation rails."
+            },
+            {
+              "id": "design.path.render",
+              "title": "Render",
+              "text": "The sequence serializer escapes all text and emits source digest, version metadata, stable IDs, title and description, lifelines, messages, fragments, labels, and renderer-owned reveal groups."
+            },
+            {
+              "id": "design.path.embed",
+              "title": "Verify and embed",
+              "text": "HTML Report Designer reads allowlisted root markers, enforces the v2 pre-parse size cap, confirms parsed source and marker agreement, invokes the matching exact renderer, verifies self-containment and infrastructure-v1 metadata, then embeds SVG beside the source-owned walkthrough."
+            },
+            {
+              "id": "design.path.recover",
+              "title": "Recover",
+              "text": "Invalid references, excessive dimensions, collisions, or unsupported topology stop before output; the owning skill refines or splits the brief and reruns the same path."
+            }
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.path.layout-contract",
+          "items": [
+            [
+              "Measurement",
+              "Count Unicode code points with one font em per non-space and one-half em per whitespace, round upward to integer units, wrap greedily at whitespace then by code point, and reject authored line breaks. This deliberately overestimates system-font text."
+            ],
+            [
+              "Horizontal order",
+              "Place participant headers in source order at 96px height. Initialize each adjacent lane gap to at least 220px and enough for half-header widths plus 48px clearance."
+            ],
+            [
+              "Horizontal expansion",
+              "Process events once in source order. A label, note, or 96px self-message gutter may only increase crossed lane gaps; divide any deficit evenly and assign remainder units to the earliest gaps."
+            ],
+            [
+              "Vertical order",
+              "Start events 64px below headers. Messages use 72px rows; note rows use at least 72px; fragment height is its 40px band plus ordered branch content, 24px separators, and 24px bottom clearance."
+            ],
+            [
+              "Fragments and activations",
+              "Stack fragment branches and nested events in source order. Activation rails are 12px wide at the participant center; concurrent depth offsets eight units to the right and never exceeds three."
+            ],
+            [
+              "Bounds",
+              "Extend lifelines 48px below the final event, add 48px outer padding, then reject any viewBox or SVG above the approved cap. No later pass compacts or reorders geometry."
+            ]
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.path.branches",
+          "items": [
+            [
+              "V1 compatibility flow",
+              "system-diagram-v1 continues through the existing renderer and exact report verifier; no v2 normalizer, layout, CSS extension, or metadata touches it."
+            ],
+            [
+              "Sequence success flow",
+              "Valid semantic source produces one byte-deterministic SVG and a report that preserves existing visual and walkthrough behavior."
+            ],
+            [
+              "Source failure flow",
+              "The first failing contract rule returns its stable field and event context; no partial SVG is written."
+            ],
+            [
+              "Tamper or staleness",
+              "A changed JSON digest, modified SVG, wrong renderer metadata, executable content, or unsupported version fails report rendering before HTML output."
+            ],
+            [
+              "Dimension recovery",
+              "Layout expands lanes and rows until the approved viewBox cap; it never reorders participants or events or shrinks below established text sizes, and asks for a split when the cap cannot hold the brief."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.diagram",
+      "role": "diagram",
+      "kicker": "Architecture path",
+      "title": "The source-version seam isolates compatibility from new temporal layout",
+      "summary": "The current v1 renderer and the proposed sequence v2 pipeline converge only at version-aware report verification.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.sequence-rendering-seam",
+          "question": "Where can sequence-v2 validation, layout, and rendering enter System Diagram while preserving v1 bytes, semantic authority, and report verification?",
+          "caption": "Source-contract selection happens before normalization: v1 stays frozen; sequence v2 validates and lays out directly; both must pass matching exact-output verification before report embedding.",
+          "svgPath": "diagrams/sequence-rendering-seam.svg",
+          "sourcePath": "diagrams/sequence-rendering-seam.json",
+          "walkthrough": [
+            "PRD or Design Solution supplies an approved question and evidence-backed semantics.",
+            "The retained source contract routes before normalization or rendering.",
+            "System-diagram-v1 remains on its current validator, CSS, metadata, and renderer path.",
+            "Sequence v2 passes through strict references and limits, then one source-ordered integer layout and an additive same-style SVG serializer.",
+            "Invalid sequence source returns an exact blocker before geometry; valid v1 or v2 output reaches the matching report verifier.",
+            "The canonical report embeds byte-current SVG with its source-owned walkthrough, preserving one visual language for the reviewer."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.decisions",
+      "role": "decisions",
+      "kicker": "Proposed architecture decisions",
+      "title": "Four blocking choices define the implementation boundary",
+      "summary": "Browser recording is review input; these choices become architecture authority only after explicit design approval.",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.version-isolation",
+          "question": "How should sequence generation coexist with system-diagram-v1?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "isolated-v2",
+              "label": "Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer"
+            },
+            {
+              "id": "shared-ir",
+              "label": "Route v1 and sequence through a new shared scene model and renderer"
+            }
+          ],
+          "selectedOptionId": "isolated-v2",
+          "rationale": "Isolation makes byte compatibility mechanical and lets one temporal slice prove reusable needs before any shared IR exists.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-source",
+          "question": "What should the sequence source own?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "semantic-order",
+              "label": "Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically"
+            },
+            {
+              "id": "authored-geometry",
+              "label": "Extend v1 with manually positioned lifelines, message paths, and fragment rectangles"
+            }
+          ],
+          "selectedOptionId": "semantic-order",
+          "rationale": "Temporal order and references are reviewable product and design semantics; coordinates are renderer mechanics and should not be reauthored for every sequence.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-style",
+          "question": "How should sequence primitives use the existing visual language without changing v1 bytes?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "base-plus-extension",
+              "label": "Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output"
+            },
+            {
+              "id": "modify-base",
+              "label": "Add sequence selectors to the base CSS embedded by v1"
+            }
+          ],
+          "selectedOptionId": "base-plus-extension",
+          "rationale": "The v2 artifact receives identical base tokens plus new lifeline, message, and fragment components while retained v1 SVG bytes remain unchanged.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.report-version-adapter",
+          "question": "How should canonical reports accept the new source without moving semantic ownership?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "internal-adapter",
+              "label": "Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type"
+            },
+            {
+              "id": "new-report-schema",
+              "label": "Create canonical-report-v2 and derive walkthrough content from sequence source"
+            }
+          ],
+          "selectedOptionId": "internal-adapter",
+          "rationale": "The report block contract and walkthrough authority do not change; only provenance verification gains one explicitly supported source and renderer pair.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        }
+      ]
+    },
+    {
+      "id": "design.proof",
+      "role": "proof",
+      "kicker": "Constraints and approval proof",
+      "title": "Implementation planning is credible only with exact limits and observable gates",
+      "summary": "The sequence slice must prove compatibility, semantics, deterministic geometry, portability, security, accessibility, and report integration together.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.proof.limits",
+          "items": [
+            [
+              "Source",
+              "64 KiB raw JSON before parse; strict unknown-field rejection; IDs at most 64 characters; title 120; description 600."
+            ],
+            [
+              "Participants and events",
+              "1–8 participants; 1–48 messages; at most 64 recursive events total, counting every message, note, and fragment wrapper but not branch containers."
+            ],
+            [
+              "Notes and fragments",
+              "At most 16 notes; 12 fragments; three fragment ancestors; alt has 2–4 branches; opt and loop have exactly 1; every branch contains at least one event."
+            ],
+            [
+              "Activations",
+              "At most 16 spans; simultaneous depth three per participant; ordered endpoints in one event container or branch."
+            ],
+            [
+              "Text",
+              "Participant labels use 64 characters and 3 lines; message and fragment labels use 120 characters and 2 lines; note text uses 300 characters and 5 lines; authored text remains at least 14px."
+            ],
+            [
+              "Geometry",
+              "Integer coordinates; source order is the only tie-breaker; no authored coordinates, randomness, optimization, or iterative pass; viewBox at most 4096 × 8192."
+            ],
+            [
+              "Output",
+              "At most 1 MiB SVG; source SHA-256; explicit data-diagram-schema, data-diagram-type, data-layout-version, renderer, and infrastructure-v1 style metadata; stable review IDs; searchable escaped text; title and description; role img; and no remote or executable content."
+            ],
+            [
+              "Font guarantee",
+              "A versioned conservative code-point width table owns wrapping and geometry; bytes are cross-machine deterministic, while system-font glyph rasterization is not claimed pixel-identical."
+            ]
+          ]
+        },
+        {
+          "type": "list",
+          "id": "design.proof.acceptance",
+          "style": "checks",
+          "items": [
+            "DA-001 — Every retained v1 fixture and canonical report remains byte-identical; SCHEMA_VERSION, normalizeSpec, review-ID helpers, current CLI behavior covered by tests, metadata, and infrastructure-diagram.css remain compatible.",
+            "DA-002 — A minimal sequence fixture and a consequential failure and recovery fixture render participants; sync, async, return, and self messages; notes; activations; and alt, opt, and loop fragments in exact source order.",
+            "DA-003 — Focused invalid fixtures prove each unknown field, limit, duplicate ID, missing reference, return mismatch, fragment rule, activation crossing, source-size, dimension, and output-size failure with stable contextual errors.",
+            "DA-004 — Repeated rendering and --check produce identical bytes under actual Node 18 and the current project Node from the repository and from an allowlisted copied skill that excludes node_modules and external package resolution.",
+            "DA-005 — Canonical reports accept exact v1 and sequence-v2 output, reject stale, tampered, or mismatched renderer output, preserve report-owned walkthroughs, and keep canonical-report-v1 source compatibility.",
+            "DA-006 — Desktop, 320px local overflow, no-JS, reduced-motion, and print checks prove readable text, visible complete static content, no clipping, and no collisions among nodes, headers, messages, labels, fragments, or activations using SVG geometry assertions.",
+            "DA-007 — Hostile labels render only as escaped text; executable or foreign content, external assets, XML-invalid controls, arbitrary style, and oversized input or output fail before report output.",
+            "DA-008 — PRD, Design Solution, and System Diagram guidance plus behavioral evals select sequence only for participant and time interaction and return ambiguous, merely linear, static topology, and one-scope decomposition requests to their proper capability.",
+            "DA-009 — The package and lockfile retain zero runtime dependencies, Node.js >=18, deterministic source provenance, and infrastructure-v1 style parity for palette, grid, typography roles, surfaces, route semantics, and minimum text size."
+          ]
+        },
+        {
+          "type": "facts",
+          "id": "design.proof.tradeoffs",
+          "items": [
+            [
+              "Accepted cost if approved",
+              "The first slice duplicates a small amount of SVG serialization structure instead of prematurely sharing a scene IR."
+            ],
+            [
+              "Readability tradeoff",
+              "Conservative measurement may create wider diagrams; local overflow and split guidance are preferred to smaller or overlapping text."
+            ],
+            [
+              "Report coupling",
+              "HTML Report Designer knows an allowlisted source and renderer pair but still does not parse sequence semantics or own the walkthrough."
+            ],
+            [
+              "Recovery",
+              "Correct canonical source and regenerate; never patch SVG or HTML. A source or layout version change requires a new explicit version, fixture refresh, and compatibility review."
+            ],
+            [
+              "Planning gate",
+              "Task drafting may begin only after this design is Approved, all four blocking decisions are Accepted, and the deterministic System Diagram ADR is amended with the accepted version-isolation rationale."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.boundary",
+      "role": "boundary",
+      "kicker": "Meaningful boundary",
+      "title": "Sequence proves the extension seam; later grammars remain deliberately unbuilt",
+      "summary": "This design authorizes no generic graph engine, migration, or implementation planning for flow, architecture, or component diagrams.",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "design.boundary.list",
+          "style": "checks",
+          "items": [
+            "Unchanged: product and architecture authority, report-owned walkthroughs, canonical diagram block shape, Editorial Infrastructure reports, infrastructure-v1 visual language, and all current v1 retained sources.",
+            "Immediate design scope: capability-selection guidance and evals, strict sequence-v2 source, sequence-v1 direct layout, additive sequence SVG components, exact report verification, fixtures, and proof gates for PRD AC-001 through AC-007.",
+            "Deferred: flow AC-008–010, architecture-view AC-011–013, and component-decomposition AC-014–016 until real examples choose the next vertical slice and an approved design amendment defines its contract.",
+            "Excluded: shared scene IR, automatic graph optimization, force layout, generic migration, authored styling, remote assets, alternate renderer, derived report walkthroughs, class diagrams, timing diagrams, deployment views, and task creation inside this design.",
+            "ADR consequence: after explicit design approval, amend docs/adrs/architecture.md to preserve the accepted version-isolation, same-style extension, and report-verification rationale before tasks become executable."
+          ]
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <script data-artifact-motion="native">
+/* artifact-motion:start */
+document.documentElement.classList.add('js');
+
+const revealItems = Array.from(document.querySelectorAll('.reveal'));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const showAll = () => revealItems.forEach((item) => item.classList.add('is-visible'));
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  showAll();
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  revealItems.forEach((item) => observer.observe(item));
+  window.addEventListener('beforeprint', showAll, { once: true });
+}
+/* artifact-motion:end */
+  </script>
+  <script data-document-navigation="progressive">
+/* document-navigation:start */
+const tocLinks = Array.from(document.querySelectorAll('nav[aria-label="Table of contents"] a[href^="#"]'));
+const tocEntries = tocLinks
+  .map((link) => ({ link, target: document.getElementById(decodeURIComponent(link.hash.slice(1))) }))
+  .filter((item) => item.target);
+const sideNav = document.querySelector('.side-nav');
+
+const activateAndScrollTocLinkIntoView = (activeLink) => {
+  tocEntries.forEach(({ link }) => link.classList.toggle('is-active', link === activeLink));
+  if (!activeLink || !sideNav) return;
+  const linkTop = activeLink.offsetTop;
+  const linkBottom = linkTop + activeLink.offsetHeight;
+  if (linkTop < sideNav.scrollTop + 56) sideNav.scrollTop = Math.max(0, linkTop - 72);
+  if (linkBottom > sideNav.scrollTop + sideNav.clientHeight) sideNav.scrollTop = linkBottom - sideNav.clientHeight + 24;
+};
+
+if ('IntersectionObserver' in window && tocEntries.length > 0) {
+  const visibleSectionIds = new Map();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => visibleSectionIds.set(entry.target.id, entry.isIntersecting));
+    const currentTocEntry = tocEntries.find(({ target }) => visibleSectionIds.get(target.id)) ?? [...tocEntries].reverse().find(({ target }) => target.getBoundingClientRect().top <= 160);
+    activateAndScrollTocLinkIntoView(currentTocEntry?.link ?? tocEntries[0].link);
+  }, { rootMargin: '-12% 0px -72% 0px', threshold: [0, 1] });
+  tocEntries.forEach(({ target }) => observer.observe(target));
+} else if (tocEntries.length > 0) {
+  activateAndScrollTocLinkIntoView(tocEntries[0].link);
+}
+
+tocLinks.forEach((link) => link.addEventListener('click', () => activateAndScrollTocLinkIntoView(link)));
+/* document-navigation:end */
+  </script>
+  <script data-artifact-review-state="persistent">
+/* artifact-review-state:start */
+const decisionRecorders = Array.from(document.querySelectorAll('fieldset.decision-recorder'));
+const browserStorage = getStorage();
+const storagePrefix = `artifact-review:${location.pathname || document.title}:`;
+
+for (const [index, recorder] of decisionRecorders.entries()) {
+  const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+  const isCanonicallyAccepted = recorder.dataset.decisionStatus === 'accepted';
+  const optionInputs = Array.from(recorder.querySelectorAll('input[type="radio"]'));
+  const customAnswerInput = recorder.querySelector('[data-decision-custom]');
+  const rationaleInput = recorder.querySelector('[data-decision-rationale]');
+  const ownerInput = recorder.querySelector('[data-decision-owner]');
+  const reviewRecordedCheckbox = recorder.querySelector('[data-decision-recorded]');
+  const decisionStatusMessage = recorder.querySelector('.decision-status');
+  const storageKey = storagePrefix + decisionId;
+  let recordedReviewFingerprint = null;
+  let storageWriteFailed = false;
+
+  const selectedOptionInput = () => optionInputs.find((option) => option.checked);
+  const selectedAnswer = () => {
+    const selectedOption = selectedOptionInput();
+    if (!selectedOption) return '';
+    if (selectedOption.value === 'other') return customAnswerInput?.value.trim() || '';
+    return selectedOption.closest('label')?.querySelector('span')?.textContent?.trim() || selectedOption.value;
+  };
+  const isReviewInputComplete = () => Boolean(selectedAnswer() && rationaleInput?.value.trim() && ownerInput?.value.trim());
+  const contentFingerprint = () => JSON.stringify({
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+  });
+
+  const createDecisionReviewRecord = () => ({
+    reviewId: decisionId,
+    question: recorder.querySelector('legend')?.textContent?.trim() || decisionId,
+    sourceFingerprint: recorder.dataset.decisionSourceFingerprint || '',
+    status: isCanonicallyAccepted ? 'Accepted' : reviewRecordedCheckbox?.checked ? 'Recorded review input' : 'Not recorded',
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+    approvedBy: recorder.dataset.approvedBy || '',
+    approvedAt: recorder.dataset.approvedAt || '',
+    localRecordedAt: !isCanonicallyAccepted && reviewRecordedCheckbox?.checked ? recorder.dataset.localRecordedAt || new Date().toISOString().slice(0, 10) : '',
+  });
+
+  const syncDecisionRecorder = ({ restored = false } = {}) => {
+    if (!isCanonicallyAccepted && reviewRecordedCheckbox) {
+      const currentFingerprint = contentFingerprint();
+      if (reviewRecordedCheckbox.checked && recordedReviewFingerprint && recordedReviewFingerprint !== currentFingerprint) {
+        reviewRecordedCheckbox.checked = false;
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+
+      const reviewInputComplete = isReviewInputComplete();
+      reviewRecordedCheckbox.disabled = !reviewInputComplete;
+      if (!reviewInputComplete) reviewRecordedCheckbox.checked = false;
+      if (reviewRecordedCheckbox.checked) {
+        if (!recorder.dataset.localRecordedAt) recorder.dataset.localRecordedAt = new Date().toISOString().slice(0, 10);
+        if (!recordedReviewFingerprint) recordedReviewFingerprint = currentFingerprint;
+      } else {
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+    }
+
+    const reviewRecord = createDecisionReviewRecord();
+    recorder.dataset.reviewSelection = reviewRecord.selection;
+    recorder.dataset.reviewRecorded = String(reviewRecord.status !== 'Not recorded');
+    if (!isCanonicallyAccepted && browserStorage) {
+      try {
+        browserStorage.setItem(storageKey, JSON.stringify(reviewRecord));
+        storageWriteFailed = false;
+      } catch {
+        storageWriteFailed = true;
+      }
+    }
+
+    if (decisionStatusMessage) {
+      if (isCanonicallyAccepted) decisionStatusMessage.textContent = `Accepted by ${reviewRecord.approvedBy} on ${reviewRecord.approvedAt}.`;
+      else if (reviewRecord.status === 'Recorded review input') decisionStatusMessage.textContent = 'Recorded in this browser. Export it for canonical reconciliation and approval.';
+      else if (!isReviewInputComplete()) decisionStatusMessage.textContent = 'Select an option and provide rationale and owner before recording.';
+      else decisionStatusMessage.textContent = restored ? 'Restored from this browser. Check “Decision recorded” when ready.' : 'Ready to record.';
+      if (!isCanonicallyAccepted && (!browserStorage || storageWriteFailed)) decisionStatusMessage.textContent += ' Browser storage is unavailable; export before closing.';
+    }
+  };
+
+  if (!isCanonicallyAccepted && browserStorage) {
+    try {
+      const savedRecord = JSON.parse(browserStorage.getItem(storageKey) || 'null');
+      if (savedRecord) {
+        const currentQuestion = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+        const savedOption = optionInputs.find((candidate) => candidate.value === savedRecord.optionId);
+        const currentSavedSelection = savedRecord.optionId === 'other'
+          ? savedRecord.customAnswer || ''
+          : savedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || '';
+        const optionStillExists = savedRecord.optionId === '' || Boolean(savedOption);
+        const meaningUnchanged = savedRecord.sourceFingerprint === recorder.dataset.decisionSourceFingerprint
+          && savedRecord.question === currentQuestion
+          && optionStillExists
+          && savedRecord.selection === currentSavedSelection;
+        if (!meaningUnchanged) {
+          browserStorage.removeItem(storageKey);
+        } else {
+          if (savedOption) savedOption.checked = true;
+          if (customAnswerInput && typeof savedRecord.customAnswer === 'string') customAnswerInput.value = savedRecord.customAnswer;
+          if (rationaleInput && typeof savedRecord.rationale === 'string') rationaleInput.value = savedRecord.rationale;
+          if (ownerInput && typeof savedRecord.owner === 'string') ownerInput.value = savedRecord.owner;
+          if (reviewRecordedCheckbox) reviewRecordedCheckbox.checked = savedRecord.status === 'Recorded review input';
+          if (savedRecord.localRecordedAt) recorder.dataset.localRecordedAt = savedRecord.localRecordedAt;
+          if (reviewRecordedCheckbox?.checked) recordedReviewFingerprint = contentFingerprint();
+        }
+      }
+    } catch {
+      try { browserStorage.removeItem(storageKey); } catch { /* browser storage is optional */ }
+    }
+  }
+
+  customAnswerInput?.addEventListener('input', () => {
+    const customOption = optionInputs.find((option) => option.value === 'other');
+    if (customOption) customOption.checked = true;
+  });
+  recorder.addEventListener('input', () => syncDecisionRecorder());
+  recorder.addEventListener('change', () => syncDecisionRecorder());
+  syncDecisionRecorder({ restored: true });
+}
+
+if (decisionRecorders.length > 0) {
+  const exportActions = document.createElement('section');
+  exportActions.className = 'feedback-widget decision-export';
+  exportActions.dataset.reviewId = 'review-decisions.export';
+  exportActions.innerHTML = '<h2 class="panel-title">Decision Review Record</h2><p class="feedback-note">Browser records are review input, not canonical approval. Export them, then reconcile accepted choices into the PRD, design, or ADR.</p><div class="feedback-actions"><button type="button" data-review-copy>Copy Decisions</button><button type="button" data-review-download>Download Markdown</button></div><p class="feedback-result" aria-live="polite"></p>';
+  (document.querySelector('article') || document.body).append(exportActions);
+
+  const buildDecisionExportMarkdown = () => {
+    const lines = [`# Decision review record for ${document.title}`, '', `Source: ${location.pathname || 'inline document'}`, '', '> Review input only. Reconcile explicit human approval into canonical document source.', ''];
+    decisionRecorders.forEach((recorder, index) => {
+      const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+      const question = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+      const selectedOption = recorder.querySelector('input[type="radio"]:checked');
+      const customAnswer = recorder.querySelector('[data-decision-custom]')?.value.trim() || '';
+      const selection = selectedOption?.value === 'other' ? customAnswer : selectedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || 'No selection';
+      const isAccepted = recorder.dataset.decisionStatus === 'accepted';
+      const isLocallyRecorded = recorder.querySelector('[data-decision-recorded]')?.checked;
+      lines.push(
+        `## ${question}`, '',
+        `- Review ID: \`${decisionId}\``,
+        `- Source fingerprint: \`${recorder.dataset.decisionSourceFingerprint || 'unknown'}\``,
+        `- Status: ${isAccepted ? 'Accepted' : isLocallyRecorded ? 'Recorded review input' : 'Not recorded'}`,
+        `- Decision: ${selection}`,
+        `- Rationale: ${recorder.querySelector('[data-decision-rationale]')?.value.trim() || 'Not provided'}`,
+        `- Owner: ${recorder.querySelector('[data-decision-owner]')?.value.trim() || 'Not provided'}`,
+        `- Approved by: ${recorder.dataset.approvedBy || 'Not approved'}`,
+        `- Approved on: ${recorder.dataset.approvedAt || 'Not approved'}`,
+        `- Browser recorded: ${recorder.dataset.localRecordedAt || 'Not recorded'}`,
+        '',
+      );
+    });
+    return lines.join('\n');
+  };
+
+  const exportStatusMessage = exportActions.querySelector('.feedback-result');
+  exportActions.querySelector('[data-review-copy]')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildDecisionExportMarkdown());
+      exportStatusMessage.textContent = 'Decision record copied.';
+    } catch {
+      exportStatusMessage.textContent = 'Copy unavailable. Download the Markdown record instead.';
+    }
+  });
+  exportActions.querySelector('[data-review-download]')?.addEventListener('click', () => {
+    const blob = new Blob([buildDecisionExportMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    const link = document.createElement('a');
+    const slug = (document.title || 'review').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${slug || 'review'}.decision-review.md`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    exportStatusMessage.textContent = 'Markdown decision record downloaded.';
+  });
+}
+
+function getStorage() {
+  try {
+    const key = '__artifact_review_storage_test__';
+    localStorage.setItem(key, key);
+    localStorage.removeItem(key);
+    return localStorage;
+  } catch {
+    return null;
+  }
+}
+/* artifact-review-state:end */
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "approved-workflow-design",
+    "kind": "design",
+    "status": "Approved",
+    "title": "Approved canonical renderer workflow fixture",
+    "summary": "An approved synthetic design authorizes portability proof without depending on mutable product documentation.",
+    "reviewFocus": "Confirm the renderer boundary and the separation between review recording and canonical approval.",
+    "updated": "2026-07-31",
+    "sources": [
+      "Synthetic approved workflow eval"
+    ],
+    "feature": "Canonical reports",
+    "approval": {
+      "approvedBy": "Eval Product Owner",
+      "approvedAt": "2026-07-31"
+    }
+  },
+  "sections": [
+    {
+      "id": "design.authority",
+      "role": "authority",
+      "kicker": "Authority",
+      "title": "The approved promise is consistent, portable review",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.authority.facts",
+          "items": [
+            [
+              "Promise",
+              "All durable reports use one visual and interaction system."
+            ],
+            [
+              "Proof",
+              "The same structured source regenerates byte-identical HTML."
+            ],
+            [
+              "Constraint",
+              "PRD and design truth remains owned by their domain skills."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.pressure",
+      "role": "pressure",
+      "kicker": "Pressure",
+      "title": "Independent templates drifted in shell, styles, and runtime",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "id": "design.pressure.problem",
+          "text": "Separate PRD, design, generic report, and diagram templates allowed agents to bypass or partially reproduce the intended presentation contract."
+        }
+      ]
+    },
+    {
+      "id": "design.seam",
+      "role": "seam",
+      "kicker": "Chosen seam",
+      "title": "A skill-relative renderer owns all presentation",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.seam.ownership",
+          "items": [
+            [
+              "PRD/design",
+              "Own section roles and approved meaning"
+            ],
+            [
+              "System Diagram",
+              "Owns evidence-backed infrastructure JSON to SVG"
+            ],
+            [
+              "HTML Report Designer",
+              "Owns template, CSS, blocks, runtime, and validation"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.path",
+      "role": "path",
+      "kicker": "Causal path",
+      "title": "Structured truth becomes one self-contained report",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "design.path.steps",
+          "items": [
+            {
+              "id": "design.path.author",
+              "title": "Author",
+              "text": "The owning skill writes canonical-report-v1 structured content."
+            },
+            {
+              "id": "design.path.diagram",
+              "title": "Generate figure",
+              "text": "System Diagram renders retained system-diagram-v1 JSON into accessible infrastructure SVG."
+            },
+            {
+              "id": "design.path.render",
+              "title": "Render",
+              "text": "The canonical renderer validates roles, decisions, and provenance before filling one report template."
+            },
+            {
+              "id": "design.path.review",
+              "title": "Review",
+              "text": "The reviewer records and exports choices without mutating canonical source."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.diagram",
+      "role": "diagram",
+      "kicker": "System path",
+      "title": "One boundary coordinates report generation",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.canonical-renderer",
+          "question": "Where does approved document meaning become consistent HTML?",
+          "caption": "The canonical renderer validates structured content and embeds renderer-produced infrastructure SVG before emitting one report shell.",
+          "svgPath": "../../../../system-diagram/resources/system-slice-example.svg",
+          "sourcePath": "../../../../system-diagram/resources/system-slice-example.json",
+          "walkthrough": [
+            "The owning skill supplies validated product or architecture content.",
+            "System Diagram supplies the retained system-diagram-v1 JSON/SVG pair.",
+            "The canonical renderer validates both inputs.",
+            "One report template produces portable HTML for review."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.decisions",
+      "role": "decisions",
+      "kicker": "Decision",
+      "title": "Keep one renderer rather than synchronized templates",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.rendering-boundary",
+          "question": "Which boundary owns report markup, CSS, and runtime?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "single-renderer",
+              "label": "One skill-relative renderer and report template"
+            },
+            {
+              "id": "specialized-templates",
+              "label": "Separate PRD/design/report templates kept in sync"
+            }
+          ],
+          "selectedOptionId": "single-renderer",
+          "rationale": "A single rendering boundary prevents shell drift and is portable after copying the skill.",
+          "owner": "Architecture owner",
+          "blocking": true,
+          "approvedBy": "Eval Product Owner",
+          "approvedAt": "2026-07-31"
+        }
+      ]
+    },
+    {
+      "id": "design.proof",
+      "role": "proof",
+      "kicker": "Tradeoffs and proof",
+      "title": "Stricter structure buys determinism and review safety",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.proof.tradeoffs",
+          "items": [
+            [
+              "Cost",
+              "New component shapes require a shared renderer change."
+            ],
+            [
+              "Failure posture",
+              "Missing renderer or System Diagram provenance blocks generation rather than falling back."
+            ],
+            [
+              "Proof",
+              "Clean-copy, negative profile, deterministic regeneration, decision runtime, and browser checks pass."
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "design.proof.risk",
+          "tone": "risk",
+          "title": "Migration risk",
+          "text": "Legacy generated reports remain readable but are not accepted as new canonical output."
+        }
+      ]
+    },
+    {
+      "id": "design.boundary",
+      "role": "boundary",
+      "kicker": "Meaningful boundary",
+      "title": "The renderer does not decide product or architecture truth",
+      "blocks": [
+        {
+          "type": "list",
+          "id": "design.boundary.list",
+          "style": "checks",
+          "items": [
+            "No automatic approval from completeness or browser state.",
+            "No alternate diagram renderer or hand-authored SVG.",
+            "No task creation or implementation behavior inside design generation."
+          ]
+        }
+      ]
+    }
+  ]
+}

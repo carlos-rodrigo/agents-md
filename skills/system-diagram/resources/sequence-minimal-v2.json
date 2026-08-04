@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "system-diagram-v2",
+  "diagramType": "sequence",
+  "layoutVersion": "sequence-v1",
+  "mode": "component-communication",
+  "id": "sequence-minimal",
+  "title": "Order submission",
+  "desc": "Who communicates in what order when a customer submits an order.",
+  "participants": [
+    { "id": "customer", "kind": "actor", "label": "Customer" },
+    { "id": "checkout", "kind": "service", "label": "Checkout" }
+  ],
+  "events": [
+    { "id": "submit", "type": "message", "messageType": "sync", "from": "customer", "to": "checkout", "label": "Submit order", "kind": "primary" },
+    { "id": "ack", "type": "message", "messageType": "return", "from": "checkout", "to": "customer", "replyTo": "submit", "label": "Confirm receipt", "kind": "success" }
+  ],
+  "activations": [
+    { "id": "checkout-work", "participant": "checkout", "startEvent": "submit", "endEvent": "ack" }
+  ]
+}

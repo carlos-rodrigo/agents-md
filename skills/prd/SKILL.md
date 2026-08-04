@@ -1,7 +1,7 @@
 ---
 name: prd
 description: "Create or update a direct, concise, evidence-backed product requirements document when a non-trivial feature's product intent, actor workflow, scope, decisions, or observable acceptance needs human review before architecture. Express stories as BDD specifications and include proposed mockups for UI changes or visual suggestions. Do not use for tiny obvious fixes, architecture, task planning, implementation, technical test plans, or document styling."
-compatibility: "Requires the html-report-designer and system-diagram skills, plus frontend-design when the feature implies UI. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
+compatibility: "Requires the html-report-designer and system-diagram skills, plus frontend-design when the feature implies UI. Final reports use the bundled canonical renderer; diagrams use the bundled deterministic infrastructure SVG renderer."
 ---
 
 # Product Requirements Document
@@ -37,6 +37,18 @@ Use authority in this order:
 
 Do not invent users, emotion, urgency, business rules, roles, validation, limits, metrics, product language, or acceptance behavior.
 
+Classify every consequential claim where the reviewer encounters it:
+
+- **Sourced fact** — cite the durable artifact or observable current behavior; a human statement is evidence of what was said, not approval unless explicit.
+- **Approved product truth** — name the approving human and durable approval source. Claim-level approval does not make the whole PRD Approved.
+- **Proposed recommendation** — label it Proposed; it is not product truth.
+- **Assumption** — label its impact and owner; make it blocking when an honest proposal depends on it.
+- **Open question** — name the owner and resolve it through a real decision or report the PRD Blocked.
+
+Use these category names verbatim; variants such as “Sourced behavior” or “Proposed visual direction” blur authority.
+
+A top-level source list is not enough to turn a nearby Proposed recommendation into a Sourced fact or Approved product truth. Express local authority through existing block titles, fact terms, callouts, or inline source paths/dates; do not invent DocumentSpec fields. Label a block or adjacent claim group once—do not prefix every item with the same category. If a claim already has a field-owned home, attach its citation there instead of creating an authority-only duplicate. Never say research, evidence, or users established something without a reviewable source.
+
 Status is a human governance contract:
 
 - **Draft** — default; assumptions and unresolved decisions remain visible.
@@ -58,12 +70,16 @@ Write for a reviewer who needs one clear, decision-ready product path:
 - Use concrete actors, actions, states, and outcomes. Remove throat-clearing, generic benefits, duplicated context, and implementation commentary.
 - Keep only detail that changes product behavior, scope, trust, acceptance, or a decision.
 
+Assign each statement one home: `product` owns the change and result; `problem` owns current evidence, friction, and consequence; `behavior` owns shared ordering and rules; scenarios own interaction behavior; the schema-required storyboard owns the smallest concrete state transition; acceptance owns independently testable pass/fail conditions; scope owns exclusions, assumptions, and provenance.
+
+Before rendering, run a **Deduplication pass**. Reduce statements to `actor + trigger/action + state/result`, assign each tuple one field owner, and delete any block whose only addition is different wording or an authority label. In a one-slice PRD, `behavior` may order the path or state cross-scenario rules but must not replay the slice. Keep a repeated tuple only when the second field adds distinct ordering, transition, boundary, or independently testable acceptance information. Use one storyboard step for simple behavior; add steps only for distinct transition detail.
+
 ## Required report structure
 
 Every substantive PRD uses these `section.role` values in a causal reading order. Headings may be feature-specific, but roles may not be omitted:
 
 1. **`product`** — actor, job/moment, bounded capability, entry point, resulting state.
-2. **`problem`** — current behavior, friction, consequence, evidence, expected outcome.
+2. **`problem`** — current behavior, friction, consequence, and evidence.
 3. **`behavior`** — canonical end-to-end workflow and outcome-protecting product rules.
 4. **`diagram`** — one evidence-backed product-behavior diagram.
 5. **`slices`** — one or more complete end-to-end product slices.
@@ -91,13 +107,13 @@ When {actor action or trigger}
 Then {observable result}
 ```
 
-The required `story` object is compact traceability metadata; the BDD scenarios explain behavior. Include only material exception scenarios, an observable visual/non-visual sequence, stable acceptance criteria, and a brief “After this slice” outcome. Load [references/product-slice-contract.md](references/product-slice-contract.md) when composing slices.
+The required `story` object is compact traceability metadata; the BDD scenarios explain behavior. Write `actor` as a noun phrase beginning with a lowercase common noun or determiner, `capability` as a base-form verb phrase beginning lowercase without leading `can` or `to`, and `outcome` as a complete result clause beginning lowercase without leading `so that`. Preserve proper names and acronyms within each fragment and omit terminal punctuation so the renderer produces a natural Feature line. Include only material exception scenarios, the smallest required visual/non-visual sequence, stable acceptance criteria, and a brief “After this slice” outcome. Load [references/product-slice-contract.md](references/product-slice-contract.md) when composing slices.
 
 Let sourced behavior determine the number of workflow steps, rules, scenarios, and acceptance criteria. Never invent content to meet a fixed count or repeat the same outcome across fields.
 
 ## Product-behavior diagram
 
-Every substantive PRD must invoke `system-diagram` after stating the exact product question the figure answers. The PRD owns approved product semantics, applicability, question, and placement. `system-diagram` validates evidence and owns Excalidraw visual encoding, accessibility, and internal reading order.
+Every substantive PRD must invoke `system-diagram` after stating the exact product question the figure answers. The PRD owns source- and authority-classified product semantics, applicability, question, and placement. `system-diagram` validates evidence and owns the infrastructure SVG visual encoding, accessibility, and internal reading order.
 
 The diagram should teach:
 
@@ -105,13 +121,15 @@ The diagram should teach:
 actor/context → trigger/action → product response/state → next decision → outcome or recovery
 ```
 
-It must not introduce architecture. Retain the Excalidraw JSON source beside the feature, generate the SVG through the bundled system-diagram renderer, and reference both from the `diagram` block. A durable substantive PRD does not use a hand-authored SVG or a `Diagram not applicable` escape.
+Do not use the required diagram as a responsive wireframe, page composition, site map, component inventory, or duplicate mockup. Its question must remain meaningful without screen width, navigation placement, cards, typography, or visual styling. If viewport or layout detail disappears and the causal product meaning remains, that detail belongs in `mockups.html`, not the diagram. Show the normal path and only material branch, failure, or recovery states; the walkthrough explains causal transitions instead of repeating section prose.
+
+It must not introduce architecture. Choose the smallest System Diagram capability from the product question: use sequence only for participant communication in temporal order; use flow for causal progression, decisions, state, and recovery; do not request architecture view or component decomposition from product truth. Retain the selected System Diagram source beside the feature, generate the SVG through the bundled renderer, and reference both from the `diagram` block. Existing graph questions use `system-diagram-v1`; temporal sequence uses the approved `system-diagram-v2` sequence contract. A durable substantive PRD does not use a hand-authored SVG or a `Diagram not applicable` escape.
 
 ## UI mockups
 
 When a feature adds or materially changes a user-visible interface, or the request includes UI changes or visual suggestions, the PRD workflow must invoke `frontend-design` and generate proposed high-fidelity mockups before review. Mockups make hierarchy, responsive composition, affordances, and consequential states concrete enough for product judgment; wireframes alone do not satisfy this requirement.
 
-Create `docs/features/{feature}/mockups.html` as a portable, self-contained artifact and link it from `document.relatedArtifacts`. The canonical PRD profile still contains exactly one Excalidraw product-behavior diagram; do not add extra `diagram` blocks for mockups.
+Create `docs/features/{feature}/mockups.html` as a portable, self-contained artifact and link it from `document.relatedArtifacts`. The canonical PRD profile still contains exactly one infrastructure-style product-behavior diagram; do not add extra `diagram` blocks for mockups.
 
 Mockups must:
 
@@ -127,7 +145,9 @@ If the feature has no user-visible UI implication, do not generate a mockup shel
 
 ## Decisions
 
-Include a canonical `decision` block only for a real product decision. This is the only place alternative approaches belong. Each decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
+Include a canonical `decision` block only when an explicit request or evidence establishes a real product choice whose options materially change actor-visible behavior, trust, scope, or acceptance. Preserve accepted decisions as durable product authority; use open or proposed status only while the choice remains unresolved. An agent noticing several possible layouts or visual concepts does not create a product decision or competing mockups. Produce one evidence-backed proposed mockup and defer competing concepts to later design review. If a human explicitly frames a material product choice, the decision block owns its options while the mockup illustrates only the recommended or selected direction.
+
+This is the only place alternative approaches belong. Every option must be grounded in supplied evidence, current product truth, or a human-framed choice; do not invent options to populate the recorder. If the question is real but grounded options are unavailable, ask the owner or report the PRD Blocked instead. If one sourced behavior is already the only honest recommendation and no accepted decision records it, omit the decision section. Each retained decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
 
 Every rendered decision includes a **Decision recorded** checkbox. Recording in the browser requires a selection, rationale, and owner, persists locally, and exports Markdown. Reconcile that export into `prd.document.json` only after explicit human approval. Accepted decisions require approver and approval date; Approved PRDs cannot contain open or proposed decisions.
 
@@ -147,7 +167,7 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-7. Open the PRD and, when present, the mockups for review. Never patch generated HTML; update the canonical document source and rerender.
+7. Open the PRD and, when present, the mockups for review. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
 8. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
 If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.
@@ -155,11 +175,11 @@ If any required companion skill or renderer is unavailable, report the blocker. 
 ## Quality gate
 
 - Product, problem, workflow, diagram, slices, and scope roles are direct, concise, and non-duplicative.
-- Every consequential claim is sourced, assumed, recommended, or an owned question.
-- Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then, and ends in an observable outcome.
-- No tables, speculative alternatives, repeated summaries, or classic As/I want story prose appear.
+- Every consequential claim has local authority as Sourced fact, Approved product truth, Proposed recommendation, Assumption, or Open question; the source list alone does not imply authority.
+- Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then with grammatical story fragments, and ends in an observable outcome.
+- No tables, speculative alternatives, repeated summaries, redundant scenario/step/acceptance claims, or classic As/I want story prose appear.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
-- One Excalidraw product diagram has JSON/SVG provenance and a text walkthrough.
+- One infrastructure-style product diagram has `system-diagram-v1` JSON/SVG provenance, a text walkthrough, and a causal question independent of viewport or page composition.
 - UI-bearing features include a linked, self-contained proposed mockup artifact with representative responsive and consequential states; non-UI features state why mockups are not applicable.
 - Mockups contain no unsupported capability, clearly identify illustrative data, and preserve the human approval boundary.
 - Decisions have explicit lifecycle and human approval boundaries.

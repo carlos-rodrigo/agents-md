@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "system-diagram-v2",
+  "diagramType": "sequence",
+  "layoutVersion": "sequence-v1",
+  "mode": "component-communication",
+  "id": "sequence-recovery",
+  "title": "Payment recovery",
+  "desc": "Who communicates in what order when payment is accepted or recovery is offered.",
+  "participants": [
+    { "id": "customer", "kind": "actor", "label": "Customer" },
+    { "id": "checkout", "kind": "service", "label": "Checkout" },
+    { "id": "payment", "kind": "external", "label": "Payment provider" }
+  ],
+  "events": [
+    { "id": "submit", "type": "message", "messageType": "sync", "from": "customer", "to": "checkout", "label": "Submit order", "kind": "primary" },
+    { "id": "charge", "type": "message", "messageType": "async", "from": "checkout", "to": "payment", "label": "Authorize payment", "kind": "primary" },
+    { "id": "result", "type": "fragment", "fragmentType": "alt", "label": "Payment result", "kind": "secondary", "branches": [
+      { "id": "accepted", "label": "accepted", "events": [
+        { "id": "record", "type": "message", "messageType": "self", "from": "checkout", "to": "checkout", "label": "Record order", "kind": "success" },
+        { "id": "confirmed", "type": "message", "messageType": "return", "from": "checkout", "to": "customer", "replyTo": "submit", "label": "Confirm order", "kind": "success" }
+      ] },
+      { "id": "declined", "label": "declined", "events": [
+        { "id": "retry", "type": "message", "messageType": "return", "from": "checkout", "to": "customer", "replyTo": "submit", "label": "Offer retry", "kind": "risk" },
+        { "id": "recovery-note", "type": "note", "text": "The customer may retry without losing the order intent.", "kind": "warning", "anchor": "retry" }
+      ] }
+    ] }
+  ],
+  "activations": []
+}

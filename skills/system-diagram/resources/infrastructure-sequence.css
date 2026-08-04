@@ -1,0 +1,17 @@
+.sequence-lifeline { stroke: #a1a1a1; stroke-width: 1.5; stroke-dasharray: 5 6; }
+.sequence-message { fill: none; stroke-width: 2; }
+.sequence-message--primary { stroke: #0070f3; }
+.sequence-message--secondary { stroke: #73736f; stroke-dasharray: 6 5; }
+.sequence-message--success { stroke: #047857; }
+.sequence-message--warning { stroke: #b45309; stroke-dasharray: 6 5; }
+.sequence-message--risk { stroke: #dc2626; stroke-dasharray: 6 5; }
+.sequence-activation { fill: #fff; stroke: #73736f; stroke-width: 1.5; }
+.sequence-fragment { fill: #fff; fill-opacity: .82; stroke: #73736f; stroke-width: 1.5; stroke-dasharray: 7 5; }
+.sequence-fragment__rule { stroke: #d4d4d0; stroke-width: 1; }
+.sequence-fragment__label,
+.sequence-note__kind,
+.sequence-message__kind { fill: #52524f; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+.sequence-note { fill: #fff; stroke: #d4d4d0; stroke-width: 1.5; }
+.sequence-note__text,
+.sequence-message__label { fill: #171717; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 14px; }
+.sequence-header { fill: #fff; }

@@ -56,6 +56,23 @@
         "One recommended product behavior is shown; alternative approaches appear only if a real unresolved decision requires them.",
         "The UI suggestion produces a linked proposed mockup with the main decline and retry states."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Create a concise PRD for an establishment overview using the attached current-product evidence and dated product-owner instruction. Distinguish the approved claim from complete-PRD approval, and do not invent a visual choice that the owner did not establish.",
+      "expected_output": "A concise Draft PRD that applies only the relevant Sourced fact, Approved product truth, Proposed recommendation, Assumption, or Open question labels; uses a causal product-behavior diagram; and keeps one recommended responsive composition in a linked proposed high-fidelity mockup rather than the diagram.",
+      "files": [
+        "evals/files/establishment-overview/current-product.md",
+        "evals/files/establishment-overview/owner-instruction.md"
+      ],
+      "expectations": [
+        "Current behavior is cited to current-product.md as Sourced fact, while the owner's bounded requirement is Approved product truth without marking the complete PRD Approved.",
+        "The visual composition is a Proposed recommendation rather than approved truth; no unnecessary Assumption or Open question is manufactured.",
+        "The infrastructure-style System Diagram traces actor context, trigger, product state, decision, outcome, and material recovery rather than serving as a responsive wireframe or duplicating the mockup.",
+        "No alternative visual concepts, competing mockups, or canonical decision block are invented because no explicit human-owned product choice is evidenced.",
+        "Product, behavior, slice outcome, BDD scenario, storyboard, acceptance, and after-slice fields do not duplicate the same actor-trigger-state tuple unless the second field adds information it owns.",
+        "Story actor begins with a lowercase common noun or determiner, capability is a lowercase base-form verb phrase without leading can or to, and outcome is a complete lowercase result clause."
+      ]
     }
   ]
 }

@@ -1,0 +1,185 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-44 -4 1608 1338" role="img" aria-labelledby="sequence-rendering-seam-title sequence-rendering-seam-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.svg"><title id="sequence-rendering-seam-title">Versioned sequence rendering without disturbing the v1 path</title><desc id="sequence-rendering-seam-desc">An architecture path from an owning PRD or Design Solution through source-contract selection. Existing system-diagram-v1 input stays on its frozen validator and renderer, while sequence v2 input passes through strict semantic validation, deterministic layout, and a same-style SVG renderer before both outputs reach version-aware report verification. Invalid v2 input returns a blocker.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:54d0722bd27855245b5ec3dad10ceb57127435933c3144dac6c0a017fac1e9e9 --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="sequence-rendering-seam--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="sequence-rendering-seam--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="sequence-rendering-seam--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="sequence-rendering-seam--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="-44" y="-4" width="1608" height="1338"></rect><rect class="diagram-grid" x="-44" y="-4" width="1608" height="1338" fill="url(#sequence-rendering-seam--grid)"></rect><g class="diagram-groups"><g class="diagram-group diagram-group--ownership diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.group.system-diagram-skill"><rect class="diagram-group__surface" x="0" y="190" width="1520" height="750" rx="14"></rect><rect class="diagram-group__label-bg" x="14" y="180" width="180.8" height="24" rx="4"></rect><text class="diagram-group__label" x="26" y="198">SYSTEM DIAGRAM SKILL</text></g></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.brief-to-contract"><path class="diagram-edge__path" d="M720 150L720 220" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--secondary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.contract-to-v1"><path class="diagram-edge__path" d="M460 275L380 275L380 485L420 485" marker-end="url(#sequence-rendering-seam--arrow-secondary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.contract-to-v2"><path class="diagram-edge__path" d="M790 330L790 430" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.validate-to-layout"><path class="diagram-edge__path" d="M790 540L790 610" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.layout-to-render"><path class="diagram-edge__path" d="M790 720L790 790" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.render-to-report"><path class="diagram-edge__path" d="M790 900L790 940L720 940L720 1000" marker-end="url(#sequence-rendering-seam--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--secondary diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.v1-to-report"><path class="diagram-edge__path" d="M230 540L230 1055L460 1055" marker-end="url(#sequence-rendering-seam--arrow-secondary)"></path></g><g class="diagram-edge diagram-edge--risk diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.validate-to-blocked"><path class="diagram-edge__path" d="M1020 485L1100 485" marker-end="url(#sequence-rendering-seam--arrow-risk)"></path></g><g class="diagram-edge diagram-edge--success diagram-reveal" style="--reveal-delay:960ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge.report-to-proof"><path class="diagram-edge__path" d="M720 1110L720 1180" marker-end="url(#sequence-rendering-seam--arrow-success)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.owning-brief" aria-labelledby="sequence-rendering-seam--owning-brief-text"><rect class="diagram-node__surface" x="460" y="40" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="52" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="57" r="3.5"></circle><text class="diagram-node__kind" x="480" y="63">ENTRY</text><text id="sequence-rendering-seam--owning-brief-text" class="diagram-node__title" x="480" y="87" font-size="16">Owning PRD or Design Solution</text><text class="diagram-node__detail" x="480" y="110" font-size="14"><tspan x="480" y="110">Approved question · evidence · semantics</tspan></text></g><g class="diagram-node diagram-node--decision diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.contract-route" aria-labelledby="sequence-rendering-seam--contract-route-text"><rect class="diagram-node__surface" x="460" y="220" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="232" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="237" r="3.5"></circle><text class="diagram-node__kind" x="480" y="243">DECISION</text><text id="sequence-rendering-seam--contract-route-text" class="diagram-node__title" x="480" y="267" font-size="16">Source contract selection</text><text class="diagram-node__detail" x="480" y="290" font-size="14"><tspan x="480" y="290">Routes before normalization or rendering</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.v1-renderer" aria-labelledby="sequence-rendering-seam--v1-renderer-text"><rect class="diagram-node__surface" x="40" y="430" width="380" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="40" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="403" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="60" y="453">SERVICE</text><text id="sequence-rendering-seam--v1-renderer-text" class="diagram-node__title" x="60" y="477" font-size="16">Frozen v1 renderer</text><text class="diagram-node__detail" x="60" y="500" font-size="14"><tspan x="60" y="500">Current validator · CSS</tspan><tspan x="60" y="519">Metadata · SVG bytes</tspan></text></g><g class="diagram-node diagram-node--policy diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-validator" aria-labelledby="sequence-rendering-seam--sequence-validator-text"><rect class="diagram-node__surface" x="560" y="430" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="580" y="453">POLICY</text><text id="sequence-rendering-seam--sequence-validator-text" class="diagram-node__title" x="580" y="477" font-size="16">Sequence v2 validator</text><text class="diagram-node__detail" x="580" y="500" font-size="14"><tspan x="580" y="500">Strict fields · references · limits</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-layout" aria-labelledby="sequence-rendering-seam--sequence-layout-text"><rect class="diagram-node__surface" x="560" y="610" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="622" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="627" r="3.5"></circle><text class="diagram-node__kind" x="580" y="633">SERVICE</text><text id="sequence-rendering-seam--sequence-layout-text" class="diagram-node__title" x="580" y="657" font-size="16">sequence-v1 layout</text><text class="diagram-node__detail" x="580" y="680" font-size="14"><tspan x="580" y="680">Source order · integer geometry · no iteration</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.sequence-renderer" aria-labelledby="sequence-rendering-seam--sequence-renderer-text"><rect class="diagram-node__surface" x="560" y="790" width="460" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="560" y="802" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1003" cy="807" r="3.5"></circle><text class="diagram-node__kind" x="580" y="813">SERVICE</text><text id="sequence-rendering-seam--sequence-renderer-text" class="diagram-node__title" x="580" y="837" font-size="16">Sequence SVG renderer</text><text class="diagram-node__detail" x="580" y="860" font-size="14"><tspan x="580" y="860">Base infrastructure CSS + sequence primitives</tspan></text></g><g class="diagram-node diagram-node--risk diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.blocked" aria-labelledby="sequence-rendering-seam--blocked-text"><rect class="diagram-node__surface" x="1100" y="430" width="380" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="1100" y="442" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1463" cy="447" r="3.5"></circle><text class="diagram-node__kind" x="1120" y="453">RISK</text><text id="sequence-rendering-seam--blocked-text" class="diagram-node__title" x="1120" y="477" font-size="16">Invalid or excessive source</text><text class="diagram-node__detail" x="1120" y="500" font-size="14"><tspan x="1120" y="500">Return exact blocker</tspan><tspan x="1120" y="519">Refine or split the brief</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.report-verifier" aria-labelledby="sequence-rendering-seam--report-verifier-text"><rect class="diagram-node__surface" x="460" y="1000" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="1012" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="1017" r="3.5"></circle><text class="diagram-node__kind" x="480" y="1023">PROOF</text><text id="sequence-rendering-seam--report-verifier-text" class="diagram-node__title" x="480" y="1047" font-size="16">Version-aware report verifier</text><text class="diagram-node__detail" x="480" y="1070" font-size="14"><tspan x="480" y="1070">Checks source · provenance · exact renderer output</tspan></text></g><g class="diagram-node diagram-node--success diagram-reveal" style="--reveal-delay:960ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.node.review-proof" aria-labelledby="sequence-rendering-seam--review-proof-text"><rect class="diagram-node__surface" x="460" y="1180" width="520" height="110" rx="10" filter="url(#sequence-rendering-seam--shadow)"></rect><rect class="diagram-node__accent" x="460" y="1192" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="963" cy="1197" r="3.5"></circle><text class="diagram-node__kind" x="480" y="1203">OUTCOME</text><text id="sequence-rendering-seam--review-proof-text" class="diagram-node__title" x="480" y="1227" font-size="16">Canonical report and walkthrough</text><text class="diagram-node__detail" x="480" y="1250" font-size="14"><tspan x="480" y="1250">Reviewer sees one established visual language</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.brief-to-contract"><rect class="diagram-edge-label__surface" x="730" y="171" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="850.76" y="189.76" font-size="14" text-anchor="middle"><tspan x="850.76" y="189.76">retains typed diagram source</tspan></text></g><g class="diagram-edge-label diagram-edge-label--secondary diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.contract-to-v1"><rect class="diagram-edge-label__surface" x="155.72" y="356" width="288.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="300" y="374.76" font-size="14" text-anchor="middle"><tspan x="300" y="374.76">system-diagram-v1 remains isolated</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.contract-to-v2"><rect class="diagram-edge-label__surface" x="800" y="366" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="920.76" y="384.76" font-size="14" text-anchor="middle"><tspan x="920.76" y="384.76">system-diagram-v2 · sequence</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.validate-to-layout"><rect class="diagram-edge-label__surface" x="800" y="561" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="928.6" y="579.76" font-size="14" text-anchor="middle"><tspan x="928.6" y="579.76">normalizes supported semantics</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.layout-to-render"><rect class="diagram-edge-label__surface" x="800" y="741" width="272.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="936.44" y="759.76" font-size="14" text-anchor="middle"><tspan x="936.44" y="759.76">hands off deterministic geometry</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:648ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.render-to-report"><rect class="diagram-edge-label__surface" x="606.8" y="904" width="296.4" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="755" y="922.76" font-size="14" text-anchor="middle"><tspan x="755" y="922.76">emits accessible infrastructure SVG</tspan></text></g><g class="diagram-edge-label diagram-edge-label--secondary diagram-reveal" style="--reveal-delay:768ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.v1-to-report"><rect class="diagram-edge-label__surface" x="240" y="783.5" width="288.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="384.28" y="802.26" font-size="14" text-anchor="middle"><tspan x="384.28" y="802.26">verifies existing output unchanged</tspan></text></g><g class="diagram-edge-label diagram-edge-label--risk diagram-reveal" style="--reveal-delay:888ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.validate-to-blocked"><rect class="diagram-edge-label__surface" x="966.68" y="366" width="186.64" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="1060" y="384.76" font-size="14" text-anchor="middle"><tspan x="1060" y="384.76">rejects before layout</tspan></text></g><g class="diagram-edge-label diagram-edge-label--success diagram-reveal" style="--reveal-delay:1008ms" data-review-id="diagram.sequence-rendering-seam.sequence-rendering-seam.edge-label.report-to-proof"><rect class="diagram-edge-label__surface" x="730" y="1131" width="304.24" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="882.12" y="1149.76" font-size="14" text-anchor="middle"><tspan x="882.12" y="1149.76">embeds with source-owned walkthrough</tspan></text></g></g></svg>

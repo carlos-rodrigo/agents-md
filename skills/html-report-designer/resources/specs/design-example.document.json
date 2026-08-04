@@ -5,7 +5,7 @@
     "kind": "design",
     "status": "Review",
     "title": "Route every durable document through one renderer",
-    "summary": "Owning skills produce validated meaning; one portable renderer owns the report shell, decision controls, and Excalidraw embedding.",
+    "summary": "Owning skills produce validated meaning; one portable renderer owns the report shell, decision controls, and System Diagram embedding.",
     "reviewFocus": "Confirm the renderer boundary and the separation between review recording and canonical approval.",
     "updated": "2026-07-28",
     "sources": ["Approved canonical report PRD", "skills/html-report-designer/SKILL.md"],
@@ -36,7 +36,7 @@
       "kicker": "Chosen seam",
       "title": "A skill-relative renderer owns all presentation",
       "blocks": [
-        { "type": "facts", "id": "design.seam.ownership", "items": [["PRD/design", "Own section roles and approved meaning"], ["System Diagram", "Owns evidence-backed Excalidraw JSON to SVG"], ["HTML Report Designer", "Owns template, CSS, blocks, runtime, and validation"]] }
+        { "type": "facts", "id": "design.seam.ownership", "items": [["PRD/design", "Own section roles and approved meaning"], ["System Diagram", "Owns evidence-backed infrastructure JSON to SVG"], ["HTML Report Designer", "Owns template, CSS, blocks, runtime, and validation"]] }
       ]
     },
     {
@@ -47,7 +47,7 @@
       "blocks": [
         { "type": "steps", "id": "design.path.steps", "items": [
           { "id": "design.path.author", "title": "Author", "text": "The owning skill writes canonical-report-v1 structured content." },
-          { "id": "design.path.diagram", "title": "Generate figure", "text": "System Diagram renders retained Excalidraw JSON into accessible SVG." },
+          { "id": "design.path.diagram", "title": "Generate figure", "text": "System Diagram renders retained system-diagram-v1 JSON into accessible infrastructure SVG." },
           { "id": "design.path.render", "title": "Render", "text": "The canonical renderer validates roles, decisions, and provenance before filling one report template." },
           { "id": "design.path.review", "title": "Review", "text": "The reviewer records and exports choices without mutating canonical source." }
         ] }
@@ -59,7 +59,7 @@
       "kicker": "System path",
       "title": "One boundary coordinates report generation",
       "blocks": [
-        { "type": "diagram", "id": "diagram.canonical-renderer", "question": "Where does approved document meaning become consistent HTML?", "caption": "The canonical renderer validates structured content and embeds renderer-produced Excalidraw output before emitting one report shell.", "svgPath": "../../../system-diagram/resources/excalidraw-slice-example.svg", "sourcePath": "../../../system-diagram/resources/excalidraw-slice-example.json", "walkthrough": ["The owning skill supplies validated product or architecture content.", "System Diagram supplies the Excalidraw JSON/SVG pair.", "The canonical renderer validates both inputs.", "One report template produces portable HTML for review."] }
+        { "type": "diagram", "id": "diagram.canonical-renderer", "question": "Where does approved document meaning become consistent HTML?", "caption": "The canonical renderer validates structured content and embeds renderer-produced infrastructure SVG before emitting one report shell.", "svgPath": "../../../system-diagram/resources/system-slice-example.svg", "sourcePath": "../../../system-diagram/resources/system-slice-example.json", "walkthrough": ["The owning skill supplies validated product or architecture content.", "System Diagram supplies the retained system-diagram-v1 JSON/SVG pair.", "The canonical renderer validates both inputs.", "One report template produces portable HTML for review."] }
       ]
     },
     {
@@ -77,7 +77,7 @@
       "kicker": "Tradeoffs and proof",
       "title": "Stricter structure buys determinism and review safety",
       "blocks": [
-        { "type": "facts", "id": "design.proof.tradeoffs", "items": [["Cost", "New component shapes require a shared renderer change."], ["Failure posture", "Missing renderer or Excalidraw provenance blocks generation rather than falling back."], ["Proof", "Clean-copy, negative profile, deterministic regeneration, decision runtime, and browser checks pass."]] },
+        { "type": "facts", "id": "design.proof.tradeoffs", "items": [["Cost", "New component shapes require a shared renderer change."], ["Failure posture", "Missing renderer or System Diagram provenance blocks generation rather than falling back."], ["Proof", "Clean-copy, negative profile, deterministic regeneration, decision runtime, and browser checks pass."]] },
         { "type": "callout", "id": "design.proof.risk", "tone": "risk", "title": "Migration risk", "text": "Legacy generated reports remain readable but are not accepted as new canonical output." }
       ]
     },

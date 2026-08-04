@@ -14,8 +14,8 @@ const temp = mkdtempSync(join(tmpdir(), 'canonical-report-test-'));
 try {
   for (const [name, markers] of [
     ['report-example.document.json', ['data-document-kind="report"', 'The renderer owns presentation', 'class="scenario-panel"', 'class="copyable-code"', '<blockquote']],
-    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', 'decision.retention', 'svg-source:excalidraw']],
-    ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'svg-source:excalidraw']],
+    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', '<ol class="storyboard"', 'class="workflow-sequence"', '<dt>Handoff</dt>', 'decision.retention', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
+    ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
   ]) {
     const specPath = join(resources, name);
     const spec = JSON.parse(readFileSync(specPath, 'utf8'));
@@ -35,13 +35,22 @@ try {
   const design = JSON.parse(readFileSync(join(resources, 'specs/design-example.document.json'), 'utf8'));
   const prdHtml = renderCanonicalReport(prd, { specPath: join(resources, 'specs/prd-example.document.json') });
   assert(!prdHtml.includes(', I want '), 'PRD slices must explain stories as BDD specifications rather than As/I want prose');
+  assert(prdHtml.includes('story-001 · Feature: a document reviewer can record a selected option with rationale; outcome: the product owner can reconcile an explicit decision.'), 'PRD story fragments must render as a grammatical Feature sentence');
+  assert(!prdHtml.includes('<article class="storyboard-step"'), 'slice workflows must not render as disconnected competing cards');
+  assert(prdHtml.includes('Choose</span><span class="workflow-arrow" aria-hidden="true">→</span><span>Record'), 'slice workflows must expose their ordered handoff at a glance');
+  const canonicalPrdPath = join(root, 'docs/features/canonical-document-renderer/prd.document.json');
+  const canonicalPrd = JSON.parse(readFileSync(canonicalPrdPath, 'utf8'));
+  const systemWorkflow = canonicalPrd.sections.flatMap((section) => section.blocks).find((block) => block.id === 'slice-003');
+  assert(systemWorkflow?.steps.map((step) => step.title).join(' → ') === 'Define brief → Validate semantics → Render and embed', 'canonical diagram workflow must preserve the approved three-stage handoff');
+  const canonicalPrdHtml = renderCanonicalReport(canonicalPrd, { specPath: canonicalPrdPath });
+  assert(canonicalPrdHtml.includes('Define brief</span><span class="workflow-arrow" aria-hidden="true">→</span><span>Validate semantics</span><span class="workflow-arrow" aria-hidden="true">→</span><span>Render and embed'), 'canonical PRD must render the complete connected diagram workflow');
 
   const profileFailures = [
     ['missing PRD role', prd, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'diagram'); }, 'prd documents require a "diagram" section role'],
     ['reordered PRD roles', prd, (candidate) => { [candidate.sections[0], candidate.sections[1]] = [candidate.sections[1], candidate.sections[0]]; }, 'prd section roles must follow this order'],
     ['duplicate PRD role', prd, (candidate) => { candidate.sections[1].role = candidate.sections[0].role; }, 'section.role values must be unique'],
-    ['zero PRD diagrams', prd, (candidate) => { candidate.sections.find((section) => section.role === 'diagram').blocks = [{ type: 'paragraph', id: 'diagram-placeholder', text: 'Missing diagram' }]; }, 'require exactly one Excalidraw diagram block'],
-    ['two PRD diagrams', prd, (candidate) => { const block = clone(candidate.sections.find((section) => section.role === 'diagram').blocks[0]); block.id = 'second-diagram'; candidate.sections.find((section) => section.role === 'diagram').blocks.push(block); }, 'require exactly one Excalidraw diagram block'],
+    ['zero PRD diagrams', prd, (candidate) => { candidate.sections.find((section) => section.role === 'diagram').blocks = [{ type: 'paragraph', id: 'diagram-placeholder', text: 'Missing diagram' }]; }, 'require exactly one System Diagram block'],
+    ['two PRD diagrams', prd, (candidate) => { const block = clone(candidate.sections.find((section) => section.role === 'diagram').blocks[0]); block.id = 'second-diagram'; candidate.sections.find((section) => section.role === 'diagram').blocks.push(block); }, 'require exactly one System Diagram block'],
     ['missing PRD slice', prd, (candidate) => { candidate.sections.find((section) => section.role === 'slices').blocks = [{ type: 'paragraph', id: 'slice-placeholder', text: 'Missing slice' }]; }, 'require at least one complete slice block'],
     ['cross-placed PRD diagram', prd, (candidate) => { const diagram = candidate.sections.find((section) => section.role === 'diagram'); const scope = candidate.sections.find((section) => section.role === 'scope'); [diagram.blocks, scope.blocks] = [scope.blocks, diagram.blocks]; }, 'diagram blocks must be inside the "diagram" section role'],
     ['cross-placed PRD slice', prd, (candidate) => { const slices = candidate.sections.find((section) => section.role === 'slices'); const scope = candidate.sections.find((section) => section.role === 'scope'); [slices.blocks, scope.blocks] = [scope.blocks, slices.blocks]; }, 'slice blocks must be inside the "slices" section role'],
@@ -49,8 +58,8 @@ try {
     ['missing design role', design, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'boundary'); }, 'design documents require a "boundary" section role'],
     ['reordered design roles', design, (candidate) => { [candidate.sections[2], candidate.sections[3]] = [candidate.sections[3], candidate.sections[2]]; }, 'design section roles must follow this order'],
     ['duplicate design role', design, (candidate) => { candidate.sections[1].role = candidate.sections[0].role; }, 'section.role values must be unique'],
-    ['zero design diagrams', design, (candidate) => { candidate.sections.find((section) => section.role === 'diagram').blocks = [{ type: 'paragraph', id: 'design-diagram-placeholder', text: 'Missing diagram' }]; }, 'require exactly one Excalidraw diagram block'],
-    ['two design diagrams', design, (candidate) => { const block = clone(candidate.sections.find((section) => section.role === 'diagram').blocks[0]); block.id = 'second-design-diagram'; candidate.sections.find((section) => section.role === 'diagram').blocks.push(block); }, 'require exactly one Excalidraw diagram block'],
+    ['zero design diagrams', design, (candidate) => { candidate.sections.find((section) => section.role === 'diagram').blocks = [{ type: 'paragraph', id: 'design-diagram-placeholder', text: 'Missing diagram' }]; }, 'require exactly one System Diagram block'],
+    ['two design diagrams', design, (candidate) => { const block = clone(candidate.sections.find((section) => section.role === 'diagram').blocks[0]); block.id = 'second-design-diagram'; candidate.sections.find((section) => section.role === 'diagram').blocks.push(block); }, 'require exactly one System Diagram block'],
     ['missing design decision', design, (candidate) => { candidate.sections.find((section) => section.role === 'decisions').blocks = [{ type: 'paragraph', id: 'decision-placeholder', text: 'Missing decision' }]; }, 'require at least one architecture decision block'],
     ['cross-placed design decision', design, (candidate) => { const decisions = candidate.sections.find((section) => section.role === 'decisions'); const proof = candidate.sections.find((section) => section.role === 'proof'); [decisions.blocks, proof.blocks] = [proof.blocks, decisions.blocks]; }, 'decision blocks must be inside the "decisions" section role'],
   ];
@@ -152,7 +161,7 @@ try {
     const candidate = clone(diagramPacket);
     candidate.sections[0].blocks = [{ type: 'paragraph', id: 'diagram-packet-placeholder', text: 'No diagram' }];
     validateDocumentSpec(candidate);
-  }, 'diagram documents require exactly one Excalidraw diagram block');
+  }, 'diagram documents require exactly one System Diagram block');
 
   const adversarial = clone(prd);
   adversarial.document.title = '<img src=x onerror=alert(1)> {{REPORT_PROVENANCE}}';
@@ -167,8 +176,8 @@ try {
 
   const portableDesign = clone(design);
   const diagramBlock = portableDesign.sections.find((section) => section.role === 'diagram').blocks[0];
-  const sourceDiagram = join(root, 'skills/system-diagram/resources/excalidraw-slice-example.json');
-  const sourceSvg = join(root, 'skills/system-diagram/resources/excalidraw-slice-example.svg');
+  const sourceDiagram = join(root, 'skills/system-diagram/resources/system-slice-example.json');
+  const sourceSvg = join(root, 'skills/system-diagram/resources/system-slice-example.svg');
   const tempDiagram = join(temp, 'diagram.json');
   const tempSvg = join(temp, 'diagram.svg');
   copyFileSync(sourceDiagram, tempDiagram);
@@ -179,19 +188,27 @@ try {
   writeFileSync(portableSpecPath, JSON.stringify(portableDesign, null, 2));
   renderCanonicalReport(portableDesign, { specPath: portableSpecPath });
 
+  writeFileSync(tempDiagram, `${readFileSync(tempDiagram, 'utf8')}\n`);
+  expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'SVG is stale or does not match');
+  copyFileSync(sourceDiagram, tempDiagram);
+
   const changedSource = JSON.parse(readFileSync(tempDiagram, 'utf8'));
   changedSource.title = 'Changed after render';
   writeFileSync(tempDiagram, JSON.stringify(changedSource, null, 2));
   expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'SVG is stale or does not match');
 
   copyFileSync(sourceDiagram, tempDiagram);
+  copyFileSync(sourceSvg, tempSvg);
+  writeFileSync(tempSvg, `${readFileSync(tempSvg, 'utf8')}\n`);
+  expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'is not exact bundled System Diagram output');
+
   writeFileSync(tempSvg, readFileSync(sourceSvg, 'utf8').replace('</svg>', '<script>alert(1)</script></svg>'));
   expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'contains executable or foreign content');
 
-  const sourceText = readFileSync(tempDiagram, 'utf8').trim();
+  const sourceText = readFileSync(tempDiagram, 'utf8');
   const digest = createHash('sha256').update(sourceText).digest('hex');
-  writeFileSync(tempSvg, `<svg role="img"><title>Forged</title><desc>Not Excalidraw output</desc><!-- svg-source:excalidraw --><!-- svg-spec-sha256:${digest} --></svg>`);
-  expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'is not exact bundled Excalidraw output');
+  writeFileSync(tempSvg, `<svg role="img" data-diagram-style="infrastructure-v1"><title>Forged</title><desc>Not bundled output</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:${digest} --></svg>`);
+  expectInvalid(() => renderCanonicalReport(portableDesign, { specPath: portableSpecPath }), 'is not exact bundled System Diagram output');
 
   const sameReportPath = join(temp, 'same-report.json');
   writeFileSync(sameReportPath, JSON.stringify(prd));
@@ -203,11 +220,11 @@ try {
   const sameDiagramPath = join(temp, 'same-diagram.json');
   copyFileSync(sourceDiagram, sameDiagramPath);
   const diagramBefore = readFileSync(sameDiagramPath, 'utf8');
-  const sameDiagram = run('scripts/render-excalidraw-diagram.mjs', [sameDiagramPath, sameDiagramPath]);
+  const sameDiagram = run('scripts/render-system-diagram.mjs', [sameDiagramPath, sameDiagramPath]);
   assert(sameDiagram.status !== 0 && `${sameDiagram.stdout}${sameDiagram.stderr}`.includes('must be different'), 'diagram CLI must reject identical input/output paths');
   assert(readFileSync(sameDiagramPath, 'utf8') === diagramBefore, 'diagram CLI must preserve same-path input');
 
-  console.log('PASS: one canonical renderer enforces safe substitution, ordered profiles, approval, decisions, exact Excalidraw output, and same-path protection');
+  console.log('PASS: one canonical renderer enforces safe substitution, ordered profiles, approval, decisions, exact System Diagram output, and same-path protection');
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

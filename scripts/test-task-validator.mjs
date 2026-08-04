@@ -190,14 +190,15 @@ function writeApprovedDesign(status, { staleHtml = false } = {}) {
 
   cpSync(join(root, 'docs/features/canonical-document-renderer'), featureDir, { recursive: true });
   const sourcePath = join(featureDir, 'design.document.json');
-  if (status === 'Draft') {
-    const spec = JSON.parse(readFileSync(sourcePath, 'utf8'));
-    spec.document.status = 'Draft';
-    delete spec.document.approval;
-    writeFileSync(sourcePath, JSON.stringify(spec, null, 2));
-  }
+  const reportPath = join(featureDir, 'design.html');
+  const spec = JSON.parse(readFileSync(sourcePath, 'utf8'));
+  spec.document.status = status;
+  if (status === 'Approved') spec.document.approval = { approvedBy: 'Eval Product Owner', approvedAt: '2026-07-31' };
+  else delete spec.document.approval;
+  writeFileSync(sourcePath, `${JSON.stringify(spec, null, 2)}\n`);
+  const rendered = spawnSync(process.execPath, [join(root, 'scripts/render-canonical-report.mjs'), sourcePath, reportPath], { cwd: root, encoding: 'utf8' });
+  assert(rendered.status === 0, `synthetic ${status} design should render:\n${rendered.stdout}${rendered.stderr}`);
   if (staleHtml) {
-    const reportPath = join(featureDir, 'design.html');
     writeFileSync(reportPath, readFileSync(reportPath, 'utf8').split('Put all document presentation behind one portable renderer').join('Stale title'));
   }
 }

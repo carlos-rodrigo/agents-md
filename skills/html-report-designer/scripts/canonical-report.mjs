@@ -9,7 +9,8 @@ export const REPORT_SCHEMA_ID = 'https://carlosrodrigo.dev/schemas/canonical-rep
 
 const skillRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const templatePath = resolve(skillRoot, 'resources/report-template.html');
-const diagramRendererPath = resolve(skillRoot, '../system-diagram/scripts/render-excalidraw-diagram.mjs');
+const diagramRendererPath = resolve(skillRoot, '../system-diagram/scripts/render-system-diagram.mjs');
+const sequenceDiagramRendererPath = resolve(skillRoot, '../system-diagram/scripts/render-sequence-diagram.mjs');
 const exactDiagramChecks = new Set();
 const idPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const statuses = new Set(['Draft', 'Review', 'Approved', 'Blocked']);
@@ -117,7 +118,7 @@ export function validateDocumentSpec(input) {
   for (const [role, blockType] of Object.entries({ diagram: 'diagram', slices: 'slice', decisions: 'decision' })) {
     if (roles.includes(role) && (roleBlockCounts.get(`${role}:${blockType}`) ?? 0) === 0) errors.push(`the "${role}" section role requires at least one ${blockType} block`);
   }
-  if (['prd', 'design', 'diagram'].includes(document.kind) && diagramCount !== 1) errors.push(`${document.kind} documents require exactly one Excalidraw diagram block`);
+  if (['prd', 'design', 'diagram'].includes(document.kind) && diagramCount !== 1) errors.push(`${document.kind} documents require exactly one System Diagram block`);
   if (document.kind === 'prd' && sliceCount === 0) errors.push('prd documents require at least one complete slice block');
   if (document.kind === 'design' && decisionCount === 0) errors.push('design documents require at least one architecture decision block');
   if (document.status === 'Approved' && decisions.some((decision) => decision.status !== 'accepted')) errors.push('Approved documents cannot contain open or proposed decisions');
@@ -223,19 +224,27 @@ function renderSlice(slice) {
   const scenarioMarkup = slice.scenarios
     .map((scenario) => renderScenario(scenario, ` data-review-id="${escapeAttribute(scenario.id)}"`))
     .join('\n');
-  const storyboardLabel = slice.mode === 'visual' ? 'Product-visible storyboard' : 'Non-visual interaction sequence';
-  const storyboardMarkup = slice.steps.map((step) => `            <article class="storyboard-step" data-review-id="${escapeAttribute(step.id)}">
-              <h4>${escapeHtml(step.title)}</h4>
-              <dl><div><dt>Context</dt><dd>${escapeHtml(step.context)}</dd></div><div><dt>Action</dt><dd>${escapeHtml(step.action)}</dd></div><div><dt>Observable response</dt><dd>${escapeHtml(step.response)}</dd></div><div><dt>Outcome</dt><dd>${escapeHtml(step.outcome)}</dd></div></dl>
-            </article>`).join('\n');
+  const workflowLabel = slice.mode === 'visual' ? 'Product-visible workflow' : 'System workflow';
+  const workflowSequence = slice.steps.map((step) => `<span>${escapeHtml(step.title)}</span>`).join('<span class="workflow-arrow" aria-hidden="true">→</span>');
+  const workflowAccessibleName = `${workflowLabel}: ${slice.steps.map((step) => step.title).join(' then ')}`;
+  const storyboardMarkup = slice.steps.map((step, index) => `            <li class="storyboard-step" data-review-id="${escapeAttribute(step.id)}">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><h4>${escapeHtml(step.title)}</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>${escapeHtml(step.context)}</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>${escapeHtml(step.action)}</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>${escapeHtml(step.response)}</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>${escapeHtml(step.outcome)}</dd></div></dl>
+            </li>`).join('\n');
   const acceptanceMarkup = slice.acceptance.map((item) => `            <li data-review-id="${escapeAttribute(item.id)}"><span class="id-chip">${escapeHtml(item.id.toUpperCase())}</span><span>${escapeHtml(item.text)}</span></li>`).join('\n');
 
   return `          <article class="slice-card" data-review-id="${escapeAttribute(slice.id)}">
             <header><h3><span class="id-chip">${escapeHtml(slice.id)}</span>${escapeHtml(slice.title)}</h3><p>${escapeHtml(slice.outcome)}</p><p><strong>Boundary:</strong> ${escapeHtml(slice.boundary)}</p></header>
             <p class="slice-story" data-review-id="${escapeAttribute(slice.story.id)}">${escapeHtml(storyText)}</p>
 ${scenarioMarkup}
-            <div class="storyboard" aria-label="${storyboardLabel}">
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">${workflowLabel}</span>
+                <p class="workflow-sequence" aria-hidden="true">${workflowSequence}</p>
+              </div>
+              <ol class="storyboard" aria-label="${escapeAttribute(workflowAccessibleName)}" style="--workflow-step-count: ${slice.steps.length}">
 ${storyboardMarkup}
+              </ol>
             </div>
             <ul class="acceptance-list" aria-label="Acceptance criteria">
 ${acceptanceMarkup}
@@ -248,6 +257,10 @@ function renderDecision(decision) {
   const isAccepted = decision.status === 'accepted';
   const selectedOptionId = decision.selectedOptionId ?? '';
   const disabledAttribute = isAccepted ? ' disabled' : '';
+  const recordedAttribute = isAccepted ? ' checked disabled' : ' disabled';
+  const fallbackStatus = isAccepted
+    ? `Accepted by ${escapeHtml(decision.approvedBy)} on ${escapeHtml(decision.approvedAt)}.`
+    : 'Review input is not recorded. JavaScript must validate completeness before browser recording is available.';
   const optionMarkup = decision.options.map((option) => `              <label class="decision-option"><input type="radio" name="${escapeAttribute(decision.id)}-option" value="${escapeAttribute(option.id)}"${selectedOptionId === option.id ? ' checked' : ''}${disabledAttribute} /><span>${escapeHtml(option.label)}</span></label>`).join('\n');
   const isCustomSelected = selectedOptionId === 'other';
   const decisionSourceFingerprint = createHash('sha256').update(JSON.stringify(decision)).digest('hex');
@@ -265,22 +278,28 @@ ${optionMarkup}
             </div>
 ${customAnswerMarkup}            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale${disabledAttribute}>${escapeHtml(decision.rationale ?? '')}</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="${escapeAttribute(decision.owner)}"${disabledAttribute} /></label>
-            <label class="decision-record-check"><input type="checkbox" data-decision-recorded${isAccepted ? ' checked disabled' : ''} /><span>Decision recorded</span></label>
-            <p class="decision-status" role="status" aria-live="polite"></p>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded${recordedAttribute} /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">${fallbackStatus}</p>
           </fieldset>`;
 }
 
 function renderDiagram(block, baseDir) {
   const svgPath = resolve(baseDir, block.svgPath);
   const sourcePath = resolve(baseDir, block.sourcePath);
-  const svg = readFileSync(svgPath, 'utf8').trim();
-  const sourceText = readFileSync(sourcePath, 'utf8').trim();
-  const source = JSON.parse(sourceText);
+  const svgDocument = readFileSync(svgPath, 'utf8');
+  const svg = svgDocument.trim();
+  const sourceText = readFileSync(sourcePath, 'utf8');
   const sourceDigest = createHash('sha256').update(sourceText).digest('hex');
-  if (!/<!--\s*svg-source:excalidraw\s*-->/.test(svg)) throw new Error(`Diagram ${block.id} must be generated by the Excalidraw renderer: ${svgPath}`);
-  if (!svg.includes(`<!-- svg-spec-sha256:${sourceDigest} -->`)) throw new Error(`Diagram ${block.id} SVG is stale or does not match its retained Excalidraw JSON source`);
-  if (!Array.isArray(source.nodes) || !Array.isArray(source.edges)) throw new Error(`Diagram ${block.id} source must be an Excalidraw JSON scene: ${sourcePath}`);
-  if (!/<svg\b[^>]*role=["']img["']/i.test(svg) || !/<title\b/i.test(svg) || !/<desc\b/i.test(svg)) throw new Error(`Diagram ${block.id} SVG needs accessible Excalidraw metadata`);
+  if (!/<!--\s*svg-source:system-diagram\s*-->/.test(svg)) throw new Error(`Diagram ${block.id} must be generated by the bundled System Diagram renderer: ${svgPath}`);
+  if (!svg.includes(`<!-- svg-spec-sha256:${sourceDigest} -->`)) throw new Error(`Diagram ${block.id} SVG is stale or does not match its retained System Diagram JSON source`);
+  if (Buffer.byteLength(sourceText, 'utf8') > 64 * 1024) throw new Error(`Diagram ${block.id} source exceeds 65536 bytes before parsing`);
+  const source = JSON.parse(sourceText);
+  const isV1 = source.schemaVersion === 'system-diagram-v1' && Array.isArray(source.nodes) && Array.isArray(source.edges);
+  const isSequenceV2 = source.schemaVersion === 'system-diagram-v2' && source.diagramType === 'sequence';
+  if (!isV1 && !isSequenceV2) throw new Error(`Diagram ${block.id} source is not an allowlisted System Diagram document: ${sourcePath}`);
+  if (!/<svg\b[^>]*role=["']img["']/i.test(svg) || !/<title\b/i.test(svg) || !/<desc\b/i.test(svg)) throw new Error(`Diagram ${block.id} SVG needs accessible System Diagram metadata`);
+  if (!/data-diagram-style=["']infrastructure-v1["']/i.test(svg)) throw new Error(`Diagram ${block.id} SVG must use the infrastructure-v1 visual system`);
+  if (isSequenceV2 && (!/data-diagram-schema=["']system-diagram-v2["']/i.test(svg) || !/data-diagram-type=["']sequence["']/i.test(svg) || !/data-layout-version=["']sequence-v1["']/i.test(svg))) throw new Error(`Diagram ${block.id} sequence SVG markers do not match its source contract`);
   if (/<(?:script|foreignObject)\b|\son[a-z]+\s*=/i.test(svg)) throw new Error(`Diagram ${block.id} SVG contains executable or foreign content`);
   const assetUrls = [
     ...svg.matchAll(/\b(?:href|src)\s*=\s*["']([^"']+)["']/gi),
@@ -288,8 +307,9 @@ function renderDiagram(block, baseDir) {
   ].map((match) => match[1]);
   const external = assetUrls.find((url) => !url.startsWith('data:') && !url.startsWith('#'));
   if (external || /@import\s+/i.test(svg)) throw new Error(`Diagram ${block.id} SVG contains a non-embedded asset: ${external ?? '@import'}`);
-  verifyExactExcalidrawOutput(sourcePath, svgPath, block.id, sourceDigest, svg);
-  return `          <figure class="figure-card diagram-figure" data-complex-figure data-review-id="${escapeAttribute(block.id)}"><p class="figure-question"><strong>Question:</strong> ${escapeHtml(block.question)}</p>${svg}<figcaption>${escapeHtml(block.caption)}</figcaption></figure><ol class="diagram-walkthrough" data-figure-walkthrough-for="${escapeAttribute(block.id)}">${block.walkthrough.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ol>`;
+  verifyExactSystemDiagramOutput(sourcePath, svgPath, block.id, sourceDigest, svgDocument, isSequenceV2 ? sequenceDiagramRendererPath : diagramRendererPath);
+  const outputDigest = createHash('sha256').update(svg).digest('hex');
+  return `          <figure class="figure-card diagram-figure" data-complex-figure data-diagram-output-sha256="${outputDigest}" data-review-id="${escapeAttribute(block.id)}"><p class="figure-question"><strong>Question:</strong> ${escapeHtml(block.question)}</p>${svg}<figcaption>${escapeHtml(block.caption)}</figcaption></figure><ol class="diagram-walkthrough" data-figure-walkthrough-for="${escapeAttribute(block.id)}">${block.walkthrough.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ol>`;
 }
 
 function validateApproval(value, label, errors) {
@@ -440,13 +460,13 @@ function requireId(value, label, errors) { if (typeof value !== 'string' || !idP
 function requireUniqueId(value, label, ids, errors) { requireId(value, label, errors); if (typeof value !== 'string') return; if (ids.has(value)) errors.push(`${label} duplicates review ID "${value}"`); ids.add(value); }
 function isObject(value) { return value !== null && typeof value === 'object' && !Array.isArray(value); }
 function throwInvalid(errors) { throw new Error(`Invalid DocumentSpec:\n- ${errors.join('\n- ')}`); }
-function verifyExactExcalidrawOutput(sourcePath, svgPath, diagramId, sourceDigest, svg) {
-  const cacheKey = `${sourcePath}\0${svgPath}\0${sourceDigest}\0${createHash('sha256').update(svg).digest('hex')}`;
+function verifyExactSystemDiagramOutput(sourcePath, svgPath, diagramId, sourceDigest, svg, rendererPath) {
+  const cacheKey = `${rendererPath}\0${sourcePath}\0${svgPath}\0${sourceDigest}\0${createHash('sha256').update(svg).digest('hex')}`;
   if (exactDiagramChecks.has(cacheKey)) return;
-  if (!existsSync(diagramRendererPath)) throw new Error(`Diagram ${diagramId} requires the bundled System Diagram renderer: ${diagramRendererPath}`);
-  const result = spawnSync(process.execPath, [diagramRendererPath, '--check', sourcePath, svgPath], { encoding: 'utf8', timeout: 180_000, maxBuffer: 10 * 1024 * 1024 });
-  if (result.error) throw new Error(`Diagram ${diagramId} exact Excalidraw check failed: ${result.error.message}`);
-  if (result.status !== 0) throw new Error(`Diagram ${diagramId} is not exact bundled Excalidraw output: ${(result.stderr || result.stdout).trim()}`);
+  if (!existsSync(rendererPath)) throw new Error(`Diagram ${diagramId} requires the bundled System Diagram renderer: ${rendererPath}`);
+  const result = spawnSync(process.execPath, [rendererPath, '--check', sourcePath, svgPath], { encoding: 'utf8', timeout: 30_000, maxBuffer: 10 * 1024 * 1024 });
+  if (result.error) throw new Error(`Diagram ${diagramId} exact output check failed: ${result.error.message}`);
+  if (result.status !== 0) throw new Error(`Diagram ${diagramId} is not exact bundled System Diagram output: ${(result.stderr || result.stdout).trim()}`);
   exactDiagramChecks.add(cacheKey);
 }
 

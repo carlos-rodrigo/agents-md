@@ -1,13 +1,30 @@
 ---
 name: frontend-design
-description: "Create distinctive, production-grade frontend interfaces with high design quality. Use when building web components, pages, or applications. Do not use for pure UI review/accessibility audit; use web-design-guidelines. For React/Next performance patterns, pair with vercel-react-best-practices."
+description: "Create distinctive, production-grade frontend interfaces or one self-contained proposed mockup when a PRD needs visual product review. Use when building web components, pages, applications, or PRD-linked high-fidelity mockups. Do not use for pure UI review/accessibility audit; use web-design-guidelines. For React/Next performance patterns, pair with vercel-react-best-practices."
 ---
 
 # Frontend Design
 
-Build working user interfaces that are truthful to the product, complete across relevant states, accessible, resilient, and visually intentional.
+Build working user interfaces or proposed product-review mockups that are truthful to the product, complete across relevant states, accessible, resilient, and visually intentional.
 
-Use this skill for implementation or approved redesign work. For review-only accessibility or UX findings, use `web-design-guidelines`. For React or Next.js performance and rendering shape, pair with `vercel-react-best-practices`.
+Use this skill for implementation or approved redesign work. Proposed mockup mode is the only exception to approval: it creates review evidence for a Draft or Review PRD without changing application code or granting implementation authority. For review-only accessibility or UX findings, use `web-design-guidelines`. For React or Next.js performance and rendering shape, pair with `vercel-react-best-practices`.
+
+## Proposed mockup mode
+
+Use this mode only when a PRD workflow or explicit human request asks for visual product-review material before approval.
+
+- Read the Draft or Review PRD source, cited product evidence, and nearby product UI; do not treat unapproved recommendations as product truth.
+- Create one evidence-grounded direction in a portable, self-contained `mockups.html`; do not implement or modify the application.
+- For PRD-linked mockups, use the `html-report-designer` Editorial Infrastructure v1 shell and visual language. Render the artifact with `html-report-designer/scripts/render-mockup.mjs`, which inlines the canonical report CSS and records its digest; do not recreate the report palette, grid, typography, spacing, navigation, or motion rules by approximation.
+- Use the required shell hooks: one `main.mockup-shell`, `div.mockup-banner` for artifact/status framing, `header.mockup-title` containing the sole `h1` and summary, `div.screen-label` before each viewport/state, and `section.app-window` for each product surface. These hooks receive the same frame, title typography, spacing, dividers, and responsive behavior as canonical reports.
+- Keep the product surface feature-specific only inside `.app-window`. Extend canonical tokens rather than introducing a competing page language. Do not set page-level `body`, `.mockup-shell`, `.mockup-banner`, `.mockup-title`, or `.screen-label` colors, fonts, backgrounds, shadows, radii, or layout; those are renderer-owned.
+- Show representative responsive composition and only consequential states supported by the PRD.
+- Label invented records and values Illustrative, and label the artifact **Proposed / not approved**.
+- Do not generate competing concepts in this mode. If a human establishes a real choice, the PRD decision owns its options and the mockup illustrates only the recommended or selected direction.
+- Verify the static artifact in-browser for wide/narrow layout, keyboard-visible controls, contrast, non-color meaning, reduced motion, offline/self-contained assets, and PRD ↔ mockup review navigation.
+- Run `node "<html-report-designer-dir>/scripts/render-mockup.mjs" --check path/to/mockups.html` before review; a stale Editorial Infrastructure digest blocks completion.
+
+A proposed mockup informs product review. It does not authorize implementation, establish architecture, or silently approve styling, layout, content, or behavior.
 
 ## Quality precedence
 
@@ -33,12 +50,12 @@ Name one primary mode before designing. A secondary mode may support it, but sho
 
 ## Workflow
 
-1. Inspect the request, approved product source, nearby UI, theme tokens, component library, accessibility conventions, and representative rendered screens.
+1. Inspect the request, authoritative product source, nearby UI, theme tokens, component library, accessibility conventions, and representative rendered screens. In proposed mockup mode, distinguish approved claims from Proposed recommendations in the Draft or Review PRD.
 2. Identify the audience scene, primary job, current state, expected result, and meaningful failure or recovery path.
 3. Run the product-authority check before adding controls, rules, data, or capabilities.
-4. Select the surface mode and preserve the existing visual authority unless a redesign is explicitly approved.
+4. Select the surface mode and preserve the existing visual authority unless a redesign is explicitly approved. In proposed mockup mode, show only the requested evidence-grounded direction and keep it visibly unapproved.
 5. Define the smallest representative state set and content needed to prove the flow.
-6. Implement with project-native components and patterns where available.
+6. In proposed mockup mode, create only the self-contained review artifact; otherwise implement with project-native components and patterns where available.
 7. Exercise the primary path, one material recovery path, responsive/content stress, keyboard/focus, and relevant repository gates.
 
 Ask only when an unresolved answer materially changes product behavior, scope, risk, or the interaction model. State uncertainty instead of filling it with plausible UI.
@@ -78,7 +95,7 @@ Use semantic controls, explicit labels, predictable focus movement, and links fo
 
 Derive visual choices from the product, audience, task, content, brand, and real-world subject matter. Do not choose from canned aesthetic extremes or add novelty as proof of design quality.
 
-For an existing product, extend its current visual language. For a genuinely new surface or approved redesign:
+For an existing product, extend its current visual language. A proposed mockup may demonstrate one requested direction without making it approved. For a genuinely new surface or approved redesign:
 
 - inspect real assets, terminology, mechanisms, and audience context;
 - compare materially different structural directions only when a real decision remains;
@@ -149,6 +166,7 @@ Report:
 
 ```text
 Frontend: {paths changed}
+Artifact: {implementation | Proposed / not approved mockup}
 Mode: {Operate | Read | Persuade | Experience}
 Product authority: {sources inspected | unresolved questions}
 States covered: {representative states}

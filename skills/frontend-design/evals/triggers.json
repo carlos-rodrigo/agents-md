@@ -8,6 +8,7 @@
   {"query":"Build an accessible command palette component for our web application.","should_trigger":true},
   {"query":"Create an interactive browser artifact for comparing these scenarios.","should_trigger":true},
   {"query":"Implement a data-heavy operations dashboard from this approved PRD.","should_trigger":true},
+  {"query":"The Draft PRD needs one proposed high-fidelity mockup for product review before approval.","should_trigger":true},
   {"query":"Give this greenfield portfolio a visual direction and working responsive implementation.","should_trigger":true},
   {"query":"Review these existing UI files for WCAG issues but do not modify them.","should_trigger":false},
   {"query":"Optimize the React server component waterfall and reduce the Next.js client bundle.","should_trigger":false},

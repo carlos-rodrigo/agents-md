@@ -14,6 +14,9 @@ requireAll('frontend-design', skill, [
   '**Read:**',
   '**Persuade:**',
   '**Experience:**',
+  '## Proposed mockup mode',
+  'one evidence-grounded direction',
+  'does not authorize implementation',
   '## Product truth and authority',
   '## State completeness',
   '## Content and layout resilience',
@@ -66,12 +69,14 @@ for (const [index, item] of triggers.entries()) {
 }
 assertTrigger(triggers, 'Review these existing UI files for WCAG issues but do not modify them.', false);
 assertTrigger(triggers, 'Build an accessible command palette component for our web application.', true);
+assertTrigger(triggers, 'The Draft PRD needs one proposed high-fidelity mockup for product review before approval.', true);
 assertTrigger(triggers, 'Write a PRD for bulk status editing; product behavior is still undecided.', false);
 
 const evalDocument = parseJson('skills/frontend-design/evals/evals.json');
 assert(evalDocument.skill_name === 'frontend-design', 'frontend eval file needs the frontend-design skill name');
-assert(Array.isArray(evalDocument.evals) && evalDocument.evals.length >= 6, 'frontend eval set should cover at least six scenarios');
+assert(Array.isArray(evalDocument.evals) && evalDocument.evals.length >= 8, 'frontend eval set should cover implementation and proposed-mockup scenarios');
 assertUnique(evalDocument.evals.map((item) => item.id), 'frontend eval id');
+assert(evalDocument.evals.some((item) => item.id === 'prd-proposed-mockup'), 'frontend evals need the PRD proposed-mockup boundary');
 for (const item of evalDocument.evals) {
   assert(/^[a-z0-9-]+$/.test(item.id), `invalid frontend eval id ${item.id}`);
   assert(typeof item.prompt === 'string' && item.prompt.trim().length >= 40, `${item.id} needs a meaningful prompt`);

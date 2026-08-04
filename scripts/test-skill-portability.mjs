@@ -23,26 +23,28 @@ try {
   assertSuccess(run(join(reportSkill, 'scripts/validate-html-report.mjs'), [reportOutput]), 'copied report skill validates its output');
   assertSuccess(run(join(reportSkill, 'scripts/render-canonical-report.mjs'), ['--check', reportSpec, reportOutput]), 'copied report output is deterministic');
 
-  const installResult = spawnSync('npm', ['ci', '--prefix', diagramSkill, '--no-audit', '--no-fund'], {
-    cwd: project,
-    env: { ...process.env },
-    encoding: 'utf8',
-    timeout: 600_000,
-  });
-  assertSuccess(installResult, 'copied system-diagram skill installs only from its package and lockfile');
-  assert(!`${installResult.stdout}${installResult.stderr}`.includes('EBADENGINE'), 'copied dependency lock must support the active Node runtime without engine warnings');
-
   const prdSpec = join(reportSkill, 'resources/specs/prd-example.document.json');
   const prdOutput = join(project, 'prd.html');
-  assertSuccess(run(join(reportSkill, 'scripts/render-canonical-report.mjs'), [prdSpec, prdOutput]), 'copied report renderer verifies its sibling bundled Excalidraw output');
+  assertSuccess(run(join(reportSkill, 'scripts/render-canonical-report.mjs'), [prdSpec, prdOutput]), 'copied report renderer verifies its sibling bundled System Diagram output');
   assertSuccess(run(join(reportSkill, 'scripts/validate-html-report.mjs'), [prdOutput]), 'copied PRD report validates from unrelated cwd');
 
   const diagramSpec = join(project, 'diagram.json');
   const diagramOutput = join(project, 'diagram.svg');
-  cpSync(join(diagramSkill, 'resources/excalidraw-domain-interaction-example.json'), diagramSpec);
-  assertSuccess(run(join(diagramSkill, 'scripts/render-excalidraw-diagram.mjs'), [diagramSpec, diagramOutput]), 'copied system-diagram skill renders after its declared dependencies are installed');
-  assertSuccess(run(join(diagramSkill, 'scripts/render-excalidraw-diagram.mjs'), ['--check', diagramSpec, diagramOutput]), 'copied Excalidraw output is deterministic');
-  assert(readFileSync(diagramOutput, 'utf8').includes('svg-source:excalidraw'), 'copied diagram renderer must preserve Excalidraw provenance');
+  cpSync(join(diagramSkill, 'resources/system-domain-interaction-example.json'), diagramSpec);
+  assertSuccess(run(join(diagramSkill, 'scripts/render-system-diagram.mjs'), [diagramSpec, diagramOutput]), 'copied dependency-free System Diagram skill renders from an unrelated cwd');
+  assertSuccess(run(join(diagramSkill, 'scripts/render-system-diagram.mjs'), ['--check', diagramSpec, diagramOutput]), 'copied System Diagram output is deterministic');
+  const diagram = readFileSync(diagramOutput, 'utf8');
+  assert(diagram.includes('svg-source:system-diagram'), 'copied diagram renderer must preserve System Diagram provenance');
+  assert(diagram.includes('data-diagram-style="infrastructure-v1"'), 'copied diagram renderer must preserve the infrastructure visual system');
+
+  const sequenceSpec = join(project, 'sequence.json');
+  const sequenceOutput = join(project, 'sequence.svg');
+  cpSync(join(diagramSkill, 'resources/sequence-minimal-v2.json'), sequenceSpec);
+  assertSuccess(run(join(diagramSkill, 'scripts/render-sequence-diagram.mjs'), [sequenceSpec, sequenceOutput]), 'copied sequence renderer renders from an unrelated cwd');
+  assertSuccess(run(join(diagramSkill, 'scripts/render-sequence-diagram.mjs'), ['--check', sequenceSpec, sequenceOutput]), 'copied sequence output is deterministic');
+  const sequence = readFileSync(sequenceOutput, 'utf8');
+  assert(sequence.includes('data-diagram-schema="system-diagram-v2"'), 'copied sequence renderer must preserve the v2 schema marker');
+  assert(sequence.includes('data-diagram-style="infrastructure-v1"'), 'copied sequence renderer must preserve infrastructure-v1 style');
 
   for (const path of [
     join(reportSkill, 'SKILL.md'),
@@ -50,14 +52,17 @@ try {
     join(reportSkill, 'scripts/canonical-report.mjs'),
     join(reportSkill, 'scripts/validate-html-report.mjs'),
     join(diagramSkill, 'SKILL.md'),
-    join(diagramSkill, 'scripts/render-excalidraw-diagram.mjs'),
+    join(diagramSkill, 'scripts/render-system-diagram.mjs'),
+    join(diagramSkill, 'scripts/render-sequence-diagram.mjs'),
+    join(diagramSkill, 'scripts/spec-sequence-v2.mjs'),
+    join(diagramSkill, 'scripts/layout-sequence-v1.mjs'),
   ]) {
     const source = readFileSync(path, 'utf8');
     assert(!source.includes('/Users/carlosrodrigo/agents'), `${path} must not contain the author checkout path`);
     assert(!source.includes('import.meta.dirname'), `${path} must remain compatible with Node 18`);
   }
 
-  console.log(`PASS: copied report and Excalidraw skills run from an unrelated working directory under ${process.version}`);
+  console.log(`PASS: copied report and dependency-free System Diagram skills run from an unrelated working directory under ${process.version}`);
 } finally {
   rmSync(temp, { recursive: true, force: true });
 }

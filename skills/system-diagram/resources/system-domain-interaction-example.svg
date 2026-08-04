@@ -1,0 +1,185 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 10 1090 430" role="img" aria-labelledby="system-domain-interaction-example-title system-domain-interaction-example-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.domain-example.system-domain-interaction-example.svg"><title id="system-domain-interaction-example-title">Which domain building blocks own facts, derived state, and planning?</title><desc id="system-domain-interaction-example-desc">A product-domain map showing authoritative evidence becoming an accepted fact, derived current state, and a read-only lens while planning stays separate under an invariant rail.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:aa18b42316e6ae241075e13aa0f03cd0594af37beceb06252b5f76fa68bcf201 --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="system-domain-interaction-example--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="system-domain-interaction-example--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="system-domain-interaction-example--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-domain-interaction-example--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-domain-interaction-example--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-domain-interaction-example--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-domain-interaction-example--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-domain-interaction-example--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="0" y="10" width="1090" height="430"></rect><rect class="diagram-grid" x="0" y="10" width="1090" height="430" fill="url(#system-domain-interaction-example--grid)"></rect><g class="diagram-groups"><g class="diagram-group diagram-group--ownership diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.domain-example.system-domain-interaction-example.group-domain-ownership"><rect class="diagram-group__surface" x="260" y="30" width="520" height="390" rx="14"></rect><rect class="diagram-group__label-bg" x="274" y="20" width="180.8" height="24" rx="4"></rect><text class="diagram-group__label" x="286" y="38">AUTHORITATIVE DOMAIN</text></g><g class="diagram-group diagram-group--boundary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.domain-example.system-domain-interaction-example.group-experience-boundary"><rect class="diagram-group__surface" x="840" y="30" width="230" height="390" rx="14"></rect><rect class="diagram-group__label-bg" x="854" y="20" width="165.12" height="24" rx="4"></rect><text class="diagram-group__label" x="866" y="38">PRODUCT EXPERIENCE</text></g></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-evidence-to-fact"><path class="diagram-edge__path" d="M190 110L280 110" marker-end="url(#system-domain-interaction-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--feedback diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-fact-to-state"><path class="diagram-edge__path" d="M450 110L560 110" marker-end="url(#system-domain-interaction-example--arrow-feedback)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-state-to-lens"><path class="diagram-edge__path" d="M740 110L870 110" marker-end="url(#system-domain-interaction-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--secondary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-policy-to-state"><path class="diagram-edge__path" d="M650 300L650 170" marker-end="url(#system-domain-interaction-example--arrow-secondary)"></path></g><g class="diagram-edge diagram-edge--risk diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-policy-to-planning"><path class="diagram-edge__path" d="M760 350L870 350" marker-end="url(#system-domain-interaction-example--arrow-risk)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-authoritative-evidence" aria-labelledby="system-domain-interaction-example--authoritative-evidence-text"><rect class="diagram-node__surface" x="20" y="60" width="170" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><rect class="diagram-node__accent" x="20" y="72" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="173" cy="77" r="3.5"></circle><text class="diagram-node__kind" x="40" y="83">ENTRY</text><text id="system-domain-interaction-example--authoritative-evidence-text" class="diagram-node__title" x="40" y="107" font-size="14">Evidence</text><text class="diagram-node__detail" x="40" y="130" font-size="14"><tspan x="40" y="130">Owner: source</tspan><tspan x="40" y="149">input boundary</tspan></text></g><g class="diagram-node diagram-node--domain diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-accepted-fact" aria-labelledby="system-domain-interaction-example--accepted-fact-text"><rect class="diagram-node__surface" x="280" y="60" width="170" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><rect class="diagram-node__accent" x="280" y="72" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="433" cy="77" r="3.5"></circle><text class="diagram-node__kind" x="300" y="83">DOMAIN</text><text id="system-domain-interaction-example--accepted-fact-text" class="diagram-node__title" x="300" y="107" font-size="14">Accepted fact</text><text class="diagram-node__detail" x="300" y="130" font-size="14"><tspan x="300" y="130">Owner: domain</tspan><tspan x="300" y="149">truth boundary</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-derived-state" aria-labelledby="system-domain-interaction-example--derived-state-text"><rect class="diagram-node__surface" x="560" y="60" width="180" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><rect class="diagram-node__accent" x="560" y="72" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="723" cy="77" r="3.5"></circle><text class="diagram-node__kind" x="580" y="83">PROOF</text><text id="system-domain-interaction-example--derived-state-text" class="diagram-node__title" x="580" y="107" font-size="14">Current state</text><text class="diagram-node__detail" x="580" y="130" font-size="14"><tspan x="580" y="130">Owner: read view</tspan><tspan x="580" y="149">visible effect</tspan></text></g><g class="diagram-node diagram-node--default diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-read-only-lens" aria-labelledby="system-domain-interaction-example--read-only-lens-text"><rect class="diagram-node__surface" x="870" y="60" width="180" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><circle class="diagram-node__dot" cx="1033" cy="77" r="3.5"></circle><text id="system-domain-interaction-example--read-only-lens-text" class="diagram-node__title" x="890" y="97" font-size="14">Read-only lens</text><text class="diagram-node__detail" x="890" y="120" font-size="14"><tspan x="890" y="120">Owner: experience</tspan><tspan x="890" y="139">next decision</tspan></text></g><g class="diagram-node diagram-node--policy diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-invariant-rail" aria-labelledby="system-domain-interaction-example--invariant-rail-text"><rect class="diagram-node__surface" x="280" y="300" width="480" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><rect class="diagram-node__accent" x="280" y="312" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="317" r="3.5"></circle><text class="diagram-node__kind" x="300" y="323">POLICY</text><text id="system-domain-interaction-example--invariant-rail-text" class="diagram-node__title" x="300" y="347" font-size="14">Invariant / policy rail</text><text class="diagram-node__detail" x="300" y="370" font-size="14"><tspan x="300" y="370">Only authoritative evidence creates facts</tspan><tspan x="300" y="389">Derived views never rewrite facts</tspan></text></g><g class="diagram-node diagram-node--default diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.domain-example.system-domain-interaction-example.node-planning-state" aria-labelledby="system-domain-interaction-example--planning-state-text"><rect class="diagram-node__surface" x="870" y="300" width="180" height="110" rx="10" filter="url(#system-domain-interaction-example--shadow)"></rect><circle class="diagram-node__dot" cx="1033" cy="317" r="3.5"></circle><text id="system-domain-interaction-example--planning-state-text" class="diagram-node__title" x="890" y="337" font-size="14">Planning state</text><text class="diagram-node__detail" x="890" y="360" font-size="14"><tspan x="890" y="360">Owner: planning</tspan><tspan x="890" y="379">separate boundary</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-label-evidence-to-fact"><rect class="diagram-edge-label__surface" x="196.56" y="74" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="235" y="92.76" font-size="14" text-anchor="middle"><tspan x="235" y="92.76">records</tspan></text></g><g class="diagram-edge-label diagram-edge-label--feedback diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-label-fact-to-state"><rect class="diagram-edge-label__surface" x="466.56" y="74" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="505" y="92.76" font-size="14" text-anchor="middle"><tspan x="505" y="92.76">changes</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-label-state-to-lens"><rect class="diagram-edge-label__surface" x="766.56" y="74" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="805" y="92.76" font-size="14" text-anchor="middle"><tspan x="805" y="92.76">informs</tspan></text></g><g class="diagram-edge-label diagram-edge-label--secondary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-label-policy-to-state"><rect class="diagram-edge-label__surface" x="660" y="221" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="698.44" y="239.76" font-size="14" text-anchor="middle"><tspan x="698.44" y="239.76">governs</tspan></text></g><g class="diagram-edge-label diagram-edge-label--risk diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.domain-example.system-domain-interaction-example.edge-label-policy-to-planning"><rect class="diagram-edge-label__surface" x="768.72" y="314" width="92.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="815" y="332.76" font-size="14" text-anchor="middle"><tspan x="815" y="332.76">separates</tspan></text></g></g></svg>

@@ -1,0 +1,330 @@
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "system-diagram-capabilities-prd",
+    "kind": "prd",
+    "status": "Approved",
+    "title": "Teach System Diagram four explanatory grammars without changing its style",
+    "summary": "PRD and Design Solution decide when and what a situation needs to illustrate; System Diagram generates sequence, flow, architecture, or component diagrams in the established infrastructure visual language without inventing meaning.",
+    "reviewFocus": "Confirm that capability selection, authority boundaries, staged delivery, sequence limits, and observable acceptance fully express the approved direction; then explicitly approve or request changes to the complete PRD.",
+    "updated": "2026-08-03",
+    "approval": {
+      "approvedBy": "Carlos Rodrigo",
+      "approvedAt": "2026-08-03"
+    },
+    "sources": [
+      "Explicit approvals from Carlos Rodrigo in the 2026-08-03 conversation: extend the existing System Diagram skill, keep its current style, adopt sequence/flow/architecture/component capabilities, use sequence first, accept the proposed limits, and preserve the PRD/Design/System Diagram responsibility split.",
+      ".features/system-diagram-capabilities/research.md",
+      "skills/system-diagram/SKILL.md",
+      "skills/system-diagram/references/diagram-modes.md",
+      "skills/system-diagram/scripts/diagram-spec.mjs",
+      "skills/prd/SKILL.md",
+      "skills/design-solution/SKILL.md",
+      "skills/html-report-designer/SKILL.md"
+    ],
+    "feature": "System Diagram capabilities"
+  },
+  "sections": [
+    {
+      "id": "prd.product",
+      "role": "product",
+      "kicker": "Product",
+      "title": "Owning document skills can request the right explanatory figure",
+      "summary": "The product change expands one existing skill rather than creating competing diagram tools or styles.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "id": "prd.product.statement",
+          "text": "For a PRD or Design Solution that needs to explain an evidence-backed situation during document review, the product will generate the appropriate sequence, flow, architecture, or component diagram through the existing System Diagram skill, resulting in a deterministic figure that a reviewer can retell; it will not transfer product or architecture authority to the renderer or introduce another visual language."
+        },
+        {
+          "type": "facts",
+          "id": "prd.product.definition",
+          "items": [
+            ["Approved product truth", "Carlos Rodrigo approved this capability and ownership direction in the 2026-08-03 conversation."],
+            ["Actor", "PRD or Design Solution composing a durable review document"],
+            ["Moment", "A sourced product or architecture situation needs a causal, temporal, topological, or decomposition explanation"],
+            ["Entry", "A bounded semantic brief containing the question, audience, evidence, scope, path, uncertainty, and walkthrough"],
+            ["Result", "One validated, accessible, style-consistent diagram and retained regeneration source"],
+            ["Boundary", "System Diagram validates and renders supplied meaning; it does not decide what the product or architecture means"]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.problem",
+      "role": "problem",
+      "kicker": "Why",
+      "title": "One generic graph contract cannot teach every requested situation",
+      "summary": "The current skill is dependable but its source model is limited to manually positioned generic graph elements.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "prd.problem.evidence",
+          "items": [
+            ["Sourced fact", "skills/system-diagram/scripts/diagram-spec.mjs accepts rectangular nodes, groups, and explicitly routed orthogonal edges."],
+            ["Sourced fact", "skills/system-diagram/references/diagram-modes.md classifies semantic questions but does not define participant lifelines, flow decisions/merges, architecture levels, or component interfaces."],
+            ["Consequence", "Temporal interaction must be approximated as a generic graph, while flow, architecture, and component authors must manually recreate conventions that the skill should know."]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "prd.problem.trust",
+          "tone": "warning",
+          "title": "Plausible drawing is not enough",
+          "text": "Without typed semantics and selection guidance, a diagram may look consistent while answering the wrong question or implying unsupported product or architecture truth."
+        }
+      ]
+    },
+    {
+      "id": "prd.behavior",
+      "role": "behavior",
+      "kicker": "Behavior",
+      "title": "The owning skill chooses the question; System Diagram generates the explanation",
+      "summary": "Approved product truth — Carlos Rodrigo approved that selection follows the situation being explained, while domain authority remains with PRD or Design Solution.",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "prd.behavior.flow",
+          "items": [
+            { "id": "prd.behavior.own", "title": "Own the situation", "text": "PRD or Design Solution states the question, evidence, scope, main path, uncertainty, and product or architecture meaning." },
+            { "id": "prd.behavior.select", "title": "Select the capability", "text": "The owning skill chooses sequence for temporal communication, flow for progression and branching, architecture for static bounded communication, or component for decomposition of one scope." },
+            { "id": "prd.behavior.validate", "title": "Validate the brief", "text": "System Diagram rejects missing evidence, unsupported semantics, invalid references, excessive complexity, or a brief that needs splitting." },
+            { "id": "prd.behavior.generate", "title": "Generate in one style", "text": "System Diagram applies the selected grammar and emits deterministic source/SVG using the existing infrastructure-v1 language." },
+            { "id": "prd.behavior.embed", "title": "Embed without reinterpretation", "text": "HTML Report Designer verifies provenance and embeds the figure with the owning document's walkthrough." }
+          ]
+        },
+        {
+          "type": "list",
+          "id": "prd.behavior.rules",
+          "style": "checks",
+          "items": [
+            "PRD uses diagrams to explain actor-visible product behavior and never introduces architecture.",
+            "Design Solution uses diagrams to explain approved boundaries, state, communication, recovery, or decomposition.",
+            "System Diagram owns generation mechanics and the established style, never product or architecture truth.",
+            "HTML Report Designer validates and embeds; it does not choose a capability or redraw the figure.",
+            "Existing system-diagram-v1 sources and generated SVGs remain valid and visually unchanged.",
+            "Unsupported or crowded meaning returns an actionable blocker instead of a plausible approximation or smaller text."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.diagram",
+      "role": "diagram",
+      "kicker": "Product flow",
+      "title": "Authority stays with the document while generation becomes capability-aware",
+      "summary": "Approved product truth — the owning document supplies meaning, System Diagram validates and generates, and unsupported meaning returns for refinement.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.capability-selection",
+          "question": "How does an owning document skill turn an evidence-backed situation into the right style-consistent diagram without transferring product or architecture authority?",
+          "caption": "PRD or Design Solution supplies and owns meaning; System Diagram validates one selected grammar and renders it in the established style; unsupported briefs return for refinement.",
+          "svgPath": "diagrams/capability-selection-flow.svg",
+          "sourcePath": "diagrams/capability-selection-flow.json",
+          "walkthrough": [
+            "PRD or Design Solution identifies a situation that needs explanation and owns its product or architecture meaning.",
+            "The owning skill supplies a bounded evidence-backed brief and selects sequence, flow, architecture, or component from the explanatory question.",
+            "System Diagram validates evidence, semantics, limits, and uncertainty without adding unsupported truth.",
+            "Supported meaning becomes deterministic infrastructure-v1 SVG; ambiguous or excessive meaning returns for refinement or splitting.",
+            "HTML Report Designer verifies and embeds the figure so the reviewer can retell the situation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.slices",
+      "role": "slices",
+      "kicker": "Product slices",
+      "title": "Five end-to-end outcomes expand the skill safely",
+      "summary": "Approved product truth — sequence, flow, architecture view, and component decomposition are staged capabilities of the same System Diagram skill and visual language.",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "slice-001",
+          "title": "Choose the capability from the explanatory question",
+          "outcome": "PRD or Design Solution can request a diagram that matches the situation being reviewed.",
+          "boundary": "System Diagram does not infer product or architecture truth, and capability choice does not authorize additional diagrams or implementation.",
+          "story": { "id": "story-001", "actor": "an owning document skill", "capability": "select an explanatory diagram capability from a bounded situation", "outcome": "the generated figure answers the intended question without changing its meaning" },
+          "scenarios": [
+            { "id": "ex-001", "title": "Supported explanatory question", "given": "PRD or Design Solution has a sourced situation, audience, question, path, uncertainty, and walkthrough", "when": "it classifies the question as temporal communication, progression, bounded topology, or one-scope decomposition", "then": "it hands System Diagram one sequence, flow, architecture, or component brief with the original authority intact" },
+            { "id": "ex-002", "title": "Ambiguous or unsupported question", "given": "the brief mixes incompatible abstraction levels, lacks evidence, or cannot identify one explanatory question", "when": "System Diagram validates the request", "then": "it returns a blocker asking the owning skill to clarify or split the situation instead of drawing a plausible figure" }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            { "id": "step-001", "title": "Classify and hand off", "context": "The owning document has one evidence-backed situation to explain.", "action": "It matches the question to one capability and supplies the semantic brief.", "response": "System Diagram accepts a bounded request or returns the exact missing condition.", "outcome": "Only supported meaning advances to generation." }
+          ],
+          "acceptance": [
+            { "id": "ac-001", "text": "Selection guidance distinguishes temporal communication, progression/branching, static bounded communication, and one-scope decomposition with no overlapping default." },
+            { "id": "ac-002", "text": "A brief with missing evidence, mixed abstraction, or unsupported semantics produces a blocker that identifies what must be clarified or split." },
+            { "id": "ac-003", "text": "Generated labels, actors, states, boundaries, and relationships all trace to the owning brief rather than renderer inference." }
+          ],
+          "after": "After this slice, the document workflow can choose one explanatory capability without transferring semantic authority."
+        },
+        {
+          "type": "slice",
+          "id": "slice-002",
+          "title": "Explain temporal communication with a sequence diagram",
+          "outcome": "A reviewer can follow who communicates with whom and in what order, including material alternatives or recovery.",
+          "boundary": "The initial capability excludes timing diagrams, actor creation/destruction, arbitrary icons, and deeply nested parallel or critical fragments.",
+          "story": { "id": "story-002", "actor": "a PRD or Design Solution author", "capability": "explain participant communication in temporal order", "outcome": "the reviewer can follow the interaction and its recovery without reading a generic graph" },
+          "scenarios": [
+            { "id": "ex-003", "title": "Temporal interaction", "given": "the brief names ordered participants, messages, material notes, activation spans, and any alternative, optional, or loop fragment", "when": "System Diagram generates the sequence capability", "then": "the figure preserves participant and event order through lifelines, labelled messages, explicit fragments, and the existing visual language" },
+            { "id": "ex-004", "title": "Sequence exceeds the approved envelope", "given": "the brief exceeds an approved participant, event, nesting, activation, text, or output limit", "when": "System Diagram validates it", "then": "generation stops and asks the owning skill to split the interaction rather than compress or omit meaning" }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            { "id": "step-002", "title": "Order the interaction", "context": "A supported temporal brief is complete and source ordered.", "action": "System Diagram maps participants, events, activations, and fragments to the sequence grammar.", "response": "A deterministic lifeline figure preserves the approved order and style.", "outcome": "The reviewer can narrate the normal and recovery interaction." }
+          ],
+          "acceptance": [
+            { "id": "ac-004", "text": "Sequence output preserves one to eight participants and one to forty-eight messages in source order, with no more than sixty-four total events." },
+            { "id": "ac-005", "text": "The capability represents synchronous, asynchronous, return, and self messages plus notes, explicit activations, and bounded alt, opt, and loop fragments when supplied." },
+            { "id": "ac-006", "text": "The approved envelope allows at most sixteen notes, twelve fragments at depth three, and sixteen activations at simultaneous depth three; exceeding it fails with split guidance." },
+            { "id": "ac-007", "text": "Sequence output uses the established infrastructure-v1 visual language and does not change byte-current v1 fixtures." }
+          ],
+          "after": "After this slice, System Diagram can generate its first genuinely temporal explanatory figure."
+        },
+        {
+          "type": "slice",
+          "id": "slice-003",
+          "title": "Explain progression and recovery with a flow diagram",
+          "outcome": "A reviewer can follow work or state from trigger through decisions to outcome or recovery.",
+          "boundary": "The flow is not an architecture inventory and does not use page composition to explain causality.",
+          "story": { "id": "story-003", "actor": "a product or architecture document author", "capability": "explain progression, branching, and recovery as one flow", "outcome": "the reviewer can identify each guarded decision and resulting outcome" },
+          "scenarios": [
+            { "id": "ex-005", "title": "Bounded progression", "given": "the brief supplies a start, ordered actions or states, guarded decisions, merges, outcomes, and material feedback or recovery", "when": "System Diagram generates the flow capability", "then": "the figure presents one readable progression with labelled branches and explicit outcome or recovery paths" }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            { "id": "step-003", "title": "Trace the progression", "context": "The brief asks how work or state advances rather than what systems exist.", "action": "System Diagram arranges supplied actions and guarded branches in causal order.", "response": "The generated flow keeps the main path and material recovery distinguishable.", "outcome": "The reviewer can explain how each outcome is reached." }
+          ],
+          "acceptance": [
+            { "id": "ac-008", "text": "Every decision has labelled outgoing meaning, and each accepted element lies on a path from the supplied start to an outcome or recovery." },
+            { "id": "ac-009", "text": "A disconnected element, unlabeled decision branch, or unsupported loop fails instead of appearing as unexplained adjacency." },
+            { "id": "ac-010", "text": "The flow remains readable in the established style at desktop, local 320px overflow, and print sizes." }
+          ],
+          "after": "After this slice, System Diagram can generate bounded causal flows without treating a generic node map as a process."
+        },
+        {
+          "type": "slice",
+          "id": "slice-004",
+          "title": "Explain bounded communication with an architecture view",
+          "outcome": "A reviewer can see which systems or containers communicate across relevant runtime or ownership boundaries.",
+          "boundary": "One figure uses one declared abstraction level; deployment instances, automatic multi-level zoom, and vendor icon packs remain out of scope.",
+          "story": { "id": "story-004", "actor": "a Design Solution author", "capability": "explain static communication at one architecture level", "outcome": "the reviewer can identify responsibilities, boundaries, and labelled relationships" },
+          "scenarios": [
+            { "id": "ex-006", "title": "One bounded architecture level", "given": "the approved design brief names one context or container scope, relevant people or runtime units, boundaries, and labelled relationships", "when": "System Diagram generates the architecture capability", "then": "the figure preserves the declared level and makes every material boundary crossing explicit" }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            { "id": "step-004", "title": "Map one architecture level", "context": "Design Solution supplies approved static topology and relevant boundaries.", "action": "System Diagram places the units and their labelled directional relationships within that scope.", "response": "The architecture view exposes communication without mixing context, container, component, or deployment levels.", "outcome": "The reviewer can retell the bounded topology." }
+          ],
+          "acceptance": [
+            { "id": "ac-011", "text": "Architecture output declares one context or container level and rejects invalid nesting or mixed abstraction." },
+            { "id": "ac-012", "text": "Every relationship is directional and labelled, and a runtime/container boundary crossing includes the supplied protocol." },
+            { "id": "ac-013", "text": "PRD cannot use the architecture capability to introduce technical boundaries that are absent from approved product truth." }
+          ],
+          "after": "After this slice, Design Solution can request a consistent static architecture explanation without changing diagram style."
+        },
+        {
+          "type": "slice",
+          "id": "slice-005",
+          "title": "Explain one scope through component decomposition",
+          "outcome": "A reviewer can understand how one approved container or module decomposes and which interfaces connect its parts.",
+          "boundary": "The capability does not produce class/member diagrams, source-file inventories, or whole-system deployment views.",
+          "story": { "id": "story-005", "actor": "a Design Solution author", "capability": "explain component responsibilities and interfaces inside one scope", "outcome": "the reviewer can identify each dependency and unresolved contract" },
+          "scenarios": [
+            { "id": "ex-007", "title": "One-scope decomposition", "given": "the approved design brief names one container or module, its components, short responsibilities, interfaces, and dependencies", "when": "System Diagram generates the component capability", "then": "the figure shows the internal decomposition and rejects required interfaces that have no supplied provider" }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            { "id": "step-005", "title": "Decompose one scope", "context": "Design Solution supplies one bounded container or module and its approved contracts.", "action": "System Diagram maps components, provided and required interfaces, and dependencies.", "response": "The generated component view exposes matched contracts and blocks unresolved required interfaces.", "outcome": "The reviewer can explain how the scope is internally connected." }
+          ],
+          "acceptance": [
+            { "id": "ac-014", "text": "Component output contains exactly one container or module scope and gives each component a supplied responsibility." },
+            { "id": "ac-015", "text": "Every interface has unique supplied ownership, every dependency resolves to existing elements, and unmatched required interfaces fail validation." },
+            { "id": "ac-016", "text": "The output omits classes, members, source files, and unrelated external topology." }
+          ],
+          "after": "After this slice, Design Solution can explain one component boundary without turning the diagram into a code inventory."
+        }
+      ]
+    },
+    {
+      "id": "prd.scope",
+      "role": "scope",
+      "kicker": "Scope",
+      "title": "One skill and one visual language, delivered in bounded slices",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "prd.scope.boundaries",
+          "items": [
+            ["Approved product truth", "Carlos Rodrigo approved extending the existing System Diagram skill, preserving infrastructure-v1, using sequence first, and keeping semantic authority with PRD and Design Solution."],
+            ["In", "Capability-selection guidance, sequence/flow/architecture/component generation, deterministic retained source/SVG, accessibility, report embedding, failure guidance, and behavioral evaluation."],
+            ["Sequence capacity", "Up to 8 participants, 48 messages, 64 events, 16 notes, 12 fragments at depth 3, and 16 activations at simultaneous depth 3."],
+            ["Design input", "The approved research also fixes raw-source, text, geometry, output-size, one-pass layout, Node 18, and byte-compatibility guardrails for technical design."],
+            ["Out", "A new visual language, a universal graph engine before evidence, page composition, class diagrams, automatic semantic invention, generic migration, or implementation tasks before design approval."],
+            ["Mockups", "Not applicable — this feature changes generated explanatory artifacts, not an interactive interface or responsive page composition, and retains the already approved visual style."]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.decisions",
+      "role": "decisions",
+      "kicker": "Accepted decisions",
+      "title": "Capability, authority, and delivery direction are explicit",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.one-skill-one-style",
+          "question": "How should the four diagram capabilities enter the workflow?",
+          "status": "accepted",
+          "options": [
+            { "id": "extend-existing", "label": "Extend the existing System Diagram skill and reuse infrastructure-v1" },
+            { "id": "separate-tools", "label": "Create separate diagram skills or visual languages for each type" }
+          ],
+          "selectedOptionId": "extend-existing",
+          "rationale": "One skill can learn multiple explanatory grammars while preserving the visual and validation contract reviewers already recognize.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.responsibility-split",
+          "question": "Who decides when, what, and how a situation is illustrated?",
+          "status": "accepted",
+          "options": [
+            { "id": "domain-owns-meaning", "label": "PRD/Design Solution own when and what; System Diagram owns generation; HTML Report Designer embeds" },
+            { "id": "renderer-owns-meaning", "label": "System Diagram infers the situation and report placement from available files" }
+          ],
+          "selectedOptionId": "domain-owns-meaning",
+          "rationale": "Product and architecture authority must remain with the skills that own those domains; rendering cannot safely invent semantics.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-first",
+          "question": "How should implementation progress across the four capabilities?",
+          "status": "accepted",
+          "options": [
+            { "id": "vertical-sequence", "label": "Deliver sequence as the first complete vertical slice, then evaluate each graph capability" },
+            { "id": "all-foundations", "label": "Build shared foundations for all four capabilities before one works end to end" }
+          ],
+          "selectedOptionId": "vertical-sequence",
+          "rationale": "Sequence is the genuinely new temporal grammar; a complete slice proves the contract before shared abstractions or additional graph behavior are justified.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        }
+      ]
+    }
+  ]
+}

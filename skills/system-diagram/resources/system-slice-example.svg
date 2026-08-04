@@ -1,0 +1,185 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="30 10 860 890" role="img" aria-labelledby="system-slice-example-title system-slice-example-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.example.system-slice-example.svg"><title id="system-slice-example-title">Infrastructure outside-in slice diagram</title><desc id="system-slice-example-desc">A six-node architecture slice rendered as deterministic SVG with a browser feedback branch.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:daa9653845e7a7ba7133de08507b7b49ff3fe5a8ac8f3e3e09242e8622971261 --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="system-slice-example--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="system-slice-example--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="system-slice-example--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-slice-example--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-slice-example--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-slice-example--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-slice-example--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="system-slice-example--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="30" y="10" width="860" height="890"></rect><rect class="diagram-grid" x="30" y="10" width="860" height="890" fill="url(#system-slice-example--grid)"></rect><g class="diagram-groups"></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.example.system-slice-example.edge-route-to-endpoint"><path class="diagram-edge__path" d="M210 150L210 220" marker-end="url(#system-slice-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.example.system-slice-example.edge.endpoint-to-use-case"><path class="diagram-edge__path" d="M210 330L210 400" marker-end="url(#system-slice-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.example.system-slice-example.edge.use-case-to-domain"><path class="diagram-edge__path" d="M210 510L210 580" marker-end="url(#system-slice-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.example.system-slice-example.edge.domain-to-repository"><path class="diagram-edge__path" d="M210 690L210 760" marker-end="url(#system-slice-example--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--feedback diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.example.system-slice-example.edge.use-case-to-feedback"><path class="diagram-edge__path" d="M360 455L540 455" marker-end="url(#system-slice-example--arrow-feedback)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.example.system-slice-example.node-quick-create" aria-labelledby="system-slice-example--quick-create-text"><rect class="diagram-node__surface" x="60" y="40" width="300" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="60" y="52" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="343" cy="57" r="3.5"></circle><text class="diagram-node__kind" x="80" y="63">ENTRY</text><text id="system-slice-example--quick-create-text" class="diagram-node__title" x="80" y="87" font-size="16">Quick create</text><text class="diagram-node__detail" x="80" y="110" font-size="14"><tspan x="80" y="110">Establishments</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.example.system-slice-example.node.endpoint" aria-labelledby="system-slice-example--endpoint-text"><rect class="diagram-node__surface" x="60" y="220" width="300" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="60" y="232" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="343" cy="237" r="3.5"></circle><text class="diagram-node__kind" x="80" y="243">SERVICE</text><text id="system-slice-example--endpoint-text" class="diagram-node__title" x="80" y="267" font-size="16">createEstablishment</text><text class="diagram-node__detail" x="80" y="290" font-size="14"><tspan x="80" y="290">POST /api/establishments</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.example.system-slice-example.node.use-case" aria-labelledby="system-slice-example--use-case-text"><rect class="diagram-node__surface" x="60" y="400" width="300" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="60" y="412" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="343" cy="417" r="3.5"></circle><text class="diagram-node__kind" x="80" y="423">SERVICE</text><text id="system-slice-example--use-case-text" class="diagram-node__title" x="80" y="447" font-size="16">EstablishmentUseCases</text><text class="diagram-node__detail" x="80" y="470" font-size="14"><tspan x="80" y="470">createEstablishment</tspan></text></g><g class="diagram-node diagram-node--domain diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.example.system-slice-example.node.domain" aria-labelledby="system-slice-example--domain-text"><rect class="diagram-node__surface" x="60" y="580" width="300" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="60" y="592" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="343" cy="597" r="3.5"></circle><text class="diagram-node__kind" x="80" y="603">DOMAIN</text><text id="system-slice-example--domain-text" class="diagram-node__title" x="80" y="627" font-size="16">Establishment</text><text class="diagram-node__detail" x="80" y="650" font-size="14"><tspan x="80" y="650">land + owner validity</tspan></text></g><g class="diagram-node diagram-node--repository diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.example.system-slice-example.node.repository" aria-labelledby="system-slice-example--repository-text"><rect class="diagram-node__surface" x="60" y="760" width="300" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="60" y="772" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="343" cy="777" r="3.5"></circle><text class="diagram-node__kind" x="80" y="783">STORAGE</text><text id="system-slice-example--repository-text" class="diagram-node__title" x="80" y="807" font-size="16">EstablishmentRepo</text><text class="diagram-node__detail" x="80" y="830" font-size="14"><tspan x="80" y="830">createWithTasks</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.example.system-slice-example.node.feedback" aria-labelledby="system-slice-example--feedback-text"><rect class="diagram-node__surface" x="540" y="400" width="320" height="110" rx="10" filter="url(#system-slice-example--shadow)"></rect><rect class="diagram-node__accent" x="540" y="412" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="843" cy="417" r="3.5"></circle><text class="diagram-node__kind" x="560" y="423">PROOF</text><text id="system-slice-example--feedback-text" class="diagram-node__title" x="560" y="447" font-size="16">Browser + API fixture</text><text class="diagram-node__detail" x="560" y="470" font-size="14"><tspan x="560" y="470">shows baseline task list</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.example.system-slice-example.edge-label-route-to-endpoint"><rect class="diagram-edge-label__surface" x="220" y="171" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="258.44" y="189.76" font-size="14" text-anchor="middle"><tspan x="258.44" y="189.76">creates</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.example.system-slice-example.edge-label.endpoint-to-use-case"><rect class="diagram-edge-label__surface" x="220" y="351" width="92.56" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="266.28" y="369.76" font-size="14" text-anchor="middle"><tspan x="266.28" y="369.76">validates</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.example.system-slice-example.edge-label.use-case-to-domain"><rect class="diagram-edge-label__surface" x="220" y="531" width="123.92" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="281.96" y="549.76" font-size="14" text-anchor="middle"><tspan x="281.96" y="549.76">applies rules</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.example.system-slice-example.edge-label.domain-to-repository"><rect class="diagram-edge-label__surface" x="220" y="711" width="76.88" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="258.44" y="729.76" font-size="14" text-anchor="middle"><tspan x="258.44" y="729.76">records</tspan></text></g><g class="diagram-edge-label diagram-edge-label--feedback diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.example.system-slice-example.edge-label.use-case-to-feedback"><rect class="diagram-edge-label__surface" x="380.2" y="419" width="139.6" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="450" y="437.76" font-size="14" text-anchor="middle"><tspan x="450" y="437.76">proves behavior</tspan></text></g></g></svg>

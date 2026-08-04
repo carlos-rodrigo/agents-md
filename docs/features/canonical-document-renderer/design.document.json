@@ -3,24 +3,23 @@
   "document": {
     "id": "canonical-document-renderer-design",
     "kind": "design",
-    "status": "Approved",
+    "status": "Blocked",
     "title": "Put all document presentation behind one portable renderer",
-    "summary": "PRD and Design Solution own structured meaning, System Diagram owns Excalidraw JSON-to-SVG, and HTML Report Designer validates both before filling one report template.",
-    "reviewFocus": "Verify the renderer seam, strict failure behavior, decision lifecycle, and package-relative installation path.",
-    "updated": "2026-07-31",
-    "sources": ["docs/features/canonical-document-renderer/prd.document.json", "docs/features/canonical-document-renderer/prd.html", "skills/html-report-designer/SKILL.md", "skills/system-diagram/SKILL.md", "docs/adrs/architecture.md"],
-    "approval": { "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-31" },
+    "summary": "PRD and Design Solution own structured meaning, System Diagram owns system-diagram-v1 JSON-to-SVG, and HTML Report Designer validates both before filling one report template.",
+    "reviewFocus": "Blocked until the current PRD revision receives explicit whole-document approval; meanwhile review the renderer seam, strict failure behavior, decision lifecycle, and dependency-free skill-relative path.",
+    "updated": "2026-08-02",
+    "sources": ["Explicit user instruction on 2026-08-02: Replace the Excalidraw diagram style with a high-quality custom CSS/SVG diagram system inspired by Vercel's infrastructure diagrams.", "docs/features/canonical-document-renderer/prd.document.json", "docs/features/canonical-document-renderer/prd.html", "skills/html-report-designer/SKILL.md", "skills/system-diagram/SKILL.md", "docs/adrs/architecture.md"],
     "feature": "Canonical document renderer",
-    "relatedArtifacts": [{ "label": "Approved PRD", "href": "prd.html" }, { "label": "Architecture ADR", "href": "../../adrs/architecture.md" }]
+    "relatedArtifacts": [{ "label": "Current PRD revision", "href": "prd.html" }, { "label": "Architecture ADR", "href": "../../adrs/architecture.md" }]
   },
   "sections": [
     {
       "id": "design.authority",
       "role": "authority",
-      "kicker": "Approved authority",
-      "title": "One report experience must preserve domain-owned truth",
+      "kicker": "Blocked upstream gate",
+      "title": "The current PRD revision cannot authorize new design work",
       "blocks": [
-        { "type": "facts", "id": "design.authority.contract", "items": [["Product promise", "Every durable report uses one dependable shell, decision lifecycle, and Excalidraw figure contract."], ["Authority source", "Editable approved product truth comes from prd.document.json; prd.html is its current validated review projection."], ["Acceptance", "Single production template, deterministic rendering, complete decision export, Excalidraw provenance, and browser resilience."], ["Constraint", "Presentation must not invent, reorder, or approve product/architecture content."]] }
+        { "type": "facts", "id": "design.authority.contract", "items": [["Upstream status", "The current prd.document.json is Review; its prd.html projection is fresh but the complete revision is not Approved."], ["Existing system", "The canonical renderer already provides one report shell, decision lifecycle, and infrastructure SVG figure contract."], ["Accepted visual change", "The product owner accepted decision.report-visual-direction, authorizing Editorial Infrastructure styling without approving the whole PRD."], ["Gate", "This design remains Blocked and cannot authorize tasks until the complete PRD revision receives explicit approval."]] }
       ]
     },
     {
@@ -39,8 +38,8 @@
       "kicker": "Chosen seam",
       "title": "HTML Report Designer owns the sole rendering boundary",
       "blocks": [
-        { "type": "facts", "id": "design.seam.ownership", "items": [["PRD", "Owns required product roles, slices, acceptance, and product decision lifecycle."], ["Design Solution", "Owns required architecture roles, seam, path, proof, and ADR consequences."], ["System Diagram", "Owns evidence validation and bundled Excalidraw JSON-to-SVG generation."], ["HTML Report Designer", "Owns schema validation, block rendering, report template, CSS, navigation, review runtime, and report validation."], ["Human approver", "Owns transition from Draft/Review/Proposed to Approved/Accepted."]] },
-        { "type": "callout", "id": "design.seam.failure", "tone": "warning", "title": "No fallback path", "text": "A missing companion skill, invalid profile, absent Excalidraw provenance, or incomplete approval blocks generation instead of producing a substitute artifact." }
+        { "type": "facts", "id": "design.seam.ownership", "items": [["PRD", "Owns required product roles, slices, acceptance, and product decision lifecycle."], ["Design Solution", "Owns required architecture roles, seam, path, proof, and ADR consequences."], ["System Diagram", "Owns evidence validation and bundled deterministic infrastructure JSON-to-SVG generation."], ["HTML Report Designer", "Owns schema validation, block rendering, report template, CSS, navigation, review runtime, and report validation."], ["Human approver", "Owns transition from Draft/Review/Proposed to Approved/Accepted."]] },
+        { "type": "callout", "id": "design.seam.failure", "tone": "warning", "title": "No fallback path", "text": "A missing companion skill, invalid profile, absent System Diagram provenance, or incomplete approval blocks generation instead of producing a substitute artifact." }
       ]
     },
     {
@@ -51,8 +50,8 @@
       "blocks": [
         { "type": "steps", "id": "design.path.steps", "items": [
           { "id": "design.path.compose", "title": "Compose", "text": "PRD or Design Solution writes canonical-report-v1 JSON with required section roles, stable IDs, approval state, and decisions." },
-          { "id": "design.path.figure", "title": "Generate", "text": "System Diagram validates a bounded question and renders retained Excalidraw JSON into accessible SVG." },
-          { "id": "design.path.validate", "title": "Validate", "text": "The canonical renderer rejects unknown fields, missing roles, incomplete slices, invalid decisions, and non-Excalidraw figures." },
+          { "id": "design.path.figure", "title": "Generate", "text": "System Diagram validates a bounded question and renders retained system-diagram-v1 JSON into accessible infrastructure SVG." },
+          { "id": "design.path.validate", "title": "Validate", "text": "The canonical renderer rejects unknown fields, missing roles, incomplete slices, invalid decisions, and non-System Diagram figures." },
           { "id": "design.path.render", "title": "Render", "text": "The renderer fills the sole report template and embeds shared CSS, navigation, decision runtime, DocumentSpec, and template digest." },
           { "id": "design.path.review", "title": "Review", "text": "The human reads self-contained HTML and exports review decisions; an agent reconciles only explicitly accepted truth." }
         ] }
@@ -64,7 +63,7 @@
       "kicker": "Architecture path",
       "title": "The renderer seam sees content, figure provenance, and output together",
       "blocks": [
-        { "type": "diagram", "id": "diagram.canonical-rendering-path", "question": "Where does approved document meaning become deterministic self-contained HTML?", "caption": "One portable renderer validates domain-owned DocumentSpec and Excalidraw source/output before filling the sole report template.", "svgPath": "diagrams/canonical-rendering-path.svg", "sourcePath": "diagrams/canonical-rendering-path.json", "walkthrough": ["PRD or Design Solution supplies required structured meaning.", "The DocumentSpec makes approval, decisions, roles, and IDs machine-checkable.", "System Diagram supplies retained Excalidraw JSON and generated SVG.", "HTML Report Designer validates both and fills one report template.", "Invalid authority or provenance blocks; valid input emits deterministic portable HTML."] }
+        { "type": "diagram", "id": "diagram.canonical-rendering-path", "question": "Where does source-owned document meaning become deterministic self-contained HTML?", "caption": "One portable renderer validates domain-owned DocumentSpec and System Diagram source/output before filling the sole report template.", "svgPath": "diagrams/canonical-rendering-path.svg", "sourcePath": "diagrams/canonical-rendering-path.json", "walkthrough": ["PRD or Design Solution supplies required structured meaning.", "The DocumentSpec makes approval, decisions, roles, and IDs machine-checkable.", "System Diagram supplies retained system-diagram-v1 JSON and generated SVG.", "HTML Report Designer validates both and fills one report template.", "Invalid authority or provenance blocks; valid input emits deterministic portable HTML."] }
       ]
     },
     {
@@ -75,7 +74,7 @@
       "blocks": [
         { "type": "decision", "id": "decision.renderer-seam", "question": "Which module owns report markup, CSS, runtime, and profile validation?", "status": "accepted", "options": [{ "id": "html-report-designer", "label": "Bundled HTML Report Designer renderer" }, { "id": "owning-skills", "label": "PRD/design skills hand-author their own reports" }], "selectedOptionId": "html-report-designer", "rationale": "The renderer sees all presentation concerns and can stay portable and deterministic without weakening domain ownership.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" },
         { "type": "decision", "id": "decision.structured-source", "question": "What is the editable source of a durable report?", "status": "accepted", "options": [{ "id": "document-spec", "label": "Strict canonical-report-v1 structured JSON" }, { "id": "generated-html", "label": "Generated HTML edited directly" }], "selectedOptionId": "document-spec", "rationale": "Structured source makes content profiles, approval, decision lifecycle, deterministic regeneration, and review anchors enforceable.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" },
-        { "type": "decision", "id": "decision.diagram-boundary", "question": "How are diagrams supplied to the report renderer?", "status": "accepted", "options": [{ "id": "excalidraw-pair", "label": "System Diagram supplies retained Excalidraw JSON and generated SVG" }, { "id": "inline-shape", "label": "Report renderer or owning skills draw SVG directly" }], "selectedOptionId": "excalidraw-pair", "rationale": "A dedicated renderer keeps evidence, geometry, accessibility, provenance, and regeneration consistent.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" }
+        { "type": "decision", "id": "decision.diagram-boundary", "question": "How are diagrams supplied to the report renderer?", "status": "accepted", "options": [{ "id": "system-svg-pair", "label": "System Diagram supplies retained system-diagram-v1 JSON and generated infrastructure SVG" }, { "id": "excalidraw-pair", "label": "System Diagram supplies Excalidraw JSON and exported SVG" }], "selectedOptionId": "system-svg-pair", "rationale": "A dedicated deterministic SVG/CSS renderer keeps evidence, geometry, accessibility, provenance, and visual language consistent without a browser export backend.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-08-02" }
       ]
     },
     {
@@ -84,7 +83,7 @@
       "kicker": "Tradeoffs and proof",
       "title": "Strict failure is cheaper than silent drift",
       "blocks": [
-        { "type": "facts", "id": "design.proof.tradeoffs", "items": [["Cost", "A new semantic component requires a shared schema/renderer change and focused tests."], ["Benefit", "All document kinds receive the same fixes, styles, controls, and fallbacks."], ["Failure posture", "Invalid roles, approval, decisions, source paths, or provenance fail before output."], ["Recovery", "Correct structured source or install the declared companion skill; never patch output."], ["Proof strategy", "Positive/negative profile fixtures, template lock, decision runtime test, copied-skill rendering, deterministic checks, Excalidraw freshness, and desktop/mobile/no-JS/reduced-motion/print browser checks."]] },
+        { "type": "facts", "id": "design.proof.tradeoffs", "items": [["Cost", "A new semantic component requires a shared schema/renderer change and focused tests."], ["Benefit", "All document kinds receive the same fixes, styles, controls, and fallbacks."], ["Failure posture", "Invalid roles, approval, decisions, source paths, or provenance fail before output."], ["Recovery", "Correct structured source or restore the declared companion skill; never patch output."], ["Proof strategy", "Positive/negative profile fixtures, template lock, decision runtime test, copied-skill rendering, deterministic checks, System Diagram freshness, and desktop/mobile/no-JS/reduced-motion/print browser checks."]] },
         { "type": "callout", "id": "design.proof.legacy", "tone": "risk", "title": "Legacy artifacts", "text": "Existing reports remain readable, but new validation rejects them as canonical generation sources until migrated." }
       ]
     },

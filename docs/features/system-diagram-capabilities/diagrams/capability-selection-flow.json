@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "system-diagram-v1",
+  "id": "capability-selection-flow",
+  "title": "From an explanatory need to one style-consistent diagram",
+  "desc": "A top-to-bottom product flow in which PRD or Design Solution owns the situation and evidence, selects the explanatory capability, and gives System Diagram a bounded brief to validate and render in the established infrastructure style, with unsupported semantics returned for refinement.",
+  "reviewPrefix": "diagram.capability-selection",
+  "reviewId": "svg",
+  "canvas": { "grid": true },
+  "padding": 44,
+  "nodes": [
+    { "id": "situation", "kind": "entry", "x": 260, "y": 40, "width": 500, "height": 110, "text": "Situation needs explanation\nPRD or Design Solution owns the meaning" },
+    { "id": "brief", "kind": "domain", "x": 260, "y": 220, "width": 500, "height": 110, "text": "Evidence-backed brief\nQuestion · scope · path · recovery" },
+    { "id": "choose", "kind": "decision", "x": 260, "y": 400, "width": 500, "height": 110, "text": "Choose by explanatory question\nTime · progression · topology · decomposition" },
+    { "id": "capability", "kind": "service", "x": 260, "y": 580, "width": 500, "height": 110, "text": "One capability\nSequence · flow · architecture · component" },
+    { "id": "validate", "kind": "policy", "x": 260, "y": 760, "width": 500, "height": 110, "text": "System Diagram validates\nEvidence · semantics · limits · uncertainty" },
+    { "id": "render", "kind": "feedback", "x": 260, "y": 940, "width": 500, "height": 110, "text": "Generate deterministic SVG\nExisting infrastructure-v1 visual language" },
+    { "id": "review", "kind": "success", "x": 260, "y": 1120, "width": 500, "height": 110, "text": "Canonical report embeds the figure\nReviewer can retell the situation" },
+    { "id": "refine", "kind": "risk", "x": 980, "y": 760, "width": 390, "height": 110, "text": "Unsupported or ambiguous\nOwning skill refines or splits the brief" }
+  ],
+  "edges": [
+    { "id": "situation-to-brief", "from": "situation", "to": "brief", "x": 510, "y": 150, "points": [[0, 0], [0, 70]], "label": "states what must be understood" },
+    { "id": "brief-to-choose", "from": "brief", "to": "choose", "x": 510, "y": 330, "points": [[0, 0], [0, 70]], "label": "supplies classified evidence" },
+    { "id": "choose-to-capability", "from": "choose", "to": "capability", "x": 510, "y": 510, "points": [[0, 0], [0, 70]], "label": "selects one grammar" },
+    { "id": "capability-to-validate", "from": "capability", "to": "validate", "x": 510, "y": 690, "points": [[0, 0], [0, 70]], "label": "hands off bounded semantics" },
+    { "id": "validate-to-render", "from": "validate", "to": "render", "x": 510, "y": 870, "points": [[0, 0], [0, 70]], "label": "accepts supported meaning" },
+    { "id": "render-to-review", "from": "render", "to": "review", "kind": "success", "x": 510, "y": 1050, "points": [[0, 0], [0, 70]], "label": "preserves style and provenance" },
+    { "id": "validate-to-refine", "from": "validate", "to": "refine", "kind": "risk", "x": 760, "y": 815, "points": [[0, 0], [220, 0]], "label": "returns a truthful blocker", "labelPosition": [870, 720] }
+  ]
+}

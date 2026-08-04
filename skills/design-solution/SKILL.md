@@ -1,7 +1,7 @@
 ---
 name: design-solution
 description: "Translate an explicitly human-approved PRD into a durable technical design when architecture pressure, ownership, state, contracts, recovery, rollout, or consequential tradeoffs need review. Do not use for product definition, task creation, implementation, tiny changes with one obvious seam, UI styling, or generic planning."
-compatibility: "Requires the html-report-designer and system-diagram skills. Final reports use the bundled canonical renderer; diagrams use the bundled Excalidraw renderer."
+compatibility: "Requires the html-report-designer and system-diagram skills. Final reports use the bundled canonical renderer; diagrams use the bundled deterministic infrastructure SVG renderer."
 ---
 
 # Feature Design
@@ -81,11 +81,11 @@ Name real symbols and protocols when known, while keeping the first pass boundar
 
 ## Architecture diagram
 
-Every durable design must invoke `system-diagram` after naming the architecture question. The design owns approved architecture semantics, question, scope, and placement. `system-diagram` validates evidence and owns Excalidraw visual encoding, accessibility, and figure reading order.
+Every durable design must invoke `system-diagram` after naming the architecture question. The design owns source- and authority-classified architecture semantics, question, scope, and placement. `system-diagram` validates evidence and owns the infrastructure SVG visual encoding, accessibility, and figure reading order.
 
 The figure must teach the causal path and selected seam—not inventory the topology. Every meaningful edge names the action, call, protocol, payload, transition, or effect. Include failure/recovery only when it changes ownership or product behavior.
 
-Retain the Excalidraw JSON source beside the feature, generate the SVG through the bundled renderer, and reference both from the `diagram` block. Durable designs do not use hand-authored SVGs or a `Diagram not applicable` escape.
+Select the smallest architecture capability from the question: use sequence for temporal participant communication, flow for progression and recovery, architecture view for static communication at one declared level, and component decomposition for one bounded container or module. Retain the selected System Diagram source beside the feature, generate the SVG through the bundled renderer, and reference both from the `diagram` block. Existing graph views use `system-diagram-v1`; temporal sequence uses the approved `system-diagram-v2` sequence contract. Durable designs do not use hand-authored SVGs or a `Diagram not applicable` escape.
 
 ## Decisions and ADRs
 
@@ -101,7 +101,7 @@ Accepted rationale for public API contracts, auth/security/privacy, persistence/
 2. Return product questions to PRD authority. Label non-blocking technical assumptions with evidence, risk, and validation path.
 3. Name the architecture pressure, choose the narrowest owning seam, and trace one causal path.
 4. Record decisions as Open or Proposed unless explicit human acceptance already exists.
-5. Invoke `system-diagram`; retain and validate its Excalidraw JSON/SVG pair.
+5. Invoke `system-diagram`; retain and validate its `system-diagram-v1` JSON/SVG pair.
 6. Compose the required section roles plus only warranted optional roles in `canonical-report-v1` structured content.
 7. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
@@ -132,7 +132,7 @@ After explicit design approval, pass approved acceptance anchors, the chosen sea
 
 - Approved PRD source/report authority is current, validated, linked, and unchanged.
 - Pressure, seam, ownership, state, causal path, proof, and boundary are explicit.
-- Exactly one Excalidraw architecture diagram has JSON/SVG provenance and a walkthrough.
+- Exactly one infrastructure-style architecture diagram has `system-diagram-v1` JSON/SVG provenance and a walkthrough.
 - Decisions expose credible alternatives, lifecycle, tradeoffs, owner, and approval.
 - Product behavior was not invented or silently changed.
 - Optional contracts, operations, interface consequences, traceability, and architecture slices earn their place.

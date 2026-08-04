@@ -1,0 +1,1306 @@
+<!doctype html>
+<html lang="en" data-report-template="canonical-report-v1" data-document-kind="prd">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="canonical-report" content="canonical-report-v1" />
+  <meta name="canonical-template-digest" content="67a713861a41e1ec208e0e21fdce600e3e521a4daaee69d8188fc6717f78e0bd" />
+  <meta name="description" content="PRD and Design Solution decide when and what a situation needs to illustrate; System Diagram generates sequence, flow, architecture, or component diagrams in the established infrastructure visual language without inventing meaning." />
+  <title>Teach System Diagram four explanatory grammars without changing its style</title>
+  <style data-tailwind-build="report.tailwind.css">
+/* tailwind-report-css:start */
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:Geist,Geist Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}:root{color-scheme:light;--surface-subtle:#fafafa;--text:#000;--text-muted:#666;--text-subtle:#8a8a8a;--border:#eaeaea;--border-strong:#dedede;--accent:#000;--accent-strong:#000;--accent-soft:#f5f5f5;--success:#0070f3;--success-soft:#eef6ff;--warning:#a35200;--danger:#e00;--danger-soft:#fff1f1;--shadow-soft:none;--focus:0 0 0 3px rgba(0,112,243,.24);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--radius-md:6px;--radius-lg:8px;--content:76ch;--mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;--sans:"Geist","Geist Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--page);color:var(--text);font-family:var(--sans);line-height:1.58;text-rendering:optimizeLegibility}a{color:var(--accent-strong);text-underline-offset:.18em}code,kbd{font-family:var(--mono);font-size:.92em}code{padding:.12rem .32rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface-subtle);overflow-wrap:anywhere}:where(a,button,summary,input):focus-visible{outline:none;box-shadow:var(--focus)}.skip-link{position:fixed;top:var(--space-4);left:var(--space-4);z-index:30;transform:translateY(-180%);padding:.65rem .9rem;border-radius:999px;background:var(--text);color:var(--surface);text-decoration:none}.skip-link:focus{transform:translateY(0)}.doc-shell{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);gap:clamp(var(--space-6),4vw,var(--space-10));width:100%;max-width:none;margin:0;padding:var(--space-8) clamp(var(--space-4),3vw,var(--space-8)) var(--space-10);align-items:start;transition:grid-template-columns .28s cubic-bezier(.2,.8,.2,1)}.doc-shell:has(.index-details:not([open])){grid-template-columns:44px minmax(0,1fr)}.side-nav{position:sticky;top:var(--space-6);min-height:calc(100vh - var(--space-8));max-height:calc(100vh - var(--space-8));overflow:auto;padding-right:var(--space-4);border-right:1px solid var(--border);transition:padding-right .28s ease}.doc-shell:has(.index-details:not([open])) .side-nav{overflow:visible;padding-right:0}.index-details{margin-top:0;padding:0;border:0;border-radius:0;background:transparent}.index-details>summary{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-3);padding:.4rem .5rem;border:0;border-radius:var(--radius-md);background:var(--page);color:var(--text);cursor:pointer;list-style:none}.index-details>summary:hover{background:var(--surface-subtle)}.index-details>summary::-webkit-details-marker{display:none}.index-details>summary:after{content:"⌄";margin-left:var(--space-1);color:var(--text-subtle);transition:transform .18s ease}.index-details[open]>summary:after{transform:rotate(180deg)}.sidebar-toggle-copy{display:inline-flex;margin-left:auto;padding:.18rem .42rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);font-size:.66rem;font-weight:700;letter-spacing:.02em;text-transform:none}.sidebar-toggle-copy:before{content:"Collapse"}.index-details:not([open])>summary{justify-content:center;width:44px;min-height:44px;margin:0;padding:0}.index-details:not([open])>summary:before{content:"☰";color:var(--text);font-size:1rem;line-height:1}.index-details:not([open])>summary .nav-title,.index-details:not([open])>summary .sidebar-toggle-copy,.index-details:not([open])>summary:after{display:none}.panel-title,.side-nav .nav-title,.side-nav h2{margin:0 0 var(--space-3);color:var(--text-subtle);font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.index-details>summary .nav-title{margin:0;color:var(--text)}.side-nav ol,.side-nav ul{display:grid;gap:2px;margin:0;padding:0;list-style:none}.side-nav a{display:block;padding:.38rem .5rem;border:0;border-radius:var(--radius-md);color:var(--text-muted);font-size:.9rem;text-decoration:none;box-shadow:none}.side-nav a.is-active,.side-nav a:hover{background:var(--surface-subtle);color:var(--text);border:0;box-shadow:none}.side-nav a.is-active{font-weight:700}.side-nav .nav-group{margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--border)}.doc-main{min-width:0}.breadcrumbs{margin-bottom:var(--space-4);font-size:.9rem}.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:0;padding:0;list-style:none}.breadcrumbs li:not(:last-child):after{content:"/";margin-left:var(--space-2);color:var(--text-subtle)}.breadcrumbs a{color:var(--text-muted);text-decoration:none}.article-header{margin-bottom:var(--space-8);padding:var(--space-6) 0 var(--space-6);border-bottom:1px solid var(--border)}.article-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-4)}.pill{display:inline-flex;align-items:center;min-height:26px;padding:.16rem .56rem;border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);color:var(--text-muted);font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.pill.review{background:var(--warning-soft);border-color:color-mix(in srgb,var(--warning) 28%,var(--border))}.pill.approved{background:var(--success-soft);border-color:color-mix(in srgb,var(--success) 28%,var(--border))}.pill.blocked{background:var(--danger-soft);border-color:color-mix(in srgb,var(--danger) 28%,var(--border))}.pill.draft{background:var(--info-soft);border-color:color-mix(in srgb,var(--info) 28%,var(--border))}h1{margin:0;max-width:880px;font-size:clamp(2rem,4vw,3.25rem);line-height:1.05;letter-spacing:-.035em}h1,h2,h3{text-wrap:balance}h2,h3{color:var(--text);line-height:1.22;letter-spacing:-.015em}.subtitle{max-width:760px;margin:var(--space-4) 0 0;font-size:clamp(1rem,1.2vw,1.14rem)}.callout,.feedback-widget,.slice-card{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.section-card{margin-bottom:var(--space-8);padding:0 0 var(--space-8);scroll-margin-top:var(--space-4)}.section-kicker{display:inline-flex;margin-bottom:var(--space-2);color:var(--accent-strong);font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.section-card h2{margin:0;font-size:clamp(1.45rem,2.5vw,2.25rem)}.section-summary{max-width:var(--content);margin:var(--space-3) 0 0}.callout,.slice-card{padding:var(--space-4)}.slice-card h3{margin:0 0 var(--space-2);font-size:1rem}.slice-card p{margin:var(--space-2) 0 0}.callout{margin-top:var(--space-4);border-left:4px solid var(--info);background:var(--info-soft)}.callout.success,.callout.tip{background:var(--success-soft)}.callout.warning{background:var(--warning-soft)}.callout.danger,.callout.risk{background:var(--danger-soft)}.callout strong{display:block;margin-bottom:var(--space-1)}.step-list{display:grid;gap:var(--space-3);margin:var(--space-4) 0 0;padding:0;counter-reset:step;list-style:none}.step-list li{position:relative;padding:var(--space-4) var(--space-4) var(--space-4) 3.2rem;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.step-list li:before{counter-increment:step;content:counter(step);position:absolute;left:var(--space-4);top:var(--space-4);display:grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:999px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:800}.copyable-code{position:relative;margin-top:var(--space-4)}blockquote{max-width:var(--content);margin:var(--space-4) 0 0;padding:var(--space-3) var(--space-4);border-left:4px solid var(--border-strong);color:var(--text-muted)}blockquote cite{display:block;margin-top:var(--space-2);color:var(--text-subtle);font-style:normal}pre{margin:0;padding:var(--space-4);overflow:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:#0f172a;color:#e5eefc}pre code{border:0;background:transparent;color:inherit;padding:0}.id-chip,.status-chip{display:inline-flex;align-items:center;border-radius:999px;font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.02em}.id-chip{margin-right:.35rem;padding:.12rem .44rem;background:var(--accent-soft);color:var(--accent-strong)}.status-chip{margin-left:.35rem;padding:.1rem .42rem;border:1px solid var(--border);color:var(--text-muted)}.document-block{max-width:var(--content);margin:var(--space-4) 0 0}.canonical-list{margin:var(--space-3) 0 0;padding-left:1.25rem}.canonical-list,.facts{display:grid;gap:var(--space-2)}.facts{margin-top:var(--space-4)}.facts>div{display:grid;grid-template-columns:minmax(120px,.35fr) minmax(0,1fr);gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border)}.facts dt{color:var(--text);font-weight:800}.facts dd{margin:0}.scenario-panel{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface-subtle)}.scenario-panel h3{margin:0 0 var(--space-3)}.scenario-line{display:grid;grid-template-columns:5rem minmax(0,1fr);gap:var(--space-3);margin-top:var(--space-2)}.scenario-line strong{color:var(--text)}.scenario-line span{color:var(--text-muted)}.slice-card{margin-top:var(--space-5)}.slice-card>header{padding-bottom:var(--space-3);border-bottom:1px solid var(--border)}.slice-card>header h3{margin:0}.slice-story{margin-top:var(--space-3);color:var(--text);font-weight:650}.workflow-overview{display:grid;gap:var(--space-2);margin-top:var(--space-4)}.workflow-label{color:var(--text-subtle);font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.workflow-sequence{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-2);margin:0;color:var(--text);font-weight:750}.workflow-arrow{color:var(--accent);font-family:var(--mono)}.storyboard{display:grid;grid-template-columns:repeat(var(--workflow-step-count),minmax(0,1fr));margin:var(--space-3) 0 0;padding:var(--space-4) 0 0;border-top:1px solid var(--border-strong);counter-reset:workflow-stage;list-style:none}.storyboard-step{min-width:0;padding:0 var(--space-4);border:0;border-left:1px solid var(--border)}.storyboard-step:first-child{border-left:0}.workflow-step-heading{display:flex;gap:var(--space-2);align-items:baseline;margin-bottom:var(--space-3)}.workflow-step-number{flex:none;color:var(--accent);font-family:var(--mono);font-size:.72rem;font-weight:800;letter-spacing:.08em}.storyboard-step h4{margin:0}.storyboard-step dl{display:grid;gap:var(--space-3);margin:0}.workflow-detail{display:grid;gap:2px}.storyboard-step dt{color:var(--text-subtle);font-family:var(--mono);font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.storyboard-step dd{margin:0;color:var(--text-muted)}.workflow-detail--handoff{padding-top:var(--space-2);border-top:1px solid var(--accent)}.workflow-detail--handoff dt{color:var(--accent-strong)}.acceptance-list{display:grid;gap:var(--space-2);margin-top:var(--space-4);padding:0;list-style:none}.acceptance-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--space-2);padding:var(--space-2) 0;color:var(--text-muted)}.acceptance-list .id-chip{align-self:start}.decision-recorder{margin-top:var(--space-4);padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface)}.decision-recorder[data-decision-status=accepted]{border-left:4px solid var(--success)}.decision-recorder[data-decision-status=open]{border-left:4px solid var(--warning);background:var(--warning-soft)}.decision-recorder legend{padding:0 var(--space-2);font-weight:800}.decision-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:var(--space-2) 0 var(--space-3);color:var(--text-muted);font-size:.85rem}.decision-option,.decision-options{display:grid;gap:var(--space-2)}.decision-option{grid-template-columns:auto minmax(0,1fr);align-items:start}.decision-option input{margin-top:.25rem;accent-color:var(--accent)}.decision-custom,.decision-field{display:grid;gap:var(--space-1);margin-top:var(--space-3)}.decision-custom span,.decision-field span{color:var(--text);font-size:.82rem;font-weight:800}.decision-custom input,.decision-field input,.decision-field textarea{width:100%;padding:.55rem .65rem;border:1px solid var(--border);border-radius:var(--radius-sm);font:inherit}.decision-record-check{display:flex;gap:var(--space-2);align-items:start;margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--border);color:var(--text);font-weight:750}.decision-record-check input{margin-top:.25rem;accent-color:var(--success)}.decision-status{min-height:1.4em;margin-top:var(--space-2);color:var(--text-muted);font-size:.86rem}.figure-question{margin:0 0 var(--space-3);color:var(--text);font-weight:750}.diagram-walkthrough{display:grid;gap:var(--space-2);margin:var(--space-3) 0 0;padding-left:1.25rem}figure{margin:var(--space-4) 0 0}.figure-card{padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto}.figure-card svg{display:block;width:100%;min-width:0;max-width:1024px;height:auto}.figure-card svg[data-diagram-type=sequence]{width:auto;min-width:0;max-width:none}@media (max-width:720px){.figure-card svg{min-width:1024px;max-width:none}}@media (min-width:721px){.figure-card svg[data-diagram-type=sequence]{width:100%;max-width:100%}}figcaption{margin-top:var(--space-3);font-size:.92rem}.slice-card+.slice-card{margin-top:var(--space-8)}.diagram-figure{background:var(--surface)}.diagram-edge-label{pointer-events:none}.diagram-reveal{opacity:1;transform:none}.js .diagram-reveal{opacity:0;transform:translateY(12px);transform-box:fill-box;transform-origin:center;transition:opacity .36s cubic-bezier(.2,.8,.2,1),transform .42s cubic-bezier(.2,.8,.2,1);transition-delay:var(--reveal-delay,0ms)}.js .is-visible .diagram-reveal,.js .reveal.is-visible .diagram-reveal{opacity:1;transform:translateY(0)}details{margin-top:var(--space-4);padding:.9rem 1rem;border:1px solid var(--border);border-radius:var(--radius-lg)}summary{cursor:pointer;color:var(--text);font-weight:700}.feedback-widget{margin-top:var(--space-5);padding:var(--space-4)}.feedback-actions{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3)}.feedback-actions button{border:1px solid var(--border);border-radius:999px;background:var(--surface-subtle);padding:.42rem .72rem;cursor:pointer}.feedback-note{color:var(--text-muted);font-size:.9rem}:where([data-review-id]){position:relative}[data-review-id]:target{outline:3px solid var(--accent);outline-offset:5px}.back-to-top{position:fixed;right:var(--space-5);bottom:var(--space-5);display:grid;place-items:center;width:2.4rem;height:2.4rem;border:1px solid var(--border);border-radius:999px;text-decoration:none}footer{margin:0 auto;padding:0 clamp(var(--space-4),3vw,var(--space-8)) var(--space-8);color:var(--text-muted);font-size:.9rem}.reveal{opacity:1;transform:none}.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .52s cubic-bezier(.2,.8,.2,1),transform .56s cubic-bezier(.2,.8,.2,1);will-change:opacity,transform}.js .reveal.is-visible{opacity:1;transform:translateY(0)}@media (max-width:720px){.facts>div,.scenario-line{grid-template-columns:1fr;gap:var(--space-1)}}@media (max-width:960px){.doc-shell,.doc-shell:has(.index-details:not([open])){grid-template-columns:1fr}.side-nav{position:static;min-height:0;max-height:none;padding:0 0 var(--space-4);border-right:0;border-bottom:1px solid var(--border)}.index-details:not([open])>summary{width:100%;justify-content:flex-start;padding:.4rem .5rem}}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,:after,:before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0ms!important;scroll-behavior:auto!important}.js .diagram-reveal,.js .reveal{opacity:1;transform:none}}@media print{body{background:#fff;color:#000}.back-to-top,.feedback-widget,.side-nav{display:none}.doc-shell{display:block;max-width:none;padding:0}.article-header,.callout,.decision-recorder,.section-card,.slice-card{box-shadow:none;-moz-column-break-inside:avoid;break-inside:avoid}.diagram-reveal,.reveal{opacity:1!important;transform:none!important}.figure-card{overflow:visible}.figure-card svg{min-width:0}a{color:#000;text-decoration:none}}:root{--page:#fff;--surface:#fff;--surface-subtle:#f7f7f5;--text:#171717;--text-muted:#666663;--text-subtle:#6b6b67;--border:#deded9;--border-strong:#c9c9c2;--accent:#0070f3;--accent-strong:#0070f3;--accent-soft:#eef6ff;--success:#047857;--success-soft:#ecfdf5;--warning:#b45309;--warning-soft:#fff7ed;--danger:#dc2626;--danger-soft:#fff1f2;--info:#0070f3;--info-soft:#eef6ff;--shadow-soft:0 24px 70px hsla(0,0%,9%,.08),0 2px 8px hsla(0,0%,9%,.05);--radius-sm:6px;--radius-md:8px;--radius-lg:14px;--content:72ch;--grid-line:hsla(0,0%,9%,.035)}body[data-visual-mode=editorial-infrastructure-v1]{min-width:0;background-color:var(--page);background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:24px 24px}@media (prefers-color-scheme:dark){:root{color-scheme:dark;--page:#111;--surface:#151515;--surface-subtle:#1b1b1a;--text:#f5f5f2;--text-muted:#b8b8b2;--text-subtle:#96968f;--border:#33332f;--border-strong:#484842;--accent:#5ca8ff;--accent-strong:#78b7ff;--accent-soft:#132a43;--success:#50d19a;--success-soft:#102c22;--warning:#f2ad5d;--warning-soft:#352311;--danger:#f77;--danger-soft:#381719;--info:#78b7ff;--info-soft:#132a43;--shadow-soft:0 24px 70px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.2);--grid-line:hsla(0,0%,100%,.045)}}:where(a,button,summary,input,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:3px;box-shadow:none}.doc-shell{grid-template-columns:minmax(210px,240px) minmax(0,1fr);gap:clamp(24px,3vw,44px);width:min(1580px,calc(100% - 32px));max-width:1580px;margin:0 auto;padding:32px 0 72px}.doc-shell:has(.index-details:not([open])){grid-template-columns:52px minmax(0,1fr)}.side-nav{top:24px;min-height:calc(100vh - 48px);max-height:calc(100vh - 48px);padding:0 20px 24px 0;border-right-color:var(--border-strong)}.index-details>summary{padding:8px 0 12px;border-bottom:1px solid var(--border);border-radius:0;background:transparent}.index-details>summary:hover{background:transparent;color:var(--accent)}.index-details>summary .nav-title,.panel-title,.side-nav .nav-title,.side-nav h2{font-family:var(--mono);font-size:11px;letter-spacing:.08em}.sidebar-toggle-copy{padding:0;border:0;border-radius:0;background:transparent;color:var(--text-subtle);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}.side-nav ol,.side-nav ul{gap:0}.side-nav a{padding:9px 0;border-bottom:1px solid transparent;border-radius:0;font-size:13px;line-height:1.35}.side-nav a:hover{border-bottom-color:var(--border)}.side-nav a.is-active,.side-nav a:hover{background:transparent;color:var(--text)}.side-nav a.is-active{border-bottom-color:var(--accent);font-weight:750}.side-nav .nav-group{margin-top:28px;padding-top:20px;border-top-color:var(--border-strong)}.breadcrumbs{margin:0 0 14px;color:var(--text-subtle);font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}.report-article{counter-reset:report-chapter;overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none}.frame-top{display:flex;justify-content:space-between;gap:20px;padding:13px 18px;border-bottom:1px solid var(--border);color:var(--text-subtle);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}.frame-top span:last-child{color:var(--accent)}.article-header{margin:0;padding:clamp(40px,6vw,76px);border-bottom:1px solid var(--border-strong)}.article-meta{gap:8px 18px;margin-bottom:34px;color:var(--text-subtle);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}.pill{min-height:0;padding:0;border:0;border-radius:0;color:var(--text-subtle);font:inherit;letter-spacing:inherit}.pill,.pill.review{background:transparent}.pill.review{border:0;color:var(--warning)}.pill.approved{color:var(--success)}.pill.approved,.pill.blocked{border:0;background:transparent}.pill.blocked{color:var(--danger)}.pill.draft{border:0;background:transparent;color:var(--info)}h1{max-width:1040px;font-size:clamp(44px,5.5vw,76px);line-height:.98;letter-spacing:-.055em}.subtitle{max-width:820px;margin-top:24px;color:var(--text-muted);font-size:clamp(18px,1.6vw,22px);line-height:1.42}.article-header>.callout{max-width:780px;margin-top:34px;padding:20px 0 0 24px;border:0;border-top:1px solid var(--border);border-left:3px solid var(--warning);border-radius:0;background:transparent}.article-header>.callout p{margin:0;color:var(--text-muted)}.section-card{counter-increment:report-chapter;display:grid;grid-template-columns:120px minmax(0,1fr);-moz-column-gap:28px;column-gap:28px;margin:0;padding:52px clamp(32px,6vw,76px);border-bottom:1px solid var(--border);scroll-margin-top:24px}.section-card:last-child{border-bottom:0}.section-card>:not(.section-kicker){grid-column:2}.section-kicker{grid-column:1;grid-row:1/span 2;display:block;margin:4px 0 0;color:var(--text-subtle);font-family:var(--mono);font-size:11px;font-weight:750;letter-spacing:.07em}.section-kicker:before{content:counter(report-chapter,decimal-leading-zero) " / ";color:var(--accent)}.section-card h2{max-width:960px;font-size:clamp(28px,3vw,42px);line-height:1.04;letter-spacing:-.04em}.section-summary{margin-top:14px;font-size:17px;line-height:1.55}.document-block,.section-summary{max-width:72ch;color:var(--text-muted)}.document-block{margin-top:26px;font-size:16px}.facts{max-width:900px;gap:0;margin-top:30px;border-top:1px solid var(--text)}.facts>div{grid-template-columns:150px minmax(0,1fr);gap:28px;padding:17px 0;border-bottom-color:var(--border)}.facts dt{font-family:var(--mono);font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}.facts dd{max-width:68ch;color:var(--text-muted)}.callout{max-width:780px;margin-top:28px;padding:20px 24px;border:0;border-top:1px solid var(--border);border-left:3px solid var(--info);border-radius:0;background:linear-gradient(90deg,var(--info-soft),transparent 82%)}.callout.success,.callout.tip{border-left-color:var(--success);background:linear-gradient(90deg,var(--success-soft),transparent 82%)}.callout.warning{border-left-color:var(--warning);background:linear-gradient(90deg,var(--warning-soft),transparent 82%)}.callout.danger,.callout.risk{border-left-color:var(--danger);background:linear-gradient(90deg,var(--danger-soft),transparent 82%)}.callout p{margin:0;color:var(--text-muted)}.step-list{max-width:900px;gap:0;margin-top:30px;border-top:1px solid var(--text)}.step-list li{padding:18px 0 18px 44px;border:0;border-bottom:1px solid var(--border)}.step-list li,.step-list li:before{border-radius:0;background:transparent}.step-list li:before{content:counter(step,decimal-leading-zero);left:0;top:20px;display:block;width:auto;height:auto;color:var(--accent);font-family:var(--mono);font-size:11px}.canonical-list{max-width:820px;gap:10px;margin-top:26px;color:var(--text-muted)}.canonical-list--checks{list-style:"✓  "}.scenario-panel{max-width:880px;margin-top:30px;padding:0;border:0;border-top:1px solid var(--text);border-bottom:1px solid var(--text);border-radius:0;background:transparent}.scenario-panel h3{margin:0;padding:18px 0;font-size:18px}.scenario-line{grid-template-columns:80px minmax(0,1fr);gap:20px;margin:0;padding:12px 0;border-top:1px solid var(--border)}.scenario-line strong{color:var(--accent);font-family:var(--mono);font-size:12px;text-transform:uppercase}.scenario-line:last-child{background:linear-gradient(90deg,var(--success-soft),transparent 78%)}.scenario-line:last-child strong{color:var(--success)}.slice-card{max-width:980px;margin-top:40px;padding:26px 0 0;border:0;border-top:2px solid var(--text);border-radius:0;background:transparent}.slice-card+.slice-card{margin-top:54px}.slice-card>header{padding-bottom:18px;border-bottom-color:var(--border)}.slice-card>header h3{font-size:24px;letter-spacing:-.03em}.slice-card p{color:var(--text-muted)}.slice-story{margin-top:18px;font-size:16px}.workflow-overview{margin-top:24px}.workflow-sequence{gap:10px;font-size:15px}.storyboard{gap:0;margin-top:14px;padding-top:20px}.storyboard-step{padding:0 20px;border-radius:0;background:transparent}.storyboard-step:first-child{padding-left:0}.storyboard-step:last-child{padding-right:0}.workflow-step-heading{margin-bottom:16px}.workflow-detail--handoff{background:linear-gradient(90deg,var(--accent-soft),transparent)}.acceptance-list{max-width:880px;gap:0;margin-top:24px;border-top:1px solid var(--border)}.acceptance-list li{padding:12px 0;border-bottom:1px solid var(--border)}.id-chip{background:transparent;color:var(--accent);padding-left:0}.status-chip{border-color:currentColor;background:var(--surface)}.decision-recorder{max-width:900px;margin-top:34px;padding:24px;border:1px solid #f0c896;border-left:4px solid var(--warning);border-radius:0;background:var(--warning-soft)}.decision-recorder[data-decision-status=accepted]{border-color:#8bd8b9;border-left-color:var(--success);background:var(--success-soft)}.decision-recorder[data-decision-status=accepted] .decision-custom input,.decision-recorder[data-decision-status=accepted] .decision-field input,.decision-recorder[data-decision-status=accepted] .decision-field textarea{border-color:#8bd8b9}.decision-recorder[data-decision-status=accepted] .decision-record-check{border-top-color:#8bd8b9}.decision-recorder[data-decision-status=accepted] input{accent-color:var(--success)}.decision-recorder[data-decision-status=open],.decision-recorder[data-decision-status=proposed]{border-color:#f0c896;border-left-color:var(--warning);background:var(--warning-soft)}.decision-recorder legend{padding:0;font-size:20px;font-weight:760}.decision-meta{gap:8px 16px;margin:10px 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase}.decision-options{gap:12px}.decision-option{gap:10px;color:var(--text-muted)}.decision-option input{accent-color:var(--warning)}.decision-custom span,.decision-field span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}.decision-custom input,.decision-field input,.decision-field textarea{border-color:color-mix(in srgb,var(--warning) 55%,var(--border));border-radius:6px;background:var(--surface);color:var(--text)}.decision-record-check{border-top-color:#edc994}.figure-card{margin-top:34px;padding:18px;border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0;background:var(--surface-subtle)}.figure-question{max-width:900px;font-size:16px}figcaption{font-size:13px}.diagram-walkthrough,figcaption{max-width:900px;color:var(--text-muted)}.diagram-walkthrough{gap:8px;margin-top:16px}blockquote{max-width:72ch;margin-top:26px;padding:18px 0 0 24px;border-top:1px solid var(--border);border-left:3px solid var(--border-strong)}pre{margin-top:24px;border-radius:8px}details{margin-top:26px;background:var(--surface-subtle)}.feedback-widget,details{max-width:900px;border-radius:8px}.feedback-actions button{background:var(--surface);color:var(--text)}.back-to-top{border-color:var(--border-strong);background:var(--surface);box-shadow:var(--shadow-soft)}footer{max-width:1580px;padding:0 16px 40px;font-family:var(--mono);font-size:11px}@media (max-width:1100px){.doc-shell{grid-template-columns:minmax(190px,220px) minmax(0,1fr);gap:24px}.article-header{padding:48px}.section-card{grid-template-columns:100px minmax(0,1fr);padding:44px 48px}}@media (max-width:960px){.doc-shell,.doc-shell:has(.index-details:not([open])){grid-template-columns:1fr;width:min(100% - 24px,900px);padding-top:18px}.side-nav{position:static;min-height:0;max-height:none;padding:0 0 16px;border-right:0;border-bottom:1px solid var(--border-strong)}.index-details>summary{border-bottom:0}.side-nav a{padding:8px 0}.article-header{padding:42px 36px}.section-card{grid-template-columns:92px minmax(0,1fr);padding:40px 36px}}@media (max-width:680px){.doc-shell,.doc-shell:has(.index-details:not([open])){width:min(100% - 20px,680px);gap:12px;padding:10px 0 40px}.breadcrumbs{margin-left:2px}.side-nav nav{overflow:visible}.side-nav nav ol{display:grid;gap:0;padding:0}.side-nav nav li{min-width:0}.side-nav nav a{height:auto;padding:9px 0;border:0;border-bottom:1px solid transparent;border-radius:0;background:transparent;overflow-wrap:anywhere}.side-nav nav a.is-active{border-bottom-color:var(--accent)}.side-nav .nav-group{margin-top:8px;padding-top:12px}.back-to-top{display:none}.frame-top{padding:11px 14px}.frame-top span:last-child{display:none}.article-header{padding:32px 22px}.article-meta{gap:8px 12px;margin-bottom:24px}h1{font-size:42px}.subtitle{font-size:17px}.article-header>.callout{padding-left:18px}.section-card{grid-template-columns:1fr;gap:8px;padding:32px 22px}.section-card>:not(.section-kicker),.section-kicker{grid-column:1;grid-row:auto}.section-kicker{margin:0 0 4px;color:var(--accent)}.section-card h2{font-size:30px}.section-summary{font-size:16px}.facts>div,.scenario-line{grid-template-columns:1fr;gap:7px}.facts>div{padding:14px 0}.step-list li{padding-right:0}.slice-card{padding-top:20px}.workflow-sequence{flex-direction:column;align-items:flex-start;gap:4px}.workflow-arrow{transform:rotate(90deg);transform-origin:center}.storyboard{grid-template-columns:1fr;margin-top:18px;padding:0 0 0 16px;border-top:0;border-left:1px solid var(--border-strong)}.storyboard-step,.storyboard-step:first-child,.storyboard-step:last-child{padding:20px 0 24px 18px;border:0;border-bottom:1px solid var(--border)}.storyboard-step:last-child{padding-bottom:0;border-bottom:0}.decision-recorder{padding:20px 18px}.figure-card{margin-left:0;margin-right:0;padding:14px}footer{padding-left:12px;padding-right:12px}}@media (forced-colors:active){.callout,.decision-recorder,.figure-card,.report-article,.storyboard,.storyboard-step,.workflow-detail--handoff{border-color:CanvasText}.frame-top span:last-child,.section-kicker:before,.workflow-arrow,.workflow-detail--handoff dt,.workflow-step-number{color:LinkText}}@media print{:root{color-scheme:light;--page:#fff;--surface:#fff;--surface-subtle:#f7f7f5;--text:#171717;--text-muted:#666663;--text-subtle:#6b6b67;--border:#deded9;--border-strong:#c9c9c2;--accent:#0070f3;--grid-line:transparent}body[data-visual-mode=editorial-infrastructure-v1]{background:#fff;color:#000}.frame-top{display:none}.report-article{overflow:visible;border:0;border-radius:0;box-shadow:none}.article-header{padding:0 0 28px}.section-card{grid-template-columns:90px minmax(0,1fr);padding:28px 0;-moz-column-break-inside:auto;break-inside:auto}.scenario-panel h3,.section-card h2,.slice-card>header{-moz-column-break-after:avoid;break-after:avoid}.callout,.decision-recorder,.slice-card,.storyboard,.storyboard-step{-moz-column-break-inside:avoid;break-inside:avoid}}
+/* tailwind-report-css:end */
+  </style>
+</head>
+<body data-visual-mode="editorial-infrastructure-v1">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="doc-shell">
+    <aside class="side-nav" aria-label="Document navigation" data-review-id="chrome.side-nav">
+      <details class="index-details" open>
+        <summary aria-label="Toggle document sidebar" title="Collapse or expand document sidebar"><span class="nav-title">Product requirements</span><span class="sidebar-toggle-copy" aria-hidden="true"></span></summary>
+        <nav aria-label="Table of contents" data-review-id="chrome.index">
+          <ol>
+            <li><a href="#prd.product">Owning document skills can request the right explanatory figure</a></li>
+            <li><a href="#prd.problem">One generic graph contract cannot teach every requested situation</a></li>
+            <li><a href="#prd.behavior">The owning skill chooses the question; System Diagram generates the explanation</a></li>
+            <li><a href="#prd.diagram">Authority stays with the document while generation becomes capability-aware</a></li>
+            <li><a href="#prd.slices">Five end-to-end outcomes expand the skill safely</a></li>
+            <li><a href="#prd.scope">One skill and one visual language, delivered in bounded slices</a></li>
+            <li><a href="#prd.decisions">Capability, authority, and delivery direction are explicit</a></li>
+          </ol>
+        </nav>
+
+      </details>
+    </aside>
+
+    <main id="main" class="doc-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumbs" data-review-id="summary.breadcrumbs">
+        <ol><li><a href="../../">Docs</a></li><li><a href="./">System Diagram capabilities</a></li><li aria-current="page">Product requirements</li></ol>
+      </nav>
+
+      <article class="report-article">
+        <div class="frame-top" aria-hidden="true"><span>Canonical report</span><span>Editorial Infrastructure</span></div>
+        <header class="article-header" id="summary" data-review-id="summary">
+          <div class="article-meta">
+            <span class="pill approved">Approved</span>
+            <span class="pill">Product requirements</span>
+            <span class="pill">Updated 2026-08-03</span>
+          </div>
+          <h1>Teach System Diagram four explanatory grammars without changing its style</h1>
+          <p class="subtitle">PRD and Design Solution decide when and what a situation needs to illustrate; System Diagram generates sequence, flow, architecture, or component diagrams in the established infrastructure visual language without inventing meaning.</p>
+          <aside class="callout warning" data-review-id="review.focus"><strong>Review first</strong><p>Confirm that capability selection, authority boundaries, staged delivery, sequence limits, and observable acceptance fully express the approved direction; then explicitly approve or request changes to the complete PRD.</p></aside>
+<aside class="callout success" data-review-id="approval"><strong>Explicit human approval</strong><p>Approved by Carlos Rodrigo on 2026-08-03.</p></aside>
+        </header>
+
+        <section class="section-card reveal" id="prd.product" aria-labelledby="prd.product-title" data-review-id="prd.product">
+          <span class="section-kicker">Product</span>
+          <h2 id="prd.product-title">Owning document skills can request the right explanatory figure</h2>
+          <p class="section-summary">The product change expands one existing skill rather than creating competing diagram tools or styles.</p>
+          <p class="document-block" data-review-id="prd.product.statement">For a PRD or Design Solution that needs to explain an evidence-backed situation during document review, the product will generate the appropriate sequence, flow, architecture, or component diagram through the existing System Diagram skill, resulting in a deterministic figure that a reviewer can retell; it will not transfer product or architecture authority to the renderer or introduce another visual language.</p>
+          <dl class="facts" data-review-id="prd.product.definition"><div><dt>Approved product truth</dt><dd>Carlos Rodrigo approved this capability and ownership direction in the 2026-08-03 conversation.</dd></div><div><dt>Actor</dt><dd>PRD or Design Solution composing a durable review document</dd></div><div><dt>Moment</dt><dd>A sourced product or architecture situation needs a causal, temporal, topological, or decomposition explanation</dd></div><div><dt>Entry</dt><dd>A bounded semantic brief containing the question, audience, evidence, scope, path, uncertainty, and walkthrough</dd></div><div><dt>Result</dt><dd>One validated, accessible, style-consistent diagram and retained regeneration source</dd></div><div><dt>Boundary</dt><dd>System Diagram validates and renders supplied meaning; it does not decide what the product or architecture means</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="prd.problem" aria-labelledby="prd.problem-title" data-review-id="prd.problem">
+          <span class="section-kicker">Why</span>
+          <h2 id="prd.problem-title">One generic graph contract cannot teach every requested situation</h2>
+          <p class="section-summary">The current skill is dependable but its source model is limited to manually positioned generic graph elements.</p>
+          <dl class="facts" data-review-id="prd.problem.evidence"><div><dt>Sourced fact</dt><dd>skills/system-diagram/scripts/diagram-spec.mjs accepts rectangular nodes, groups, and explicitly routed orthogonal edges.</dd></div><div><dt>Sourced fact</dt><dd>skills/system-diagram/references/diagram-modes.md classifies semantic questions but does not define participant lifelines, flow decisions/merges, architecture levels, or component interfaces.</dd></div><div><dt>Consequence</dt><dd>Temporal interaction must be approximated as a generic graph, while flow, architecture, and component authors must manually recreate conventions that the skill should know.</dd></div></dl>
+          <aside class="callout warning" data-review-id="prd.problem.trust"><strong>Plausible drawing is not enough</strong><p>Without typed semantics and selection guidance, a diagram may look consistent while answering the wrong question or implying unsupported product or architecture truth.</p></aside>
+        </section>
+<section class="section-card reveal" id="prd.behavior" aria-labelledby="prd.behavior-title" data-review-id="prd.behavior">
+          <span class="section-kicker">Behavior</span>
+          <h2 id="prd.behavior-title">The owning skill chooses the question; System Diagram generates the explanation</h2>
+          <p class="section-summary">Approved product truth — Carlos Rodrigo approved that selection follows the situation being explained, while domain authority remains with PRD or Design Solution.</p>
+          <ol class="step-list" data-review-id="prd.behavior.flow"><li data-review-id="prd.behavior.own"><strong>Own the situation</strong><br />PRD or Design Solution states the question, evidence, scope, main path, uncertainty, and product or architecture meaning.</li><li data-review-id="prd.behavior.select"><strong>Select the capability</strong><br />The owning skill chooses sequence for temporal communication, flow for progression and branching, architecture for static bounded communication, or component for decomposition of one scope.</li><li data-review-id="prd.behavior.validate"><strong>Validate the brief</strong><br />System Diagram rejects missing evidence, unsupported semantics, invalid references, excessive complexity, or a brief that needs splitting.</li><li data-review-id="prd.behavior.generate"><strong>Generate in one style</strong><br />System Diagram applies the selected grammar and emits deterministic source/SVG using the existing infrastructure-v1 language.</li><li data-review-id="prd.behavior.embed"><strong>Embed without reinterpretation</strong><br />HTML Report Designer verifies provenance and embeds the figure with the owning document&#39;s walkthrough.</li></ol>
+          <ul class="canonical-list canonical-list--checks" data-review-id="prd.behavior.rules"><li>PRD uses diagrams to explain actor-visible product behavior and never introduces architecture.</li><li>Design Solution uses diagrams to explain approved boundaries, state, communication, recovery, or decomposition.</li><li>System Diagram owns generation mechanics and the established style, never product or architecture truth.</li><li>HTML Report Designer validates and embeds; it does not choose a capability or redraw the figure.</li><li>Existing system-diagram-v1 sources and generated SVGs remain valid and visually unchanged.</li><li>Unsupported or crowded meaning returns an actionable blocker instead of a plausible approximation or smaller text.</li></ul>
+        </section>
+<section class="section-card reveal" id="prd.diagram" aria-labelledby="prd.diagram-title" data-review-id="prd.diagram">
+          <span class="section-kicker">Product flow</span>
+          <h2 id="prd.diagram-title">Authority stays with the document while generation becomes capability-aware</h2>
+          <p class="section-summary">Approved product truth — the owning document supplies meaning, System Diagram validates and generates, and unsupported meaning returns for refinement.</p>
+          <figure class="figure-card diagram-figure" data-complex-figure data-diagram-output-sha256="7ffac1e2991b26b704d64f3671756d869cc31a9ba126b65b3fc35773ab7fd091" data-review-id="diagram.capability-selection"><p class="figure-question"><strong>Question:</strong> How does an owning document skill turn an evidence-backed situation into the right style-consistent diagram without transferring product or architecture authority?</p><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="216 -4 1198 1278" role="img" aria-labelledby="capability-selection-flow-title capability-selection-flow-desc" data-diagram-style="infrastructure-v1" data-review-id="diagram.capability-selection.capability-selection-flow.svg"><title id="capability-selection-flow-title">From an explanatory need to one style-consistent diagram</title><desc id="capability-selection-flow-desc">A top-to-bottom product flow in which PRD or Design Solution owns the situation and evidence, selects the explanatory capability, and gives System Diagram a bounded brief to validate and render in the established infrastructure style, with unsupported semantics returned for refinement.</desc><!-- svg-source:system-diagram --><!-- svg-spec-sha256:47b69419b6f751db5b08f86d690ac39401c4a84408c2c52d7e71fd660549557b --><metadata>{"schemaVersion":"system-diagram-v1","style":"infrastructure-v1"}</metadata><defs><style>
+.diagram-canvas {
+  fill: #fff;
+}
+
+.diagram-grid {
+  opacity: .82;
+}
+
+.diagram-node,
+.diagram-edge,
+.diagram-edge-label,
+.diagram-group {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-rendering: geometricPrecision;
+}
+
+.diagram-node__surface {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node__title {
+  fill: #171717;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.diagram-node__detail {
+  fill: #666663;
+  font-weight: 450;
+}
+
+.diagram-node__kind {
+  fill: #73736f;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .1em;
+}
+
+.diagram-node__accent,
+.diagram-node--repository .diagram-node__accent,
+.diagram-node--domain .diagram-node__accent,
+.diagram-node--policy .diagram-node__accent {
+  fill: #73736f;
+}
+
+.diagram-node--decision .diagram-node__accent,
+.diagram-node--warning .diagram-node__accent {
+  fill: #b45309;
+}
+
+.diagram-node--feedback .diagram-node__accent,
+.diagram-node--success .diagram-node__accent {
+  fill: #047857;
+}
+
+.diagram-node--risk .diagram-node__accent {
+  fill: #dc2626;
+}
+
+.diagram-node__dot {
+  fill: #fff;
+  stroke: #d8d8d3;
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-node--entry .diagram-node__dot {
+  fill: #73736f;
+  stroke: #73736f;
+}
+
+.diagram-node--feedback .diagram-node__dot,
+.diagram-node--success .diagram-node__dot {
+  fill: #047857;
+  stroke: #047857;
+}
+
+.diagram-node--risk .diagram-node__dot {
+  fill: #dc2626;
+  stroke: #dc2626;
+}
+
+.diagram-edge__path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge--primary .diagram-edge__path {
+  stroke: #0070f3;
+}
+
+.diagram-edge--secondary .diagram-edge__path,
+.diagram-edge--boundary .diagram-edge__path {
+  stroke: #73736f;
+}
+
+.diagram-edge--boundary .diagram-edge__path {
+  stroke-dasharray: 5 5;
+}
+
+.diagram-edge--feedback .diagram-edge__path,
+.diagram-edge--success .diagram-edge__path {
+  stroke: #047857;
+}
+
+.diagram-edge--warning .diagram-edge__path {
+  stroke: #b45309;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge--risk .diagram-edge__path {
+  stroke: #dc2626;
+  stroke-dasharray: 6 5;
+}
+
+.diagram-edge-label__surface {
+  fill: #fff;
+  stroke: #e5e5e1;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-edge-label__text {
+  fill: #52524f;
+  font-weight: 650;
+  letter-spacing: .01em;
+}
+
+.diagram-edge-label--feedback .diagram-edge-label__text,
+.diagram-edge-label--success .diagram-edge-label__text {
+  fill: #047857;
+}
+
+.diagram-edge-label--warning .diagram-edge-label__text {
+  fill: #92400e;
+}
+
+.diagram-edge-label--risk .diagram-edge-label__text {
+  fill: #b91c1c;
+}
+
+.diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .7;
+  stroke: #cfcfca;
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram-group--ownership .diagram-group__surface {
+  fill: #fafafa;
+  fill-opacity: .72;
+  stroke: #b7b7b2;
+}
+
+.diagram-group--proposed .diagram-group__surface {
+  fill: #fff7ed;
+  fill-opacity: .5;
+  stroke: #d7a76d;
+}
+
+.diagram-group__label-bg {
+  fill: #fff;
+}
+
+.diagram-group__label {
+  fill: #666663;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+
+.diagram-reveal {
+  opacity: 1;
+  transform: none;
+}
+</style><pattern id="capability-selection-flow--grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#ecece8" stroke-width="1"></path></pattern><filter id="capability-selection-flow--shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#171717" flood-opacity=".07"></feDropShadow></filter><marker id="capability-selection-flow--arrow-primary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#0070f3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-secondary" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#73736f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-feedback" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-success" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#047857" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-warning" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#b45309" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker><marker id="capability-selection-flow--arrow-risk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#dc2626" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></marker></defs><rect class="diagram-canvas" x="216" y="-4" width="1198" height="1278"></rect><rect class="diagram-grid" x="216" y="-4" width="1198" height="1278" fill="url(#capability-selection-flow--grid)"></rect><g class="diagram-groups"></g><g class="diagram-edges"><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.situation-to-brief"><path class="diagram-edge__path" d="M510 150L510 220" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.brief-to-choose"><path class="diagram-edge__path" d="M510 330L510 400" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.choose-to-capability"><path class="diagram-edge__path" d="M510 510L510 580" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.capability-to-validate"><path class="diagram-edge__path" d="M510 690L510 760" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--primary diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.validate-to-render"><path class="diagram-edge__path" d="M510 870L510 940" marker-end="url(#capability-selection-flow--arrow-primary)"></path></g><g class="diagram-edge diagram-edge--success diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.render-to-review"><path class="diagram-edge__path" d="M510 1050L510 1120" marker-end="url(#capability-selection-flow--arrow-success)"></path></g><g class="diagram-edge diagram-edge--risk diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge.validate-to-refine"><path class="diagram-edge__path" d="M760 815L980 815" marker-end="url(#capability-selection-flow--arrow-risk)"></path></g></g><g class="diagram-nodes"><g class="diagram-node diagram-node--entry diagram-reveal" style="--reveal-delay:0ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.situation" aria-labelledby="capability-selection-flow--situation-text"><rect class="diagram-node__surface" x="260" y="40" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="52" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="57" r="3.5"></circle><text class="diagram-node__kind" x="280" y="63">ENTRY</text><text id="capability-selection-flow--situation-text" class="diagram-node__title" x="280" y="87" font-size="16">Situation needs explanation</text><text class="diagram-node__detail" x="280" y="110" font-size="14"><tspan x="280" y="110">PRD or Design Solution owns the meaning</tspan></text></g><g class="diagram-node diagram-node--domain diagram-reveal" style="--reveal-delay:120ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.brief" aria-labelledby="capability-selection-flow--brief-text"><rect class="diagram-node__surface" x="260" y="220" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="232" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="237" r="3.5"></circle><text class="diagram-node__kind" x="280" y="243">DOMAIN</text><text id="capability-selection-flow--brief-text" class="diagram-node__title" x="280" y="267" font-size="16">Evidence-backed brief</text><text class="diagram-node__detail" x="280" y="290" font-size="14"><tspan x="280" y="290">Question · scope · path · recovery</tspan></text></g><g class="diagram-node diagram-node--decision diagram-reveal" style="--reveal-delay:240ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.choose" aria-labelledby="capability-selection-flow--choose-text"><rect class="diagram-node__surface" x="260" y="400" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="412" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="417" r="3.5"></circle><text class="diagram-node__kind" x="280" y="423">DECISION</text><text id="capability-selection-flow--choose-text" class="diagram-node__title" x="280" y="447" font-size="16">Choose by explanatory question</text><text class="diagram-node__detail" x="280" y="470" font-size="14"><tspan x="280" y="470">Time · progression · topology · decomposition</tspan></text></g><g class="diagram-node diagram-node--service diagram-reveal" style="--reveal-delay:360ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.capability" aria-labelledby="capability-selection-flow--capability-text"><rect class="diagram-node__surface" x="260" y="580" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="592" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="597" r="3.5"></circle><text class="diagram-node__kind" x="280" y="603">SERVICE</text><text id="capability-selection-flow--capability-text" class="diagram-node__title" x="280" y="627" font-size="16">One capability</text><text class="diagram-node__detail" x="280" y="650" font-size="14"><tspan x="280" y="650">Sequence · flow · architecture · component</tspan></text></g><g class="diagram-node diagram-node--policy diagram-reveal" style="--reveal-delay:480ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.validate" aria-labelledby="capability-selection-flow--validate-text"><rect class="diagram-node__surface" x="260" y="760" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="772" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="777" r="3.5"></circle><text class="diagram-node__kind" x="280" y="783">POLICY</text><text id="capability-selection-flow--validate-text" class="diagram-node__title" x="280" y="807" font-size="16">System Diagram validates</text><text class="diagram-node__detail" x="280" y="830" font-size="14"><tspan x="280" y="830">Evidence · semantics · limits · uncertainty</tspan></text></g><g class="diagram-node diagram-node--feedback diagram-reveal" style="--reveal-delay:600ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.render" aria-labelledby="capability-selection-flow--render-text"><rect class="diagram-node__surface" x="260" y="940" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="952" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="957" r="3.5"></circle><text class="diagram-node__kind" x="280" y="963">PROOF</text><text id="capability-selection-flow--render-text" class="diagram-node__title" x="280" y="987" font-size="16">Generate deterministic SVG</text><text class="diagram-node__detail" x="280" y="1010" font-size="14"><tspan x="280" y="1010">Existing infrastructure-v1 visual language</tspan></text></g><g class="diagram-node diagram-node--success diagram-reveal" style="--reveal-delay:720ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.review" aria-labelledby="capability-selection-flow--review-text"><rect class="diagram-node__surface" x="260" y="1120" width="500" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="260" y="1132" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="743" cy="1137" r="3.5"></circle><text class="diagram-node__kind" x="280" y="1143">OUTCOME</text><text id="capability-selection-flow--review-text" class="diagram-node__title" x="280" y="1167" font-size="16">Canonical report embeds the figure</text><text class="diagram-node__detail" x="280" y="1190" font-size="14"><tspan x="280" y="1190">Reviewer can retell the situation</tspan></text></g><g class="diagram-node diagram-node--risk diagram-reveal" style="--reveal-delay:840ms" data-review-id="diagram.capability-selection.capability-selection-flow.node.refine" aria-labelledby="capability-selection-flow--refine-text"><rect class="diagram-node__surface" x="980" y="760" width="390" height="110" rx="10" filter="url(#capability-selection-flow--shadow)"></rect><rect class="diagram-node__accent" x="980" y="772" width="3" height="86" rx="1.5"></rect><circle class="diagram-node__dot" cx="1353" cy="777" r="3.5"></circle><text class="diagram-node__kind" x="1000" y="783">RISK</text><text id="capability-selection-flow--refine-text" class="diagram-node__title" x="1000" y="807" font-size="16">Unsupported or ambiguous</text><text class="diagram-node__detail" x="1000" y="830" font-size="14"><tspan x="1000" y="830">Owning skill refines or splits the brief</tspan></text></g></g><g class="diagram-edge-labels"><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:48ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.situation-to-brief"><rect class="diagram-edge-label__surface" x="520" y="171" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="648.6" y="189.76" font-size="14" text-anchor="middle"><tspan x="648.6" y="189.76">states what must be understood</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:168ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.brief-to-choose"><rect class="diagram-edge-label__surface" x="520" y="351" width="241.52" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="640.76" y="369.76" font-size="14" text-anchor="middle"><tspan x="640.76" y="369.76">supplies classified evidence</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:288ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.choose-to-capability"><rect class="diagram-edge-label__surface" x="520" y="531" width="170.96" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="605.48" y="549.76" font-size="14" text-anchor="middle"><tspan x="605.48" y="549.76">selects one grammar</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:408ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.capability-to-validate"><rect class="diagram-edge-label__surface" x="520" y="711" width="233.68" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="636.84" y="729.76" font-size="14" text-anchor="middle"><tspan x="636.84" y="729.76">hands off bounded semantics</tspan></text></g><g class="diagram-edge-label diagram-edge-label--primary diagram-reveal" style="--reveal-delay:528ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.validate-to-render"><rect class="diagram-edge-label__surface" x="520" y="891" width="218" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="629" y="909.76" font-size="14" text-anchor="middle"><tspan x="629" y="909.76">accepts supported meaning</tspan></text></g><g class="diagram-edge-label diagram-edge-label--success diagram-reveal" style="--reveal-delay:648ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.render-to-review"><rect class="diagram-edge-label__surface" x="520" y="1071" width="257.2" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="648.6" y="1089.76" font-size="14" text-anchor="middle"><tspan x="648.6" y="1089.76">preserves style and provenance</tspan></text></g><g class="diagram-edge-label diagram-edge-label--risk diagram-reveal" style="--reveal-delay:768ms" data-review-id="diagram.capability-selection.capability-selection-flow.edge-label.validate-to-refine"><rect class="diagram-edge-label__surface" x="757.08" y="706" width="225.84" height="28" rx="5"></rect><text class="diagram-edge-label__text" x="870" y="724.76" font-size="14" text-anchor="middle"><tspan x="870" y="724.76">returns a truthful blocker</tspan></text></g></g></svg><figcaption>PRD or Design Solution supplies and owns meaning; System Diagram validates one selected grammar and renders it in the established style; unsupported briefs return for refinement.</figcaption></figure><ol class="diagram-walkthrough" data-figure-walkthrough-for="diagram.capability-selection"><li>PRD or Design Solution identifies a situation that needs explanation and owns its product or architecture meaning.</li><li>The owning skill supplies a bounded evidence-backed brief and selects sequence, flow, architecture, or component from the explanatory question.</li><li>System Diagram validates evidence, semantics, limits, and uncertainty without adding unsupported truth.</li><li>Supported meaning becomes deterministic infrastructure-v1 SVG; ambiguous or excessive meaning returns for refinement or splitting.</li><li>HTML Report Designer verifies and embeds the figure so the reviewer can retell the situation.</li></ol>
+        </section>
+<section class="section-card reveal" id="prd.slices" aria-labelledby="prd.slices-title" data-review-id="prd.slices">
+          <span class="section-kicker">Product slices</span>
+          <h2 id="prd.slices-title">Five end-to-end outcomes expand the skill safely</h2>
+          <p class="section-summary">Approved product truth — sequence, flow, architecture view, and component decomposition are staged capabilities of the same System Diagram skill and visual language.</p>
+          <article class="slice-card" data-review-id="slice-001">
+            <header><h3><span class="id-chip">slice-001</span>Choose the capability from the explanatory question</h3><p>PRD or Design Solution can request a diagram that matches the situation being reviewed.</p><p><strong>Boundary:</strong> System Diagram does not infer product or architecture truth, and capability choice does not authorize additional diagrams or implementation.</p></header>
+            <p class="slice-story" data-review-id="story-001">story-001 · Feature: an owning document skill can select an explanatory diagram capability from a bounded situation; outcome: the generated figure answers the intended question without changing its meaning.</p>
+          <article class="scenario-panel" data-review-id="ex-001">
+            <h3>Scenario: Supported explanatory question</h3>
+            <p class="scenario-line"><strong>Given</strong><span>PRD or Design Solution has a sourced situation, audience, question, path, uncertainty, and walkthrough</span></p>
+            <p class="scenario-line"><strong>When</strong><span>it classifies the question as temporal communication, progression, bounded topology, or one-scope decomposition</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>it hands System Diagram one sequence, flow, architecture, or component brief with the original authority intact</span></p>
+          </article>
+          <article class="scenario-panel" data-review-id="ex-002">
+            <h3>Scenario: Ambiguous or unsupported question</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the brief mixes incompatible abstraction levels, lacks evidence, or cannot identify one explanatory question</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram validates the request</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>it returns a blocker asking the owning skill to clarify or split the situation instead of drawing a plausible figure</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Classify and hand off</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Classify and hand off" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="step-001">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Classify and hand off</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>The owning document has one evidence-backed situation to explain.</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>It matches the question to one capability and supplies the semantic brief.</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>System Diagram accepts a bounded request or returns the exact missing condition.</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>Only supported meaning advances to generation.</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-001"><span class="id-chip">AC-001</span><span>Selection guidance distinguishes temporal communication, progression/branching, static bounded communication, and one-scope decomposition with no overlapping default.</span></li>
+            <li data-review-id="ac-002"><span class="id-chip">AC-002</span><span>A brief with missing evidence, mixed abstraction, or unsupported semantics produces a blocker that identifies what must be clarified or split.</span></li>
+            <li data-review-id="ac-003"><span class="id-chip">AC-003</span><span>Generated labels, actors, states, boundaries, and relationships all trace to the owning brief rather than renderer inference.</span></li>
+            </ul>
+            <aside class="callout success" data-review-id="slice-001.after"><strong>After this slice</strong><p>After this slice, the document workflow can choose one explanatory capability without transferring semantic authority.</p></aside>
+          </article>
+          <article class="slice-card" data-review-id="slice-002">
+            <header><h3><span class="id-chip">slice-002</span>Explain temporal communication with a sequence diagram</h3><p>A reviewer can follow who communicates with whom and in what order, including material alternatives or recovery.</p><p><strong>Boundary:</strong> The initial capability excludes timing diagrams, actor creation/destruction, arbitrary icons, and deeply nested parallel or critical fragments.</p></header>
+            <p class="slice-story" data-review-id="story-002">story-002 · Feature: a PRD or Design Solution author can explain participant communication in temporal order; outcome: the reviewer can follow the interaction and its recovery without reading a generic graph.</p>
+          <article class="scenario-panel" data-review-id="ex-003">
+            <h3>Scenario: Temporal interaction</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the brief names ordered participants, messages, material notes, activation spans, and any alternative, optional, or loop fragment</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram generates the sequence capability</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the figure preserves participant and event order through lifelines, labelled messages, explicit fragments, and the existing visual language</span></p>
+          </article>
+          <article class="scenario-panel" data-review-id="ex-004">
+            <h3>Scenario: Sequence exceeds the approved envelope</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the brief exceeds an approved participant, event, nesting, activation, text, or output limit</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram validates it</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>generation stops and asks the owning skill to split the interaction rather than compress or omit meaning</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Order the interaction</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Order the interaction" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="step-002">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Order the interaction</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>A supported temporal brief is complete and source ordered.</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>System Diagram maps participants, events, activations, and fragments to the sequence grammar.</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>A deterministic lifeline figure preserves the approved order and style.</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>The reviewer can narrate the normal and recovery interaction.</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-004"><span class="id-chip">AC-004</span><span>Sequence output preserves one to eight participants and one to forty-eight messages in source order, with no more than sixty-four total events.</span></li>
+            <li data-review-id="ac-005"><span class="id-chip">AC-005</span><span>The capability represents synchronous, asynchronous, return, and self messages plus notes, explicit activations, and bounded alt, opt, and loop fragments when supplied.</span></li>
+            <li data-review-id="ac-006"><span class="id-chip">AC-006</span><span>The approved envelope allows at most sixteen notes, twelve fragments at depth three, and sixteen activations at simultaneous depth three; exceeding it fails with split guidance.</span></li>
+            <li data-review-id="ac-007"><span class="id-chip">AC-007</span><span>Sequence output uses the established infrastructure-v1 visual language and does not change byte-current v1 fixtures.</span></li>
+            </ul>
+            <aside class="callout success" data-review-id="slice-002.after"><strong>After this slice</strong><p>After this slice, System Diagram can generate its first genuinely temporal explanatory figure.</p></aside>
+          </article>
+          <article class="slice-card" data-review-id="slice-003">
+            <header><h3><span class="id-chip">slice-003</span>Explain progression and recovery with a flow diagram</h3><p>A reviewer can follow work or state from trigger through decisions to outcome or recovery.</p><p><strong>Boundary:</strong> The flow is not an architecture inventory and does not use page composition to explain causality.</p></header>
+            <p class="slice-story" data-review-id="story-003">story-003 · Feature: a product or architecture document author can explain progression, branching, and recovery as one flow; outcome: the reviewer can identify each guarded decision and resulting outcome.</p>
+          <article class="scenario-panel" data-review-id="ex-005">
+            <h3>Scenario: Bounded progression</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the brief supplies a start, ordered actions or states, guarded decisions, merges, outcomes, and material feedback or recovery</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram generates the flow capability</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the figure presents one readable progression with labelled branches and explicit outcome or recovery paths</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Trace the progression</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Trace the progression" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="step-003">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Trace the progression</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>The brief asks how work or state advances rather than what systems exist.</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>System Diagram arranges supplied actions and guarded branches in causal order.</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>The generated flow keeps the main path and material recovery distinguishable.</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>The reviewer can explain how each outcome is reached.</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-008"><span class="id-chip">AC-008</span><span>Every decision has labelled outgoing meaning, and each accepted element lies on a path from the supplied start to an outcome or recovery.</span></li>
+            <li data-review-id="ac-009"><span class="id-chip">AC-009</span><span>A disconnected element, unlabeled decision branch, or unsupported loop fails instead of appearing as unexplained adjacency.</span></li>
+            <li data-review-id="ac-010"><span class="id-chip">AC-010</span><span>The flow remains readable in the established style at desktop, local 320px overflow, and print sizes.</span></li>
+            </ul>
+            <aside class="callout success" data-review-id="slice-003.after"><strong>After this slice</strong><p>After this slice, System Diagram can generate bounded causal flows without treating a generic node map as a process.</p></aside>
+          </article>
+          <article class="slice-card" data-review-id="slice-004">
+            <header><h3><span class="id-chip">slice-004</span>Explain bounded communication with an architecture view</h3><p>A reviewer can see which systems or containers communicate across relevant runtime or ownership boundaries.</p><p><strong>Boundary:</strong> One figure uses one declared abstraction level; deployment instances, automatic multi-level zoom, and vendor icon packs remain out of scope.</p></header>
+            <p class="slice-story" data-review-id="story-004">story-004 · Feature: a Design Solution author can explain static communication at one architecture level; outcome: the reviewer can identify responsibilities, boundaries, and labelled relationships.</p>
+          <article class="scenario-panel" data-review-id="ex-006">
+            <h3>Scenario: One bounded architecture level</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the approved design brief names one context or container scope, relevant people or runtime units, boundaries, and labelled relationships</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram generates the architecture capability</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the figure preserves the declared level and makes every material boundary crossing explicit</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Map one architecture level</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Map one architecture level" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="step-004">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Map one architecture level</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>Design Solution supplies approved static topology and relevant boundaries.</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>System Diagram places the units and their labelled directional relationships within that scope.</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>The architecture view exposes communication without mixing context, container, component, or deployment levels.</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>The reviewer can retell the bounded topology.</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-011"><span class="id-chip">AC-011</span><span>Architecture output declares one context or container level and rejects invalid nesting or mixed abstraction.</span></li>
+            <li data-review-id="ac-012"><span class="id-chip">AC-012</span><span>Every relationship is directional and labelled, and a runtime/container boundary crossing includes the supplied protocol.</span></li>
+            <li data-review-id="ac-013"><span class="id-chip">AC-013</span><span>PRD cannot use the architecture capability to introduce technical boundaries that are absent from approved product truth.</span></li>
+            </ul>
+            <aside class="callout success" data-review-id="slice-004.after"><strong>After this slice</strong><p>After this slice, Design Solution can request a consistent static architecture explanation without changing diagram style.</p></aside>
+          </article>
+          <article class="slice-card" data-review-id="slice-005">
+            <header><h3><span class="id-chip">slice-005</span>Explain one scope through component decomposition</h3><p>A reviewer can understand how one approved container or module decomposes and which interfaces connect its parts.</p><p><strong>Boundary:</strong> The capability does not produce class/member diagrams, source-file inventories, or whole-system deployment views.</p></header>
+            <p class="slice-story" data-review-id="story-005">story-005 · Feature: a Design Solution author can explain component responsibilities and interfaces inside one scope; outcome: the reviewer can identify each dependency and unresolved contract.</p>
+          <article class="scenario-panel" data-review-id="ex-007">
+            <h3>Scenario: One-scope decomposition</h3>
+            <p class="scenario-line"><strong>Given</strong><span>the approved design brief names one container or module, its components, short responsibilities, interfaces, and dependencies</span></p>
+            <p class="scenario-line"><strong>When</strong><span>System Diagram generates the component capability</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the figure shows the internal decomposition and rejects required interfaces that have no supplied provider</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Decompose one scope</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Decompose one scope" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="step-005">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Decompose one scope</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>Design Solution supplies one bounded container or module and its approved contracts.</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>System Diagram maps components, provided and required interfaces, and dependencies.</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>The generated component view exposes matched contracts and blocks unresolved required interfaces.</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>The reviewer can explain how the scope is internally connected.</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-014"><span class="id-chip">AC-014</span><span>Component output contains exactly one container or module scope and gives each component a supplied responsibility.</span></li>
+            <li data-review-id="ac-015"><span class="id-chip">AC-015</span><span>Every interface has unique supplied ownership, every dependency resolves to existing elements, and unmatched required interfaces fail validation.</span></li>
+            <li data-review-id="ac-016"><span class="id-chip">AC-016</span><span>The output omits classes, members, source files, and unrelated external topology.</span></li>
+            </ul>
+            <aside class="callout success" data-review-id="slice-005.after"><strong>After this slice</strong><p>After this slice, Design Solution can explain one component boundary without turning the diagram into a code inventory.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="prd.scope" aria-labelledby="prd.scope-title" data-review-id="prd.scope">
+          <span class="section-kicker">Scope</span>
+          <h2 id="prd.scope-title">One skill and one visual language, delivered in bounded slices</h2>
+          <dl class="facts" data-review-id="prd.scope.boundaries"><div><dt>Approved product truth</dt><dd>Carlos Rodrigo approved extending the existing System Diagram skill, preserving infrastructure-v1, using sequence first, and keeping semantic authority with PRD and Design Solution.</dd></div><div><dt>In</dt><dd>Capability-selection guidance, sequence/flow/architecture/component generation, deterministic retained source/SVG, accessibility, report embedding, failure guidance, and behavioral evaluation.</dd></div><div><dt>Sequence capacity</dt><dd>Up to 8 participants, 48 messages, 64 events, 16 notes, 12 fragments at depth 3, and 16 activations at simultaneous depth 3.</dd></div><div><dt>Design input</dt><dd>The approved research also fixes raw-source, text, geometry, output-size, one-pass layout, Node 18, and byte-compatibility guardrails for technical design.</dd></div><div><dt>Out</dt><dd>A new visual language, a universal graph engine before evidence, page composition, class diagrams, automatic semantic invention, generic migration, or implementation tasks before design approval.</dd></div><div><dt>Mockups</dt><dd>Not applicable — this feature changes generated explanatory artifacts, not an interactive interface or responsive page composition, and retains the already approved visual style.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="prd.decisions" aria-labelledby="prd.decisions-title" data-review-id="prd.decisions">
+          <span class="section-kicker">Accepted decisions</span>
+          <h2 id="prd.decisions-title">Capability, authority, and delivery direction are explicit</h2>
+          <fieldset class="decision-recorder" data-review-id="decision.one-skill-one-style" data-decision-status="accepted" data-decision-source-fingerprint="9c720e64165f80559e012d302b6b8fa869599c8e334d5f85b033abac7ffcf061" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>How should the four diagram capabilities enter the workflow?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.one-skill-one-style-option" value="extend-existing" checked disabled /><span>Extend the existing System Diagram skill and reuse infrastructure-v1</span></label>
+              <label class="decision-option"><input type="radio" name="decision.one-skill-one-style-option" value="separate-tools" disabled /><span>Create separate diagram skills or visual languages for each type</span></label>
+              <label class="decision-option"><input type="radio" name="decision.one-skill-one-style-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>One skill can learn multiple explanatory grammars while preserving the visual and validation contract reviewers already recognize.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.responsibility-split" data-decision-status="accepted" data-decision-source-fingerprint="60541bf085195699743eb53cc7cd9a725dee78b4f42e026a3ee320be66a034b8" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>Who decides when, what, and how a situation is illustrated?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.responsibility-split-option" value="domain-owns-meaning" checked disabled /><span>PRD/Design Solution own when and what; System Diagram owns generation; HTML Report Designer embeds</span></label>
+              <label class="decision-option"><input type="radio" name="decision.responsibility-split-option" value="renderer-owns-meaning" disabled /><span>System Diagram infers the situation and report placement from available files</span></label>
+              <label class="decision-option"><input type="radio" name="decision.responsibility-split-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Product and architecture authority must remain with the skills that own those domains; rendering cannot safely invent semantics.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+          <fieldset class="decision-recorder" data-review-id="decision.sequence-first" data-decision-status="accepted" data-decision-source-fingerprint="80a037cd67519916bb213be9c7cdc85e73d9c22bff14c75b2808204daf136bc9" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+            <legend>How should implementation progress across the four capabilities?</legend>
+            <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <div class="decision-options">
+              <label class="decision-option"><input type="radio" name="decision.sequence-first-option" value="vertical-sequence" checked disabled /><span>Deliver sequence as the first complete vertical slice, then evaluate each graph capability</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-first-option" value="all-foundations" disabled /><span>Build shared foundations for all four capabilities before one works end to end</span></label>
+              <label class="decision-option"><input type="radio" name="decision.sequence-first-option" value="other" disabled /><span>Other / custom answer</span></label>
+            </div>
+            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Sequence is the genuinely new temporal grammar; a complete slice proves the contract before shared abstractions or additional graph behavior are justified.</textarea></label>
+            <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
+            <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
+          </fieldset>
+        </section>
+
+      </article>
+    </main>
+  </div>
+
+  <a class="back-to-top" href="#main" aria-label="Back to top">↑</a>
+  <footer data-review-id="provenance">
+    <p><strong>Sources reviewed:</strong> Explicit approvals from Carlos Rodrigo in the 2026-08-03 conversation: extend the existing System Diagram skill, keep its current style, adopt sequence/flow/architecture/component capabilities, use sequence first, accept the proposed limits, and preserve the PRD/Design/System Diagram responsibility split. · .features/system-diagram-capabilities/research.md · skills/system-diagram/SKILL.md · skills/system-diagram/references/diagram-modes.md · skills/system-diagram/scripts/diagram-spec.mjs · skills/prd/SKILL.md · skills/design-solution/SKILL.md · skills/html-report-designer/SKILL.md</p><p>Generated from validated <code>canonical-report-v1</code> structured content through the sole canonical report template. Preserve stable review IDs and reconcile exported decisions into canonical source only after explicit human approval.</p>
+  </footer>
+
+  <script type="application/json" data-document-spec="canonical-report-v1">
+{
+  "schemaVersion": "canonical-report-v1",
+  "document": {
+    "id": "system-diagram-capabilities-prd",
+    "kind": "prd",
+    "status": "Approved",
+    "title": "Teach System Diagram four explanatory grammars without changing its style",
+    "summary": "PRD and Design Solution decide when and what a situation needs to illustrate; System Diagram generates sequence, flow, architecture, or component diagrams in the established infrastructure visual language without inventing meaning.",
+    "reviewFocus": "Confirm that capability selection, authority boundaries, staged delivery, sequence limits, and observable acceptance fully express the approved direction; then explicitly approve or request changes to the complete PRD.",
+    "updated": "2026-08-03",
+    "approval": {
+      "approvedBy": "Carlos Rodrigo",
+      "approvedAt": "2026-08-03"
+    },
+    "sources": [
+      "Explicit approvals from Carlos Rodrigo in the 2026-08-03 conversation: extend the existing System Diagram skill, keep its current style, adopt sequence/flow/architecture/component capabilities, use sequence first, accept the proposed limits, and preserve the PRD/Design/System Diagram responsibility split.",
+      ".features/system-diagram-capabilities/research.md",
+      "skills/system-diagram/SKILL.md",
+      "skills/system-diagram/references/diagram-modes.md",
+      "skills/system-diagram/scripts/diagram-spec.mjs",
+      "skills/prd/SKILL.md",
+      "skills/design-solution/SKILL.md",
+      "skills/html-report-designer/SKILL.md"
+    ],
+    "feature": "System Diagram capabilities"
+  },
+  "sections": [
+    {
+      "id": "prd.product",
+      "role": "product",
+      "kicker": "Product",
+      "title": "Owning document skills can request the right explanatory figure",
+      "summary": "The product change expands one existing skill rather than creating competing diagram tools or styles.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "id": "prd.product.statement",
+          "text": "For a PRD or Design Solution that needs to explain an evidence-backed situation during document review, the product will generate the appropriate sequence, flow, architecture, or component diagram through the existing System Diagram skill, resulting in a deterministic figure that a reviewer can retell; it will not transfer product or architecture authority to the renderer or introduce another visual language."
+        },
+        {
+          "type": "facts",
+          "id": "prd.product.definition",
+          "items": [
+            [
+              "Approved product truth",
+              "Carlos Rodrigo approved this capability and ownership direction in the 2026-08-03 conversation."
+            ],
+            [
+              "Actor",
+              "PRD or Design Solution composing a durable review document"
+            ],
+            [
+              "Moment",
+              "A sourced product or architecture situation needs a causal, temporal, topological, or decomposition explanation"
+            ],
+            [
+              "Entry",
+              "A bounded semantic brief containing the question, audience, evidence, scope, path, uncertainty, and walkthrough"
+            ],
+            [
+              "Result",
+              "One validated, accessible, style-consistent diagram and retained regeneration source"
+            ],
+            [
+              "Boundary",
+              "System Diagram validates and renders supplied meaning; it does not decide what the product or architecture means"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.problem",
+      "role": "problem",
+      "kicker": "Why",
+      "title": "One generic graph contract cannot teach every requested situation",
+      "summary": "The current skill is dependable but its source model is limited to manually positioned generic graph elements.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "prd.problem.evidence",
+          "items": [
+            [
+              "Sourced fact",
+              "skills/system-diagram/scripts/diagram-spec.mjs accepts rectangular nodes, groups, and explicitly routed orthogonal edges."
+            ],
+            [
+              "Sourced fact",
+              "skills/system-diagram/references/diagram-modes.md classifies semantic questions but does not define participant lifelines, flow decisions/merges, architecture levels, or component interfaces."
+            ],
+            [
+              "Consequence",
+              "Temporal interaction must be approximated as a generic graph, while flow, architecture, and component authors must manually recreate conventions that the skill should know."
+            ]
+          ]
+        },
+        {
+          "type": "callout",
+          "id": "prd.problem.trust",
+          "tone": "warning",
+          "title": "Plausible drawing is not enough",
+          "text": "Without typed semantics and selection guidance, a diagram may look consistent while answering the wrong question or implying unsupported product or architecture truth."
+        }
+      ]
+    },
+    {
+      "id": "prd.behavior",
+      "role": "behavior",
+      "kicker": "Behavior",
+      "title": "The owning skill chooses the question; System Diagram generates the explanation",
+      "summary": "Approved product truth — Carlos Rodrigo approved that selection follows the situation being explained, while domain authority remains with PRD or Design Solution.",
+      "blocks": [
+        {
+          "type": "steps",
+          "id": "prd.behavior.flow",
+          "items": [
+            {
+              "id": "prd.behavior.own",
+              "title": "Own the situation",
+              "text": "PRD or Design Solution states the question, evidence, scope, main path, uncertainty, and product or architecture meaning."
+            },
+            {
+              "id": "prd.behavior.select",
+              "title": "Select the capability",
+              "text": "The owning skill chooses sequence for temporal communication, flow for progression and branching, architecture for static bounded communication, or component for decomposition of one scope."
+            },
+            {
+              "id": "prd.behavior.validate",
+              "title": "Validate the brief",
+              "text": "System Diagram rejects missing evidence, unsupported semantics, invalid references, excessive complexity, or a brief that needs splitting."
+            },
+            {
+              "id": "prd.behavior.generate",
+              "title": "Generate in one style",
+              "text": "System Diagram applies the selected grammar and emits deterministic source/SVG using the existing infrastructure-v1 language."
+            },
+            {
+              "id": "prd.behavior.embed",
+              "title": "Embed without reinterpretation",
+              "text": "HTML Report Designer verifies provenance and embeds the figure with the owning document's walkthrough."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "id": "prd.behavior.rules",
+          "style": "checks",
+          "items": [
+            "PRD uses diagrams to explain actor-visible product behavior and never introduces architecture.",
+            "Design Solution uses diagrams to explain approved boundaries, state, communication, recovery, or decomposition.",
+            "System Diagram owns generation mechanics and the established style, never product or architecture truth.",
+            "HTML Report Designer validates and embeds; it does not choose a capability or redraw the figure.",
+            "Existing system-diagram-v1 sources and generated SVGs remain valid and visually unchanged.",
+            "Unsupported or crowded meaning returns an actionable blocker instead of a plausible approximation or smaller text."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.diagram",
+      "role": "diagram",
+      "kicker": "Product flow",
+      "title": "Authority stays with the document while generation becomes capability-aware",
+      "summary": "Approved product truth — the owning document supplies meaning, System Diagram validates and generates, and unsupported meaning returns for refinement.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "id": "diagram.capability-selection",
+          "question": "How does an owning document skill turn an evidence-backed situation into the right style-consistent diagram without transferring product or architecture authority?",
+          "caption": "PRD or Design Solution supplies and owns meaning; System Diagram validates one selected grammar and renders it in the established style; unsupported briefs return for refinement.",
+          "svgPath": "diagrams/capability-selection-flow.svg",
+          "sourcePath": "diagrams/capability-selection-flow.json",
+          "walkthrough": [
+            "PRD or Design Solution identifies a situation that needs explanation and owns its product or architecture meaning.",
+            "The owning skill supplies a bounded evidence-backed brief and selects sequence, flow, architecture, or component from the explanatory question.",
+            "System Diagram validates evidence, semantics, limits, and uncertainty without adding unsupported truth.",
+            "Supported meaning becomes deterministic infrastructure-v1 SVG; ambiguous or excessive meaning returns for refinement or splitting.",
+            "HTML Report Designer verifies and embeds the figure so the reviewer can retell the situation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.slices",
+      "role": "slices",
+      "kicker": "Product slices",
+      "title": "Five end-to-end outcomes expand the skill safely",
+      "summary": "Approved product truth — sequence, flow, architecture view, and component decomposition are staged capabilities of the same System Diagram skill and visual language.",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "slice-001",
+          "title": "Choose the capability from the explanatory question",
+          "outcome": "PRD or Design Solution can request a diagram that matches the situation being reviewed.",
+          "boundary": "System Diagram does not infer product or architecture truth, and capability choice does not authorize additional diagrams or implementation.",
+          "story": {
+            "id": "story-001",
+            "actor": "an owning document skill",
+            "capability": "select an explanatory diagram capability from a bounded situation",
+            "outcome": "the generated figure answers the intended question without changing its meaning"
+          },
+          "scenarios": [
+            {
+              "id": "ex-001",
+              "title": "Supported explanatory question",
+              "given": "PRD or Design Solution has a sourced situation, audience, question, path, uncertainty, and walkthrough",
+              "when": "it classifies the question as temporal communication, progression, bounded topology, or one-scope decomposition",
+              "then": "it hands System Diagram one sequence, flow, architecture, or component brief with the original authority intact"
+            },
+            {
+              "id": "ex-002",
+              "title": "Ambiguous or unsupported question",
+              "given": "the brief mixes incompatible abstraction levels, lacks evidence, or cannot identify one explanatory question",
+              "when": "System Diagram validates the request",
+              "then": "it returns a blocker asking the owning skill to clarify or split the situation instead of drawing a plausible figure"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "step-001",
+              "title": "Classify and hand off",
+              "context": "The owning document has one evidence-backed situation to explain.",
+              "action": "It matches the question to one capability and supplies the semantic brief.",
+              "response": "System Diagram accepts a bounded request or returns the exact missing condition.",
+              "outcome": "Only supported meaning advances to generation."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-001",
+              "text": "Selection guidance distinguishes temporal communication, progression/branching, static bounded communication, and one-scope decomposition with no overlapping default."
+            },
+            {
+              "id": "ac-002",
+              "text": "A brief with missing evidence, mixed abstraction, or unsupported semantics produces a blocker that identifies what must be clarified or split."
+            },
+            {
+              "id": "ac-003",
+              "text": "Generated labels, actors, states, boundaries, and relationships all trace to the owning brief rather than renderer inference."
+            }
+          ],
+          "after": "After this slice, the document workflow can choose one explanatory capability without transferring semantic authority."
+        },
+        {
+          "type": "slice",
+          "id": "slice-002",
+          "title": "Explain temporal communication with a sequence diagram",
+          "outcome": "A reviewer can follow who communicates with whom and in what order, including material alternatives or recovery.",
+          "boundary": "The initial capability excludes timing diagrams, actor creation/destruction, arbitrary icons, and deeply nested parallel or critical fragments.",
+          "story": {
+            "id": "story-002",
+            "actor": "a PRD or Design Solution author",
+            "capability": "explain participant communication in temporal order",
+            "outcome": "the reviewer can follow the interaction and its recovery without reading a generic graph"
+          },
+          "scenarios": [
+            {
+              "id": "ex-003",
+              "title": "Temporal interaction",
+              "given": "the brief names ordered participants, messages, material notes, activation spans, and any alternative, optional, or loop fragment",
+              "when": "System Diagram generates the sequence capability",
+              "then": "the figure preserves participant and event order through lifelines, labelled messages, explicit fragments, and the existing visual language"
+            },
+            {
+              "id": "ex-004",
+              "title": "Sequence exceeds the approved envelope",
+              "given": "the brief exceeds an approved participant, event, nesting, activation, text, or output limit",
+              "when": "System Diagram validates it",
+              "then": "generation stops and asks the owning skill to split the interaction rather than compress or omit meaning"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "step-002",
+              "title": "Order the interaction",
+              "context": "A supported temporal brief is complete and source ordered.",
+              "action": "System Diagram maps participants, events, activations, and fragments to the sequence grammar.",
+              "response": "A deterministic lifeline figure preserves the approved order and style.",
+              "outcome": "The reviewer can narrate the normal and recovery interaction."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-004",
+              "text": "Sequence output preserves one to eight participants and one to forty-eight messages in source order, with no more than sixty-four total events."
+            },
+            {
+              "id": "ac-005",
+              "text": "The capability represents synchronous, asynchronous, return, and self messages plus notes, explicit activations, and bounded alt, opt, and loop fragments when supplied."
+            },
+            {
+              "id": "ac-006",
+              "text": "The approved envelope allows at most sixteen notes, twelve fragments at depth three, and sixteen activations at simultaneous depth three; exceeding it fails with split guidance."
+            },
+            {
+              "id": "ac-007",
+              "text": "Sequence output uses the established infrastructure-v1 visual language and does not change byte-current v1 fixtures."
+            }
+          ],
+          "after": "After this slice, System Diagram can generate its first genuinely temporal explanatory figure."
+        },
+        {
+          "type": "slice",
+          "id": "slice-003",
+          "title": "Explain progression and recovery with a flow diagram",
+          "outcome": "A reviewer can follow work or state from trigger through decisions to outcome or recovery.",
+          "boundary": "The flow is not an architecture inventory and does not use page composition to explain causality.",
+          "story": {
+            "id": "story-003",
+            "actor": "a product or architecture document author",
+            "capability": "explain progression, branching, and recovery as one flow",
+            "outcome": "the reviewer can identify each guarded decision and resulting outcome"
+          },
+          "scenarios": [
+            {
+              "id": "ex-005",
+              "title": "Bounded progression",
+              "given": "the brief supplies a start, ordered actions or states, guarded decisions, merges, outcomes, and material feedback or recovery",
+              "when": "System Diagram generates the flow capability",
+              "then": "the figure presents one readable progression with labelled branches and explicit outcome or recovery paths"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "step-003",
+              "title": "Trace the progression",
+              "context": "The brief asks how work or state advances rather than what systems exist.",
+              "action": "System Diagram arranges supplied actions and guarded branches in causal order.",
+              "response": "The generated flow keeps the main path and material recovery distinguishable.",
+              "outcome": "The reviewer can explain how each outcome is reached."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-008",
+              "text": "Every decision has labelled outgoing meaning, and each accepted element lies on a path from the supplied start to an outcome or recovery."
+            },
+            {
+              "id": "ac-009",
+              "text": "A disconnected element, unlabeled decision branch, or unsupported loop fails instead of appearing as unexplained adjacency."
+            },
+            {
+              "id": "ac-010",
+              "text": "The flow remains readable in the established style at desktop, local 320px overflow, and print sizes."
+            }
+          ],
+          "after": "After this slice, System Diagram can generate bounded causal flows without treating a generic node map as a process."
+        },
+        {
+          "type": "slice",
+          "id": "slice-004",
+          "title": "Explain bounded communication with an architecture view",
+          "outcome": "A reviewer can see which systems or containers communicate across relevant runtime or ownership boundaries.",
+          "boundary": "One figure uses one declared abstraction level; deployment instances, automatic multi-level zoom, and vendor icon packs remain out of scope.",
+          "story": {
+            "id": "story-004",
+            "actor": "a Design Solution author",
+            "capability": "explain static communication at one architecture level",
+            "outcome": "the reviewer can identify responsibilities, boundaries, and labelled relationships"
+          },
+          "scenarios": [
+            {
+              "id": "ex-006",
+              "title": "One bounded architecture level",
+              "given": "the approved design brief names one context or container scope, relevant people or runtime units, boundaries, and labelled relationships",
+              "when": "System Diagram generates the architecture capability",
+              "then": "the figure preserves the declared level and makes every material boundary crossing explicit"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "step-004",
+              "title": "Map one architecture level",
+              "context": "Design Solution supplies approved static topology and relevant boundaries.",
+              "action": "System Diagram places the units and their labelled directional relationships within that scope.",
+              "response": "The architecture view exposes communication without mixing context, container, component, or deployment levels.",
+              "outcome": "The reviewer can retell the bounded topology."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-011",
+              "text": "Architecture output declares one context or container level and rejects invalid nesting or mixed abstraction."
+            },
+            {
+              "id": "ac-012",
+              "text": "Every relationship is directional and labelled, and a runtime/container boundary crossing includes the supplied protocol."
+            },
+            {
+              "id": "ac-013",
+              "text": "PRD cannot use the architecture capability to introduce technical boundaries that are absent from approved product truth."
+            }
+          ],
+          "after": "After this slice, Design Solution can request a consistent static architecture explanation without changing diagram style."
+        },
+        {
+          "type": "slice",
+          "id": "slice-005",
+          "title": "Explain one scope through component decomposition",
+          "outcome": "A reviewer can understand how one approved container or module decomposes and which interfaces connect its parts.",
+          "boundary": "The capability does not produce class/member diagrams, source-file inventories, or whole-system deployment views.",
+          "story": {
+            "id": "story-005",
+            "actor": "a Design Solution author",
+            "capability": "explain component responsibilities and interfaces inside one scope",
+            "outcome": "the reviewer can identify each dependency and unresolved contract"
+          },
+          "scenarios": [
+            {
+              "id": "ex-007",
+              "title": "One-scope decomposition",
+              "given": "the approved design brief names one container or module, its components, short responsibilities, interfaces, and dependencies",
+              "when": "System Diagram generates the component capability",
+              "then": "the figure shows the internal decomposition and rejects required interfaces that have no supplied provider"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "step-005",
+              "title": "Decompose one scope",
+              "context": "Design Solution supplies one bounded container or module and its approved contracts.",
+              "action": "System Diagram maps components, provided and required interfaces, and dependencies.",
+              "response": "The generated component view exposes matched contracts and blocks unresolved required interfaces.",
+              "outcome": "The reviewer can explain how the scope is internally connected."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-014",
+              "text": "Component output contains exactly one container or module scope and gives each component a supplied responsibility."
+            },
+            {
+              "id": "ac-015",
+              "text": "Every interface has unique supplied ownership, every dependency resolves to existing elements, and unmatched required interfaces fail validation."
+            },
+            {
+              "id": "ac-016",
+              "text": "The output omits classes, members, source files, and unrelated external topology."
+            }
+          ],
+          "after": "After this slice, Design Solution can explain one component boundary without turning the diagram into a code inventory."
+        }
+      ]
+    },
+    {
+      "id": "prd.scope",
+      "role": "scope",
+      "kicker": "Scope",
+      "title": "One skill and one visual language, delivered in bounded slices",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "prd.scope.boundaries",
+          "items": [
+            [
+              "Approved product truth",
+              "Carlos Rodrigo approved extending the existing System Diagram skill, preserving infrastructure-v1, using sequence first, and keeping semantic authority with PRD and Design Solution."
+            ],
+            [
+              "In",
+              "Capability-selection guidance, sequence/flow/architecture/component generation, deterministic retained source/SVG, accessibility, report embedding, failure guidance, and behavioral evaluation."
+            ],
+            [
+              "Sequence capacity",
+              "Up to 8 participants, 48 messages, 64 events, 16 notes, 12 fragments at depth 3, and 16 activations at simultaneous depth 3."
+            ],
+            [
+              "Design input",
+              "The approved research also fixes raw-source, text, geometry, output-size, one-pass layout, Node 18, and byte-compatibility guardrails for technical design."
+            ],
+            [
+              "Out",
+              "A new visual language, a universal graph engine before evidence, page composition, class diagrams, automatic semantic invention, generic migration, or implementation tasks before design approval."
+            ],
+            [
+              "Mockups",
+              "Not applicable — this feature changes generated explanatory artifacts, not an interactive interface or responsive page composition, and retains the already approved visual style."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prd.decisions",
+      "role": "decisions",
+      "kicker": "Accepted decisions",
+      "title": "Capability, authority, and delivery direction are explicit",
+      "blocks": [
+        {
+          "type": "decision",
+          "id": "decision.one-skill-one-style",
+          "question": "How should the four diagram capabilities enter the workflow?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "extend-existing",
+              "label": "Extend the existing System Diagram skill and reuse infrastructure-v1"
+            },
+            {
+              "id": "separate-tools",
+              "label": "Create separate diagram skills or visual languages for each type"
+            }
+          ],
+          "selectedOptionId": "extend-existing",
+          "rationale": "One skill can learn multiple explanatory grammars while preserving the visual and validation contract reviewers already recognize.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.responsibility-split",
+          "question": "Who decides when, what, and how a situation is illustrated?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "domain-owns-meaning",
+              "label": "PRD/Design Solution own when and what; System Diagram owns generation; HTML Report Designer embeds"
+            },
+            {
+              "id": "renderer-owns-meaning",
+              "label": "System Diagram infers the situation and report placement from available files"
+            }
+          ],
+          "selectedOptionId": "domain-owns-meaning",
+          "rationale": "Product and architecture authority must remain with the skills that own those domains; rendering cannot safely invent semantics.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.sequence-first",
+          "question": "How should implementation progress across the four capabilities?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "vertical-sequence",
+              "label": "Deliver sequence as the first complete vertical slice, then evaluate each graph capability"
+            },
+            {
+              "id": "all-foundations",
+              "label": "Build shared foundations for all four capabilities before one works end to end"
+            }
+          ],
+          "selectedOptionId": "vertical-sequence",
+          "rationale": "Sequence is the genuinely new temporal grammar; a complete slice proves the contract before shared abstractions or additional graph behavior are justified.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <script data-artifact-motion="native">
+/* artifact-motion:start */
+document.documentElement.classList.add('js');
+
+const revealItems = Array.from(document.querySelectorAll('.reveal'));
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const showAll = () => revealItems.forEach((item) => item.classList.add('is-visible'));
+
+if (reduceMotion || !('IntersectionObserver' in window)) {
+  showAll();
+} else {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  revealItems.forEach((item) => observer.observe(item));
+  window.addEventListener('beforeprint', showAll, { once: true });
+}
+/* artifact-motion:end */
+  </script>
+  <script data-document-navigation="progressive">
+/* document-navigation:start */
+const tocLinks = Array.from(document.querySelectorAll('nav[aria-label="Table of contents"] a[href^="#"]'));
+const tocEntries = tocLinks
+  .map((link) => ({ link, target: document.getElementById(decodeURIComponent(link.hash.slice(1))) }))
+  .filter((item) => item.target);
+const sideNav = document.querySelector('.side-nav');
+
+const activateAndScrollTocLinkIntoView = (activeLink) => {
+  tocEntries.forEach(({ link }) => link.classList.toggle('is-active', link === activeLink));
+  if (!activeLink || !sideNav) return;
+  const linkTop = activeLink.offsetTop;
+  const linkBottom = linkTop + activeLink.offsetHeight;
+  if (linkTop < sideNav.scrollTop + 56) sideNav.scrollTop = Math.max(0, linkTop - 72);
+  if (linkBottom > sideNav.scrollTop + sideNav.clientHeight) sideNav.scrollTop = linkBottom - sideNav.clientHeight + 24;
+};
+
+if ('IntersectionObserver' in window && tocEntries.length > 0) {
+  const visibleSectionIds = new Map();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => visibleSectionIds.set(entry.target.id, entry.isIntersecting));
+    const currentTocEntry = tocEntries.find(({ target }) => visibleSectionIds.get(target.id)) ?? [...tocEntries].reverse().find(({ target }) => target.getBoundingClientRect().top <= 160);
+    activateAndScrollTocLinkIntoView(currentTocEntry?.link ?? tocEntries[0].link);
+  }, { rootMargin: '-12% 0px -72% 0px', threshold: [0, 1] });
+  tocEntries.forEach(({ target }) => observer.observe(target));
+} else if (tocEntries.length > 0) {
+  activateAndScrollTocLinkIntoView(tocEntries[0].link);
+}
+
+tocLinks.forEach((link) => link.addEventListener('click', () => activateAndScrollTocLinkIntoView(link)));
+/* document-navigation:end */
+  </script>
+  <script data-artifact-review-state="persistent">
+/* artifact-review-state:start */
+const decisionRecorders = Array.from(document.querySelectorAll('fieldset.decision-recorder'));
+const browserStorage = getStorage();
+const storagePrefix = `artifact-review:${location.pathname || document.title}:`;
+
+for (const [index, recorder] of decisionRecorders.entries()) {
+  const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+  const isCanonicallyAccepted = recorder.dataset.decisionStatus === 'accepted';
+  const optionInputs = Array.from(recorder.querySelectorAll('input[type="radio"]'));
+  const customAnswerInput = recorder.querySelector('[data-decision-custom]');
+  const rationaleInput = recorder.querySelector('[data-decision-rationale]');
+  const ownerInput = recorder.querySelector('[data-decision-owner]');
+  const reviewRecordedCheckbox = recorder.querySelector('[data-decision-recorded]');
+  const decisionStatusMessage = recorder.querySelector('.decision-status');
+  const storageKey = storagePrefix + decisionId;
+  let recordedReviewFingerprint = null;
+  let storageWriteFailed = false;
+
+  const selectedOptionInput = () => optionInputs.find((option) => option.checked);
+  const selectedAnswer = () => {
+    const selectedOption = selectedOptionInput();
+    if (!selectedOption) return '';
+    if (selectedOption.value === 'other') return customAnswerInput?.value.trim() || '';
+    return selectedOption.closest('label')?.querySelector('span')?.textContent?.trim() || selectedOption.value;
+  };
+  const isReviewInputComplete = () => Boolean(selectedAnswer() && rationaleInput?.value.trim() && ownerInput?.value.trim());
+  const contentFingerprint = () => JSON.stringify({
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+  });
+
+  const createDecisionReviewRecord = () => ({
+    reviewId: decisionId,
+    question: recorder.querySelector('legend')?.textContent?.trim() || decisionId,
+    sourceFingerprint: recorder.dataset.decisionSourceFingerprint || '',
+    status: isCanonicallyAccepted ? 'Accepted' : reviewRecordedCheckbox?.checked ? 'Recorded review input' : 'Not recorded',
+    optionId: selectedOptionInput()?.value || '',
+    selection: selectedAnswer(),
+    customAnswer: customAnswerInput?.value.trim() || '',
+    rationale: rationaleInput?.value.trim() || '',
+    owner: ownerInput?.value.trim() || '',
+    approvedBy: recorder.dataset.approvedBy || '',
+    approvedAt: recorder.dataset.approvedAt || '',
+    localRecordedAt: !isCanonicallyAccepted && reviewRecordedCheckbox?.checked ? recorder.dataset.localRecordedAt || new Date().toISOString().slice(0, 10) : '',
+  });
+
+  const syncDecisionRecorder = ({ restored = false } = {}) => {
+    if (!isCanonicallyAccepted && reviewRecordedCheckbox) {
+      const currentFingerprint = contentFingerprint();
+      if (reviewRecordedCheckbox.checked && recordedReviewFingerprint && recordedReviewFingerprint !== currentFingerprint) {
+        reviewRecordedCheckbox.checked = false;
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+
+      const reviewInputComplete = isReviewInputComplete();
+      reviewRecordedCheckbox.disabled = !reviewInputComplete;
+      if (!reviewInputComplete) reviewRecordedCheckbox.checked = false;
+      if (reviewRecordedCheckbox.checked) {
+        if (!recorder.dataset.localRecordedAt) recorder.dataset.localRecordedAt = new Date().toISOString().slice(0, 10);
+        if (!recordedReviewFingerprint) recordedReviewFingerprint = currentFingerprint;
+      } else {
+        delete recorder.dataset.localRecordedAt;
+        recordedReviewFingerprint = null;
+      }
+    }
+
+    const reviewRecord = createDecisionReviewRecord();
+    recorder.dataset.reviewSelection = reviewRecord.selection;
+    recorder.dataset.reviewRecorded = String(reviewRecord.status !== 'Not recorded');
+    if (!isCanonicallyAccepted && browserStorage) {
+      try {
+        browserStorage.setItem(storageKey, JSON.stringify(reviewRecord));
+        storageWriteFailed = false;
+      } catch {
+        storageWriteFailed = true;
+      }
+    }
+
+    if (decisionStatusMessage) {
+      if (isCanonicallyAccepted) decisionStatusMessage.textContent = `Accepted by ${reviewRecord.approvedBy} on ${reviewRecord.approvedAt}.`;
+      else if (reviewRecord.status === 'Recorded review input') decisionStatusMessage.textContent = 'Recorded in this browser. Export it for canonical reconciliation and approval.';
+      else if (!isReviewInputComplete()) decisionStatusMessage.textContent = 'Select an option and provide rationale and owner before recording.';
+      else decisionStatusMessage.textContent = restored ? 'Restored from this browser. Check “Decision recorded” when ready.' : 'Ready to record.';
+      if (!isCanonicallyAccepted && (!browserStorage || storageWriteFailed)) decisionStatusMessage.textContent += ' Browser storage is unavailable; export before closing.';
+    }
+  };
+
+  if (!isCanonicallyAccepted && browserStorage) {
+    try {
+      const savedRecord = JSON.parse(browserStorage.getItem(storageKey) || 'null');
+      if (savedRecord) {
+        const currentQuestion = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+        const savedOption = optionInputs.find((candidate) => candidate.value === savedRecord.optionId);
+        const currentSavedSelection = savedRecord.optionId === 'other'
+          ? savedRecord.customAnswer || ''
+          : savedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || '';
+        const optionStillExists = savedRecord.optionId === '' || Boolean(savedOption);
+        const meaningUnchanged = savedRecord.sourceFingerprint === recorder.dataset.decisionSourceFingerprint
+          && savedRecord.question === currentQuestion
+          && optionStillExists
+          && savedRecord.selection === currentSavedSelection;
+        if (!meaningUnchanged) {
+          browserStorage.removeItem(storageKey);
+        } else {
+          if (savedOption) savedOption.checked = true;
+          if (customAnswerInput && typeof savedRecord.customAnswer === 'string') customAnswerInput.value = savedRecord.customAnswer;
+          if (rationaleInput && typeof savedRecord.rationale === 'string') rationaleInput.value = savedRecord.rationale;
+          if (ownerInput && typeof savedRecord.owner === 'string') ownerInput.value = savedRecord.owner;
+          if (reviewRecordedCheckbox) reviewRecordedCheckbox.checked = savedRecord.status === 'Recorded review input';
+          if (savedRecord.localRecordedAt) recorder.dataset.localRecordedAt = savedRecord.localRecordedAt;
+          if (reviewRecordedCheckbox?.checked) recordedReviewFingerprint = contentFingerprint();
+        }
+      }
+    } catch {
+      try { browserStorage.removeItem(storageKey); } catch { /* browser storage is optional */ }
+    }
+  }
+
+  customAnswerInput?.addEventListener('input', () => {
+    const customOption = optionInputs.find((option) => option.value === 'other');
+    if (customOption) customOption.checked = true;
+  });
+  recorder.addEventListener('input', () => syncDecisionRecorder());
+  recorder.addEventListener('change', () => syncDecisionRecorder());
+  syncDecisionRecorder({ restored: true });
+}
+
+if (decisionRecorders.length > 0) {
+  const exportActions = document.createElement('section');
+  exportActions.className = 'feedback-widget decision-export';
+  exportActions.dataset.reviewId = 'review-decisions.export';
+  exportActions.innerHTML = '<h2 class="panel-title">Decision Review Record</h2><p class="feedback-note">Browser records are review input, not canonical approval. Export them, then reconcile accepted choices into the PRD, design, or ADR.</p><div class="feedback-actions"><button type="button" data-review-copy>Copy Decisions</button><button type="button" data-review-download>Download Markdown</button></div><p class="feedback-result" aria-live="polite"></p>';
+  (document.querySelector('article') || document.body).append(exportActions);
+
+  const buildDecisionExportMarkdown = () => {
+    const lines = [`# Decision review record for ${document.title}`, '', `Source: ${location.pathname || 'inline document'}`, '', '> Review input only. Reconcile explicit human approval into canonical document source.', ''];
+    decisionRecorders.forEach((recorder, index) => {
+      const decisionId = recorder.dataset.reviewId || `decision-${index + 1}`;
+      const question = recorder.querySelector('legend')?.textContent?.trim() || decisionId;
+      const selectedOption = recorder.querySelector('input[type="radio"]:checked');
+      const customAnswer = recorder.querySelector('[data-decision-custom]')?.value.trim() || '';
+      const selection = selectedOption?.value === 'other' ? customAnswer : selectedOption?.closest('label')?.querySelector('span')?.textContent?.trim() || 'No selection';
+      const isAccepted = recorder.dataset.decisionStatus === 'accepted';
+      const isLocallyRecorded = recorder.querySelector('[data-decision-recorded]')?.checked;
+      lines.push(
+        `## ${question}`, '',
+        `- Review ID: \`${decisionId}\``,
+        `- Source fingerprint: \`${recorder.dataset.decisionSourceFingerprint || 'unknown'}\``,
+        `- Status: ${isAccepted ? 'Accepted' : isLocallyRecorded ? 'Recorded review input' : 'Not recorded'}`,
+        `- Decision: ${selection}`,
+        `- Rationale: ${recorder.querySelector('[data-decision-rationale]')?.value.trim() || 'Not provided'}`,
+        `- Owner: ${recorder.querySelector('[data-decision-owner]')?.value.trim() || 'Not provided'}`,
+        `- Approved by: ${recorder.dataset.approvedBy || 'Not approved'}`,
+        `- Approved on: ${recorder.dataset.approvedAt || 'Not approved'}`,
+        `- Browser recorded: ${recorder.dataset.localRecordedAt || 'Not recorded'}`,
+        '',
+      );
+    });
+    return lines.join('\n');
+  };
+
+  const exportStatusMessage = exportActions.querySelector('.feedback-result');
+  exportActions.querySelector('[data-review-copy]')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildDecisionExportMarkdown());
+      exportStatusMessage.textContent = 'Decision record copied.';
+    } catch {
+      exportStatusMessage.textContent = 'Copy unavailable. Download the Markdown record instead.';
+    }
+  });
+  exportActions.querySelector('[data-review-download]')?.addEventListener('click', () => {
+    const blob = new Blob([buildDecisionExportMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    const link = document.createElement('a');
+    const slug = (document.title || 'review').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${slug || 'review'}.decision-review.md`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    exportStatusMessage.textContent = 'Markdown decision record downloaded.';
+  });
+}
+
+function getStorage() {
+  try {
+    const key = '__artifact_review_storage_test__';
+    localStorage.setItem(key, key);
+    localStorage.removeItem(key);
+    return localStorage;
+  } catch {
+    return null;
+  }
+}
+/* artifact-review-state:end */
+  </script>
+</body>
+</html>

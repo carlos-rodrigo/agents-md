@@ -1,18 +1,19 @@
 {
+  "schemaVersion": "system-diagram-v1",
   "id": "product-review-flow",
   "title": "Product review flow through one canonical report",
-  "desc": "A top-to-bottom product flow from an approved document request through required content, Excalidraw explanation, decision recording, explicit approval, and canonical truth.",
+  "desc": "A top-to-bottom product flow from an approved document request through required content, infrastructure SVG explanation, decision recording, explicit approval, and canonical truth.",
   "reviewPrefix": "diagram.product-review",
   "reviewId": "svg",
-  "backgroundColor": "#fffefa",
+  "canvas": { "grid": true },
   "padding": 44,
   "nodes": [
     { "id": "request", "kind": "entry", "x": 260, "y": 40, "width": 440, "height": 112, "text": "Reviewer need\nCreate or update a PRD/design" },
     { "id": "content", "kind": "domain", "x": 260, "y": 230, "width": 440, "height": 112, "text": "Owning skill\nComposes required sourced meaning" },
-    { "id": "diagram", "kind": "feedback", "x": 260, "y": 420, "width": 440, "height": 112, "text": "System Diagram\nExplains one named question in Excalidraw" },
-    { "id": "report", "kind": "repository", "x": 260, "y": 610, "width": 440, "height": 112, "text": "Canonical report\nShows one shell and decision controls" },
-    { "id": "review", "kind": "entry", "x": 260, "y": 800, "width": 440, "height": 112, "text": "Human review\nRecords and exports decision input" },
-    { "id": "truth", "kind": "domain", "x": 260, "y": 990, "width": 440, "height": 112, "text": "Explicit approval\nUpdates canonical product/design truth" },
+    { "id": "diagram", "kind": "feedback", "x": 260, "y": 420, "width": 440, "height": 112, "text": "System Diagram\nExplains one named question in infrastructure SVG" },
+    { "id": "report", "kind": "service", "x": 260, "y": 610, "width": 440, "height": 112, "text": "Canonical report\nShows one shell and decision controls" },
+    { "id": "review", "kind": "decision", "x": 260, "y": 800, "width": 440, "height": 112, "text": "Human review\nRecords and exports decision input" },
+    { "id": "truth", "kind": "success", "x": 260, "y": 990, "width": 440, "height": 112, "text": "Explicit approval\nUpdates canonical product/design truth" },
     { "id": "open", "kind": "risk", "x": 980, "y": 800, "width": 360, "height": 112, "text": "Incomplete or unapproved\nDecision remains open" }
   ],
   "edges": [
