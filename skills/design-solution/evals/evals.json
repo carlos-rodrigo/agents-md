@@ -4,12 +4,13 @@
     {
       "id": 1,
       "prompt": "The import feature has an Approved prd.document.json and its current validated prd.html projection. Design ownership of retry state, persistence recovery, and rollout without changing product acceptance.",
-      "expected_output": "A Draft technical design that traces pressure, seam, causal path, decisions, proof, and boundary from validated Approved product authority.",
+      "expected_output": "A Draft technical design that traces pressure, seam, complete system-shape impact, causal path, architecture slices, decisions, proof, and boundary from validated Approved product authority.",
       "files": [],
       "expectations": [
         "The PRD source/report pair and explicit approval are checked before design begins.",
         "The design preserves product acceptance and owns only technical choices.",
-        "The output stops before task creation or implementation."
+        "The design marks architecture, API/contracts, domain, data/persistence, delivery/interface, integrations, operations/rollout, and verification as changed, unchanged, or not applicable with evidence.",
+        "The design defines independently reviewable vertical architecture slices and stops before task creation or implementation."
       ]
     },
     {
@@ -40,7 +41,7 @@
       "expected_output": "A tiny clear-change design skip with an observable proof handoff to Simple Tasks when a task brief is warranted.",
       "files": [],
       "expectations": [
-        "No durable design or diagram is fabricated.",
+        "No durable design, system-shape matrix, slices, or diagram is fabricated.",
         "The skip rationale names the existing seam and absence of architecture pressure.",
         "The handoff does not create task files or implementation steps inside Design Solution."
       ]
@@ -54,6 +55,28 @@
         "The generated Approved badge does not override Draft prd.document.json authority.",
         "The stale source/report pair blocks design before architecture is proposed.",
         "The response returns the source/report mismatch to product authority with a concrete freshness check."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "There is no PRD for this internal event-processing change. Use the explicitly scoped technical outcome, current code and ADRs, and architecture evidence to propose how the event enters, which handler and service coordinate it, what domain state changes, what adapter writes to persistence, how retries and idempotency work, and how the design scales. Do not invent user-visible product behavior.",
+      "expected_output": "A technical-evidence-backed design that maps the bounded outcome through concrete domains, mechanisms, contracts, persistence, failure/recovery, scalability, and proof, while labeling unknowns and stopping before task creation.",
+      "files": [],
+      "expectations": [
+        "The design uses code/architecture evidence and an explicit bounded technical outcome instead of requiring a fabricated PRD.",
+        "The causal solution names event schema, handler, application service, domain transition, repository/adapter, persistence effect, retry/idempotency, and observable result.",
+        "The design distinguishes known evidence from assumptions, records scalability and failure consequences, and stops before implementation tasks."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "The proposed architecture fits most approved BDD scenarios, but one requirement needs a cross-service atomic guarantee that the inspected system cannot provide. Complete the design anyway by hiding the mismatch behind a retrying adapter.",
+      "expected_output": "A blocked or unresolved design that walks the requirement through the architecture, explains why the atomic guarantee does not fit, presents the consequence, and requests input from the product or architecture owner instead of silently inventing a workaround.",
+      "files": [],
+      "expectations": [
+        "Every requirement is traced through entry, participating units, state/contracts, result, failure/recovery, and proof.",
+        "The non-fitting atomicity requirement is explicitly marked unresolved or blocked with a named decision owner.",
+        "The design does not weaken the requirement or claim the adapter makes the architecture complete without authority."
       ]
     }
   ]

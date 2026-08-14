@@ -84,6 +84,43 @@
       ]
     },
     {
+      "id": "design.shape",
+      "role": "shape",
+      "kicker": "Proposed system shape",
+      "title": "Define the end-state contract",
+      "summary": "The proposal names changed units, contracts, state, and collaboration after implementation.",
+      "blocks": [
+        {
+          "type": "code",
+          "id": "design.shape.contract",
+          "label": "Proposed end-state contract",
+          "content": "Inputs \u2192 owning seam \u2192 state transition \u2192 observable result. Define changed API/module/domain/data shapes, failure states, invariants, and recovery ownership here."
+        },
+        {
+          "type": "facts",
+          "id": "design.shape.impact",
+          "items": [
+            [
+              "Architecture and modules \u00b7 Changed",
+              "Named existing and proposed units, responsibilities, collaboration, and non-responsibilities."
+            ],
+            [
+              "API and contracts \u00b7 Unchanged",
+              "Existing public contracts remain compatible unless explicitly listed otherwise."
+            ],
+            [
+              "Domain and data \u00b7 Unchanged",
+              "No domain owner or persistence boundary changes without an explicit decision."
+            ],
+            [
+              "Delivery, operations, and verification \u00b7 Changed",
+              "Delivery boundary, failure proof, rollout posture, and regression surface are explicit."
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "design.path",
       "role": "path",
       "kicker": "Causal path",
@@ -113,6 +150,115 @@
               "title": "Review",
               "text": "The reviewer records and exports choices without mutating canonical source."
             }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.slices",
+      "role": "slices",
+      "kicker": "Technical architecture slices",
+      "title": "Reviewable vertical outcomes",
+      "summary": "Each slice names technical elements, contract delta, failure ownership, dependencies, and proof.",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "arch-slice-001",
+          "title": "End-to-end proposed outcome",
+          "outcome": "the approved product promise is delivered through the selected architecture seam",
+          "boundary": "Covers the changed system shape within approved scope.",
+          "story": {
+            "id": "arch-story-001",
+            "actor": "the system",
+            "capability": "apply the proposed architecture",
+            "outcome": "the observable result is produced"
+          },
+          "scenarios": [
+            {
+              "id": "arch-scenario-001",
+              "title": "Successful path",
+              "given": "approved inputs are available",
+              "when": "the system follows the proposed path",
+              "then": "the result is observable"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "arch-step-001",
+              "title": "Compose",
+              "context": "sources enter the seam",
+              "action": "apply the contract and state rules",
+              "response": "the owning unit returns the result",
+              "outcome": "the next boundary receives stable output"
+            }
+          ],
+          "acceptanceAnchors": [
+            "Approved product acceptance and design invariants"
+          ],
+          "entryPoint": "The approved external trigger or public entry boundary.",
+          "participatingElements": [
+            "Existing entry point",
+            "Proposed owning seam",
+            "Existing dependencies"
+          ],
+          "contractDelta": [
+            "Inputs, outputs, and compatibility consequences are explicit"
+          ],
+          "stateAndInvariants": [
+            "Ownership and invariants remain stable"
+          ],
+          "failureRecovery": [
+            "Failure returns to the owning recovery boundary"
+          ],
+          "proof": [
+            "Contract fixtures and end-to-end observable proof"
+          ],
+          "dependsOn": [
+            "None"
+          ],
+          "escalateIf": "Escalate if approved behavior requires a new decision.",
+          "acceptance": [
+            {
+              "id": "ac-901",
+              "text": "The proposed contract and observable result are proven."
+            }
+          ],
+          "after": "Ready for task decomposition after design approval."
+        }
+      ]
+    },
+    {
+      "id": "design.traceability",
+      "role": "traceability",
+      "kicker": "Requirement fit walkthrough",
+      "title": "Stress every requirement against the proposal",
+      "summary": "Each requirement is mapped through the proposed entry, units, contracts, state, result, proof, and any user-owned mismatch.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.traceability.walkthrough",
+          "items": [
+            [
+              "Requirement",
+              "Approved acceptance, BDD scenario, user story, or technical specification from the authority source."
+            ],
+            [
+              "Fit",
+              "Fits the proposed architecture or is explicitly marked unresolved/blocked."
+            ],
+            [
+              "Path",
+              "Entry/trigger \u2192 handler/service \u2192 domain/state \u2192 repository/adapter \u2192 persistence/effect \u2192 result."
+            ],
+            [
+              "Proof",
+              "Boundary evidence demonstrates the requirement without silently weakening it."
+            ],
+            [
+              "Mismatch",
+              "Any non-fitting requirement names the decision owner and requests input before completion."
+            ]
           ]
         }
       ]
@@ -153,11 +299,26 @@
           "options": [
             {
               "id": "single-renderer",
-              "label": "One skill-relative renderer and report template"
+              "label": "One skill-relative renderer and report template",
+              "summary": "One skill-relative renderer and report template",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "specialized-templates",
-              "label": "Separate PRD/design/report templates kept in sync"
+              "label": "Separate PRD/design/report templates kept in sync",
+              "summary": "Separate PRD/design/report templates kept in sync",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "single-renderer",
@@ -165,7 +326,16 @@
           "owner": "Architecture owner",
           "blocking": true,
           "approvedBy": "Eval Product Owner",
-          "approvedAt": "2026-07-31"
+          "approvedAt": "2026-07-31",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         }
       ]
     },

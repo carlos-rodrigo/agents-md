@@ -26,7 +26,10 @@
             <li><a href="#design.authority">The sequence-first product contract is approved and current</a></li>
             <li><a href="#design.pressure">Temporal semantics must be added without destabilizing a trusted renderer</a></li>
             <li><a href="#design.seam">Version isolation keeps v1 frozen while sequence owns a direct v2 pipeline</a></li>
+            <li><a href="#design.shape">Define the end-state contract</a></li>
             <li><a href="#design.path">Source meaning becomes geometry only after strict semantic validation</a></li>
+            <li><a href="#design.slices">Reviewable vertical outcomes</a></li>
+            <li><a href="#design.traceability">Stress every requirement against the proposal</a></li>
             <li><a href="#design.diagram">The source-version seam isolates compatibility from new temporal layout</a></li>
             <li><a href="#design.decisions">Four blocking choices define the implementation boundary</a></li>
             <li><a href="#design.proof">Implementation planning is credible only with exact limits and observable gates</a></li>
@@ -89,6 +92,13 @@ start and end refs</code></pre></figure>
           <ul class="canonical-list canonical-list--checks" data-review-id="design.seam.contract-rules"><li>Top-level fields are exactly schemaVersion, diagramType, layoutVersion, mode, id, title, desc, optional reviewPrefix, participants, events, and activations. Authored coordinates, colors, CSS, fonts, icons, URLs, and arbitrary SVG are rejected.</li><li>schemaVersion, diagramType, and layoutVersion are fixed to system-diagram-v2, sequence, and sequence-v1. Mode is exactly component-communication, causal-code-flow, or outside-in-slice; mode remains the semantic question while diagramType is only the rendering grammar.</li><li>A participant contains exactly id, kind, and label. Kind is actor, external, system, service, or store; participant array order is authoritative.</li><li>A message contains exactly id, type message, messageType, from, to, label, kind, and replyTo only for return. messageType is sync, async, return, or self; kind is primary, secondary, success, warning, or risk.</li><li>Self requires identical endpoints. Other messages require distinct endpoints. Return requires replyTo naming an earlier message with reversed endpoints; replyTo is rejected for sync, async, and self.</li><li>A note contains exactly id, type note, text, kind, and exactly one participant or event anchor naming an existing element. Kind uses the same semantic enum as messages.</li><li>A fragment contains exactly id, type fragment, fragmentType, label, kind, and branches. A branch contains exactly id, label, and events. Alt has two to four non-empty labelled branches; opt and loop have exactly one non-empty labelled branch.</li><li>An activation contains exactly id, participant, startEvent, and endEvent. Both endpoints name messages involving that participant, start precedes end, and both belong to the same event container or fragment branch.</li><li>Every participant, event, branch, and activation ID is globally unique lowercase kebab text. Recursive event order and branch order are authoritative; omitted or unsupported fields never receive semantic defaults.</li><li>reviewPrefix is optional lowercase dot and kebab text. Output review IDs combine reviewPrefix, diagram id, element role, and element id; no author-supplied per-element review override is accepted in the initial contract.</li></ul>
           <dl class="facts" data-review-id="design.seam.visual-contract"><div><dt>Visual authority</dt><dd>The frozen infrastructure CSS supplies canvas, grid, typography, palette, surfaces, shadows, semantic route colors, and minimum text size; the extension may add components but no token or alternate style family.</dd></div><div><dt>Participants</dt><dd>Headers reuse the existing white node surface, technical kind label, semantic accent rail, and dot; a neutral dashed lifeline descends from each header.</dd></div><div><dt>Messages</dt><dd>Routes reuse primary, secondary, success, warning, and risk treatments. Every label also shows SYNC, ASYNC, RETURN, or SELF so line and color are not the sole meaning; return remains dashed and self uses an orthogonal loop.</dd></div><div><dt>Activations</dt><dd>White 12px rails with neutral borders sit on lifelines and use deterministic right offsets for nesting.</dd></div><div><dt>Fragments</dt><dd>Neutral infrastructure enclosures carry visible ALT, OPT, or LOOP labels, guard labels, and ruled branch separators; they never resemble report cards or page wireframes.</dd></div><div><dt>Notes</dt><dd>Notes reuse paper surfaces and semantic accent cues with a visible NOTE label; text remains searchable and within the established minimum size.</dd></div></dl>
         </section>
+<section class="section-card reveal" id="design.shape" aria-labelledby="design.shape-title" data-review-id="design.shape">
+          <span class="section-kicker">Proposed system shape</span>
+          <h2 id="design.shape-title">Define the end-state contract</h2>
+          <p class="section-summary">The proposal names changed units, contracts, state, and collaboration after implementation.</p>
+          <figure class="copyable-code" data-review-id="design.shape.contract"><figcaption>Proposed end-state contract</figcaption><pre><code>Inputs → owning seam → state transition → observable result. Define changed API/module/domain/data shapes, failure states, invariants, and recovery ownership here.</code></pre></figure>
+          <dl class="facts" data-review-id="design.shape.impact"><div><dt>Architecture and modules · Changed</dt><dd>Named existing and proposed units, responsibilities, collaboration, and non-responsibilities.</dd></div><div><dt>API and contracts · Unchanged</dt><dd>Existing public contracts remain compatible unless explicitly listed otherwise.</dd></div><div><dt>Domain and data · Unchanged</dt><dd>No domain owner or persistence boundary changes without an explicit decision.</dd></div><div><dt>Delivery, operations, and verification · Changed</dt><dd>Delivery boundary, failure proof, rollout posture, and regression surface are explicit.</dd></div></dl>
+        </section>
 <section class="section-card reveal" id="design.path" aria-labelledby="design.path-title" data-review-id="design.path">
           <span class="section-kicker">Key flows</span>
           <h2 id="design.path-title">Source meaning becomes geometry only after strict semantic validation</h2>
@@ -96,6 +106,45 @@ start and end refs</code></pre></figure>
           <ol class="step-list" data-review-id="design.path.sequence"><li data-review-id="design.path.select"><strong>Select</strong><br />The owning PRD or Design Solution matches a temporal communication question to sequence and retains its source-classified brief.</li><li data-review-id="design.path.preflight"><strong>Preflight</strong><br />The sequence renderer rejects raw input over 64 KiB before JSON parsing, then rejects unknown fields and invalid XML text.</li><li data-review-id="design.path.validate"><strong>Validate</strong><br />The v2 validator resolves participants, recursively counts events and fragments, validates references and branch rules, and returns normalized semantic data or one actionable error.</li><li data-review-id="design.path.layout"><strong>Lay out</strong><br />sequence-v1 measures text conservatively, sizes participant headers, expands lane gaps for labels, notes, and self messages, assigns one row per ordered event, encloses fragments, and places activation rails.</li><li data-review-id="design.path.render"><strong>Render</strong><br />The sequence serializer escapes all text and emits source digest, version metadata, stable IDs, title and description, lifelines, messages, fragments, labels, and renderer-owned reveal groups.</li><li data-review-id="design.path.embed"><strong>Verify and embed</strong><br />HTML Report Designer reads allowlisted root markers, enforces the v2 pre-parse size cap, confirms parsed source and marker agreement, invokes the matching exact renderer, verifies self-containment and infrastructure-v1 metadata, then embeds SVG beside the source-owned walkthrough.</li><li data-review-id="design.path.recover"><strong>Recover</strong><br />Invalid references, excessive dimensions, collisions, or unsupported topology stop before output; the owning skill refines or splits the brief and reruns the same path.</li></ol>
           <dl class="facts" data-review-id="design.path.layout-contract"><div><dt>Measurement</dt><dd>Count Unicode code points with one font em per non-space and one-half em per whitespace, round upward to integer units, wrap greedily at whitespace then by code point, and reject authored line breaks. This deliberately overestimates system-font text.</dd></div><div><dt>Horizontal order</dt><dd>Place participant headers in source order at 96px height. Initialize each adjacent lane gap to at least 220px and enough for half-header widths plus 48px clearance.</dd></div><div><dt>Horizontal expansion</dt><dd>Process events once in source order. A label, note, or 96px self-message gutter may only increase crossed lane gaps; divide any deficit evenly and assign remainder units to the earliest gaps.</dd></div><div><dt>Vertical order</dt><dd>Start events 64px below headers. Messages use 72px rows; note rows use at least 72px; fragment height is its 40px band plus ordered branch content, 24px separators, and 24px bottom clearance.</dd></div><div><dt>Fragments and activations</dt><dd>Stack fragment branches and nested events in source order. Activation rails are 12px wide at the participant center; concurrent depth offsets eight units to the right and never exceeds three.</dd></div><div><dt>Bounds</dt><dd>Extend lifelines 48px below the final event, add 48px outer padding, then reject any viewBox or SVG above the approved cap. No later pass compacts or reorders geometry.</dd></div></dl>
           <dl class="facts" data-review-id="design.path.branches"><div><dt>V1 compatibility flow</dt><dd>system-diagram-v1 continues through the existing renderer and exact report verifier; no v2 normalizer, layout, CSS extension, or metadata touches it.</dd></div><div><dt>Sequence success flow</dt><dd>Valid semantic source produces one byte-deterministic SVG and a report that preserves existing visual and walkthrough behavior.</dd></div><div><dt>Source failure flow</dt><dd>The first failing contract rule returns its stable field and event context; no partial SVG is written.</dd></div><div><dt>Tamper or staleness</dt><dd>A changed JSON digest, modified SVG, wrong renderer metadata, executable content, or unsupported version fails report rendering before HTML output.</dd></div><div><dt>Dimension recovery</dt><dd>Layout expands lanes and rows until the approved viewBox cap; it never reorders participants or events or shrinks below established text sizes, and asks for a split when the cap cannot hold the brief.</dd></div></dl>
+        </section>
+<section class="section-card reveal" id="design.slices" aria-labelledby="design.slices-title" data-review-id="design.slices">
+          <span class="section-kicker">Technical architecture slices</span>
+          <h2 id="design.slices-title">Reviewable vertical outcomes</h2>
+          <p class="section-summary">Each slice names technical elements, contract delta, failure ownership, dependencies, and proof.</p>
+          <article class="slice-card" data-review-id="arch-slice-001">
+            <header><h3><span class="id-chip">arch-slice-001</span>End-to-end proposed outcome</h3><p>the approved product promise is delivered through the selected architecture seam</p><p><strong>Boundary:</strong> Covers the changed system shape within approved scope.</p></header>
+            <p class="slice-story" data-review-id="arch-story-001">arch-story-001 · Feature: the system can apply the proposed architecture; outcome: the observable result is produced.</p>
+<dl class="facts slice-technical-facts"><div><dt>Entry point</dt><dd>The approved external trigger or public entry boundary.</dd></div><div><dt>Participating elements</dt><dd>Existing entry point · Proposed owning seam · Existing dependencies</dd></div><div><dt>Contract/state delta</dt><dd>Inputs, outputs, and compatibility consequences are explicit</dd></div><div><dt>Failure and recovery</dt><dd>Failure returns to the owning recovery boundary</dd></div></dl>
+          <article class="scenario-panel" data-review-id="arch-scenario-001">
+            <h3>Scenario: Successful path</h3>
+            <p class="scenario-line"><strong>Given</strong><span>approved inputs are available</span></p>
+            <p class="scenario-line"><strong>When</strong><span>the system follows the proposed path</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the result is observable</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Compose</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Compose" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="arch-step-001">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Compose</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>sources enter the seam</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>apply the contract and state rules</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>the owning unit returns the result</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>the next boundary receives stable output</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-901"><span class="id-chip">AC-901</span><span>The proposed contract and observable result are proven.</span></li>
+            </ul>
+            <aside class="callout tip"><strong>Proof and dependencies</strong><p>Contract fixtures and end-to-end observable proof Depends on: None.</p></aside>
+            <aside class="callout success" data-review-id="arch-slice-001.after"><strong>After this slice</strong><p>Ready for task decomposition after design approval.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="design.traceability" aria-labelledby="design.traceability-title" data-review-id="design.traceability">
+          <span class="section-kicker">Requirement fit walkthrough</span>
+          <h2 id="design.traceability-title">Stress every requirement against the proposal</h2>
+          <p class="section-summary">Each requirement is mapped through the proposed entry, units, contracts, state, result, proof, and any user-owned mismatch.</p>
+          <dl class="facts" data-review-id="design.traceability.walkthrough"><div><dt>Requirement</dt><dd>Approved acceptance, BDD scenario, user story, or technical specification from the authority source.</dd></div><div><dt>Fit</dt><dd>Fits the proposed architecture or is explicitly marked unresolved/blocked.</dd></div><div><dt>Path</dt><dd>Entry/trigger → handler/service → domain/state → repository/adapter → persistence/effect → result.</dd></div><div><dt>Proof</dt><dd>Boundary evidence demonstrates the requirement without silently weakening it.</dd></div><div><dt>Mismatch</dt><dd>Any non-fitting requirement names the decision owner and requests input before completion.</dd></div></dl>
         </section>
 <section class="section-card reveal" id="design.diagram" aria-labelledby="design.diagram-title" data-review-id="design.diagram">
           <span class="section-kicker">Architecture path</span>
@@ -291,9 +340,10 @@ start and end refs</code></pre></figure>
           <span class="section-kicker">Proposed architecture decisions</span>
           <h2 id="design.decisions-title">Four blocking choices define the implementation boundary</h2>
           <p class="section-summary">Browser recording is review input; these choices become architecture authority only after explicit design approval.</p>
-          <fieldset class="decision-recorder" data-review-id="decision.version-isolation" data-decision-status="accepted" data-decision-source-fingerprint="d142690b4400f55d7986775b110926875fc5e998b36adf781de237cedb8a602d" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+          <fieldset class="decision-recorder" data-review-id="decision.version-isolation" data-decision-status="accepted" data-decision-source-fingerprint="42bd09018643a3762538632e9940697a1576edc5288c0b746898b59c87441ca7" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>How should sequence generation coexist with system-diagram-v1?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.version-isolation-option" value="isolated-v2" checked disabled /><span>Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer</span></label>
               <label class="decision-option"><input type="radio" name="decision.version-isolation-option" value="shared-ir" disabled /><span>Route v1 and sequence through a new shared scene model and renderer</span></label>
@@ -302,11 +352,14 @@ start and end refs</code></pre></figure>
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Isolation makes byte compatibility mechanical and lets one temporal slice prove reusable needs before any shared IR exists.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
-          <fieldset class="decision-recorder" data-review-id="decision.sequence-source" data-decision-status="accepted" data-decision-source-fingerprint="d218256732567cf62ca31b673dd65a8a66668576f5d12f8bbc7a26595592a74b" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+          <fieldset class="decision-recorder" data-review-id="decision.sequence-source" data-decision-status="accepted" data-decision-source-fingerprint="979fe3c5d61a00f4d0161b5f28ebfee80ce5edcf3773cf8b3e372a490fd2455b" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>What should the sequence source own?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.sequence-source-option" value="semantic-order" checked disabled /><span>Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically</span></label>
               <label class="decision-option"><input type="radio" name="decision.sequence-source-option" value="authored-geometry" disabled /><span>Extend v1 with manually positioned lifelines, message paths, and fragment rectangles</span></label>
@@ -315,11 +368,14 @@ start and end refs</code></pre></figure>
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Temporal order and references are reviewable product and design semantics; coordinates are renderer mechanics and should not be reauthored for every sequence.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
-          <fieldset class="decision-recorder" data-review-id="decision.sequence-style" data-decision-status="accepted" data-decision-source-fingerprint="77a5f03f036ce6b5acae1b53db776a3577f5732dde55cf07d4ed608b9b078c88" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+          <fieldset class="decision-recorder" data-review-id="decision.sequence-style" data-decision-status="accepted" data-decision-source-fingerprint="7c02c5c10022f2c4664e5922cad5b3e8e4a37a01db74aaf6eb545bfbac552fa3" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>How should sequence primitives use the existing visual language without changing v1 bytes?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.sequence-style-option" value="base-plus-extension" checked disabled /><span>Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output</span></label>
               <label class="decision-option"><input type="radio" name="decision.sequence-style-option" value="modify-base" disabled /><span>Add sequence selectors to the base CSS embedded by v1</span></label>
@@ -328,11 +384,14 @@ start and end refs</code></pre></figure>
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The v2 artifact receives identical base tokens plus new lifeline, message, and fragment components while retained v1 SVG bytes remain unchanged.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
-          <fieldset class="decision-recorder" data-review-id="decision.report-version-adapter" data-decision-status="accepted" data-decision-source-fingerprint="fa3e743a65105c531aff18fcbc39ae05373479ae7b97c0d19f082e907a4c99b1" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
+          <fieldset class="decision-recorder" data-review-id="decision.report-version-adapter" data-decision-status="accepted" data-decision-source-fingerprint="9903dd4edceb7ec5cb567f7d0c08f02867849081aedf68c5053924f19fd1d691" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>How should canonical reports accept the new source without moving semantic ownership?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.report-version-adapter-option" value="internal-adapter" checked disabled /><span>Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type</span></label>
               <label class="decision-option"><input type="radio" name="decision.report-version-adapter-option" value="new-report-schema" disabled /><span>Create canonical-report-v2 and derive walkthrough content from sequence source</span></label>
@@ -341,6 +400,8 @@ start and end refs</code></pre></figure>
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The report block contract and walkthrough authority do not change; only provenance verification gains one explicitly supported source and renderer pair.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
         </section>
@@ -591,6 +652,43 @@ start and end refs</code></pre></figure>
       ]
     },
     {
+      "id": "design.shape",
+      "role": "shape",
+      "kicker": "Proposed system shape",
+      "title": "Define the end-state contract",
+      "summary": "The proposal names changed units, contracts, state, and collaboration after implementation.",
+      "blocks": [
+        {
+          "type": "code",
+          "id": "design.shape.contract",
+          "label": "Proposed end-state contract",
+          "content": "Inputs → owning seam → state transition → observable result. Define changed API/module/domain/data shapes, failure states, invariants, and recovery ownership here."
+        },
+        {
+          "type": "facts",
+          "id": "design.shape.impact",
+          "items": [
+            [
+              "Architecture and modules · Changed",
+              "Named existing and proposed units, responsibilities, collaboration, and non-responsibilities."
+            ],
+            [
+              "API and contracts · Unchanged",
+              "Existing public contracts remain compatible unless explicitly listed otherwise."
+            ],
+            [
+              "Domain and data · Unchanged",
+              "No domain owner or persistence boundary changes without an explicit decision."
+            ],
+            [
+              "Delivery, operations, and verification · Changed",
+              "Delivery boundary, failure proof, rollout posture, and regression surface are explicit."
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "design.path",
       "role": "path",
       "kicker": "Key flows",
@@ -697,6 +795,115 @@ start and end refs</code></pre></figure>
       ]
     },
     {
+      "id": "design.slices",
+      "role": "slices",
+      "kicker": "Technical architecture slices",
+      "title": "Reviewable vertical outcomes",
+      "summary": "Each slice names technical elements, contract delta, failure ownership, dependencies, and proof.",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "arch-slice-001",
+          "title": "End-to-end proposed outcome",
+          "outcome": "the approved product promise is delivered through the selected architecture seam",
+          "boundary": "Covers the changed system shape within approved scope.",
+          "story": {
+            "id": "arch-story-001",
+            "actor": "the system",
+            "capability": "apply the proposed architecture",
+            "outcome": "the observable result is produced"
+          },
+          "scenarios": [
+            {
+              "id": "arch-scenario-001",
+              "title": "Successful path",
+              "given": "approved inputs are available",
+              "when": "the system follows the proposed path",
+              "then": "the result is observable"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "arch-step-001",
+              "title": "Compose",
+              "context": "sources enter the seam",
+              "action": "apply the contract and state rules",
+              "response": "the owning unit returns the result",
+              "outcome": "the next boundary receives stable output"
+            }
+          ],
+          "acceptanceAnchors": [
+            "Approved product acceptance and design invariants"
+          ],
+          "entryPoint": "The approved external trigger or public entry boundary.",
+          "participatingElements": [
+            "Existing entry point",
+            "Proposed owning seam",
+            "Existing dependencies"
+          ],
+          "contractDelta": [
+            "Inputs, outputs, and compatibility consequences are explicit"
+          ],
+          "stateAndInvariants": [
+            "Ownership and invariants remain stable"
+          ],
+          "failureRecovery": [
+            "Failure returns to the owning recovery boundary"
+          ],
+          "proof": [
+            "Contract fixtures and end-to-end observable proof"
+          ],
+          "dependsOn": [
+            "None"
+          ],
+          "escalateIf": "Escalate if approved behavior requires a new decision.",
+          "acceptance": [
+            {
+              "id": "ac-901",
+              "text": "The proposed contract and observable result are proven."
+            }
+          ],
+          "after": "Ready for task decomposition after design approval."
+        }
+      ]
+    },
+    {
+      "id": "design.traceability",
+      "role": "traceability",
+      "kicker": "Requirement fit walkthrough",
+      "title": "Stress every requirement against the proposal",
+      "summary": "Each requirement is mapped through the proposed entry, units, contracts, state, result, proof, and any user-owned mismatch.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.traceability.walkthrough",
+          "items": [
+            [
+              "Requirement",
+              "Approved acceptance, BDD scenario, user story, or technical specification from the authority source."
+            ],
+            [
+              "Fit",
+              "Fits the proposed architecture or is explicitly marked unresolved/blocked."
+            ],
+            [
+              "Path",
+              "Entry/trigger → handler/service → domain/state → repository/adapter → persistence/effect → result."
+            ],
+            [
+              "Proof",
+              "Boundary evidence demonstrates the requirement without silently weakening it."
+            ],
+            [
+              "Mismatch",
+              "Any non-fitting requirement names the decision owner and requests input before completion."
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "design.diagram",
       "role": "diagram",
       "kicker": "Architecture path",
@@ -736,11 +943,26 @@ start and end refs</code></pre></figure>
           "options": [
             {
               "id": "isolated-v2",
-              "label": "Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer"
+              "label": "Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer",
+              "summary": "Keep the v1 modules, CLI, and CSS frozen and add a separate sequence v2 validator, layout, and renderer",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "shared-ir",
-              "label": "Route v1 and sequence through a new shared scene model and renderer"
+              "label": "Route v1 and sequence through a new shared scene model and renderer",
+              "summary": "Route v1 and sequence through a new shared scene model and renderer",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "isolated-v2",
@@ -748,7 +970,16 @@ start and end refs</code></pre></figure>
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-08-03"
+          "approvedAt": "2026-08-03",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         },
         {
           "type": "decision",
@@ -758,11 +989,26 @@ start and end refs</code></pre></figure>
           "options": [
             {
               "id": "semantic-order",
-              "label": "Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically"
+              "label": "Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically",
+              "summary": "Own participants, ordered events, fragments, activations, labels, and semantic kinds; derive geometry deterministically",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "authored-geometry",
-              "label": "Extend v1 with manually positioned lifelines, message paths, and fragment rectangles"
+              "label": "Extend v1 with manually positioned lifelines, message paths, and fragment rectangles",
+              "summary": "Extend v1 with manually positioned lifelines, message paths, and fragment rectangles",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "semantic-order",
@@ -770,7 +1016,16 @@ start and end refs</code></pre></figure>
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-08-03"
+          "approvedAt": "2026-08-03",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         },
         {
           "type": "decision",
@@ -780,11 +1035,26 @@ start and end refs</code></pre></figure>
           "options": [
             {
               "id": "base-plus-extension",
-              "label": "Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output"
+              "label": "Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output",
+              "summary": "Read the frozen infrastructure CSS and append a sequence-only component extension in v2 output",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "modify-base",
-              "label": "Add sequence selectors to the base CSS embedded by v1"
+              "label": "Add sequence selectors to the base CSS embedded by v1",
+              "summary": "Add sequence selectors to the base CSS embedded by v1",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "base-plus-extension",
@@ -792,7 +1062,16 @@ start and end refs</code></pre></figure>
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-08-03"
+          "approvedAt": "2026-08-03",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         },
         {
           "type": "decision",
@@ -802,11 +1081,26 @@ start and end refs</code></pre></figure>
           "options": [
             {
               "id": "internal-adapter",
-              "label": "Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type"
+              "label": "Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type",
+              "summary": "Keep canonical-report-v1 diagram blocks and walkthroughs; select exact verification by source schema and type",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "new-report-schema",
-              "label": "Create canonical-report-v2 and derive walkthrough content from sequence source"
+              "label": "Create canonical-report-v2 and derive walkthrough content from sequence source",
+              "summary": "Create canonical-report-v2 and derive walkthrough content from sequence source",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "internal-adapter",
@@ -814,7 +1108,16 @@ start and end refs</code></pre></figure>
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-08-03"
+          "approvedAt": "2026-08-03",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         }
       ]
     },

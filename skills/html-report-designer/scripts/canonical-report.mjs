@@ -19,7 +19,7 @@ const decisionStatuses = new Set(['open', 'proposed', 'accepted']);
 const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'decision', 'diagram', 'code', 'quote']);
 const requiredRoles = {
   prd: ['product', 'problem', 'behavior', 'diagram', 'slices', 'scope'],
-  design: ['authority', 'pressure', 'seam', 'path', 'diagram', 'decisions', 'proof', 'boundary'],
+  design: ['authority', 'pressure', 'seam', 'shape', 'path', 'slices', 'traceability', 'diagram', 'decisions', 'proof', 'boundary'],
   diagram: ['diagram'],
 };
 const specialBlockRoles = { diagram: 'diagram', slice: 'slices', decision: 'decisions' };
@@ -95,8 +95,8 @@ export function validateDocumentSpec(input) {
         case 'steps': validateSteps(block, blockLabel, ids, errors); break;
         case 'callout': validateCallout(block, blockLabel, errors); break;
         case 'scenario': validateScenario(block, blockLabel, errors); break;
-        case 'slice': sliceCount += 1; validateSlice(block, blockLabel, ids, errors); break;
-        case 'decision': decisionCount += 1; decisions.push(block); validateDecision(block, blockLabel, errors); break;
+        case 'slice': sliceCount += 1; validateSlice(block, blockLabel, ids, document.kind, errors); break;
+        case 'decision': decisionCount += 1; decisions.push(block); validateDecision(block, blockLabel, document.kind, errors); break;
         case 'diagram': diagramCount += 1; validateDiagram(block, blockLabel, errors); break;
         case 'code': validateCode(block, blockLabel, errors); break;
         case 'quote': validateQuote(block, blockLabel, errors); break;
@@ -121,6 +121,11 @@ export function validateDocumentSpec(input) {
   if (['prd', 'design', 'diagram'].includes(document.kind) && diagramCount !== 1) errors.push(`${document.kind} documents require exactly one System Diagram block`);
   if (document.kind === 'prd' && sliceCount === 0) errors.push('prd documents require at least one complete slice block');
   if (document.kind === 'design' && decisionCount === 0) errors.push('design documents require at least one architecture decision block');
+  if (document.kind === 'design' && sliceCount === 0) errors.push('design documents require at least one technical architecture slice block');
+  if (document.kind === 'design') {
+    const shapeBlocks = input.sections.find((section) => section.role === 'shape')?.blocks ?? [];
+    if (!shapeBlocks.some((block) => block.type === 'code')) errors.push('design documents require a shape code block defining the proposed end-state contract or algorithm');
+  }
   if (document.status === 'Approved' && decisions.some((decision) => decision.status !== 'accepted')) errors.push('Approved documents cannot contain open or proposed decisions');
   if (errors.length) throwInvalid(errors);
   return JSON.parse(JSON.stringify(input));
@@ -236,6 +241,7 @@ function renderSlice(slice) {
   return `          <article class="slice-card" data-review-id="${escapeAttribute(slice.id)}">
             <header><h3><span class="id-chip">${escapeHtml(slice.id)}</span>${escapeHtml(slice.title)}</h3><p>${escapeHtml(slice.outcome)}</p><p><strong>Boundary:</strong> ${escapeHtml(slice.boundary)}</p></header>
             <p class="slice-story" data-review-id="${escapeAttribute(slice.story.id)}">${escapeHtml(storyText)}</p>
+${slice.entryPoint ? `<dl class="facts slice-technical-facts"><div><dt>Entry point</dt><dd>${escapeHtml(slice.entryPoint)}</dd></div><div><dt>Participating elements</dt><dd>${escapeHtml(slice.participatingElements.join(' · '))}</dd></div><div><dt>Contract/state delta</dt><dd>${escapeHtml(slice.contractDelta.join(' · '))}</dd></div><div><dt>Failure and recovery</dt><dd>${escapeHtml(slice.failureRecovery.join(' · '))}</dd></div></dl>` : ''}
 ${scenarioMarkup}
             <div class="workflow-block">
               <div class="workflow-overview">
@@ -249,6 +255,7 @@ ${storyboardMarkup}
             <ul class="acceptance-list" aria-label="Acceptance criteria">
 ${acceptanceMarkup}
             </ul>
+            ${slice.proof ? `<aside class="callout tip"><strong>Proof and dependencies</strong><p>${escapeHtml(slice.proof.join(' · '))}${slice.dependsOn?.length ? ` Depends on: ${escapeHtml(slice.dependsOn.join(' · '))}.` : ''}</p></aside>` : ''}
             <aside class="callout success" data-review-id="${escapeAttribute(`${slice.id}.after`)}"><strong>After this slice</strong><p>${escapeHtml(slice.after)}</p></aside>
           </article>`;
 }
@@ -272,6 +279,7 @@ function renderDecision(decision) {
   return `          <fieldset class="decision-recorder" data-review-id="${escapeAttribute(decision.id)}" data-decision-status="${escapeAttribute(decision.status)}" data-decision-source-fingerprint="${decisionSourceFingerprint}"${authorityAttributes}>
             <legend>${escapeHtml(decision.question)}</legend>
             <div class="decision-meta"><span class="status-chip">${escapeHtml(decision.status)}</span><span>Owner: ${escapeHtml(decision.owner)}</span><span>${decision.blocking ? 'Blocking' : 'Non-blocking'}</span></div>
+            ${decision.decisionDrivers ? `<p class="decision-meta"><strong>Drivers:</strong> ${escapeHtml(decision.decisionDrivers.join(' · '))}</p>` : ''}
             <div class="decision-options">
 ${optionMarkup}
               <label class="decision-option"><input type="radio" name="${escapeAttribute(decision.id)}-option" value="other"${isCustomSelected ? ' checked' : ''}${disabledAttribute} /><span>Other / custom answer</span></label>
@@ -279,6 +287,8 @@ ${optionMarkup}
 ${customAnswerMarkup}            <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale${disabledAttribute}>${escapeHtml(decision.rationale ?? '')}</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="${escapeAttribute(decision.owner)}"${disabledAttribute} /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded${recordedAttribute} /><span>Decision recorded</span></label>
+            ${decision.consequences ? `<p class="decision-meta"><strong>Consequences:</strong> ${escapeHtml(decision.consequences.join(' · '))}</p>` : ''}
+            ${decision.revisitTrigger ? `<p class="decision-meta"><strong>Revisit when:</strong> ${escapeHtml(decision.revisitTrigger)}</p>` : ''}
             <p class="decision-status" role="status" aria-live="polite">${fallbackStatus}</p>
           </fieldset>`;
 }
@@ -347,10 +357,19 @@ function validateSteps(block, label, ids, errors) {
 }
 function validateCallout(block, label, errors) { requireOnly(block, ['type', 'id', 'tone', 'title', 'text'], label, errors); if (block.tone !== undefined) requireEnum(block.tone, new Set(['warning', 'danger', 'success', 'risk', 'tip']), `${label}.tone`, errors); requireText(block.title, `${label}.title`, errors); requireText(block.text, `${label}.text`, errors); }
 function validateScenario(block, label, errors) { requireOnly(block, ['type', 'id', 'title', 'given', 'when', 'then'], label, errors); for (const key of ['id', 'title', 'given', 'when', 'then']) requireText(block[key], `${label}.${key}`, errors); }
-function validateSlice(block, label, ids, errors) {
-  requireOnly(block, ['type', 'id', 'title', 'outcome', 'boundary', 'story', 'scenarios', 'mode', 'steps', 'acceptance', 'after'], label, errors);
+function validateSlice(block, label, ids, documentKind, errors) {
+  const designSlice = documentKind === 'design';
+  const allowed = ['type', 'id', 'title', 'outcome', 'boundary', 'story', 'scenarios', 'mode', 'steps', 'acceptance', 'after'];
+  if (designSlice) allowed.push('acceptanceAnchors', 'entryPoint', 'participatingElements', 'contractDelta', 'stateAndInvariants', 'failureRecovery', 'proof', 'dependsOn', 'escalateIf');
+  requireOnly(block, allowed, label, errors);
   for (const key of ['id', 'title', 'outcome', 'boundary', 'after']) requireText(block[key], `${label}.${key}`, errors);
   requireEnum(block.mode, new Set(['visual', 'non-visual']), `${label}.mode`, errors);
+  if (designSlice) {
+    for (const key of ['acceptanceAnchors', 'participatingElements', 'contractDelta', 'stateAndInvariants', 'failureRecovery', 'proof']) requireTextArray(block[key], `${label}.${key}`, errors);
+    if (!Array.isArray(block.dependsOn)) errors.push(`${label}.dependsOn must be an array`); else block.dependsOn.forEach((item, index) => requireText(item, `${label}.dependsOn[${index}]`, errors));
+    requireText(block.escalateIf, `${label}.escalateIf`, errors);
+    requireText(block.entryPoint, `${label}.entryPoint`, errors);
+  }
   if (!isObject(block.story)) {
     errors.push(`${label}.story must be an object`);
   } else {
@@ -394,8 +413,14 @@ function validateSlice(block, label, ids, errors) {
   }
   requireUniqueId(`${block.id}.after`, `${label}.after review ID`, ids, errors);
 }
-function validateDecision(block, label, errors) {
-  requireOnly(block, ['type', 'id', 'question', 'status', 'options', 'selectedOptionId', 'customAnswer', 'rationale', 'owner', 'blocking', 'approvedBy', 'approvedAt'], label, errors);
+function validateDecision(block, label, documentKind, errors) {
+  const designDecision = documentKind === 'design';
+  requireOnly(block, ['type', 'id', 'question', 'status', 'options', 'selectedOptionId', 'customAnswer', 'rationale', 'owner', 'blocking', 'approvedBy', 'approvedAt', 'decisionDrivers', 'consequences', 'revisitTrigger'], label, errors);
+  if (designDecision) {
+    requireTextArray(block.decisionDrivers, `${label}.decisionDrivers`, errors);
+    requireTextArray(block.consequences, `${label}.consequences`, errors);
+    requireText(block.revisitTrigger, `${label}.revisitTrigger`, errors);
+  }
   requireId(block.id, `${label}.id`, errors);
   requireText(block.question, `${label}.question`, errors);
   requireEnum(block.status, decisionStatuses, `${label}.status`, errors);
@@ -409,12 +434,20 @@ function validateDecision(block, label, errors) {
     block.options.forEach((option, index) => {
       const optionLabel = `${label}.options[${index}]`;
       if (!isObject(option)) { errors.push(`${optionLabel} must be an object`); return; }
-      requireOnly(option, ['id', 'label'], optionLabel, errors);
+      const optionAllowed = ['id', 'label'];
+      if (designDecision) optionAllowed.push('summary', 'benefits', 'costs', 'rejectionReason');
+      requireOnly(option, optionAllowed, optionLabel, errors);
       requireId(option.id, `${optionLabel}.id`, errors);
       if (option.id === 'other') errors.push(`${optionLabel}.id "other" is reserved for the renderer's custom answer`);
       if (optionIds.has(option.id)) errors.push(`${optionLabel}.id must be unique`);
       optionIds.add(option.id);
       requireText(option.label, `${optionLabel}.label`, errors);
+      if (designDecision) {
+        requireText(option.summary, `${optionLabel}.summary`, errors);
+        requireTextArray(option.benefits, `${optionLabel}.benefits`, errors);
+        requireTextArray(option.costs, `${optionLabel}.costs`, errors);
+        if (option.id !== block.selectedOptionId) requireText(option.rejectionReason, `${optionLabel}.rejectionReason`, errors);
+      }
     });
     if (block.selectedOptionId && block.selectedOptionId !== 'other' && !optionIds.has(block.selectedOptionId)) errors.push(`${label}.selectedOptionId must reference an option or "other"`);
   }

@@ -9,10 +9,35 @@ const skill = read('skills/design-solution/SKILL.md');
 
 assert(/^---\n[\s\S]*?name: design-solution\n[\s\S]*?description: [^\n]+\n[\s\S]*?---\n/.test(skill), 'design-solution needs valid frontmatter and a specific description');
 requireAll('design authority and structure', skill, [
-  'Start durable design only from an explicitly human-approved `prd.document.json`',
+  'Start durable product design only from an explicitly human-approved `prd.document.json`',
+  'Technical-evidence-backed solution',
+  'Evidence and discovery',
+  'evidence ledger',
+  'Direct implementation map',
+  'domain concepts/entities',
+  'controller/handler',
+  'application service/use case',
+  'repository/adapter/integration',
+  'database or external effect',
+  'event schema',
+  'delivery semantics',
+  'dead-letter',
+  'timeout',
+  'idempotency',
+  'scale in traffic, data volume, concurrency',
   'Skip a durable design for a tiny clear change',
   '**Approved** — only after explicit human approval',
-  '**`authority`**', '**`pressure`**', '**`seam`**', '**`path`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**',
+  '**`authority`**', '**`pressure`**', '**`seam`**', '**`shape`**', '**`path`**', '**`slices`**', '**`traceability`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**',
+  'System shape impact map',
+  'Architecture slices are required',
+  'Changed | Unchanged | Not applicable',
+  'API and contracts',
+  'Domain model',
+  'Data and persistence',
+  'Delivery and interface',
+  'Integrations',
+  'Operations and rollout',
+  'Verification shape',
   'references/optional-design-recipes.md',
   'Every durable design must invoke `system-diagram`',
   'do not use hand-authored SVGs or a `Diagram not applicable` escape',
@@ -22,14 +47,15 @@ requireAll('design authority and structure', skill, [
   '<html-report-designer-dir>/scripts/render-canonical-report.mjs',
   'create task files inside this skill',
 ]);
-assertInOrder(skill, ['**`authority`**', '**`pressure`**', '**`seam`**', '**`path`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**'], 'design role sequence');
+assertInOrder(skill, ['**`authority`**', '**`pressure`**', '**`seam`**', '**`shape`**', '**`path`**', '**`slices`**', '**`traceability`**', '**`diagram`**', '**`decisions`**', '**`proof`**', '**`boundary`**'], 'design role sequence');
 forbidAll('design presentation and workflow boundary', skill, [
   'design-template.html', '{{DESIGN_TOC}}', '{{COMPOSED_DESIGN_CONTENT}}', '.diagram-reveal', 'add `reveal`', 'explicit approved product brief', 'Slices/tasks:', 'execute directly',
 ]);
 
 const reference = 'skills/design-solution/references/optional-design-recipes.md';
 assert(existsSync(join(root, reference)), 'optional design recipes must exist');
-requireAll('optional design recipes', read(reference), ['Interface consequences', 'Contracts, domain, data, and persistence', 'Operations, rollout, and risk', 'Outside-in architecture slice outline', 'Traceability']);
+requireAll('design detail recipes', read(reference), ['System shape impact map', 'Interface consequences', 'Contracts, domain, data, and persistence', 'Operations, rollout, and risk', 'Outside-in architecture slice outline', 'Traceability', 'Changed | Unchanged | Not applicable']);
+requireAll('requirement walkthrough', skill, ['Requirement-to-solution walkthrough', 'Requirement: {stable source ID and short statement}', 'Mismatch/escalation']);
 
 const triggers = JSON.parse(read('skills/design-solution/evals/triggers.json'));
 assert(triggers.length >= 10, 'design trigger evals need broad positive/negative coverage');
@@ -40,7 +66,7 @@ assertUnique(triggers.map((item) => item.query), 'design trigger query');
 assertTrigger(triggers, 'Write a PRD because the actor workflow, permission behavior, and observable acceptance are still unclear.', false);
 assertTrigger(triggers, 'Translate the Approved import PRD into a technical design with ownership, retry recovery, and contracts.', true);
 
-console.log('PASS: design-solution has a concise approved-authority, architecture, decision, diagram, trigger, and task-boundary contract');
+console.log('PASS: design-solution requires explicit system shape, architecture slices, authority, decisions, diagrams, and task boundaries');
 
 function requireAll(label, content, markers) { const missing = markers.filter((marker) => !content.includes(marker)); assert(missing.length === 0, `${label} missing: ${missing.join(', ')}`); }
 function forbidAll(label, content, markers) { const found = markers.filter((marker) => content.includes(marker)); assert(found.length === 0, `${label} retains conflicting guidance: ${found.join(', ')}`); }

@@ -26,7 +26,10 @@
             <li><a href="#design.authority">The current PRD revision cannot authorize new design work</a></li>
             <li><a href="#design.pressure">CWD-relative templates and parallel render paths made drift inevitable</a></li>
             <li><a href="#design.seam">HTML Report Designer owns the sole rendering boundary</a></li>
+            <li><a href="#design.shape">Define the end-state contract</a></li>
             <li><a href="#design.path">Validated meaning crosses one rendering seam</a></li>
+            <li><a href="#design.slices">Reviewable vertical outcomes</a></li>
+            <li><a href="#design.traceability">Stress every requirement against the proposal</a></li>
             <li><a href="#design.diagram">The renderer seam sees content, figure provenance, and output together</a></li>
             <li><a href="#design.decisions">The architecture has one production path</a></li>
             <li><a href="#design.proof">Strict failure is cheaper than silent drift</a></li>
@@ -72,10 +75,56 @@
           <dl class="facts" data-review-id="design.seam.ownership"><div><dt>PRD</dt><dd>Owns required product roles, slices, acceptance, and product decision lifecycle.</dd></div><div><dt>Design Solution</dt><dd>Owns required architecture roles, seam, path, proof, and ADR consequences.</dd></div><div><dt>System Diagram</dt><dd>Owns evidence validation and bundled deterministic infrastructure JSON-to-SVG generation.</dd></div><div><dt>HTML Report Designer</dt><dd>Owns schema validation, block rendering, report template, CSS, navigation, review runtime, and report validation.</dd></div><div><dt>Human approver</dt><dd>Owns transition from Draft/Review/Proposed to Approved/Accepted.</dd></div></dl>
           <aside class="callout warning" data-review-id="design.seam.failure"><strong>No fallback path</strong><p>A missing companion skill, invalid profile, absent System Diagram provenance, or incomplete approval blocks generation instead of producing a substitute artifact.</p></aside>
         </section>
+<section class="section-card reveal" id="design.shape" aria-labelledby="design.shape-title" data-review-id="design.shape">
+          <span class="section-kicker">Proposed system shape</span>
+          <h2 id="design.shape-title">Define the end-state contract</h2>
+          <p class="section-summary">The proposal names changed units, contracts, state, and collaboration after implementation.</p>
+          <figure class="copyable-code" data-review-id="design.shape.contract"><figcaption>Proposed end-state contract</figcaption><pre><code>Inputs → owning seam → state transition → observable result. Define changed API/module/domain/data shapes, failure states, invariants, and recovery ownership here.</code></pre></figure>
+          <dl class="facts" data-review-id="design.shape.impact"><div><dt>Architecture and modules · Changed</dt><dd>Named existing and proposed units, responsibilities, collaboration, and non-responsibilities.</dd></div><div><dt>API and contracts · Unchanged</dt><dd>Existing public contracts remain compatible unless explicitly listed otherwise.</dd></div><div><dt>Domain and data · Unchanged</dt><dd>No domain owner or persistence boundary changes without an explicit decision.</dd></div><div><dt>Delivery, operations, and verification · Changed</dt><dd>Delivery boundary, failure proof, rollout posture, and regression surface are explicit.</dd></div></dl>
+        </section>
 <section class="section-card reveal" id="design.path" aria-labelledby="design.path-title" data-review-id="design.path">
           <span class="section-kicker">Causal path</span>
           <h2 id="design.path-title">Validated meaning crosses one rendering seam</h2>
           <ol class="step-list" data-review-id="design.path.steps"><li data-review-id="design.path.compose"><strong>Compose</strong><br />PRD or Design Solution writes canonical-report-v1 JSON with required section roles, stable IDs, approval state, and decisions.</li><li data-review-id="design.path.figure"><strong>Generate</strong><br />System Diagram validates a bounded question and renders retained system-diagram-v1 JSON into accessible infrastructure SVG.</li><li data-review-id="design.path.validate"><strong>Validate</strong><br />The canonical renderer rejects unknown fields, missing roles, incomplete slices, invalid decisions, and non-System Diagram figures.</li><li data-review-id="design.path.render"><strong>Render</strong><br />The renderer fills the sole report template and embeds shared CSS, navigation, decision runtime, DocumentSpec, and template digest.</li><li data-review-id="design.path.review"><strong>Review</strong><br />The human reads self-contained HTML and exports review decisions; an agent reconciles only explicitly accepted truth.</li></ol>
+        </section>
+<section class="section-card reveal" id="design.slices" aria-labelledby="design.slices-title" data-review-id="design.slices">
+          <span class="section-kicker">Technical architecture slices</span>
+          <h2 id="design.slices-title">Reviewable vertical outcomes</h2>
+          <p class="section-summary">Each slice names technical elements, contract delta, failure ownership, dependencies, and proof.</p>
+          <article class="slice-card" data-review-id="arch-slice-001">
+            <header><h3><span class="id-chip">arch-slice-001</span>End-to-end proposed outcome</h3><p>the approved product promise is delivered through the selected architecture seam</p><p><strong>Boundary:</strong> Covers the changed system shape within approved scope.</p></header>
+            <p class="slice-story" data-review-id="arch-story-001">arch-story-001 · Feature: the system can apply the proposed architecture; outcome: the observable result is produced.</p>
+<dl class="facts slice-technical-facts"><div><dt>Entry point</dt><dd>The approved external trigger or public entry boundary.</dd></div><div><dt>Participating elements</dt><dd>Existing entry point · Proposed owning seam · Existing dependencies</dd></div><div><dt>Contract/state delta</dt><dd>Inputs, outputs, and compatibility consequences are explicit</dd></div><div><dt>Failure and recovery</dt><dd>Failure returns to the owning recovery boundary</dd></div></dl>
+          <article class="scenario-panel" data-review-id="arch-scenario-001">
+            <h3>Scenario: Successful path</h3>
+            <p class="scenario-line"><strong>Given</strong><span>approved inputs are available</span></p>
+            <p class="scenario-line"><strong>When</strong><span>the system follows the proposed path</span></p>
+            <p class="scenario-line"><strong>Then</strong><span>the result is observable</span></p>
+          </article>
+            <div class="workflow-block">
+              <div class="workflow-overview">
+                <span class="workflow-label">System workflow</span>
+                <p class="workflow-sequence" aria-hidden="true"><span>Compose</span></p>
+              </div>
+              <ol class="storyboard" aria-label="System workflow: Compose" style="--workflow-step-count: 1">
+            <li class="storyboard-step" data-review-id="arch-step-001">
+              <div class="workflow-step-heading"><span class="workflow-step-number" aria-hidden="true">01</span><h4>Compose</h4></div>
+              <dl><div class="workflow-detail workflow-detail--input"><dt>Input</dt><dd>sources enter the seam</dd></div><div class="workflow-detail workflow-detail--action"><dt>Action</dt><dd>apply the contract and state rules</dd></div><div class="workflow-detail workflow-detail--handoff"><dt>Handoff</dt><dd>the owning unit returns the result</dd></div><div class="workflow-detail workflow-detail--result"><dt>Result</dt><dd>the next boundary receives stable output</dd></div></dl>
+            </li>
+              </ol>
+            </div>
+            <ul class="acceptance-list" aria-label="Acceptance criteria">
+            <li data-review-id="ac-901"><span class="id-chip">AC-901</span><span>The proposed contract and observable result are proven.</span></li>
+            </ul>
+            <aside class="callout tip"><strong>Proof and dependencies</strong><p>Contract fixtures and end-to-end observable proof Depends on: None.</p></aside>
+            <aside class="callout success" data-review-id="arch-slice-001.after"><strong>After this slice</strong><p>Ready for task decomposition after design approval.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="design.traceability" aria-labelledby="design.traceability-title" data-review-id="design.traceability">
+          <span class="section-kicker">Requirement fit walkthrough</span>
+          <h2 id="design.traceability-title">Stress every requirement against the proposal</h2>
+          <p class="section-summary">Each requirement is mapped through the proposed entry, units, contracts, state, result, proof, and any user-owned mismatch.</p>
+          <dl class="facts" data-review-id="design.traceability.walkthrough"><div><dt>Requirement</dt><dd>Approved acceptance, BDD scenario, user story, or technical specification from the authority source.</dd></div><div><dt>Fit</dt><dd>Fits the proposed architecture or is explicitly marked unresolved/blocked.</dd></div><div><dt>Path</dt><dd>Entry/trigger → handler/service → domain/state → repository/adapter → persistence/effect → result.</dd></div><div><dt>Proof</dt><dd>Boundary evidence demonstrates the requirement without silently weakening it.</dd></div><div><dt>Mismatch</dt><dd>Any non-fitting requirement names the decision owner and requests input before completion.</dd></div></dl>
         </section>
 <section class="section-card reveal" id="design.diagram" aria-labelledby="design.diagram-title" data-review-id="design.diagram">
           <span class="section-kicker">Architecture path</span>
@@ -269,9 +318,10 @@
 <section class="section-card reveal" id="design.decisions" aria-labelledby="design.decisions-title" data-review-id="design.decisions">
           <span class="section-kicker">Accepted decisions</span>
           <h2 id="design.decisions-title">The architecture has one production path</h2>
-          <fieldset class="decision-recorder" data-review-id="decision.renderer-seam" data-decision-status="accepted" data-decision-source-fingerprint="ec71ec47fcdddaeca34384c24d768a37e78bd0d3354aa47e2083c6ac6421440a" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
+          <fieldset class="decision-recorder" data-review-id="decision.renderer-seam" data-decision-status="accepted" data-decision-source-fingerprint="f57e0c6f738c438e6ec9c3f0fa24a0c211b4a37a82c86e93d4a259d9f0131987" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
             <legend>Which module owns report markup, CSS, runtime, and profile validation?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.renderer-seam-option" value="html-report-designer" checked disabled /><span>Bundled HTML Report Designer renderer</span></label>
               <label class="decision-option"><input type="radio" name="decision.renderer-seam-option" value="owning-skills" disabled /><span>PRD/design skills hand-author their own reports</span></label>
@@ -280,11 +330,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>The renderer sees all presentation concerns and can stay portable and deterministic without weakening domain ownership.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-07-28.</p>
           </fieldset>
-          <fieldset class="decision-recorder" data-review-id="decision.structured-source" data-decision-status="accepted" data-decision-source-fingerprint="4a683dd2c688c3fbeff92d64375a2f69b8424332418c0b6b5b58eed0aacb331e" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
+          <fieldset class="decision-recorder" data-review-id="decision.structured-source" data-decision-status="accepted" data-decision-source-fingerprint="a9a24dc3ca126d3fe21f666a3b6d2b84a1795e494606a5a4714e4d62780cf864" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
             <legend>What is the editable source of a durable report?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.structured-source-option" value="document-spec" checked disabled /><span>Strict canonical-report-v1 structured JSON</span></label>
               <label class="decision-option"><input type="radio" name="decision.structured-source-option" value="generated-html" disabled /><span>Generated HTML edited directly</span></label>
@@ -293,11 +346,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Structured source makes content profiles, approval, decision lifecycle, deterministic regeneration, and review anchors enforceable.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-07-28.</p>
           </fieldset>
-          <fieldset class="decision-recorder" data-review-id="decision.diagram-boundary" data-decision-status="accepted" data-decision-source-fingerprint="93322be5926e6dfc64fa2f85cd0368cff95f641b385b8f95b6960047c1d35776" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-02">
+          <fieldset class="decision-recorder" data-review-id="decision.diagram-boundary" data-decision-status="accepted" data-decision-source-fingerprint="917e4298307ea1ac8db2f93f9b0c21430198f78e15f74d6e8c38e1d0eeee48a2" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-02">
             <legend>How are diagrams supplied to the report renderer?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+            <p class="decision-meta"><strong>Drivers:</strong> Ownership clarity · Compatibility · Testability</p>
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.diagram-boundary-option" value="system-svg-pair" checked disabled /><span>System Diagram supplies retained system-diagram-v1 JSON and generated infrastructure SVG</span></label>
               <label class="decision-option"><input type="radio" name="decision.diagram-boundary-option" value="excalidraw-pair" disabled /><span>System Diagram supplies Excalidraw JSON and exported SVG</span></label>
@@ -306,6 +362,8 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>A dedicated deterministic SVG/CSS renderer keeps evidence, geometry, accessibility, provenance, and visual language consistent without a browser export backend.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+            <p class="decision-meta"><strong>Consequences:</strong> Selected seam centralizes responsibility.</p>
+            <p class="decision-meta"><strong>Revisit when:</strong> Revisit if requirements or evidence changes.</p>
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-02.</p>
           </fieldset>
         </section>
@@ -466,6 +524,43 @@
       ]
     },
     {
+      "id": "design.shape",
+      "role": "shape",
+      "kicker": "Proposed system shape",
+      "title": "Define the end-state contract",
+      "summary": "The proposal names changed units, contracts, state, and collaboration after implementation.",
+      "blocks": [
+        {
+          "type": "code",
+          "id": "design.shape.contract",
+          "label": "Proposed end-state contract",
+          "content": "Inputs → owning seam → state transition → observable result. Define changed API/module/domain/data shapes, failure states, invariants, and recovery ownership here."
+        },
+        {
+          "type": "facts",
+          "id": "design.shape.impact",
+          "items": [
+            [
+              "Architecture and modules · Changed",
+              "Named existing and proposed units, responsibilities, collaboration, and non-responsibilities."
+            ],
+            [
+              "API and contracts · Unchanged",
+              "Existing public contracts remain compatible unless explicitly listed otherwise."
+            ],
+            [
+              "Domain and data · Unchanged",
+              "No domain owner or persistence boundary changes without an explicit decision."
+            ],
+            [
+              "Delivery, operations, and verification · Changed",
+              "Delivery boundary, failure proof, rollout posture, and regression surface are explicit."
+            ]
+          ]
+        }
+      ]
+    },
+    {
       "id": "design.path",
       "role": "path",
       "kicker": "Causal path",
@@ -500,6 +595,115 @@
               "title": "Review",
               "text": "The human reads self-contained HTML and exports review decisions; an agent reconciles only explicitly accepted truth."
             }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design.slices",
+      "role": "slices",
+      "kicker": "Technical architecture slices",
+      "title": "Reviewable vertical outcomes",
+      "summary": "Each slice names technical elements, contract delta, failure ownership, dependencies, and proof.",
+      "blocks": [
+        {
+          "type": "slice",
+          "id": "arch-slice-001",
+          "title": "End-to-end proposed outcome",
+          "outcome": "the approved product promise is delivered through the selected architecture seam",
+          "boundary": "Covers the changed system shape within approved scope.",
+          "story": {
+            "id": "arch-story-001",
+            "actor": "the system",
+            "capability": "apply the proposed architecture",
+            "outcome": "the observable result is produced"
+          },
+          "scenarios": [
+            {
+              "id": "arch-scenario-001",
+              "title": "Successful path",
+              "given": "approved inputs are available",
+              "when": "the system follows the proposed path",
+              "then": "the result is observable"
+            }
+          ],
+          "mode": "non-visual",
+          "steps": [
+            {
+              "id": "arch-step-001",
+              "title": "Compose",
+              "context": "sources enter the seam",
+              "action": "apply the contract and state rules",
+              "response": "the owning unit returns the result",
+              "outcome": "the next boundary receives stable output"
+            }
+          ],
+          "acceptanceAnchors": [
+            "Approved product acceptance and design invariants"
+          ],
+          "entryPoint": "The approved external trigger or public entry boundary.",
+          "participatingElements": [
+            "Existing entry point",
+            "Proposed owning seam",
+            "Existing dependencies"
+          ],
+          "contractDelta": [
+            "Inputs, outputs, and compatibility consequences are explicit"
+          ],
+          "stateAndInvariants": [
+            "Ownership and invariants remain stable"
+          ],
+          "failureRecovery": [
+            "Failure returns to the owning recovery boundary"
+          ],
+          "proof": [
+            "Contract fixtures and end-to-end observable proof"
+          ],
+          "dependsOn": [
+            "None"
+          ],
+          "escalateIf": "Escalate if approved behavior requires a new decision.",
+          "acceptance": [
+            {
+              "id": "ac-901",
+              "text": "The proposed contract and observable result are proven."
+            }
+          ],
+          "after": "Ready for task decomposition after design approval."
+        }
+      ]
+    },
+    {
+      "id": "design.traceability",
+      "role": "traceability",
+      "kicker": "Requirement fit walkthrough",
+      "title": "Stress every requirement against the proposal",
+      "summary": "Each requirement is mapped through the proposed entry, units, contracts, state, result, proof, and any user-owned mismatch.",
+      "blocks": [
+        {
+          "type": "facts",
+          "id": "design.traceability.walkthrough",
+          "items": [
+            [
+              "Requirement",
+              "Approved acceptance, BDD scenario, user story, or technical specification from the authority source."
+            ],
+            [
+              "Fit",
+              "Fits the proposed architecture or is explicitly marked unresolved/blocked."
+            ],
+            [
+              "Path",
+              "Entry/trigger → handler/service → domain/state → repository/adapter → persistence/effect → result."
+            ],
+            [
+              "Proof",
+              "Boundary evidence demonstrates the requirement without silently weakening it."
+            ],
+            [
+              "Mismatch",
+              "Any non-fitting requirement names the decision owner and requests input before completion."
+            ]
           ]
         }
       ]
@@ -541,11 +745,26 @@
           "options": [
             {
               "id": "html-report-designer",
-              "label": "Bundled HTML Report Designer renderer"
+              "label": "Bundled HTML Report Designer renderer",
+              "summary": "Bundled HTML Report Designer renderer",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "owning-skills",
-              "label": "PRD/design skills hand-author their own reports"
+              "label": "PRD/design skills hand-author their own reports",
+              "summary": "PRD/design skills hand-author their own reports",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "html-report-designer",
@@ -553,7 +772,16 @@
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-07-28"
+          "approvedAt": "2026-07-28",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         },
         {
           "type": "decision",
@@ -563,11 +791,26 @@
           "options": [
             {
               "id": "document-spec",
-              "label": "Strict canonical-report-v1 structured JSON"
+              "label": "Strict canonical-report-v1 structured JSON",
+              "summary": "Strict canonical-report-v1 structured JSON",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "generated-html",
-              "label": "Generated HTML edited directly"
+              "label": "Generated HTML edited directly",
+              "summary": "Generated HTML edited directly",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "document-spec",
@@ -575,7 +818,16 @@
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-07-28"
+          "approvedAt": "2026-07-28",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         },
         {
           "type": "decision",
@@ -585,11 +837,26 @@
           "options": [
             {
               "id": "system-svg-pair",
-              "label": "System Diagram supplies retained system-diagram-v1 JSON and generated infrastructure SVG"
+              "label": "System Diagram supplies retained system-diagram-v1 JSON and generated infrastructure SVG",
+              "summary": "System Diagram supplies retained system-diagram-v1 JSON and generated infrastructure SVG",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ]
             },
             {
               "id": "excalidraw-pair",
-              "label": "System Diagram supplies Excalidraw JSON and exported SVG"
+              "label": "System Diagram supplies Excalidraw JSON and exported SVG",
+              "summary": "System Diagram supplies Excalidraw JSON and exported SVG",
+              "benefits": [
+                "Fits the decision drivers."
+              ],
+              "costs": [
+                "Has documented tradeoffs."
+              ],
+              "rejectionReason": "Rejected because another option better fits the drivers."
             }
           ],
           "selectedOptionId": "system-svg-pair",
@@ -597,7 +864,16 @@
           "owner": "Carlos Rodrigo",
           "blocking": true,
           "approvedBy": "Carlos Rodrigo",
-          "approvedAt": "2026-08-02"
+          "approvedAt": "2026-08-02",
+          "decisionDrivers": [
+            "Ownership clarity",
+            "Compatibility",
+            "Testability"
+          ],
+          "consequences": [
+            "Selected seam centralizes responsibility."
+          ],
+          "revisitTrigger": "Revisit if requirements or evidence changes."
         }
       ]
     },
