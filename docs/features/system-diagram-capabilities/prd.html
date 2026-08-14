@@ -28,6 +28,7 @@
             <li><a href="#prd.behavior">The owning skill chooses the question; System Diagram generates the explanation</a></li>
             <li><a href="#prd.diagram">Authority stays with the document while generation becomes capability-aware</a></li>
             <li><a href="#prd.slices">Five end-to-end outcomes expand the skill safely</a></li>
+            <li><a href="#prd.requirements">Stress the requirements together</a></li>
             <li><a href="#prd.scope">One skill and one visual language, delivered in bounded slices</a></li>
             <li><a href="#prd.decisions">Capability, authority, and delivery direction are explicit</a></li>
           </ol>
@@ -273,6 +274,7 @@
           <article class="slice-card" data-review-id="slice-001">
             <header><h3><span class="id-chip">slice-001</span>Choose the capability from the explanatory question</h3><p>PRD or Design Solution can request a diagram that matches the situation being reviewed.</p><p><strong>Boundary:</strong> System Diagram does not infer product or architecture truth, and capability choice does not authorize additional diagrams or implementation.</p></header>
             <p class="slice-story" data-review-id="story-001">story-001 · Feature: an owning document skill can select an explanatory diagram capability from a bounded situation; outcome: the generated figure answers the intended question without changing its meaning.</p>
+
           <article class="scenario-panel" data-review-id="ex-001">
             <h3>Scenario: Supported explanatory question</h3>
             <p class="scenario-line"><strong>Given</strong><span>PRD or Design Solution has a sourced situation, audience, question, path, uncertainty, and walkthrough</span></p>
@@ -302,11 +304,13 @@
             <li data-review-id="ac-002"><span class="id-chip">AC-002</span><span>A brief with missing evidence, mixed abstraction, or unsupported semantics produces a blocker that identifies what must be clarified or split.</span></li>
             <li data-review-id="ac-003"><span class="id-chip">AC-003</span><span>Generated labels, actors, states, boundaries, and relationships all trace to the owning brief rather than renderer inference.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-001.after"><strong>After this slice</strong><p>After this slice, the document workflow can choose one explanatory capability without transferring semantic authority.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-002">
             <header><h3><span class="id-chip">slice-002</span>Explain temporal communication with a sequence diagram</h3><p>A reviewer can follow who communicates with whom and in what order, including material alternatives or recovery.</p><p><strong>Boundary:</strong> The initial capability excludes timing diagrams, actor creation/destruction, arbitrary icons, and deeply nested parallel or critical fragments.</p></header>
             <p class="slice-story" data-review-id="story-002">story-002 · Feature: a PRD or Design Solution author can explain participant communication in temporal order; outcome: the reviewer can follow the interaction and its recovery without reading a generic graph.</p>
+
           <article class="scenario-panel" data-review-id="ex-003">
             <h3>Scenario: Temporal interaction</h3>
             <p class="scenario-line"><strong>Given</strong><span>the brief names ordered participants, messages, material notes, activation spans, and any alternative, optional, or loop fragment</span></p>
@@ -337,11 +341,13 @@
             <li data-review-id="ac-006"><span class="id-chip">AC-006</span><span>The approved envelope allows at most sixteen notes, twelve fragments at depth three, and sixteen activations at simultaneous depth three; exceeding it fails with split guidance.</span></li>
             <li data-review-id="ac-007"><span class="id-chip">AC-007</span><span>Sequence output uses the established infrastructure-v1 visual language and does not change byte-current v1 fixtures.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-002.after"><strong>After this slice</strong><p>After this slice, System Diagram can generate its first genuinely temporal explanatory figure.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-003">
             <header><h3><span class="id-chip">slice-003</span>Explain progression and recovery with a flow diagram</h3><p>A reviewer can follow work or state from trigger through decisions to outcome or recovery.</p><p><strong>Boundary:</strong> The flow is not an architecture inventory and does not use page composition to explain causality.</p></header>
             <p class="slice-story" data-review-id="story-003">story-003 · Feature: a product or architecture document author can explain progression, branching, and recovery as one flow; outcome: the reviewer can identify each guarded decision and resulting outcome.</p>
+
           <article class="scenario-panel" data-review-id="ex-005">
             <h3>Scenario: Bounded progression</h3>
             <p class="scenario-line"><strong>Given</strong><span>the brief supplies a start, ordered actions or states, guarded decisions, merges, outcomes, and material feedback or recovery</span></p>
@@ -365,11 +371,13 @@
             <li data-review-id="ac-009"><span class="id-chip">AC-009</span><span>A disconnected element, unlabeled decision branch, or unsupported loop fails instead of appearing as unexplained adjacency.</span></li>
             <li data-review-id="ac-010"><span class="id-chip">AC-010</span><span>The flow remains readable in the established style at desktop, local 320px overflow, and print sizes.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-003.after"><strong>After this slice</strong><p>After this slice, System Diagram can generate bounded causal flows without treating a generic node map as a process.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-004">
             <header><h3><span class="id-chip">slice-004</span>Explain bounded communication with an architecture view</h3><p>A reviewer can see which systems or containers communicate across relevant runtime or ownership boundaries.</p><p><strong>Boundary:</strong> One figure uses one declared abstraction level; deployment instances, automatic multi-level zoom, and vendor icon packs remain out of scope.</p></header>
             <p class="slice-story" data-review-id="story-004">story-004 · Feature: a Design Solution author can explain static communication at one architecture level; outcome: the reviewer can identify responsibilities, boundaries, and labelled relationships.</p>
+
           <article class="scenario-panel" data-review-id="ex-006">
             <h3>Scenario: One bounded architecture level</h3>
             <p class="scenario-line"><strong>Given</strong><span>the approved design brief names one context or container scope, relevant people or runtime units, boundaries, and labelled relationships</span></p>
@@ -393,11 +401,13 @@
             <li data-review-id="ac-012"><span class="id-chip">AC-012</span><span>Every relationship is directional and labelled, and a runtime/container boundary crossing includes the supplied protocol.</span></li>
             <li data-review-id="ac-013"><span class="id-chip">AC-013</span><span>PRD cannot use the architecture capability to introduce technical boundaries that are absent from approved product truth.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-004.after"><strong>After this slice</strong><p>After this slice, Design Solution can request a consistent static architecture explanation without changing diagram style.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-005">
             <header><h3><span class="id-chip">slice-005</span>Explain one scope through component decomposition</h3><p>A reviewer can understand how one approved container or module decomposes and which interfaces connect its parts.</p><p><strong>Boundary:</strong> The capability does not produce class/member diagrams, source-file inventories, or whole-system deployment views.</p></header>
             <p class="slice-story" data-review-id="story-005">story-005 · Feature: a Design Solution author can explain component responsibilities and interfaces inside one scope; outcome: the reviewer can identify each dependency and unresolved contract.</p>
+
           <article class="scenario-panel" data-review-id="ex-007">
             <h3>Scenario: One-scope decomposition</h3>
             <p class="scenario-line"><strong>Given</strong><span>the approved design brief names one container or module, its components, short responsibilities, interfaces, and dependencies</span></p>
@@ -421,7 +431,17 @@
             <li data-review-id="ac-015"><span class="id-chip">AC-015</span><span>Every interface has unique supplied ownership, every dependency resolves to existing elements, and unmatched required interfaces fail validation.</span></li>
             <li data-review-id="ac-016"><span class="id-chip">AC-016</span><span>The output omits classes, members, source files, and unrelated external topology.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-005.after"><strong>After this slice</strong><p>After this slice, Design Solution can explain one component boundary without turning the diagram into a code inventory.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="prd.requirements" aria-labelledby="prd.requirements-title" data-review-id="prd.requirements">
+          <span class="section-kicker">Requirement coherence</span>
+          <h2 id="prd.requirements-title">Stress the requirements together</h2>
+          <p class="section-summary">Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.</p>
+          <article class="requirement-panel " data-review-id="req-001">
+            <h3>req-001 · The approved product behavior composes as one coherent path</h3>
+            <dl class="facts"><div><dt>Authority</dt><dd>Proposed recommendation — The requirement set defined by this PRD and its reviewed product evidence</dd></div><div><dt>BDD coverage</dt><dd><ul><li>ex-001</li></ul></dd></div><div><dt>Product path</dt><dd>actor trigger → product state change → decision → observable result</dd></div><div><dt>Dependencies</dt><dd><ul><li>The BDD scenario and acceptance criterion in the primary slice</li></ul></dd></div><div><dt>Interactions</dt><dd><ul><li>The requirement constrains the shared behavior, scope, and acceptance boundary</li></ul></dd></div><div><dt>Collision check</dt><dd>none — The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.</dd></div><div><dt>Acceptance proof</dt><dd>The referenced BDD path and ac-001 provide an independently observable product result.</dd></div></dl>
           </article>
         </section>
 <section class="section-card reveal" id="prd.scope" aria-labelledby="prd.scope-title" data-review-id="prd.scope">
@@ -435,6 +455,7 @@
           <fieldset class="decision-recorder" data-review-id="decision.one-skill-one-style" data-decision-status="accepted" data-decision-source-fingerprint="9c720e64165f80559e012d302b6b8fa869599c8e334d5f85b033abac7ffcf061" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>How should the four diagram capabilities enter the workflow?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.one-skill-one-style-option" value="extend-existing" checked disabled /><span>Extend the existing System Diagram skill and reuse infrastructure-v1</span></label>
               <label class="decision-option"><input type="radio" name="decision.one-skill-one-style-option" value="separate-tools" disabled /><span>Create separate diagram skills or visual languages for each type</span></label>
@@ -443,11 +464,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>One skill can learn multiple explanatory grammars while preserving the visual and validation contract reviewers already recognize.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
           <fieldset class="decision-recorder" data-review-id="decision.responsibility-split" data-decision-status="accepted" data-decision-source-fingerprint="60541bf085195699743eb53cc7cd9a725dee78b4f42e026a3ee320be66a034b8" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>Who decides when, what, and how a situation is illustrated?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.responsibility-split-option" value="domain-owns-meaning" checked disabled /><span>PRD/Design Solution own when and what; System Diagram owns generation; HTML Report Designer embeds</span></label>
               <label class="decision-option"><input type="radio" name="decision.responsibility-split-option" value="renderer-owns-meaning" disabled /><span>System Diagram infers the situation and report placement from available files</span></label>
@@ -456,11 +480,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Product and architecture authority must remain with the skills that own those domains; rendering cannot safely invent semantics.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
           <fieldset class="decision-recorder" data-review-id="decision.sequence-first" data-decision-status="accepted" data-decision-source-fingerprint="80a037cd67519916bb213be9c7cdc85e73d9c22bff14c75b2808204daf136bc9" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>How should implementation progress across the four capabilities?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.sequence-first-option" value="vertical-sequence" checked disabled /><span>Deliver sequence as the first complete vertical slice, then evaluate each graph capability</span></label>
               <label class="decision-option"><input type="radio" name="decision.sequence-first-option" value="all-foundations" disabled /><span>Build shared foundations for all four capabilities before one works end to end</span></label>
@@ -469,6 +496,8 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Sequence is the genuinely new temporal grammar; a complete slice proves the contract before shared abstractions or additional graph behavior are justified.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
         </section>
@@ -929,6 +958,36 @@
             }
           ],
           "after": "After this slice, Design Solution can explain one component boundary without turning the diagram into a code inventory."
+        }
+      ]
+    },
+    {
+      "id": "prd.requirements",
+      "role": "requirements",
+      "kicker": "Requirement coherence",
+      "title": "Stress the requirements together",
+      "summary": "Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.",
+      "blocks": [
+        {
+          "type": "requirement",
+          "id": "req-001",
+          "title": "The approved product behavior composes as one coherent path",
+          "sourceType": "Proposed recommendation",
+          "source": "The requirement set defined by this PRD and its reviewed product evidence",
+          "bddRefs": [
+            "ex-001"
+          ],
+          "path": "actor trigger → product state change → decision → observable result",
+          "dependencies": [
+            "The BDD scenario and acceptance criterion in the primary slice"
+          ],
+          "interactions": [
+            "The requirement constrains the shared behavior, scope, and acceptance boundary"
+          ],
+          "collision": "none",
+          "resolution": "The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.",
+          "proof": "The referenced BDD path and ac-001 provide an independently observable product result.",
+          "status": "covered"
         }
       ]
     },

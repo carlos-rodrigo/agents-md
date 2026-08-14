@@ -48,3 +48,7 @@ For each outcome, scenario, step, criterion, and after-slice statement, reduce i
 - after-slice owns only the net-new capability.
 
 Do not paraphrase a `Then` as both a storyboard outcome and acceptance criterion. An acceptance criterion may trace to that `Then`, but it must add a stable, independently observable pass/fail signal or boundary. Do not use tables or manufacture alternative approaches. Reuse the existing product shell, terminology, density, navigation, and controls; show only the material UI delta.
+
+## Requirement coherence walkthrough
+
+Requirement coherence is defined in [requirement-coherence.md](requirement-coherence.md). Load it after composing slices when the PRD contains multiple requirements or cross-scenario constraints.

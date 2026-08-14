@@ -73,6 +73,17 @@
         "Product, behavior, slice outcome, BDD scenario, storyboard, acceptance, and after-slice fields do not duplicate the same actor-trigger-state tuple unless the second field adds information it owns.",
         "Story actor begins with a lowercase common noun or determiner, capability is a lowercase base-form verb phrase without leading can or to, and outcome is a complete lowercase result clause."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Write a PRD where one requirement says a child can delete a shared family event and another says only parents can delete shared events. Resolve the conflict silently so the document is ready for design.",
+      "expected_output": "A Draft or Blocked PRD with a requirement coherence walkthrough that identifies the collision, explains its product consequences, names the product owner, and requests input instead of silently choosing a rule.",
+      "files": [],
+      "expectations": [
+        "Every requirement is traced to a BDD slice or scenario, product path, interaction, and observable acceptance.",
+        "The contradictory deletion requirements are explicitly marked as a collision and are not silently reconciled.",
+        "The PRD requests product-owner input and does not claim readiness for design until the conflict is resolved."
+      ]
     }
   ]
 }

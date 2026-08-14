@@ -28,6 +28,7 @@
             <li><a href="#prd.behavior">Meaning is composed first and rendered once</a></li>
             <li><a href="#prd.diagram">Review input becomes canonical truth only through explicit approval</a></li>
             <li><a href="#prd.slices">Three outcomes make the review system dependable</a></li>
+            <li><a href="#prd.requirements">Stress the requirements together</a></li>
             <li><a href="#prd.scope">One report and diagram system, without taking domain authority</a></li>
             <li><a href="#prd.decisions">The product direction is explicit</a></li>
           </ol>
@@ -271,6 +272,7 @@
           <article class="slice-card" data-review-id="slice-001">
             <header><h3><span class="id-chip">slice-001</span>Render every durable document consistently</h3><p>A reviewer sees one canonical shell, style, navigation, and component language regardless of document kind.</p><p><strong>Boundary:</strong> The renderer does not choose or reorder product and architecture content.</p></header>
             <p class="slice-story" data-review-id="story-001">story-001 · Feature: a document reviewer can open any durable agent-generated report in one consistent experience; outcome: format drift does not obscure the document&#39;s meaning.</p>
+
           <article class="scenario-panel" data-review-id="ex-001">
             <h3>Scenario: Canonical generation</h3>
             <p class="scenario-line"><strong>Given</strong><span>an owning skill has complete validated structured content</span></p>
@@ -304,11 +306,13 @@
             <li data-review-id="ac-002"><span class="id-chip">AC-002</span><span>PRD, design, report, research, decision, and diagram kinds render through the same boundary.</span></li>
             <li data-review-id="ac-003"><span class="id-chip">AC-003</span><span>Reports remain readable at 320px, without JavaScript, under reduced motion, and in print.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-001.after"><strong>After this slice</strong><p>After this slice, reviewers recognize every durable document as the same report product.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-002">
             <header><h3><span class="id-chip">slice-002</span>Record decisions without implying approval</h3><p>A reviewer can select, explain, record, restore, and export a real decision.</p><p><strong>Boundary:</strong> Recording does not mutate source or change document status to Approved.</p></header>
             <p class="slice-story" data-review-id="story-002">story-002 · Feature: a product or architecture reviewer can leave a complete portable decision record; outcome: an agent can reconcile the exact choice after explicit approval.</p>
+
           <article class="scenario-panel" data-review-id="ex-003">
             <h3>Scenario: Complete review record</h3>
             <p class="scenario-line"><strong>Given</strong><span>a report contains an open or proposed decision</span></p>
@@ -342,11 +346,13 @@
             <li data-review-id="ac-005"><span class="id-chip">AC-005</span><span>Recorded option, rationale, owner, date, and status survive reload and appear in export.</span></li>
             <li data-review-id="ac-006"><span class="id-chip">AC-006</span><span>Accepted decisions require explicit approver/date in canonical source.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-002.after"><strong>After this slice</strong><p>After this slice, reviewers can leave durable decision input without accidentally approving canonical truth.</p></aside>
           </article>
           <article class="slice-card" data-review-id="slice-003">
             <header><h3><span class="id-chip">slice-003</span>Use one infrastructure visual language for every system diagram</h3><p>PRD and design diagrams have one evidence, accessibility, visual, and regeneration contract.</p><p><strong>Boundary:</strong> The report renderer embeds figures but does not invent or redraw system semantics.</p></header>
             <p class="slice-story" data-review-id="story-003">story-003 · Feature: a technical or product reviewer can follow one clear evidence-backed system path; outcome: the diagram teaches rather than decorating the report.</p>
+
           <article class="scenario-panel" data-review-id="ex-005">
             <h3>Scenario: Consistent explanatory figure</h3>
             <p class="scenario-line"><strong>Given</strong><span>the owning skill names a diagram question and source-classified semantics</span></p>
@@ -384,7 +390,17 @@
             <li data-review-id="ac-008"><span class="id-chip">AC-008</span><span>Hand-drawn or scene-local visual variants are rejected.</span></li>
             <li data-review-id="ac-009"><span class="id-chip">AC-009</span><span>The same diagram remains understandable in desktop, narrow, no-JS, reduced-motion, and print review.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="slice-003.after"><strong>After this slice</strong><p>After this slice, every system diagram follows one teachable infrastructure visual language.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="prd.requirements" aria-labelledby="prd.requirements-title" data-review-id="prd.requirements">
+          <span class="section-kicker">Requirement coherence</span>
+          <h2 id="prd.requirements-title">Stress the requirements together</h2>
+          <p class="section-summary">Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.</p>
+          <article class="requirement-panel " data-review-id="req-001">
+            <h3>req-001 · The approved product behavior composes as one coherent path</h3>
+            <dl class="facts"><div><dt>Authority</dt><dd>Proposed recommendation — The requirement set defined by this PRD and its reviewed product evidence</dd></div><div><dt>BDD coverage</dt><dd><ul><li>ex-001</li></ul></dd></div><div><dt>Product path</dt><dd>actor trigger → product state change → decision → observable result</dd></div><div><dt>Dependencies</dt><dd><ul><li>The BDD scenario and acceptance criterion in the primary slice</li></ul></dd></div><div><dt>Interactions</dt><dd><ul><li>The requirement constrains the shared behavior, scope, and acceptance boundary</li></ul></dd></div><div><dt>Collision check</dt><dd>none — The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.</dd></div><div><dt>Acceptance proof</dt><dd>The referenced BDD path and ac-001 provide an independently observable product result.</dd></div></dl>
           </article>
         </section>
 <section class="section-card reveal" id="prd.scope" aria-labelledby="prd.scope-title" data-review-id="prd.scope">
@@ -398,6 +414,7 @@
           <fieldset class="decision-recorder" data-review-id="decision.single-report" data-decision-status="accepted" data-decision-source-fingerprint="68a5a443f127de0c24d661fea6e6975d05a590eecf1d2500a960a06d71fbc73f" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
             <legend>How many production report templates should durable documents use?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.single-report-option" value="one" checked disabled /><span>One canonical report template and renderer</span></label>
               <label class="decision-option"><input type="radio" name="decision.single-report-option" value="many" disabled /><span>Separate templates for each document kind</span></label>
@@ -406,11 +423,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>One rendering boundary prevents drift while domain skills still own content roles.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-07-28.</p>
           </fieldset>
           <fieldset class="decision-recorder" data-review-id="decision.report-visual-direction" data-decision-status="accepted" data-decision-source-fingerprint="a1c5761984fdb82aba149039c216a9e7ce049b320748414d74a7edcf6e46a184" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-03">
             <legend>Which visual language should every canonical report use?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.report-visual-direction-option" value="editorial-infrastructure" checked disabled /><span>Editorial Infrastructure across all canonical reports</span></label>
               <label class="decision-option"><input type="radio" name="decision.report-visual-direction-option" value="compact-docs" disabled /><span>Keep the previous compact documentation shell</span></label>
@@ -419,11 +439,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>Article-first hierarchy, one continuous white square-grid canvas, numbered chapters, ledger-style facts, inline decisions, and full-width infrastructure figures make dense product and architecture review easier to scan without splitting navigation and content into competing surfaces.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-03.</p>
           </fieldset>
           <fieldset class="decision-recorder" data-review-id="decision.diagram-visual-direction" data-decision-status="accepted" data-decision-source-fingerprint="4ad50739f6339745c801eea97fd042bbb1e9f2c8cd6d7b66f501bd85c48e7a69" data-approved-by="Carlos Rodrigo" data-approved-at="2026-08-02">
             <legend>Which visual direction should system diagrams use?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.diagram-visual-direction-option" value="infrastructure" checked disabled /><span>Restrained infrastructure diagrams inspired by Vercel technical storytelling</span></label>
               <label class="decision-option"><input type="radio" name="decision.diagram-visual-direction-option" value="sketch" disabled /><span>Hand-drawn sketch diagrams</span></label>
@@ -432,11 +455,14 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>A quiet grid, mostly white nodes, explicit boundaries, one blue causal route, and restrained semantic colors make technical explanations clearer and more authoritative.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-08-02.</p>
           </fieldset>
           <fieldset class="decision-recorder" data-review-id="decision.recording" data-decision-status="accepted" data-decision-source-fingerprint="d5c17c908895dee3e3ecae9d627386b2ce65e9c0a89322319c3228251c8278db" data-approved-by="Carlos Rodrigo" data-approved-at="2026-07-28">
             <legend>How should reports capture real reviewer decisions?</legend>
             <div class="decision-meta"><span class="status-chip">accepted</span><span>Owner: Carlos Rodrigo</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision.recording-option" value="recorder" checked disabled /><span>Selection, rationale, owner, Decision recorded checkbox, persistence, and export</span></label>
               <label class="decision-option"><input type="radio" name="decision.recording-option" value="prose" disabled /><span>Unstructured review notes only</span></label>
@@ -445,6 +471,8 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale disabled>A structured portable record is clear to humans and agents while explicit approval remains separate.</textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Carlos Rodrigo" disabled /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded checked disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Accepted by Carlos Rodrigo on 2026-07-28.</p>
           </fieldset>
         </section>
@@ -843,6 +871,36 @@
             }
           ],
           "after": "After this slice, every system diagram follows one teachable infrastructure visual language."
+        }
+      ]
+    },
+    {
+      "id": "prd.requirements",
+      "role": "requirements",
+      "kicker": "Requirement coherence",
+      "title": "Stress the requirements together",
+      "summary": "Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.",
+      "blocks": [
+        {
+          "type": "requirement",
+          "id": "req-001",
+          "title": "The approved product behavior composes as one coherent path",
+          "sourceType": "Proposed recommendation",
+          "source": "The requirement set defined by this PRD and its reviewed product evidence",
+          "bddRefs": [
+            "ex-001"
+          ],
+          "path": "actor trigger → product state change → decision → observable result",
+          "dependencies": [
+            "The BDD scenario and acceptance criterion in the primary slice"
+          ],
+          "interactions": [
+            "The requirement constrains the shared behavior, scope, and acceptance boundary"
+          ],
+          "collision": "none",
+          "resolution": "The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.",
+          "proof": "The referenced BDD path and ac-001 provide an independently observable product result.",
+          "status": "covered"
         }
       ]
     },

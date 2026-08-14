@@ -77,6 +77,7 @@
         { "$ref": "#/$defs/callout" },
         { "$ref": "#/$defs/scenario" },
         { "$ref": "#/$defs/slice" },
+        { "$ref": "#/$defs/requirement" },
         { "$ref": "#/$defs/decision" },
         { "$ref": "#/$defs/diagram" },
         { "$ref": "#/$defs/code" },
@@ -107,7 +108,29 @@
         "mode": { "enum": ["visual", "non-visual"] },
         "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/storyboardStep" } },
         "acceptance": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/acceptance" } },
-        "after": { "$ref": "#/$defs/text" }
+        "after": { "$ref": "#/$defs/text" },
+        "acceptanceAnchors": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "entryPoint": { "$ref": "#/$defs/text" },
+        "participatingElements": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "contractDelta": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "stateAndInvariants": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "failureRecovery": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "proof": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "dependsOn": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+        "escalateIf": { "$ref": "#/$defs/text" }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "title", "sourceType", "source", "bddRefs", "path", "dependencies", "interactions", "collision", "resolution", "proof", "status"],
+      "properties": {
+        "type": { "const": "requirement" }, "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "pattern": "^req-[0-9]{3,}$" }] }, "title": { "$ref": "#/$defs/text" },
+        "sourceType": { "enum": ["Sourced fact", "Approved product truth", "Proposed recommendation", "Assumption", "Open question"] }, "source": { "$ref": "#/$defs/text" },
+        "bddRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "path": { "$ref": "#/$defs/text" },
+        "dependencies": { "type": "array", "items": { "$ref": "#/$defs/text" } }, "interactions": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+        "collision": { "enum": ["none", "conflict"] }, "resolution": { "$ref": "#/$defs/text" }, "proof": { "$ref": "#/$defs/text" },
+        "status": { "enum": ["covered", "unresolved", "blocked"] }, "owner": { "$ref": "#/$defs/text" }
       }
     },
     "decision": {
@@ -117,6 +140,9 @@
       "properties": {
         "type": { "const": "decision" }, "id": { "$ref": "#/$defs/id" }, "question": { "$ref": "#/$defs/text" },
         "status": { "enum": ["open", "proposed", "accepted"] },
+        "decisionDrivers": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "consequences": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "revisitTrigger": { "$ref": "#/$defs/text" },
         "options": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/option" } },
         "selectedOptionId": { "$ref": "#/$defs/id" }, "customAnswer": { "$ref": "#/$defs/text" }, "rationale": { "$ref": "#/$defs/text" },
         "owner": { "$ref": "#/$defs/text" }, "blocking": { "type": "boolean" }, "approvedBy": { "$ref": "#/$defs/text" }, "approvedAt": { "type": "string", "format": "date" }
@@ -148,6 +174,6 @@
     "acceptance": { "type": "object", "additionalProperties": false, "required": ["id", "text"], "properties": { "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "pattern": "^ac-[0-9]{3,}$" }] }, "text": { "$ref": "#/$defs/text" } } },
     "scenarioWithoutType": { "type": "object", "additionalProperties": false, "required": ["id", "title", "given", "when", "then"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "given": { "$ref": "#/$defs/text" }, "when": { "$ref": "#/$defs/text" }, "then": { "$ref": "#/$defs/text" } } },
     "storyboardStep": { "type": "object", "additionalProperties": false, "required": ["id", "title", "context", "action", "response", "outcome"], "properties": { "id": { "$ref": "#/$defs/id" }, "title": { "$ref": "#/$defs/text" }, "context": { "$ref": "#/$defs/text" }, "action": { "$ref": "#/$defs/text" }, "response": { "$ref": "#/$defs/text" }, "outcome": { "$ref": "#/$defs/text" } } },
-    "option": { "type": "object", "additionalProperties": false, "required": ["id", "label"], "properties": { "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "not": { "const": "other" } }] }, "label": { "$ref": "#/$defs/text" } } }
+    "option": { "type": "object", "additionalProperties": false, "required": ["id", "label"], "properties": { "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "not": { "const": "other" } }] }, "label": { "$ref": "#/$defs/text" }, "summary": { "$ref": "#/$defs/text" }, "benefits": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } }, "costs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } }, "rejectionReason": { "$ref": "#/$defs/text" } } }
   }
 }

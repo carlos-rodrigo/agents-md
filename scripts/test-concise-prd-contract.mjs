@@ -11,7 +11,7 @@ assert(/^---\n[\s\S]*?name: prd\n[\s\S]*?description: [^\n]+\n[\s\S]*?---\n/.tes
 requireAll('PRD authority and structure', skill, [
   'Skip a durable PRD for a tiny, obvious change',
   '**Approved** — only after explicit human approval',
-  '**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**',
+  '**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`requirements`**', '**`scope`**',
   'references/product-slice-contract.md',
   'Every substantive PRD must invoke `system-diagram`',
   'does not use a hand-authored SVG or a `Diagram not applicable` escape',
@@ -35,8 +35,13 @@ requireAll('PRD authority and structure', skill, [
   'Preserve accepted decisions',
   'one evidence-backed proposed mockup',
   'base-form verb phrase',
+  'structured `requirement` blocks',
+  'stable `req-###` IDs',
+  'Requirement coherence walkthrough',
+  'structured `requirement` blocks',
+  'stable `req-###` IDs',
 ]);
-assertInOrder(skill, ['**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`scope`**', '**`decisions`**'], 'PRD role sequence');
+assertInOrder(skill, ['**`product`**', '**`problem`**', '**`behavior`**', '**`diagram`**', '**`slices`**', '**`requirements`**', '**`scope`**', '**`decisions`**'], 'PRD role sequence');
 forbidAll('PRD presentation boundary', skill, [
   'prd-template.html', '{{PRD_TOC}}', '{{COMPOSED_PRD_CONTENT}}', '.diagram-reveal', 'add `reveal`', '3–7 outcome-protecting rules',
 ]);
@@ -44,6 +49,9 @@ forbidAll('PRD presentation boundary', skill, [
 const reference = 'skills/prd/references/product-slice-contract.md';
 assert(existsSync(join(root, reference)), 'PRD product-slice reference must exist');
 requireAll('product-slice reference', read(reference), ['Outcome and boundary', 'BDD specification', 'Feature:', 'Scenario:', 'Given', 'When', 'Then', 'Observable sequence', 'Acceptance', 'lowercase source IDs (`ac-001`', 'After this slice', 'lowercase common noun or determiner', 'base-form verb phrase', 'independently testable pass/fail conditions', 'Use one step for simple behavior', 'Duplication test']);
+const coherenceReference = 'skills/prd/references/requirement-coherence.md';
+assert(existsSync(join(root, coherenceReference)), 'PRD requirement coherence reference must exist');
+requireAll('requirement coherence reference', read(coherenceReference), ['req-###', 'BDD coverage', 'Collision check', 'Status: covered | unresolved | blocked', 'product owner', 'Do not put APIs']);
 
 const evals = JSON.parse(read('skills/prd/evals/evals.json'));
 const conciseUiEval = evals.evals.find((item) => item.id === 5);

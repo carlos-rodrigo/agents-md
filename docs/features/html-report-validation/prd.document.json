@@ -125,7 +125,7 @@
             "The author selects one finished report, establishing the artifact under review.",
             "The validator evaluates all required states and records an explicit outcome for each.",
             "The aggregate result is ready, failed, or incomplete and preserves the supporting evidence.",
-            "The result informs—but does not make or approve—the author's sharing decision."
+            "The result informs\u2014but does not make or approve\u2014the author's sharing decision."
           ]
         }
       ]
@@ -253,6 +253,36 @@
             }
           ],
           "after": "The author either shares a ready artifact or returns to the report workflow with named failures and missing evidence; validation itself performs no repair or approval."
+        }
+      ]
+    },
+    {
+      "id": "prd.requirements",
+      "role": "requirements",
+      "kicker": "Requirement coherence",
+      "title": "Stress the requirements together",
+      "summary": "Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.",
+      "blocks": [
+        {
+          "type": "requirement",
+          "id": "req-001",
+          "title": "The approved product behavior composes as one coherent path",
+          "sourceType": "Proposed recommendation",
+          "source": "The requirement set defined by this PRD and its reviewed product evidence",
+          "bddRefs": [
+            "scenario-all-checks-pass"
+          ],
+          "path": "actor trigger \u2192 product state change \u2192 decision \u2192 observable result",
+          "dependencies": [
+            "The BDD scenario and acceptance criterion in the primary slice"
+          ],
+          "interactions": [
+            "The requirement constrains the shared behavior, scope, and acceptance boundary"
+          ],
+          "collision": "none",
+          "resolution": "The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.",
+          "proof": "The referenced BDD path and ac-001 provide an independently observable product result.",
+          "status": "covered"
         }
       ]
     },

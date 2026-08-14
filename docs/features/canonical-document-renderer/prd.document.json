@@ -8,9 +8,22 @@
     "summary": "PRDs, designs, reports, decisions, research briefs, and diagram packets use one canonical report experience, explicit decision recording, and evidence-backed infrastructure-style SVG figures.",
     "reviewFocus": "Confirm that one rendering boundary and the globally approved Editorial Infrastructure language preserve domain-owned meaning while removing template and diagram ambiguity.",
     "updated": "2026-08-03",
-    "sources": ["User decisions in the 2026-07-28 conversation", "Explicit user instruction on 2026-08-02: Apply Editorial Infrastructure globally.", "Explicit user instruction on 2026-08-02: Replace the Excalidraw diagram style with a high-quality custom CSS/SVG diagram system inspired by Vercel's infrastructure diagrams.", "Explicit user instruction on 2026-08-03: Use a white background with the square-grid effect across the entire page.", "skills/prd/SKILL.md", "skills/design-solution/SKILL.md", "docs/adrs/architecture.md#single-canonical-report-rendering-boundary"],
+    "sources": [
+      "User decisions in the 2026-07-28 conversation",
+      "Explicit user instruction on 2026-08-02: Apply Editorial Infrastructure globally.",
+      "Explicit user instruction on 2026-08-02: Replace the Excalidraw diagram style with a high-quality custom CSS/SVG diagram system inspired by Vercel's infrastructure diagrams.",
+      "Explicit user instruction on 2026-08-03: Use a white background with the square-grid effect across the entire page.",
+      "skills/prd/SKILL.md",
+      "skills/design-solution/SKILL.md",
+      "docs/adrs/architecture.md#single-canonical-report-rendering-boundary"
+    ],
     "feature": "Canonical document renderer",
-    "relatedArtifacts": [{ "label": "Feature design", "href": "design.html" }]
+    "relatedArtifacts": [
+      {
+        "label": "Feature design",
+        "href": "design.html"
+      }
+    ]
   },
   "sections": [
     {
@@ -20,7 +33,36 @@
       "title": "Reviewers get one dependable document experience",
       "summary": "The product is the review experience, not a collection of loosely synchronized templates.",
       "blocks": [
-        { "type": "facts", "id": "prd.product.definition", "items": [["Actor", "A human reviewing an agent-generated durable document"], ["Job and moment", "Understand, discuss, and approve product or architecture truth in a browser"], ["Capability", "Read one consistent report, inspect a clean infrastructure explanation, and record real decisions"], ["Entry", "Open a generated PRD, design, report, decision, research, or diagram HTML artifact"], ["Result", "The reviewer can retell the outcome, reference stable anchors, and export decision input"], ["Boundary", "The report does not decide product truth, architecture, or approval on the reviewer's behalf"]] }
+        {
+          "type": "facts",
+          "id": "prd.product.definition",
+          "items": [
+            [
+              "Actor",
+              "A human reviewing an agent-generated durable document"
+            ],
+            [
+              "Job and moment",
+              "Understand, discuss, and approve product or architecture truth in a browser"
+            ],
+            [
+              "Capability",
+              "Read one consistent report, inspect a clean infrastructure explanation, and record real decisions"
+            ],
+            [
+              "Entry",
+              "Open a generated PRD, design, report, decision, research, or diagram HTML artifact"
+            ],
+            [
+              "Result",
+              "The reviewer can retell the outcome, reference stable anchors, and export decision input"
+            ],
+            [
+              "Boundary",
+              "The report does not decide product truth, architecture, or approval on the reviewer's behalf"
+            ]
+          ]
+        }
       ]
     },
     {
@@ -30,9 +72,36 @@
       "title": "Parallel templates made the review experience untrustworthy",
       "summary": "Different report paths drifted in style, component availability, navigation, motion, decision state, and diagram generation.",
       "blocks": [
-        { "type": "paragraph", "id": "prd.problem.current", "text": "Agents could select or imitate a PRD, design, generic report, or diagram shell rather than using one enforced report system. A generated document could therefore satisfy content instructions while visibly diverging from the expected template." },
-        { "type": "callout", "id": "prd.problem.consequence", "tone": "warning", "title": "Review confidence breaks", "text": "A reviewer cannot know whether missing controls, inconsistent diagrams, or apparent decision state reflects product truth or generation drift." },
-        { "type": "facts", "id": "prd.problem.evidence", "items": [["Observed", "A newly generated design did not follow the defined report template."], ["Repository evidence", "Separate PRD, design, report, and diagram templates and CSS families existed."], ["Expected outcome", "Every new durable artifact uses one recognizable shell and interaction contract."]] }
+        {
+          "type": "paragraph",
+          "id": "prd.problem.current",
+          "text": "Agents could select or imitate a PRD, design, generic report, or diagram shell rather than using one enforced report system. A generated document could therefore satisfy content instructions while visibly diverging from the expected template."
+        },
+        {
+          "type": "callout",
+          "id": "prd.problem.consequence",
+          "tone": "warning",
+          "title": "Review confidence breaks",
+          "text": "A reviewer cannot know whether missing controls, inconsistent diagrams, or apparent decision state reflects product truth or generation drift."
+        },
+        {
+          "type": "facts",
+          "id": "prd.problem.evidence",
+          "items": [
+            [
+              "Observed",
+              "A newly generated design did not follow the defined report template."
+            ],
+            [
+              "Repository evidence",
+              "Separate PRD, design, report, and diagram templates and CSS families existed."
+            ],
+            [
+              "Expected outcome",
+              "Every new durable artifact uses one recognizable shell and interaction contract."
+            ]
+          ]
+        }
       ]
     },
     {
@@ -42,14 +111,49 @@
       "title": "Meaning is composed first and rendered once",
       "summary": "Domain skills decide required content; shared rendering and diagram skills provide consistent presentation.",
       "blocks": [
-        { "type": "steps", "id": "prd.behavior.flow", "items": [
-          { "id": "prd.behavior.authority", "title": "Compose domain truth", "text": "PRD or Design Solution creates required sourced sections and decision lifecycle without authoring HTML." },
-          { "id": "prd.behavior.figure", "title": "Explain one system question", "text": "System Diagram produces an evidence-backed accessible infrastructure SVG." },
-          { "id": "prd.behavior.render", "title": "Render one report", "text": "HTML Report Designer validates structured input and fills one canonical template." },
-          { "id": "prd.behavior.review", "title": "Review and record", "text": "The human reads consistent navigation, records complete decision input, and exports Markdown." },
-          { "id": "prd.behavior.approve", "title": "Reconcile explicit approval", "text": "An agent updates canonical source only after the human explicitly approves the product or architecture choice." }
-        ] },
-        { "type": "list", "id": "prd.behavior.rules", "style": "checks", "items": ["New reports never select a document-specific shell or style family.", "Every substantive PRD and durable design contains exactly one evidence-backed infrastructure-style System Diagram.", "A decision cannot be recorded until option, rationale, and owner are present.", "Browser-local state and exports never imply canonical approval.", "Missing companion renderers block generation rather than trigger a lower-quality fallback."] }
+        {
+          "type": "steps",
+          "id": "prd.behavior.flow",
+          "items": [
+            {
+              "id": "prd.behavior.authority",
+              "title": "Compose domain truth",
+              "text": "PRD or Design Solution creates required sourced sections and decision lifecycle without authoring HTML."
+            },
+            {
+              "id": "prd.behavior.figure",
+              "title": "Explain one system question",
+              "text": "System Diagram produces an evidence-backed accessible infrastructure SVG."
+            },
+            {
+              "id": "prd.behavior.render",
+              "title": "Render one report",
+              "text": "HTML Report Designer validates structured input and fills one canonical template."
+            },
+            {
+              "id": "prd.behavior.review",
+              "title": "Review and record",
+              "text": "The human reads consistent navigation, records complete decision input, and exports Markdown."
+            },
+            {
+              "id": "prd.behavior.approve",
+              "title": "Reconcile explicit approval",
+              "text": "An agent updates canonical source only after the human explicitly approves the product or architecture choice."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "id": "prd.behavior.rules",
+          "style": "checks",
+          "items": [
+            "New reports never select a document-specific shell or style family.",
+            "Every substantive PRD and durable design contains exactly one evidence-backed infrastructure-style System Diagram.",
+            "A decision cannot be recorded until option, rationale, and owner are present.",
+            "Browser-local state and exports never imply canonical approval.",
+            "Missing companion renderers block generation rather than trigger a lower-quality fallback."
+          ]
+        }
       ]
     },
     {
@@ -59,7 +163,21 @@
       "title": "Review input becomes canonical truth only through explicit approval",
       "summary": "The diagram separates report consistency, local recording, and human governance.",
       "blocks": [
-        { "type": "diagram", "id": "diagram.product-review-flow", "question": "How does one consistent report carry a product or architecture decision from composition to explicit approval?", "caption": "Owning skills supply meaning, System Diagram supplies structured visual evidence, and the canonical report carries review input without self-approving it.", "svgPath": "diagrams/product-review-flow.svg", "sourcePath": "diagrams/product-review-flow.json", "walkthrough": ["The reviewer asks for a PRD or design based on approved evidence.", "The owning skill composes required meaning and gives System Diagram a bounded question.", "One report presents that content and its decision controls consistently.", "The reviewer records and exports complete review input.", "Only explicit human approval updates canonical truth; incomplete input remains open."] }
+        {
+          "type": "diagram",
+          "id": "diagram.product-review-flow",
+          "question": "How does one consistent report carry a product or architecture decision from composition to explicit approval?",
+          "caption": "Owning skills supply meaning, System Diagram supplies structured visual evidence, and the canonical report carries review input without self-approving it.",
+          "svgPath": "diagrams/product-review-flow.svg",
+          "sourcePath": "diagrams/product-review-flow.json",
+          "walkthrough": [
+            "The reviewer asks for a PRD or design based on approved evidence.",
+            "The owning skill composes required meaning and gives System Diagram a bounded question.",
+            "One report presents that content and its decision controls consistently.",
+            "The reviewer records and exports complete review input.",
+            "Only explicit human approval updates canonical truth; incomplete input remains open."
+          ]
+        }
       ]
     },
     {
@@ -69,31 +187,231 @@
       "title": "Three outcomes make the review system dependable",
       "blocks": [
         {
-          "type": "slice", "id": "slice-001", "title": "Render every durable document consistently", "outcome": "A reviewer sees one canonical shell, style, navigation, and component language regardless of document kind.", "boundary": "The renderer does not choose or reorder product and architecture content.",
-          "story": { "id": "story-001", "actor": "a document reviewer", "capability": "open any durable agent-generated report in one consistent experience", "outcome": "format drift does not obscure the document's meaning" },
-          "scenarios": [{ "id": "ex-001", "title": "Canonical generation", "given": "an owning skill has complete validated structured content", "when": "it invokes HTML Report Designer", "then": "one portable report template produces self-contained HTML with actual-section navigation and stable review anchors" }, { "id": "ex-002", "title": "Renderer unavailable", "given": "the canonical renderer cannot be loaded", "when": "the agent attempts final report generation", "then": "generation blocks with a setup instruction instead of producing a substitute shell" }],
+          "type": "slice",
+          "id": "slice-001",
+          "title": "Render every durable document consistently",
+          "outcome": "A reviewer sees one canonical shell, style, navigation, and component language regardless of document kind.",
+          "boundary": "The renderer does not choose or reorder product and architecture content.",
+          "story": {
+            "id": "story-001",
+            "actor": "a document reviewer",
+            "capability": "open any durable agent-generated report in one consistent experience",
+            "outcome": "format drift does not obscure the document's meaning"
+          },
+          "scenarios": [
+            {
+              "id": "ex-001",
+              "title": "Canonical generation",
+              "given": "an owning skill has complete validated structured content",
+              "when": "it invokes HTML Report Designer",
+              "then": "one portable report template produces self-contained HTML with actual-section navigation and stable review anchors"
+            },
+            {
+              "id": "ex-002",
+              "title": "Renderer unavailable",
+              "given": "the canonical renderer cannot be loaded",
+              "when": "the agent attempts final report generation",
+              "then": "generation blocks with a setup instruction instead of producing a substitute shell"
+            }
+          ],
           "mode": "non-visual",
-          "steps": [{ "id": "step-001", "title": "Supply meaning", "context": "The owning skill has approved or clearly proposed content.", "action": "It writes a structured DocumentSpec.", "response": "The profile validator confirms required roles and lifecycle.", "outcome": "The content is ready for canonical rendering." }, { "id": "step-002", "title": "Open report", "context": "The renderer emits self-contained HTML.", "action": "The reviewer opens it in a browser.", "response": "The same report shell, navigation, components, and fallbacks appear.", "outcome": "The reviewer can focus on meaning rather than generation variance." }],
-          "acceptance": [{ "id": "ac-001", "text": "Only one production report template and CSS source exist." }, { "id": "ac-002", "text": "PRD, design, report, research, decision, and diagram kinds render through the same boundary." }, { "id": "ac-003", "text": "Reports remain readable at 320px, without JavaScript, under reduced motion, and in print." }],
+          "steps": [
+            {
+              "id": "step-001",
+              "title": "Supply meaning",
+              "context": "The owning skill has approved or clearly proposed content.",
+              "action": "It writes a structured DocumentSpec.",
+              "response": "The profile validator confirms required roles and lifecycle.",
+              "outcome": "The content is ready for canonical rendering."
+            },
+            {
+              "id": "step-002",
+              "title": "Open report",
+              "context": "The renderer emits self-contained HTML.",
+              "action": "The reviewer opens it in a browser.",
+              "response": "The same report shell, navigation, components, and fallbacks appear.",
+              "outcome": "The reviewer can focus on meaning rather than generation variance."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-001",
+              "text": "Only one production report template and CSS source exist."
+            },
+            {
+              "id": "ac-002",
+              "text": "PRD, design, report, research, decision, and diagram kinds render through the same boundary."
+            },
+            {
+              "id": "ac-003",
+              "text": "Reports remain readable at 320px, without JavaScript, under reduced motion, and in print."
+            }
+          ],
           "after": "After this slice, reviewers recognize every durable document as the same report product."
         },
         {
-          "type": "slice", "id": "slice-002", "title": "Record decisions without implying approval", "outcome": "A reviewer can select, explain, record, restore, and export a real decision.", "boundary": "Recording does not mutate source or change document status to Approved.",
-          "story": { "id": "story-002", "actor": "a product or architecture reviewer", "capability": "leave a complete portable decision record", "outcome": "an agent can reconcile the exact choice after explicit approval" },
-          "scenarios": [{ "id": "ex-003", "title": "Complete review record", "given": "a report contains an open or proposed decision", "when": "the reviewer selects an option, provides rationale and owner, and checks Decision recorded", "then": "the report persists and exports the stable decision record as review input" }, { "id": "ex-004", "title": "Incomplete review record", "given": "selection, rationale, or owner is missing", "when": "the reviewer reaches the recording control", "then": "the checkbox remains unavailable and identifies the missing work" }],
+          "type": "slice",
+          "id": "slice-002",
+          "title": "Record decisions without implying approval",
+          "outcome": "A reviewer can select, explain, record, restore, and export a real decision.",
+          "boundary": "Recording does not mutate source or change document status to Approved.",
+          "story": {
+            "id": "story-002",
+            "actor": "a product or architecture reviewer",
+            "capability": "leave a complete portable decision record",
+            "outcome": "an agent can reconcile the exact choice after explicit approval"
+          },
+          "scenarios": [
+            {
+              "id": "ex-003",
+              "title": "Complete review record",
+              "given": "a report contains an open or proposed decision",
+              "when": "the reviewer selects an option, provides rationale and owner, and checks Decision recorded",
+              "then": "the report persists and exports the stable decision record as review input"
+            },
+            {
+              "id": "ex-004",
+              "title": "Incomplete review record",
+              "given": "selection, rationale, or owner is missing",
+              "when": "the reviewer reaches the recording control",
+              "then": "the checkbox remains unavailable and identifies the missing work"
+            }
+          ],
           "mode": "visual",
-          "steps": [{ "id": "step-003", "title": "Choose and explain", "context": "The decision shows concrete options and a custom path.", "action": "The reviewer selects and adds rationale and owner.", "response": "The record becomes eligible for completion.", "outcome": "The choice is explicit and attributable." }, { "id": "step-004", "title": "Record and export", "context": "Required decision input is complete.", "action": "The reviewer checks Decision recorded and downloads Markdown.", "response": "The report confirms local persistence and labels the export as review input.", "outcome": "The exact stable ID can be reconciled after approval." }],
-          "acceptance": [{ "id": "ac-004", "text": "Every decision renders a Decision recorded checkbox." }, { "id": "ac-005", "text": "Recorded option, rationale, owner, date, and status survive reload and appear in export." }, { "id": "ac-006", "text": "Accepted decisions require explicit approver/date in canonical source." }],
+          "steps": [
+            {
+              "id": "step-003",
+              "title": "Choose and explain",
+              "context": "The decision shows concrete options and a custom path.",
+              "action": "The reviewer selects and adds rationale and owner.",
+              "response": "The record becomes eligible for completion.",
+              "outcome": "The choice is explicit and attributable."
+            },
+            {
+              "id": "step-004",
+              "title": "Record and export",
+              "context": "Required decision input is complete.",
+              "action": "The reviewer checks Decision recorded and downloads Markdown.",
+              "response": "The report confirms local persistence and labels the export as review input.",
+              "outcome": "The exact stable ID can be reconciled after approval."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-004",
+              "text": "Every decision renders a Decision recorded checkbox."
+            },
+            {
+              "id": "ac-005",
+              "text": "Recorded option, rationale, owner, date, and status survive reload and appear in export."
+            },
+            {
+              "id": "ac-006",
+              "text": "Accepted decisions require explicit approver/date in canonical source."
+            }
+          ],
           "after": "After this slice, reviewers can leave durable decision input without accidentally approving canonical truth."
         },
         {
-          "type": "slice", "id": "slice-003", "title": "Use one infrastructure visual language for every system diagram", "outcome": "PRD and design diagrams have one evidence, accessibility, visual, and regeneration contract.", "boundary": "The report renderer embeds figures but does not invent or redraw system semantics.",
-          "story": { "id": "story-003", "actor": "a technical or product reviewer", "capability": "follow one clear evidence-backed system path", "outcome": "the diagram teaches rather than decorating the report" },
-          "scenarios": [{ "id": "ex-005", "title": "Consistent explanatory figure", "given": "the owning skill names a diagram question and source-classified semantics", "when": "System Diagram renders the figure", "then": "the report shows searchable accessible infrastructure SVG with a clear primary route, explicit boundaries, semantic exceptions, and a text walkthrough" }, { "id": "ex-006", "title": "Inconsistent visual language", "given": "a figure uses hand-drawn or scene-local styling", "when": "the canonical report attempts to include it", "then": "generation rejects it instead of mixing diagram styles" }],
+          "type": "slice",
+          "id": "slice-003",
+          "title": "Use one infrastructure visual language for every system diagram",
+          "outcome": "PRD and design diagrams have one evidence, accessibility, visual, and regeneration contract.",
+          "boundary": "The report renderer embeds figures but does not invent or redraw system semantics.",
+          "story": {
+            "id": "story-003",
+            "actor": "a technical or product reviewer",
+            "capability": "follow one clear evidence-backed system path",
+            "outcome": "the diagram teaches rather than decorating the report"
+          },
+          "scenarios": [
+            {
+              "id": "ex-005",
+              "title": "Consistent explanatory figure",
+              "given": "the owning skill names a diagram question and source-classified semantics",
+              "when": "System Diagram renders the figure",
+              "then": "the report shows searchable accessible infrastructure SVG with a clear primary route, explicit boundaries, semantic exceptions, and a text walkthrough"
+            },
+            {
+              "id": "ex-006",
+              "title": "Inconsistent visual language",
+              "given": "a figure uses hand-drawn or scene-local styling",
+              "when": "the canonical report attempts to include it",
+              "then": "generation rejects it instead of mixing diagram styles"
+            }
+          ],
           "mode": "non-visual",
-          "steps": [{ "id": "step-005", "title": "Define brief", "context": "A substantive PRD or durable design requires one diagram.", "action": "The owning skill supplies one question, boundary, and source-classified evidence.", "response": "System Diagram receives one bounded brief instead of an open-ended drawing request.", "outcome": "The semantic validation input is explicit." }, { "id": "step-007", "title": "Validate semantics", "context": "System Diagram has the bounded brief.", "action": "It validates evidence, ownership, labels, route, accessibility text, and scene constraints.", "response": "Invalid semantics stop; valid meaning becomes a deterministic system-diagram-v1 scene.", "outcome": "A validated scene is handed to the renderer." }, { "id": "step-006", "title": "Render and embed", "context": "A validated system-diagram-v1 scene is available.", "action": "System Diagram generates SVG and the report verifies provenance before embedding it.", "response": "The report presents one accessible figure and its ordered walkthrough.", "outcome": "The reviewer receives one legible explanatory figure." }],
-          "acceptance": [{ "id": "ac-007", "text": "Every substantive PRD and durable design has exactly one consistent infrastructure-style System Diagram." }, { "id": "ac-008", "text": "Hand-drawn or scene-local visual variants are rejected." }, { "id": "ac-009", "text": "The same diagram remains understandable in desktop, narrow, no-JS, reduced-motion, and print review." }],
+          "steps": [
+            {
+              "id": "step-005",
+              "title": "Define brief",
+              "context": "A substantive PRD or durable design requires one diagram.",
+              "action": "The owning skill supplies one question, boundary, and source-classified evidence.",
+              "response": "System Diagram receives one bounded brief instead of an open-ended drawing request.",
+              "outcome": "The semantic validation input is explicit."
+            },
+            {
+              "id": "step-007",
+              "title": "Validate semantics",
+              "context": "System Diagram has the bounded brief.",
+              "action": "It validates evidence, ownership, labels, route, accessibility text, and scene constraints.",
+              "response": "Invalid semantics stop; valid meaning becomes a deterministic system-diagram-v1 scene.",
+              "outcome": "A validated scene is handed to the renderer."
+            },
+            {
+              "id": "step-006",
+              "title": "Render and embed",
+              "context": "A validated system-diagram-v1 scene is available.",
+              "action": "System Diagram generates SVG and the report verifies provenance before embedding it.",
+              "response": "The report presents one accessible figure and its ordered walkthrough.",
+              "outcome": "The reviewer receives one legible explanatory figure."
+            }
+          ],
+          "acceptance": [
+            {
+              "id": "ac-007",
+              "text": "Every substantive PRD and durable design has exactly one consistent infrastructure-style System Diagram."
+            },
+            {
+              "id": "ac-008",
+              "text": "Hand-drawn or scene-local visual variants are rejected."
+            },
+            {
+              "id": "ac-009",
+              "text": "The same diagram remains understandable in desktop, narrow, no-JS, reduced-motion, and print review."
+            }
+          ],
           "after": "After this slice, every system diagram follows one teachable infrastructure visual language."
+        }
+      ]
+    },
+    {
+      "id": "prd.requirements",
+      "role": "requirements",
+      "kicker": "Requirement coherence",
+      "title": "Stress the requirements together",
+      "summary": "Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.",
+      "blocks": [
+        {
+          "type": "requirement",
+          "id": "req-001",
+          "title": "The approved product behavior composes as one coherent path",
+          "sourceType": "Proposed recommendation",
+          "source": "The requirement set defined by this PRD and its reviewed product evidence",
+          "bddRefs": [
+            "ex-001"
+          ],
+          "path": "actor trigger \u2192 product state change \u2192 decision \u2192 observable result",
+          "dependencies": [
+            "The BDD scenario and acceptance criterion in the primary slice"
+          ],
+          "interactions": [
+            "The requirement constrains the shared behavior, scope, and acceptance boundary"
+          ],
+          "collision": "none",
+          "resolution": "The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.",
+          "proof": "The referenced BDD path and ac-001 provide an independently observable product result.",
+          "status": "covered"
         }
       ]
     },
@@ -103,7 +421,24 @@
       "kicker": "Scope",
       "title": "One report and diagram system, without taking domain authority",
       "blocks": [
-        { "type": "facts", "id": "prd.scope.boundaries", "items": [["In", "Canonical schema, renderer, template, CSS, runtime, validators, decision recorder, System Diagram contract, and profile tests"], ["Out", "Automatic product/architecture decisions, source mutation from browser state, alternate diagram renderers, and implementation task creation"], ["Legacy", "Existing generated HTML remains readable but is not a valid source for new canonical output"]] }
+        {
+          "type": "facts",
+          "id": "prd.scope.boundaries",
+          "items": [
+            [
+              "In",
+              "Canonical schema, renderer, template, CSS, runtime, validators, decision recorder, System Diagram contract, and profile tests"
+            ],
+            [
+              "Out",
+              "Automatic product/architecture decisions, source mutation from browser state, alternate diagram renderers, and implementation task creation"
+            ],
+            [
+              "Legacy",
+              "Existing generated HTML remains readable but is not a valid source for new canonical output"
+            ]
+          ]
+        }
       ]
     },
     {
@@ -112,10 +447,94 @@
       "kicker": "Accepted decisions",
       "title": "The product direction is explicit",
       "blocks": [
-        { "type": "decision", "id": "decision.single-report", "question": "How many production report templates should durable documents use?", "status": "accepted", "options": [{ "id": "one", "label": "One canonical report template and renderer" }, { "id": "many", "label": "Separate templates for each document kind" }], "selectedOptionId": "one", "rationale": "One rendering boundary prevents drift while domain skills still own content roles.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" },
-        { "type": "decision", "id": "decision.report-visual-direction", "question": "Which visual language should every canonical report use?", "status": "accepted", "options": [{ "id": "editorial-infrastructure", "label": "Editorial Infrastructure across all canonical reports" }, { "id": "compact-docs", "label": "Keep the previous compact documentation shell" }], "selectedOptionId": "editorial-infrastructure", "rationale": "Article-first hierarchy, one continuous white square-grid canvas, numbered chapters, ledger-style facts, inline decisions, and full-width infrastructure figures make dense product and architecture review easier to scan without splitting navigation and content into competing surfaces.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-08-03" },
-        { "type": "decision", "id": "decision.diagram-visual-direction", "question": "Which visual direction should system diagrams use?", "status": "accepted", "options": [{ "id": "infrastructure", "label": "Restrained infrastructure diagrams inspired by Vercel technical storytelling" }, { "id": "sketch", "label": "Hand-drawn sketch diagrams" }], "selectedOptionId": "infrastructure", "rationale": "A quiet grid, mostly white nodes, explicit boundaries, one blue causal route, and restrained semantic colors make technical explanations clearer and more authoritative.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-08-02" },
-        { "type": "decision", "id": "decision.recording", "question": "How should reports capture real reviewer decisions?", "status": "accepted", "options": [{ "id": "recorder", "label": "Selection, rationale, owner, Decision recorded checkbox, persistence, and export" }, { "id": "prose", "label": "Unstructured review notes only" }], "selectedOptionId": "recorder", "rationale": "A structured portable record is clear to humans and agents while explicit approval remains separate.", "owner": "Carlos Rodrigo", "blocking": true, "approvedBy": "Carlos Rodrigo", "approvedAt": "2026-07-28" }
+        {
+          "type": "decision",
+          "id": "decision.single-report",
+          "question": "How many production report templates should durable documents use?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "one",
+              "label": "One canonical report template and renderer"
+            },
+            {
+              "id": "many",
+              "label": "Separate templates for each document kind"
+            }
+          ],
+          "selectedOptionId": "one",
+          "rationale": "One rendering boundary prevents drift while domain skills still own content roles.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-07-28"
+        },
+        {
+          "type": "decision",
+          "id": "decision.report-visual-direction",
+          "question": "Which visual language should every canonical report use?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "editorial-infrastructure",
+              "label": "Editorial Infrastructure across all canonical reports"
+            },
+            {
+              "id": "compact-docs",
+              "label": "Keep the previous compact documentation shell"
+            }
+          ],
+          "selectedOptionId": "editorial-infrastructure",
+          "rationale": "Article-first hierarchy, one continuous white square-grid canvas, numbered chapters, ledger-style facts, inline decisions, and full-width infrastructure figures make dense product and architecture review easier to scan without splitting navigation and content into competing surfaces.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-03"
+        },
+        {
+          "type": "decision",
+          "id": "decision.diagram-visual-direction",
+          "question": "Which visual direction should system diagrams use?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "infrastructure",
+              "label": "Restrained infrastructure diagrams inspired by Vercel technical storytelling"
+            },
+            {
+              "id": "sketch",
+              "label": "Hand-drawn sketch diagrams"
+            }
+          ],
+          "selectedOptionId": "infrastructure",
+          "rationale": "A quiet grid, mostly white nodes, explicit boundaries, one blue causal route, and restrained semantic colors make technical explanations clearer and more authoritative.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-08-02"
+        },
+        {
+          "type": "decision",
+          "id": "decision.recording",
+          "question": "How should reports capture real reviewer decisions?",
+          "status": "accepted",
+          "options": [
+            {
+              "id": "recorder",
+              "label": "Selection, rationale, owner, Decision recorded checkbox, persistence, and export"
+            },
+            {
+              "id": "prose",
+              "label": "Unstructured review notes only"
+            }
+          ],
+          "selectedOptionId": "recorder",
+          "rationale": "A structured portable record is clear to humans and agents while explicit approval remains separate.",
+          "owner": "Carlos Rodrigo",
+          "blocking": true,
+          "approvedBy": "Carlos Rodrigo",
+          "approvedAt": "2026-07-28"
+        }
       ]
     }
   ]

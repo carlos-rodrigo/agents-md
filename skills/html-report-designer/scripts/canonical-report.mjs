@@ -16,13 +16,13 @@ const idPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const statuses = new Set(['Draft', 'Review', 'Approved', 'Blocked']);
 const kinds = new Set(['prd', 'design', 'report', 'diagram', 'research', 'decision']);
 const decisionStatuses = new Set(['open', 'proposed', 'accepted']);
-const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'decision', 'diagram', 'code', 'quote']);
+const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'requirement', 'decision', 'diagram', 'code', 'quote']);
 const requiredRoles = {
-  prd: ['product', 'problem', 'behavior', 'diagram', 'slices', 'scope'],
+  prd: ['product', 'problem', 'behavior', 'diagram', 'slices', 'requirements', 'scope'],
   design: ['authority', 'pressure', 'seam', 'shape', 'path', 'slices', 'traceability', 'diagram', 'decisions', 'proof', 'boundary'],
   diagram: ['diagram'],
 };
-const specialBlockRoles = { diagram: 'diagram', slice: 'slices', decision: 'decisions' };
+const specialBlockRoles = { diagram: 'diagram', slice: 'slices', requirement: 'requirements', decision: 'decisions' };
 
 export function templateDigest(template = readFileSync(templatePath, 'utf8')) {
   return createHash('sha256').update(template).digest('hex');
@@ -65,6 +65,7 @@ export function validateDocumentSpec(input) {
   let diagramCount = 0;
   let sliceCount = 0;
   let decisionCount = 0;
+  let requirementCount = 0;
   const decisions = [];
   const roleBlockCounts = new Map();
   const enforcesSpecialPlacement = ['prd', 'design', 'diagram'].includes(document.kind);
@@ -96,6 +97,7 @@ export function validateDocumentSpec(input) {
         case 'callout': validateCallout(block, blockLabel, errors); break;
         case 'scenario': validateScenario(block, blockLabel, errors); break;
         case 'slice': sliceCount += 1; validateSlice(block, blockLabel, ids, document.kind, errors); break;
+        case 'requirement': requirementCount += 1; validateRequirement(block, blockLabel, ids, errors); break;
         case 'decision': decisionCount += 1; decisions.push(block); validateDecision(block, blockLabel, document.kind, errors); break;
         case 'diagram': diagramCount += 1; validateDiagram(block, blockLabel, errors); break;
         case 'code': validateCode(block, blockLabel, errors); break;
@@ -115,11 +117,12 @@ export function validateDocumentSpec(input) {
   if (rolePositions.some((position, index) => index > 0 && position < rolePositions[index - 1])) {
     errors.push(`${document.kind} section roles must follow this order: ${orderedRoles.join(' → ')}`);
   }
-  for (const [role, blockType] of Object.entries({ diagram: 'diagram', slices: 'slice', decisions: 'decision' })) {
+  for (const [role, blockType] of Object.entries({ diagram: 'diagram', slices: 'slice', requirements: 'requirement', decisions: 'decision' })) {
     if (roles.includes(role) && (roleBlockCounts.get(`${role}:${blockType}`) ?? 0) === 0) errors.push(`the "${role}" section role requires at least one ${blockType} block`);
   }
   if (['prd', 'design', 'diagram'].includes(document.kind) && diagramCount !== 1) errors.push(`${document.kind} documents require exactly one System Diagram block`);
   if (document.kind === 'prd' && sliceCount === 0) errors.push('prd documents require at least one complete slice block');
+  if (document.kind === 'prd' && requirementCount === 0) errors.push('prd documents require at least one structured requirement walkthrough block');
   if (document.kind === 'design' && decisionCount === 0) errors.push('design documents require at least one architecture decision block');
   if (document.kind === 'design' && sliceCount === 0) errors.push('design documents require at least one technical architecture slice block');
   if (document.kind === 'design') {
@@ -207,12 +210,21 @@ function renderBlock(block, baseDir) {
     case 'callout': return `          <aside class="callout ${escapeAttribute(block.tone ?? '')}"${reviewIdAttribute}><strong>${escapeHtml(block.title)}</strong><p>${escapeHtml(block.text)}</p></aside>`;
     case 'scenario': return renderScenario(block, reviewIdAttribute);
     case 'slice': return renderSlice(block);
+    case 'requirement': return renderRequirement(block, reviewIdAttribute);
     case 'decision': return renderDecision(block);
     case 'diagram': return renderDiagram(block, baseDir);
     case 'code': return `          <figure class="copyable-code"${reviewIdAttribute}><figcaption>${escapeHtml(block.label)}</figcaption><pre><code>${escapeHtml(block.content)}</code></pre></figure>`;
     case 'quote': return `          <blockquote${reviewIdAttribute}><p>${escapeHtml(block.text)}</p>${block.cite ? `<cite>${escapeHtml(block.cite)}</cite>` : ''}</blockquote>`;
     default: throw new Error(`Unsupported block ${block.type}`);
   }
+}
+
+function renderRequirement(requirement, reviewIdAttribute = '') {
+  const list = (items) => items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p>None recorded</p>';
+  return `          <article class="requirement-panel ${requirement.status === 'blocked' ? 'requirement-panel--blocked' : ''}"${reviewIdAttribute}>
+            <h3>${escapeHtml(requirement.id)} · ${escapeHtml(requirement.title)}</h3>
+            <dl class="facts"><div><dt>Authority</dt><dd>${escapeHtml(requirement.sourceType)} — ${escapeHtml(requirement.source)}</dd></div><div><dt>BDD coverage</dt><dd>${list(requirement.bddRefs)}</dd></div><div><dt>Product path</dt><dd>${escapeHtml(requirement.path)}</dd></div><div><dt>Dependencies</dt><dd>${list(requirement.dependencies)}</dd></div><div><dt>Interactions</dt><dd>${list(requirement.interactions)}</dd></div><div><dt>Collision check</dt><dd>${escapeHtml(requirement.collision)} — ${escapeHtml(requirement.resolution)}</dd></div><div><dt>Acceptance proof</dt><dd>${escapeHtml(requirement.proof)}</dd></div></dl>
+          </article>`;
 }
 
 function renderScenario(scenario, reviewIdAttribute = '') {
@@ -412,6 +424,28 @@ function validateSlice(block, label, ids, documentKind, errors) {
     });
   }
   requireUniqueId(`${block.id}.after`, `${label}.after review ID`, ids, errors);
+}
+function validateRequirement(block, label, ids, errors) {
+  requireOnly(block, ['type', 'id', 'title', 'sourceType', 'source', 'bddRefs', 'path', 'dependencies', 'interactions', 'collision', 'resolution', 'proof', 'status', 'owner'], label, errors);
+  requireId(block.id, `${label}.id`, errors);
+  if (!/^req-[0-9]{3,}$/.test(block.id ?? '')) errors.push(`${label}.id must use lowercase req-### semantics`);
+  requireText(block.title, `${label}.title`, errors);
+  requireEnum(block.sourceType, new Set(['Sourced fact', 'Approved product truth', 'Proposed recommendation', 'Assumption', 'Open question']), `${label}.sourceType`, errors);
+  requireText(block.source, `${label}.source`, errors);
+  requireTextArray(block.bddRefs, `${label}.bddRefs`, errors);
+  requireText(block.path, `${label}.path`, errors);
+  requireTextArray(block.dependencies, `${label}.dependencies`, errors);
+  requireTextArray(block.interactions, `${label}.interactions`, errors);
+  requireEnum(block.collision, new Set(['none', 'conflict']), `${label}.collision`, errors);
+  requireText(block.resolution, `${label}.resolution`, errors);
+  requireText(block.proof, `${label}.proof`, errors);
+  requireEnum(block.status, new Set(['covered', 'unresolved', 'blocked']), `${label}.status`, errors);
+  if (block.collision === 'conflict') {
+    if (block.status === 'covered') errors.push(`${label} cannot mark a conflicting requirement as covered`);
+    requireText(block.owner, `${label}.owner`, errors);
+  } else if (block.owner !== undefined) {
+    requireText(block.owner, `${label}.owner`, errors);
+  }
 }
 function validateDecision(block, label, documentKind, errors) {
   const designDecision = documentKind === 'design';

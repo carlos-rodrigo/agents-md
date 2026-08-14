@@ -78,13 +78,14 @@ Before rendering, run a **Deduplication pass**. Reduce statements to `actor + tr
 
 Every substantive PRD uses these `section.role` values in a causal reading order. Headings may be feature-specific, but roles may not be omitted:
 
-1. **`product`** — actor, job/moment, bounded capability, entry point, resulting state.
-2. **`problem`** — current behavior, friction, consequence, and evidence.
-3. **`behavior`** — canonical end-to-end workflow and outcome-protecting product rules.
+1. **`product`** — what the product is, the actor, job/moment, bounded capability, entry point, and resulting state.
+2. **`problem`** — why we want to build it: current behavior, friction, consequence, and evidence.
+3. **`behavior`** — how the product should work end to end and the outcome-protecting product rules.
 4. **`diagram`** — one evidence-backed product-behavior diagram.
-5. **`slices`** — one or more complete end-to-end product slices.
-6. **`scope`** — in-scope outcome, adjacent non-goals, assumptions, and sources/boundary.
-7. **`decisions`** — include only when a real product choice is open, proposed, or accepted.
+5. **`slices`** — one or more complete end-to-end product slices expressed in BDD.
+6. **`requirements`** — a coherence walkthrough proving that the requirements fit together and do not collide.
+7. **`scope`** — in-scope outcome, adjacent non-goals, assumptions, and sources/boundary.
+8. **`decisions`** — include only when a real product choice is open, proposed, or accepted.
 
 Open with one direct product statement:
 
@@ -92,6 +93,12 @@ Open with one direct product statement:
 For {actor} who needs to {job} during {moment}, the product will {capability}
 through {entry point}, resulting in {observable state}; it will not {boundary}.
 ```
+
+## Requirement coherence walkthrough
+
+The `requirements` section is the product-specification stress test. Walk every stable requirement, BDD scenario, acceptance criterion, user story, invariant, or explicit product constraint through its satisfying product path, dependencies, interactions, collision check, resolution, and observable proof. Use stable `req-###` IDs and structured `requirement` blocks. Load [references/requirement-coherence.md](references/requirement-coherence.md) when composing or reviewing this section.
+
+This is product-level, not architecture. If requirements collide around permissions, states, timing, ordering, terminology, boundaries, recovery, or acceptance, mark the affected requirement unresolved or blocked, name the product owner, explain the consequences, and request input. Never silently choose, weaken, duplicate, or invent a rule.
 
 ## Product slices
 
@@ -155,10 +162,11 @@ Every rendered decision includes a **Decision recorded** checkbox. Recording in 
 
 1. Inspect the request, current product surface, and smallest evidence set needed to avoid guessing.
 2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
-3. Compose the required section roles and complete product slices in `canonical-report-v1` structured content.
-4. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
-5. When the feature implies UI changes or visual suggestions, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
-6. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
+3. Compose the required section roles, complete BDD product slices, and the requirement coherence walkthrough in `canonical-report-v1` structured content.
+4. Stress the requirements against each other. Resolve conflicts only from explicit product authority; otherwise mark the PRD Blocked and request owner input.
+5. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
+6. When the feature implies UI changes or visual suggestions, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
+7. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
 ```bash
 node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
@@ -167,8 +175,8 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-7. Open the PRD and, when present, the mockups for review. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
-8. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
+8. Open the PRD and, when present, the mockups for review. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
+9. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
 If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.
 
@@ -177,6 +185,8 @@ If any required companion skill or renderer is unavailable, report the blocker. 
 - Product, problem, workflow, diagram, slices, and scope roles are direct, concise, and non-duplicative.
 - Every consequential claim has local authority as Sourced fact, Approved product truth, Proposed recommendation, Assumption, or Open question; the source list alone does not imply authority.
 - Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then with grammatical story fragments, and ends in an observable outcome.
+- The `requirements` walkthrough covers every requirement and demonstrates compatible product paths, dependencies, interactions, and observable proof.
+- Contradictory requirements are explicitly blocked or escalated to a named product owner; the PRD never silently resolves them.
 - No tables, speculative alternatives, repeated summaries, redundant scenario/step/acceptance claims, or classic As/I want story prose appear.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
 - One infrastructure-style product diagram has `system-diagram-v1` JSON/SVG provenance, a text walkthrough, and a causal question independent of viewport or page composition.
@@ -195,7 +205,10 @@ After explicit PRD approval, pass approved behavior, slices, acceptance, product
 ```text
 PRD source/report: {document.json path} · {html path}
 Status: {Draft | Review | Approved by whom/when | Blocked}
-Product: {bounded outcome for actor}
+Product: {what it is and the bounded outcome for the actor}
+Why: {problem and evidence}
+How: {end-to-end product behavior, not architecture}
+Requirements: {coherent and covered | blocked by requirement conflict}
 Decisions: {IDs + lifecycle status | none}
 Diagram: {question + JSON/SVG paths}
 Mockups: {linked mockups.html + Proposed/Accepted status | not applicable + reason}

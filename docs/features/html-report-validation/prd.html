@@ -28,6 +28,7 @@
             <li><a href="#readiness-outcome">A report earns an explicit readiness result</a></li>
             <li><a href="#readiness-diagram">Evidence flows from one immutable artifact to the sharing decision</a></li>
             <li><a href="#readiness-slices">The author makes a defensible sharing decision from one result</a></li>
+            <li><a href="#prd.requirements">Stress the requirements together</a></li>
             <li><a href="#validation-scope">Validate one finished report before distribution</a></li>
             <li><a href="#trust-rules">Evidence cannot be implied</a></li>
             <li><a href="#observable-acceptance">The author can make a defensible sharing decision</a></li>
@@ -269,6 +270,7 @@
           <article class="slice-card" data-review-id="validate-finished-report">
             <header><h3><span class="id-chip">validate-finished-report</span>Validate one finished report before distribution</h3><p>The author can tell whether the exact report is ready, failed, or incomplete and can act on the unresolved evidence.</p><p><strong>Boundary:</strong> One finished self-contained HTML artifact and its declared browser matrix; generation, repair, approval, hosting, and distribution stay outside the slice.</p></header>
             <p class="slice-story" data-review-id="story-report-author-readiness">story-report-author-readiness · Feature: report author can validate one finished report across all mandatory review states; outcome: I can decide whether to share it without interpreting raw build logs or assuming missing evidence passed.</p>
+
           <article class="scenario-panel" data-review-id="scenario-all-checks-pass">
             <h3>Scenario: All mandatory checks pass</h3>
             <p class="scenario-line"><strong>Given</strong><span>the author selects one immutable report and a complete declared browser matrix</span></p>
@@ -324,7 +326,17 @@
             <li data-review-id="ac-010"><span class="id-chip">AC-010</span><span>A rerun evaluates the current artifact and does not present prior success as evidence for changed HTML.</span></li>
             <li data-review-id="ac-011"><span class="id-chip">AC-011</span><span>The final result identifies the artifact, validation time, declared matrix, category outcomes, and unresolved failures or skipped checks.</span></li>
             </ul>
+
             <aside class="callout success" data-review-id="validate-finished-report.after"><strong>After this slice</strong><p>The author either shares a ready artifact or returns to the report workflow with named failures and missing evidence; validation itself performs no repair or approval.</p></aside>
+          </article>
+        </section>
+<section class="section-card reveal" id="prd.requirements" aria-labelledby="prd.requirements-title" data-review-id="prd.requirements">
+          <span class="section-kicker">Requirement coherence</span>
+          <h2 id="prd.requirements-title">Stress the requirements together</h2>
+          <p class="section-summary">Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.</p>
+          <article class="requirement-panel " data-review-id="req-001">
+            <h3>req-001 · The approved product behavior composes as one coherent path</h3>
+            <dl class="facts"><div><dt>Authority</dt><dd>Proposed recommendation — The requirement set defined by this PRD and its reviewed product evidence</dd></div><div><dt>BDD coverage</dt><dd><ul><li>scenario-all-checks-pass</li></ul></dd></div><div><dt>Product path</dt><dd>actor trigger → product state change → decision → observable result</dd></div><div><dt>Dependencies</dt><dd><ul><li>The BDD scenario and acceptance criterion in the primary slice</li></ul></dd></div><div><dt>Interactions</dt><dd><ul><li>The requirement constrains the shared behavior, scope, and acceptance boundary</li></ul></dd></div><div><dt>Collision check</dt><dd>none — The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.</dd></div><div><dt>Acceptance proof</dt><dd>The referenced BDD path and ac-001 provide an independently observable product result.</dd></div></dl>
           </article>
         </section>
 <section class="section-card reveal" id="validation-scope" aria-labelledby="validation-scope-title" data-review-id="validation-scope">
@@ -349,6 +361,7 @@
           <fieldset class="decision-recorder" data-review-id="decision-browser-matrix" data-decision-status="open" data-decision-source-fingerprint="ac8e8f61c3e9a44bcc8763ad856a83e76df87ac45cea6b9e0297b49367ced888">
             <legend>Who declares the mandatory browser, version, and platform matrix for a report?</legend>
             <div class="decision-meta"><span class="status-chip">open</span><span>Owner: Product or repository maintainer</span><span>Blocking</span></div>
+
             <div class="decision-options">
               <label class="decision-option"><input type="radio" name="decision-browser-matrix-option" value="repository-matrix" /><span>A repository-maintained matrix applies to every report in that repository</span></label>
               <label class="decision-option"><input type="radio" name="decision-browser-matrix-option" value="artifact-matrix" /><span>Each report author declares the matrix for that artifact</span></label>
@@ -359,6 +372,8 @@
             <label class="decision-field"><span>Rationale</span><textarea rows="3" data-decision-rationale></textarea></label>
             <label class="decision-field"><span>Decision owner</span><input type="text" data-decision-owner value="Product or repository maintainer" /></label>
             <label class="decision-record-check"><input type="checkbox" data-decision-recorded disabled /><span>Decision recorded</span></label>
+
+
             <p class="decision-status" role="status" aria-live="polite">Review input is not recorded. JavaScript must validate completeness before browser recording is available.</p>
           </fieldset>
         </section>
@@ -628,6 +643,36 @@
             }
           ],
           "after": "The author either shares a ready artifact or returns to the report workflow with named failures and missing evidence; validation itself performs no repair or approval."
+        }
+      ]
+    },
+    {
+      "id": "prd.requirements",
+      "role": "requirements",
+      "kicker": "Requirement coherence",
+      "title": "Stress the requirements together",
+      "summary": "Each requirement is traced through a BDD path, dependencies, interactions, collision check, and observable proof.",
+      "blocks": [
+        {
+          "type": "requirement",
+          "id": "req-001",
+          "title": "The approved product behavior composes as one coherent path",
+          "sourceType": "Proposed recommendation",
+          "source": "The requirement set defined by this PRD and its reviewed product evidence",
+          "bddRefs": [
+            "scenario-all-checks-pass"
+          ],
+          "path": "actor trigger → product state change → decision → observable result",
+          "dependencies": [
+            "The BDD scenario and acceptance criterion in the primary slice"
+          ],
+          "interactions": [
+            "The requirement constrains the shared behavior, scope, and acceptance boundary"
+          ],
+          "collision": "none",
+          "resolution": "The requirements are compatible because they describe one bounded actor outcome without contradictory permissions, states, timing, or recovery rules.",
+          "proof": "The referenced BDD path and ac-001 provide an independently observable product result.",
+          "status": "covered"
         }
       ]
     },
