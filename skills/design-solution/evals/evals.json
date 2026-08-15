@@ -74,8 +74,8 @@
       "expected_output": "A blocked or unresolved design that walks the requirement through the architecture, explains why the atomic guarantee does not fit, presents the consequence, and requests input from the product or architecture owner instead of silently inventing a workaround.",
       "files": [],
       "expectations": [
-        "Every requirement is traced through entry, participating units, state/contracts, result, failure/recovery, and proof.",
-        "The non-fitting atomicity requirement is explicitly marked unresolved or blocked with a named decision owner.",
+        "Every requirement is traced through a stable arch-### entry with requirement references, slice references, entry, participating units, state/contracts, result, failure/recovery, and proof.",
+        "The non-fitting atomicity requirement is explicitly marked unresolved or blocked with a named decision owner and escalation question.",
         "The design does not weaken the requirement or claim the adapter makes the architecture complete without authority."
       ]
     }

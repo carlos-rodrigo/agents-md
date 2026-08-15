@@ -16,13 +16,13 @@ const idPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const statuses = new Set(['Draft', 'Review', 'Approved', 'Blocked']);
 const kinds = new Set(['prd', 'design', 'report', 'diagram', 'research', 'decision']);
 const decisionStatuses = new Set(['open', 'proposed', 'accepted']);
-const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'requirement', 'decision', 'diagram', 'code', 'quote']);
+const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'requirement', 'architecture', 'decision', 'diagram', 'code', 'quote']);
 const requiredRoles = {
   prd: ['product', 'problem', 'behavior', 'diagram', 'slices', 'requirements', 'scope'],
   design: ['authority', 'pressure', 'seam', 'shape', 'path', 'slices', 'traceability', 'diagram', 'decisions', 'proof', 'boundary'],
   diagram: ['diagram'],
 };
-const specialBlockRoles = { diagram: 'diagram', slice: 'slices', requirement: 'requirements', decision: 'decisions' };
+const specialBlockRoles = { diagram: 'diagram', slice: 'slices', requirement: 'requirements', architecture: 'traceability', decision: 'decisions' };
 
 export function templateDigest(template = readFileSync(templatePath, 'utf8')) {
   return createHash('sha256').update(template).digest('hex');
@@ -98,6 +98,7 @@ export function validateDocumentSpec(input) {
         case 'scenario': validateScenario(block, blockLabel, errors); break;
         case 'slice': sliceCount += 1; validateSlice(block, blockLabel, ids, document.kind, errors); break;
         case 'requirement': requirementCount += 1; validateRequirement(block, blockLabel, ids, errors); break;
+        case 'architecture': validateArchitectureTrace(block, blockLabel, ids, errors); break;
         case 'decision': decisionCount += 1; decisions.push(block); validateDecision(block, blockLabel, document.kind, errors); break;
         case 'diagram': diagramCount += 1; validateDiagram(block, blockLabel, errors); break;
         case 'code': validateCode(block, blockLabel, errors); break;
@@ -211,6 +212,7 @@ function renderBlock(block, baseDir) {
     case 'scenario': return renderScenario(block, reviewIdAttribute);
     case 'slice': return renderSlice(block);
     case 'requirement': return renderRequirement(block, reviewIdAttribute);
+    case 'architecture': return renderArchitectureTrace(block, reviewIdAttribute);
     case 'decision': return renderDecision(block);
     case 'diagram': return renderDiagram(block, baseDir);
     case 'code': return `          <figure class="copyable-code"${reviewIdAttribute}><figcaption>${escapeHtml(block.label)}</figcaption><pre><code>${escapeHtml(block.content)}</code></pre></figure>`;
@@ -224,6 +226,14 @@ function renderRequirement(requirement, reviewIdAttribute = '') {
   return `          <article class="requirement-panel ${requirement.status === 'blocked' ? 'requirement-panel--blocked' : ''}"${reviewIdAttribute}>
             <h3>${escapeHtml(requirement.id)} · ${escapeHtml(requirement.title)}</h3>
             <dl class="facts"><div><dt>Authority</dt><dd>${escapeHtml(requirement.sourceType)} — ${escapeHtml(requirement.source)}</dd></div><div><dt>BDD coverage</dt><dd>${list(requirement.bddRefs)}</dd></div><div><dt>Product path</dt><dd>${escapeHtml(requirement.path)}</dd></div><div><dt>Dependencies</dt><dd>${list(requirement.dependencies)}</dd></div><div><dt>Interactions</dt><dd>${list(requirement.interactions)}</dd></div><div><dt>Collision check</dt><dd>${escapeHtml(requirement.collision)} — ${escapeHtml(requirement.resolution)}</dd></div><div><dt>Acceptance proof</dt><dd>${escapeHtml(requirement.proof)}</dd></div></dl>
+          </article>`;
+}
+
+function renderArchitectureTrace(trace, reviewIdAttribute = '') {
+  const list = (items) => items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p>None recorded</p>';
+  return `          <article class="architecture-trace ${trace.fit !== 'fits' ? 'architecture-trace--unresolved' : ''}"${reviewIdAttribute}>
+            <h3>${escapeHtml(trace.id)} · ${escapeHtml(trace.title)}</h3>
+            <dl class="facts"><div><dt>Authority</dt><dd>${escapeHtml(trace.sourceType)} — ${escapeHtml(trace.source)}</dd></div><div><dt>Requirements</dt><dd>${list(trace.requirementRefs)}</dd></div><div><dt>Architecture slices</dt><dd>${list(trace.sliceRefs)}</dd></div><div><dt>Entry/trigger</dt><dd>${escapeHtml(trace.entryPoint)}</dd></div><div><dt>Participating elements</dt><dd>${list(trace.participatingElements)}</dd></div><div><dt>Contract/state consequence</dt><dd>${escapeHtml(trace.contractState)}</dd></div><div><dt>Persistence/external effect</dt><dd>${escapeHtml(trace.effect)}</dd></div><div><dt>Failure/recovery</dt><dd>${escapeHtml(trace.failureRecovery)}</dd></div><div><dt>Fit</dt><dd>${escapeHtml(trace.fit)}${trace.escalation ? ` — ${escapeHtml(trace.escalation)}` : ''}</dd></div><div><dt>Proof</dt><dd>${escapeHtml(trace.proof)}</dd></div></dl>
           </article>`;
 }
 
@@ -446,6 +456,24 @@ function validateRequirement(block, label, ids, errors) {
   } else if (block.owner !== undefined) {
     requireText(block.owner, `${label}.owner`, errors);
   }
+}
+function validateArchitectureTrace(block, label, ids, errors) {
+  requireOnly(block, ['type', 'id', 'title', 'sourceType', 'source', 'requirementRefs', 'sliceRefs', 'entryPoint', 'participatingElements', 'contractState', 'effect', 'failureRecovery', 'proof', 'fit', 'escalation'], label, errors);
+  requireId(block.id, `${label}.id`, errors);
+  if (!/^arch-[0-9]{3,}$/.test(block.id ?? '')) errors.push(`${label}.id must use lowercase arch-### semantics`);
+  requireText(block.title, `${label}.title`, errors);
+  requireEnum(block.sourceType, new Set(['Approved product truth', 'Sourced fact', 'Proposed recommendation', 'Assumption', 'Open question']), `${label}.sourceType`, errors);
+  requireText(block.source, `${label}.source`, errors);
+  requireTextArray(block.requirementRefs, `${label}.requirementRefs`, errors);
+  requireTextArray(block.sliceRefs, `${label}.sliceRefs`, errors);
+  requireText(block.entryPoint, `${label}.entryPoint`, errors);
+  requireTextArray(block.participatingElements, `${label}.participatingElements`, errors);
+  requireText(block.contractState, `${label}.contractState`, errors);
+  requireText(block.effect, `${label}.effect`, errors);
+  requireText(block.failureRecovery, `${label}.failureRecovery`, errors);
+  requireText(block.proof, `${label}.proof`, errors);
+  requireEnum(block.fit, new Set(['fits', 'unresolved', 'blocked']), `${label}.fit`, errors);
+  if (block.fit !== 'fits') requireText(block.escalation, `${label}.escalation`, errors);
 }
 function validateDecision(block, label, documentKind, errors) {
   const designDecision = documentKind === 'design';

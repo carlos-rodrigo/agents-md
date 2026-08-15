@@ -39,6 +39,8 @@ requireAll('design authority and structure', skill, [
   'Operations and rollout',
   'Verification shape',
   'references/optional-design-recipes.md',
+  'references/requirement-traceability.md',
+  'structured `arch-###` entries',
   'Every durable design must invoke `system-diagram`',
   'do not use hand-authored SVGs or a `Diagram not applicable` escape',
   '**Decision recorded**',
@@ -51,6 +53,10 @@ assertInOrder(skill, ['**`authority`**', '**`pressure`**', '**`seam`**', '**`sha
 forbidAll('design presentation and workflow boundary', skill, [
   'design-template.html', '{{DESIGN_TOC}}', '{{COMPOSED_DESIGN_CONTENT}}', '.diagram-reveal', 'add `reveal`', 'explicit approved product brief', 'Slices/tasks:', 'execute directly',
 ]);
+
+const traceabilityReference = 'skills/design-solution/references/requirement-traceability.md';
+assert(existsSync(join(root, traceabilityReference)), 'architecture requirement traceability reference must exist');
+requireAll('architecture traceability reference', read(traceabilityReference), ['arch-###', 'Requirement references', 'Architecture slices', 'Failure/recovery', 'Fit: fits | unresolved | blocked', 'request input']);
 
 const reference = 'skills/design-solution/references/optional-design-recipes.md';
 assert(existsSync(join(root, reference)), 'optional design recipes must exist');

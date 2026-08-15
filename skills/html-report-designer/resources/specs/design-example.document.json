@@ -231,26 +231,28 @@
       "summary": "Each requirement is mapped through the proposed path, contracts, result, proof, and mismatch escalation.",
       "blocks": [
         {
-          "type": "facts",
-          "id": "design.traceability.walkthrough",
-          "items": [
-            [
-              "Requirement",
-              "The approved outcome or technical specification being evaluated."
-            ],
-            [
-              "Fit and path",
-              "The requirement fits the proposed entry, units, state transitions, effects, and result."
-            ],
-            [
-              "Proof",
-              "Boundary evidence demonstrates the requirement."
-            ],
-            [
-              "Mismatch",
-              "A non-fitting requirement blocks completion and names the decision owner for user input."
-            ]
-          ]
+          "type": "architecture",
+          "id": "arch-001",
+          "title": "The proposed architecture covers the bounded outcome",
+          "sourceType": "Proposed recommendation",
+          "source": "The approved product outcome and inspected technical evidence",
+          "requirementRefs": [
+            "outcome-001"
+          ],
+          "sliceRefs": [
+            "arch-slice-001"
+          ],
+          "entryPoint": "The approved external trigger or public entry boundary.",
+          "participatingElements": [
+            "Existing entry point",
+            "Proposed owning seam",
+            "Existing dependencies"
+          ],
+          "contractState": "Inputs, outputs, and compatibility consequences are explicit",
+          "effect": "The owned persistence or external effect is recorded by the selected adapter",
+          "failureRecovery": "Material failure returns to the named owning recovery boundary",
+          "proof": "Contract fixtures and end-to-end observable proof",
+          "fit": "fits"
         }
       ]
     },

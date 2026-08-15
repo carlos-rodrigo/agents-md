@@ -89,13 +89,13 @@ Every durable design uses these `section.role` values in causal reading order. F
 4. **`shape`** — concrete intended system shape and impact across architecture, API/contracts, domain, data/persistence, delivery/interface, integrations, operations/rollout, and verification; include a solution overview and reference-level contracts.
 5. **`path`** — external trigger through entry, policy/state, dependency/persistence, and observable result/failure.
 6. **`slices`** — independently reviewable vertical architecture outcomes that together deliver the approved promise; each carries technical participation, contract/state delta, failure ownership, and proof.
-7. **`traceability`** — a requirement-to-solution walkthrough for every approved BDD scenario, acceptance criterion, user story, or technical specification.
+7. **`traceability`** — structured architecture-to-requirement walkthroughs for every approved BDD scenario, acceptance criterion, user story, contract, or bounded technical outcome.
 8. **`diagram`** — one evidence-backed causal architecture diagram.
 9. **`decisions`** — chosen seam and every consequential architecture decision with lifecycle.
 10. **`proof`** — tradeoffs, failure/recovery posture, risks, and observable proof strategy.
 11. **`boundary`** — adjacent architecture intentionally unchanged or deferred.
 
-Every durable design must include all eleven roles. The `traceability` role is the architecture stress test: it demonstrates how every requirement fits the proposal or records the user-owned mismatch that blocks completion. Load [references/optional-design-recipes.md](references/optional-design-recipes.md) for the mandatory shape map and slice outline, plus conditional detail recipes. Traceability may remain lightweight when direct links make coverage obvious.
+Every durable design must include all eleven roles. The `traceability` role is the architecture stress test: structured `arch-###` entries demonstrate how every requirement fits the proposal or record the owner and mismatch that blocks completion. Load [references/requirement-traceability.md](references/requirement-traceability.md) when composing or reviewing this section, and load [references/optional-design-recipes.md](references/optional-design-recipes.md) for the mandatory shape map and slice outline.
 
 ## Evidence and discovery
 
@@ -252,6 +252,8 @@ After explicit design approval, pass approved acceptance anchors, the chosen sea
 - Exactly one infrastructure-style architecture diagram has approved System Diagram JSON/SVG provenance and a walkthrough.
 - Decisions expose credible alternatives, lifecycle, tradeoffs, owner, and approval.
 - Product behavior was not invented or silently changed.
+- Every requirement and architecture slice has structured `arch-###` traceability, including entry, participating units, state/contracts, result, failure/recovery, fit, and proof.
+- A non-fitting requirement or technical outcome is unresolved or blocked with a named decision owner and escalation question; the design never silently works around it.
 - Conditional contract, interface, operations, and traceability detail is proportional to the impact map rather than omitted by default.
 - ADR ownership is preserved without duplicated rationale.
 - Task steps and execution evidence are absent.

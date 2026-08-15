@@ -78,6 +78,7 @@
         { "$ref": "#/$defs/scenario" },
         { "$ref": "#/$defs/slice" },
         { "$ref": "#/$defs/requirement" },
+        { "$ref": "#/$defs/architecture" },
         { "$ref": "#/$defs/decision" },
         { "$ref": "#/$defs/diagram" },
         { "$ref": "#/$defs/code" },
@@ -131,6 +132,19 @@
         "dependencies": { "type": "array", "items": { "$ref": "#/$defs/text" } }, "interactions": { "type": "array", "items": { "$ref": "#/$defs/text" } },
         "collision": { "enum": ["none", "conflict"] }, "resolution": { "$ref": "#/$defs/text" }, "proof": { "$ref": "#/$defs/text" },
         "status": { "enum": ["covered", "unresolved", "blocked"] }, "owner": { "$ref": "#/$defs/text" }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "title", "sourceType", "source", "requirementRefs", "sliceRefs", "entryPoint", "participatingElements", "contractState", "effect", "failureRecovery", "proof", "fit"],
+      "properties": {
+        "type": { "const": "architecture" }, "id": { "allOf": [{ "$ref": "#/$defs/id" }, { "pattern": "^arch-[0-9]{3,}$" }] }, "title": { "$ref": "#/$defs/text" },
+        "sourceType": { "enum": ["Approved product truth", "Sourced fact", "Proposed recommendation", "Assumption", "Open question"] }, "source": { "$ref": "#/$defs/text" },
+        "requirementRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } }, "sliceRefs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/id" } },
+        "entryPoint": { "$ref": "#/$defs/text" }, "participatingElements": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "contractState": { "$ref": "#/$defs/text" }, "effect": { "$ref": "#/$defs/text" }, "failureRecovery": { "$ref": "#/$defs/text" }, "proof": { "$ref": "#/$defs/text" },
+        "fit": { "enum": ["fits", "unresolved", "blocked"] }, "escalation": { "$ref": "#/$defs/text" }
       }
     },
     "decision": {
