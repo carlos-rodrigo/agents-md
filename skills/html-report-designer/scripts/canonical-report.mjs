@@ -67,6 +67,7 @@ export function validateDocumentSpec(input) {
   let decisionCount = 0;
   let requirementCount = 0;
   const decisions = [];
+  const architectureTraces = [];
   const roleBlockCounts = new Map();
   const enforcesSpecialPlacement = ['prd', 'design', 'diagram'].includes(document.kind);
 
@@ -98,7 +99,7 @@ export function validateDocumentSpec(input) {
         case 'scenario': validateScenario(block, blockLabel, errors); break;
         case 'slice': sliceCount += 1; validateSlice(block, blockLabel, ids, document.kind, errors); break;
         case 'requirement': requirementCount += 1; validateRequirement(block, blockLabel, ids, errors); break;
-        case 'architecture': validateArchitectureTrace(block, blockLabel, ids, errors); break;
+        case 'architecture': validateArchitectureTrace(block, blockLabel, ids, errors); architectureTraces.push({ block, label: blockLabel }); break;
         case 'decision': decisionCount += 1; decisions.push(block); validateDecision(block, blockLabel, document.kind, errors); break;
         case 'diagram': diagramCount += 1; validateDiagram(block, blockLabel, errors); break;
         case 'code': validateCode(block, blockLabel, errors); break;
@@ -107,6 +108,28 @@ export function validateDocumentSpec(input) {
     }
   }
 
+  const traceableIds = new Set();
+  const sliceIds = new Set();
+  for (const section of input.sections) {
+    for (const block of section.blocks ?? []) {
+      if (block.id) traceableIds.add(block.id);
+      if (block.type === 'slice') {
+        sliceIds.add(block.id);
+        if (block.story?.id) traceableIds.add(block.story.id);
+        for (const scenario of block.scenarios ?? []) if (scenario.id) traceableIds.add(scenario.id);
+        for (const step of block.steps ?? []) if (step.id) traceableIds.add(step.id);
+        for (const acceptance of block.acceptance ?? []) if (acceptance.id) traceableIds.add(acceptance.id);
+      }
+    }
+  }
+  for (const { block, label } of architectureTraces) {
+    for (const reference of block.requirementRefs ?? []) {
+      if (!traceableIds.has(reference)) errors.push(`${label}.requirementRefs contains nonexistent requirement or contract reference "${reference}"`);
+    }
+    for (const reference of block.sliceRefs ?? []) {
+      if (!sliceIds.has(reference)) errors.push(`${label}.sliceRefs contains nonexistent architecture slice reference "${reference}"`);
+    }
+  }
   if (new Set(roles).size !== roles.length) errors.push('section.role values must be unique');
   const profileRoles = requiredRoles[document.kind] ?? [];
   for (const role of profileRoles) {

@@ -68,6 +68,8 @@ try {
     ['cross-placed design decision', design, (candidate) => { const decisions = candidate.sections.find((section) => section.role === 'decisions'); const proof = candidate.sections.find((section) => section.role === 'proof'); [decisions.blocks, proof.blocks] = [proof.blocks, decisions.blocks]; }, 'decision blocks must be inside the "decisions" section role'],
     ['shallow design slice', design, (candidate) => { delete candidate.sections.find((section) => section.role === 'slices').blocks[0].contractDelta; }, 'contractDelta'],
     ['unresolved architecture trace without escalation', design, (candidate) => { const trace = candidate.sections.find((section) => section.role === 'traceability').blocks[0]; trace.fit = 'unresolved'; delete trace.escalation; }, 'escalation'],
+    ['architecture trace with nonexistent requirement reference', design, (candidate) => { candidate.sections.find((section) => section.role === 'traceability').blocks[0].requirementRefs = ['req-does-not-exist']; }, 'nonexistent requirement or contract reference'],
+    ['architecture trace with nonexistent slice reference', design, (candidate) => { candidate.sections.find((section) => section.role === 'traceability').blocks[0].sliceRefs = ['slice-does-not-exist']; }, 'nonexistent architecture slice reference'],
     ['shallow design option', design, (candidate) => { delete candidate.sections.find((section) => section.role === 'decisions').blocks[0].options[0].benefits; }, 'benefits'],
     ['shallow design decision', design, (candidate) => { delete candidate.sections.find((section) => section.role === 'decisions').blocks[0].decisionDrivers; }, 'decisionDrivers'],
   ];

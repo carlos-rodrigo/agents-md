@@ -295,7 +295,7 @@
           "sourceType": "Proposed recommendation",
           "source": "The approved product outcome and the inspected technical evidence",
           "requirementRefs": [
-            "outcome-001"
+            "arch-slice-001"
           ],
           "sliceRefs": [
             "arch-slice-001"

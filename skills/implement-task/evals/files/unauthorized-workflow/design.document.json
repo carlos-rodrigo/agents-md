@@ -7,7 +7,9 @@
     "title": "Unapproved workflow",
     "summary": "This design is intentionally not Approved.",
     "updated": "2026-07-31",
-    "sources": ["Synthetic negative eval"]
+    "sources": [
+      "Synthetic negative eval"
+    ]
   },
   "sections": []
 }
