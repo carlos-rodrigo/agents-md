@@ -52,6 +52,9 @@ try {
   assertFailure('prd-without-diagram-digest.html', prd.replace(/ data-diagram-output-sha256="[a-f0-9]{64}"/, ''), 'needs an output digest');
   assertFailure('prd-with-tampered-diagram.html', prd.replace('>Evidence</text>', '>Tampered evidence</text>'), 'output digest does not match its embedded SVG');
   assertFailure('prd-without-decision-recorder.html', prd.replace('class="decision-recorder"', 'class="decision-card"'), 'every DocumentSpec decision must render exactly one decision recorder');
+  assertFailure('prd-without-review-decision-marker.html', prd.replace(' data-review-decision="recorded-decision"', ''), 'durable HTML review decision channel');
+  assertFailure('prd-with-prefixed-review-decision-marker.html', prd.replace(' data-review-decision="recorded-decision"', ' x-data-review-decision="recorded-decision"'), 'durable HTML review decision channel');
+  assertFailure('prd-with-wrong-review-decision-value.html', prd.replace(' data-review-decision="recorded-decision"', ' data-review-decision="RECORDED-DECISION"'), 'durable HTML review decision channel');
   assertFailure('prd-without-decision-fingerprint.html', prd.replace(/ data-decision-source-fingerprint="[a-f0-9]{64}"/, ''), 'decision-source fingerprint');
 
   const notTemplate = join(temp, 'placeholder.html');

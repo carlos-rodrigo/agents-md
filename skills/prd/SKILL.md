@@ -156,7 +156,7 @@ Include a canonical `decision` block only when an explicit request or evidence e
 
 This is the only place alternative approaches belong. Every option must be grounded in supplied evidence, current product truth, or a human-framed choice; do not invent options to populate the recorder. If the question is real but grounded options are unavailable, ask the owner or report the PRD Blocked instead. If one sourced behavior is already the only honest recommendation and no accepted decision records it, omit the decision section. Each retained decision has a stable ID, `open | proposed | accepted` status, at least two real options plus the renderer's custom option, owner, blocker state, selected direction when known, and rationale.
 
-Every rendered decision includes a **Decision recorded** checkbox. Recording in the browser requires a selection, rationale, and owner, persists locally, and exports Markdown. Reconcile that export into `prd.document.json` only after explicit human approval. Accepted decisions require approver and approval date; Approved PRDs cannot contain open or proposed decisions.
+Every rendered decision includes a **Decision recorded** checkbox. Recording requires a selection, rationale, and owner. In standalone viewing it persists locally and exports Markdown; in Pi HTML review, selected or confirmed typed feedback is atomically upserted by stable decision ID into the same `.review.md` channel as comments, including the source fingerprint. Treat either form as review input—not approval—and reconcile it into `prd.document.json` only after explicit human approval. Accepted decisions require approver and approval date; Approved PRDs cannot contain open or proposed decisions.
 
 ## Process
 
@@ -175,7 +175,7 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-8. Open the PRD and, when present, the mockups for review. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
+8. Open the PRD and, when present, the mockups through Pi's HTML reviewer. Read both inline comments and selected or confirmed decision feedback from the generated sidecars. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
 9. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
 If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.

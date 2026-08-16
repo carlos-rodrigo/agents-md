@@ -67,6 +67,7 @@ for (const file of files) {
         const decisions = embeddedSpec.sections.flatMap((section) => section.blocks.filter((block) => block.type === 'decision'));
         const decisionRecorderTags = [...html.matchAll(/<fieldset\b([^>]*class=["'][^"']*\bdecision-recorder\b[^>]*)>/gi)].map((match) => match[1]);
         if (decisionRecorderTags.length !== decisions.length) errors.push('every DocumentSpec decision must render exactly one decision recorder');
+        if (decisionRecorderTags.some((attributes) => !/(?:^|\s)data-review-decision\s*=\s*(["'])recorded-decision\1(?=\s|$)/.test(attributes))) errors.push('every decision recorder must use the durable HTML review decision channel');
         if (decisionRecorderTags.some((attributes) => !/data-decision-source-fingerprint=["'][a-f0-9]{64}["']/i.test(attributes))) errors.push('every decision recorder must carry its exact decision-source fingerprint');
         if (embeddedSpec.document.kind === 'prd' || embeddedSpec.document.kind === 'design') {
           if (!has(/<!--\s*svg-source:system-diagram\s*-->/i)) errors.push(`${embeddedSpec.document.kind} reports require System Diagram SVG provenance`);

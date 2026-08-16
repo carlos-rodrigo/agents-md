@@ -22,6 +22,8 @@ Use this mode only when a PRD workflow or explicit human request asks for visual
 - Label invented records and values Illustrative, and label the artifact **Proposed / not approved**.
 - Do not generate competing concepts in this mode. If a human establishes a real choice, the PRD decision owns its options and the mockup illustrates only the recommended or selected direction.
 - Verify the static artifact in-browser for wide/narrow layout, keyboard-visible controls, contrast, non-color meaning, reduced motion, offline/self-contained assets, and PRD ↔ mockup review navigation.
+- Treat dark mode as a first-class visual state, not an inversion afterthought: every warning, error, disabled, selected, and empty-state surface must use a dark-mode-appropriate background with readable text and links. Never place light text on a light semantic surface.
+- Review the rendered artifact after the canonical mockup renderer injects its managed CSS. If the renderer bridge overrides feature-local semantic colors, increase local selector specificity or use an explicit semantic override inside the product surface, then rerender and recheck.
 - Run `node "<html-report-designer-dir>/scripts/render-mockup.mjs" --check path/to/mockups.html` before review; a stale Editorial Infrastructure digest blocks completion.
 
 A proposed mockup informs product review. It does not authorize implementation, establish architecture, or silently approve styling, layout, content, or behavior.
@@ -143,7 +145,8 @@ Verify as applicable:
 
 - lint, typecheck, unit/integration tests, and production build;
 - primary interaction and one meaningful failure/recovery path;
-- keyboard completion, focus movement, names, announcements, and contrast;
+- keyboard completion, focus movement, names, announcements, and contrast in both light and dark rendered states;
+- semantic states specifically: attention, error, empty, loading, disabled, selected, and pending surfaces must preserve readable foreground/background and link contrast;
 - narrow, intermediate, wide, 200% text, 400% reflow, long/localized content, and RTL;
 - reduced motion and static/no-script fallback when promised;
 - automated accessibility, visual regression, performance, and bundle checks available in the repository;

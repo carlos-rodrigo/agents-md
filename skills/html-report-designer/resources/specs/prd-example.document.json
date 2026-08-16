@@ -5,9 +5,9 @@
     "kind": "prd",
     "status": "Review",
     "title": "Record reviewer decisions without losing product truth",
-    "summary": "Reviewers can choose, explain, record, and export a real product decision while canonical approval remains explicit.",
-    "reviewFocus": "Choose the retention policy, provide rationale, and verify that browser recording is not treated as approval.",
-    "updated": "2026-07-28",
+    "summary": "Reviewers can choose, explain, and record a product decision through the normal review-feedback channel while canonical approval remains explicit.",
+    "reviewFocus": "Choose the retention policy, provide rationale, and verify that selected or confirmed browser input becomes agent-readable feedback without becoming approval.",
+    "updated": "2026-08-16",
     "sources": [
       "skills/prd/SKILL.md",
       "User-approved decision-recorder requirement"
@@ -19,7 +19,7 @@
       "id": "prd.product",
       "role": "product",
       "kicker": "Product",
-      "title": "Reviewers can create a portable decision record",
+      "title": "Reviewers can create an agent-readable decision record",
       "blocks": [
         {
           "type": "facts",
@@ -35,7 +35,7 @@
             ],
             [
               "Capability",
-              "Select, explain, record, and export the choice"
+              "Select, explain, and record the choice through durable review feedback"
             ],
             [
               "Boundary",
@@ -49,12 +49,12 @@
       "id": "prd.problem",
       "role": "problem",
       "kicker": "Why",
-      "title": "Selections previously stopped at ephemeral browser state",
+      "title": "Selections must not stop at ephemeral browser state",
       "blocks": [
         {
           "type": "paragraph",
           "id": "prd.problem.current",
-          "text": "A reviewer could select an option, but the report did not distinguish a saved choice from an explicitly approved product decision."
+          "text": "A reviewer could select an option and add rationale, but separate local export made that input invisible to the agent reading normal review comments."
         },
         {
           "type": "callout",
@@ -88,12 +88,12 @@
             {
               "id": "prd.behavior.record",
               "title": "Record",
-              "text": "The checkbox persists a portable review record."
+              "text": "Selection changes save anchored review feedback; the checkbox confirms that same record with rationale, owner, completeness, and source fingerprint."
             },
             {
               "id": "prd.behavior.reconcile",
               "title": "Reconcile",
-              "text": "An agent updates canonical source only after explicit approval."
+              "text": "The agent reads the normal review sidecar and updates canonical source only after explicit approval."
             }
           ]
         }
@@ -109,13 +109,13 @@
           "type": "diagram",
           "id": "diagram.product-decision",
           "question": "How does a reviewer choice become portable without becoming implicit approval?",
-          "caption": "The review record is exported before explicit approval changes canonical truth.",
+          "caption": "The review record enters the same durable feedback channel as comments before explicit approval changes canonical truth.",
           "svgPath": "../../../system-diagram/resources/system-domain-interaction-example.svg",
           "sourcePath": "../../../system-diagram/resources/system-domain-interaction-example.json",
           "walkthrough": [
             "Start from the unresolved reviewer question.",
             "Record the selected option with rationale and owner.",
-            "Export the portable Markdown review record.",
+            "Persist the selected or confirmed decision in the normal review sidecar, or export it when viewed standalone.",
             "Apply only explicitly approved choices to canonical source."
           ]
         }
@@ -130,8 +130,8 @@
         {
           "type": "slice",
           "id": "slice-001",
-          "title": "Record and export a reviewer choice",
-          "outcome": "A reviewer leaves a portable, agent-readable decision record.",
+          "title": "Record a reviewer choice through the review channel",
+          "outcome": "A reviewer leaves one anchored, agent-readable decision record alongside comments.",
           "boundary": "The action does not mark the PRD Approved or modify its source.",
           "story": {
             "id": "story-001",
@@ -145,7 +145,7 @@
               "title": "Main scenario",
               "given": "a report contains an unresolved product decision",
               "when": "the reviewer selects an option, enters rationale and owner, and checks Decision recorded",
-              "then": "the choice persists locally and exports as Markdown marked as review input"
+              "then": "Pi HTML review writes a confirmed structured record to its comment sidecar, while standalone viewing retains local persistence and explicit Markdown export"
             },
             {
               "id": "ex-002",
@@ -170,8 +170,8 @@
               "title": "Record",
               "context": "Selection, rationale, and owner are complete.",
               "action": "The reviewer checks Decision recorded.",
-              "response": "The report confirms local persistence and offers export.",
-              "outcome": "The reviewer downloads an agent-readable Markdown record."
+              "response": "Pi HTML review upgrades the anchored selection feedback to confirmed review input.",
+              "outcome": "Finishing review writes the decision with comments to one agent-readable sidecar."
             }
           ],
           "acceptance": [
@@ -181,14 +181,14 @@
             },
             {
               "id": "ac-002",
-              "text": "Reloading restores a locally recorded review decision."
+              "text": "Standalone reload restores local input; Pi HTML review retains selected or confirmed input in the active review comment channel."
             },
             {
               "id": "ac-003",
-              "text": "Export identifies the stable decision ID and states that the record is not approval."
+              "text": "Sidecar or standalone export identifies the stable decision ID and source fingerprint and states that the record is not approval."
             }
           ],
-          "after": "After this slice, a reviewer can leave a portable decision record without silently approving or modifying product truth."
+          "after": "After this slice, the agent can read selected or confirmed decisions with normal comments without silently approving or modifying product truth."
         }
       ]
     },
@@ -233,7 +233,8 @@
           "id": "prd.scope.rules",
           "style": "checks",
           "items": [
-            "In scope: local persistence and Markdown export.",
+            "In scope: one Pi HTML review sidecar for comments and selected or confirmed decisions.",
+            "In scope: standalone local persistence and Markdown export.",
             "In scope: explicit distinction between review input and accepted truth.",
             "Out of scope: automatic source-file mutation or implied approval."
           ]

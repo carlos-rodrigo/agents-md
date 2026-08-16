@@ -321,7 +321,7 @@ function renderDecision(decision) {
     ? `            <label class="decision-custom"><span>Custom answer</span><input type="text" data-decision-custom value="${escapeAttribute(decision.customAnswer ?? '')}"${disabledAttribute} /></label>\n`
     : '';
 
-  return `          <fieldset class="decision-recorder" data-review-id="${escapeAttribute(decision.id)}" data-decision-status="${escapeAttribute(decision.status)}" data-decision-source-fingerprint="${decisionSourceFingerprint}"${authorityAttributes}>
+  return `          <fieldset class="decision-recorder" data-review-id="${escapeAttribute(decision.id)}" data-review-decision="recorded-decision" data-decision-status="${escapeAttribute(decision.status)}" data-decision-source-fingerprint="${decisionSourceFingerprint}"${authorityAttributes}>
             <legend>${escapeHtml(decision.question)}</legend>
             <div class="decision-meta"><span class="status-chip">${escapeHtml(decision.status)}</span><span>Owner: ${escapeHtml(decision.owner)}</span><span>${decision.blocking ? 'Blocking' : 'Non-blocking'}</span></div>
             ${decision.decisionDrivers ? `<p class="decision-meta"><strong>Drivers:</strong> ${escapeHtml(decision.decisionDrivers.join(' · '))}</p>` : ''}

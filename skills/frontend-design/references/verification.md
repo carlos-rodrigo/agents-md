@@ -48,7 +48,8 @@ Target project policy and WCAG 2.2 AA where applicable:
 - semantic landmarks and controls;
 - accessible names, descriptions, errors, and live status;
 - keyboard completion and visible, unobscured focus;
-- contrast and non-color cues;
+- contrast and non-color cues in both light and dark themes;
+- semantic attention/error/empty/pending surfaces use readable foreground, background, and link colors;
 - zoom/reflow and target size;
 - reduced motion and alternatives to drag/gesture;
 - screen-reader smoke for consequential custom interactions.
@@ -65,13 +66,14 @@ Also inspect image dimensions/loading, font behavior, JavaScript cost, hydration
 
 ## Visual critique
 
-Capture representative desktop and mobile states. Compare against the brief and neighboring product surfaces:
+Capture representative desktop and mobile states in the actual rendered theme. Compare against the brief and neighboring product surfaces:
 
 - hierarchy and primary action;
 - optical alignment and spacing rhythm;
 - type wrapping and density;
 - component/system consistency;
 - state completeness;
+- dark-mode semantic contrast and readable links;
 - product-specific character without decorative noise.
 
 For self-contained HTML review artifacts, capture the target renderer with source scripts removed. Confirm that CSS motion still advances when supported or that the static/native fallback exposes the complete sequence; a working raw file does not prove the review path.

@@ -41,7 +41,7 @@ Resolve each path against the directory containing this loaded `SKILL.md`. Never
 
 A consuming skill supplies section roles, stable IDs, authority-classified facts, decision lifecycle, and System Diagram source/output paths. This skill must not add, remove, reorder, or multiply substantive content to fill a component.
 
-PRD-linked mockups remain separate artifacts but use the same Editorial Infrastructure visual language. Run `scripts/render-mockup.mjs` to inline the canonical CSS and record its SHA-256 digest; use `--check` before review. Product-specific mockup UI may add local components after the managed shared style block, but must not replace the canonical shell language with an unrelated palette, grid, typography, or motion system.
+PRD-linked mockups remain separate artifacts but use the same Editorial Infrastructure visual language. Run `scripts/render-mockup.mjs` to inline the canonical CSS and record its SHA-256 digest; use `--check` before review. Product-specific mockup UI may add local components after the managed shared style block, but must not replace the canonical shell language with an unrelated palette, grid, typography, or motion system. The renderer bridge may remap semantic tokens for dark mode; feature-local attention, error, empty, pending, disabled, and selected states must be reviewed after injection and must never pair light foreground text with a light semantic surface.
 
 ## DocumentSpec
 
@@ -76,11 +76,13 @@ Add a new block type only when a current document cannot express required meanin
 Every `decision` block renders a **Decision recorded** checkbox.
 
 - Open/Proposed controls require a selected option or custom answer, rationale, and owner before recording.
-- Browser state persists locally and exports a Markdown review record tied to the exact decision-source fingerprint; changed decision meaning invalidates prior recorded state.
-- Without JavaScript, non-accepted recording remains disabled with truthful fallback text; accepted decisions still show canonical approver/date.
-- Browser recording is review input only; it never changes the source JSON, rendered HTML, approval status, or ADR.
+- In a standalone report, browser state persists locally and exports a Markdown review record tied to the exact decision-source fingerprint; changed decision meaning invalidates prior recorded state.
+- In Pi HTML review, selecting an option atomically upserts typed decision feedback by stable anchor through the same sidecar channel as an inline comment. Checking **Decision recorded** upgrades that entry from selected to confirmed with selection, rationale, owner, completeness, and source fingerprint; finishing waits for pending writes and remains open on failure.
+- Every canonical recorder must expose `data-review-decision="recorded-decision"` plus its structured `data-decision-*` controls so the HTML reviewer can preserve this behavior after safely stripping source scripts.
+- Without either runtime, non-accepted recording remains disabled with truthful fallback text; accepted decisions still show canonical approver/date.
+- Recorded or confirmed browser feedback is review input only; it never changes source JSON, rendered HTML, approval status, or ADR.
 - Accepted decisions render checked and read-only, and require canonical approver/date metadata.
-- Consuming skills reconcile exported stable IDs into canonical source only after explicit human approval.
+- Consuming skills read the normal HTML review sidecar and reconcile stable decision IDs into canonical source only after explicit human approval.
 
 ## Diagram contract
 
@@ -117,7 +119,7 @@ node "<html-report-designer-dir>/scripts/render-mockup.mjs" --check \
   path/to/mockups.html
 ```
 
-4. Inspect desktop, 320px, keyboard, no-JS, reduced-motion, print, and diagram overflow when browser tooling exists.
+4. Inspect desktop, 320px, keyboard, no-JS, reduced-motion, print, and diagram overflow when browser tooling exists. Open reviewable HTML through Pi's HTML reviewer so inline comments, selections, and confirmed decisions share one sidecar.
 5. Fix source JSON, the owning content skill, or this shared renderer. Never fix one generated HTML file directly.
 
 ## Quality gate
@@ -126,7 +128,7 @@ node "<html-report-designer-dir>/scripts/render-mockup.mjs" --check \
 - Template digest and embedded DocumentSpec validate; durable HTML byte-matches adjacent structured source.
 - Exactly one h1, skip link, main landmark, heading order, review-ID uniqueness, self-containment, and print styles pass.
 - Required PRD/design profile behavior passes without teaching the renderer new product or architecture facts.
-- Every decision recorder has complete lifecycle controls and export behavior.
+- Every decision recorder has complete lifecycle controls, standalone export behavior, and the durable Pi HTML review marker; a selected or confirmed decision appears in the same agent-readable sidecar as comments.
 - Every substantive PRD/design embeds only renderer-produced infrastructure-style SVG with retained `system-diagram-v1` JSON source.
 - Clean-copy rendering and validation pass from an unrelated working directory.
 - Generated HTML regenerates byte-for-byte.

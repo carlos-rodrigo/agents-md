@@ -14,8 +14,8 @@ const temp = mkdtempSync(join(tmpdir(), 'canonical-report-test-'));
 try {
   for (const [name, markers] of [
     ['report-example.document.json', ['data-document-kind="report"', 'The renderer owns presentation', 'class="scenario-panel"', 'class="copyable-code"', '<blockquote']],
-    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', '<ol class="storyboard"', 'class="workflow-sequence"', '<dt>Handoff</dt>', 'decision.retention', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
-    ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
+    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', '<ol class="storyboard"', 'class="workflow-sequence"', '<dt>Handoff</dt>', 'decision.retention', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
+    ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
   ]) {
     const specPath = join(resources, name);
     const spec = JSON.parse(readFileSync(specPath, 'utf8'));
