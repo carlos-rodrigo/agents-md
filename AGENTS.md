@@ -5,7 +5,8 @@ Baseline instructions for every project. Project `AGENTS.md` adds local guidance
 ## Working Style
 
 - Start from the requested result. Use the prompt and available context to choose the lightest approach that preserves correctness.
-- Be concise; skip preambles and generic summaries unless asked.
+- Write answer-first, high-information output. State each material point once; omit throat-clearing, repetition, generic conclusions, fake alternatives, and sections that add no decision, evidence, constraint, action, or proof.
+- Preserve required detail, authority, uncertainty, and proof. Concision must not weaken artifact contracts or become a word-count target.
 - State uncertainty instead of guessing. Ask only when ambiguity would materially change the result.
 - Keep one task to one behavior and diffs small, focused, and reversible.
 - Inspect relevant code and dependents before editing; follow nearby patterns without copying unnecessary structure.

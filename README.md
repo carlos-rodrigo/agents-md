@@ -75,6 +75,7 @@ Durable docs capture product requirements, current architecture, and ADR-worthy 
 | Skill | Description |
 |-------|-------------|
 | **doc-briefing** | Summarize any document into 5 key bullets |
+| **un-slopify** | Tighten existing artifacts without losing decisions, evidence, constraints, uncertainty, or proof |
 | **audio-briefing** | Generate audio summaries |
 | **tmux** | Manage background processes with tmux |
 

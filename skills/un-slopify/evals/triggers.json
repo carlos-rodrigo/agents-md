@@ -1,0 +1,18 @@
+[
+  { "query": "Un-slopify this PRD while preserving approved requirements, acceptance IDs, authority labels, and unresolved decisions.", "should_trigger": true },
+  { "query": "Remove the AI slop from this architecture design without losing ownership, trade-offs, failure recovery, or constraints.", "should_trigger": true },
+  { "query": "Tighten this code review so humans see only file-level findings, impact, evidence, uncertainty, and the recommended fix.", "should_trigger": true },
+  { "query": "Audit these generated code comments for obvious syntax narration while preserving rationale, invariants, and compatibility warnings.", "should_trigger": true },
+  { "query": "Make this implementation plan human-ready by removing repeated intent, phase theater, and commands that have no expected result.", "should_trigger": true },
+  { "query": "De-bloat this ADR, but keep the selected decision, credible rejected options, operational downside, and revisit trigger intact.", "should_trigger": true },
+  { "query": "Rewrite this long status update with the same facts, dates, links, uncertainty, decisions, and action owners but no filler.", "should_trigger": true },
+  { "query": "Audit this generated executable code for needless wrappers, speculative abstractions, duplication, and suspicious dependencies; do not edit it.", "should_trigger": true },
+  { "query": "Summarize this approved technical design into five executive bullets, intentionally omitting low-level contracts and traceability.", "should_trigger": false },
+  { "query": "Write a new PRD for family calendar sharing because product roles, recovery behavior, scope, and acceptance still need definition.", "should_trigger": false },
+  { "query": "Design the service architecture for this Approved import workflow, including retry ownership, persistence, rollout, and proof.", "should_trigger": false },
+  { "query": "Implement the approved refactor, remove the wrapper classes, add focused tests, and run the repository regression gate.", "should_trigger": false },
+  { "query": "Review this pull request for correctness, security, maintainability, architecture alignment, and missing test coverage.", "should_trigger": false },
+  { "query": "Humanize this personal essay to match my conversational voice and remove writing patterns that sound machine-generated.", "should_trigger": false },
+  { "query": "Fix the spelling error in this heading and leave all other wording, structure, metadata, and behavior unchanged.", "should_trigger": false },
+  { "query": "Reformat this Markdown file with consistent heading levels, list indentation, code fences, and trailing whitespace cleanup.", "should_trigger": false }
+]

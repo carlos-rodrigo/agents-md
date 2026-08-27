@@ -1,0 +1,82 @@
+{
+  "skill_name": "un-slopify",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Un-slopify this launch note without losing the release date, measured latency result, source URL, or stated uncertainty. It repeats the conclusion three times and opens with a paragraph about a pivotal new era.",
+      "expected_output": "A direct rewrite that leads with the release and measured result, removes inflated framing and repetition, and preserves every protected fact and URL.",
+      "files": [],
+      "expectations": [
+        "The release date, latency value, uncertainty, and source URL remain exact.",
+        "No importance claim, source, metric, or certainty is invented.",
+        "The repeated conclusion appears once and the rewrite does not add a verbose change explanation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Tighten this approved PRD. The summary, workflow, BDD scenario, and acceptance section repeat the same outcome, but req-014, ac-009, the Approved product truth label, a denied-state exception, and an open product question must remain valid.",
+      "expected_output": "A semantic-preserving PRD rewrite that assigns the repeated actor-action-result tuple one owning home while retaining distinct behavior, traceability, authority, exception, and acceptance proof.",
+      "files": [],
+      "expectations": [
+        "req-014, ac-009, status, authority label, denied state, and open question remain exact.",
+        "BDD behavior and independently testable acceptance are not merged into an untestable summary.",
+        "The skill does not make a new product decision or mark the open question resolved."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Remove the AI slop from this ADR. Keep the context, selected queue-owned retry decision, rejected API-owned option, at-least-once delivery constraint, duplicate-delivery recovery, and accepted operational downside.",
+      "expected_output": "A compact ADR that preserves context, decision, credible alternative, constraint, recovery path, trade-off, and consequence while removing generic scalability prose and topology narration.",
+      "files": [],
+      "expectations": [
+        "The selected seam and rejected option remain distinguishable with their rationale.",
+        "At-least-once delivery, duplicate recovery, and the accepted downside remain material design facts.",
+        "No architecture choice or implementation mechanism is invented."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Make this code review human-ready. Keep each file:line, severity, impact, reproduction evidence, uncertainty, and recommended fix, but remove the praise sandwich, generic checklist, and paragraphs that restate the diff.",
+      "expected_output": "A concise findings-first review containing only actionable, evidence-backed findings and any material uncertainty.",
+      "files": [],
+      "expectations": [
+        "Every retained finding includes file:line, impact, evidence, and a recommendation.",
+        "Severity and uncertainty are not strengthened or weakened.",
+        "Generic praise, checklist theater, and diff narration are removed."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Audit these code comments for slop. Several comments narrate assignment and looping syntax; one explains a compatibility invariant and another warns that retries must retain the idempotency key. Do not change executable code.",
+      "expected_output": "An audit that proposes deleting syntax narration while preserving the compatibility and idempotency rationale, with no executable-code edits.",
+      "files": [],
+      "expectations": [
+        "Comments that only translate syntax are identified for deletion or compression.",
+        "The compatibility invariant and retry hazard remain documented.",
+        "Executable code is not modified."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Un-slopify this generated implementation. Remove every wrapper and abstraction you think is unnecessary, edit the executable code directly, and skip tests because behavior should stay the same.",
+      "expected_output": "An audit-only response that identifies candidate code slop but routes any executable-code change through scoped implementation, tests, and review.",
+      "files": [],
+      "expectations": [
+        "The skill does not edit executable code or accept the request to skip tests.",
+        "Candidate duplication, wrappers, or speculative abstractions are reported with concrete locations and impact.",
+        "Behavior preservation is treated as something to prove, not assume."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Tighten this task plan. The source says the timeout may be either 15 or 30 seconds and no owner has decided. Preserve the goal, dependency, authorization status, edge check, expected result, and this uncertainty instead of choosing a value.",
+      "expected_output": "A concise task plan that removes phase theater and repeated intent while preserving its execution contract, proof, authorization, and unresolved timeout decision.",
+      "files": [],
+      "expectations": [
+        "The timeout uncertainty remains explicit and is assigned to its human owner rather than resolved.",
+        "Goal, dependency, authorization, edge behavior, and expected observation remain intact.",
+        "Commands without expected results and generic ensure steps are removed or made concrete only from source evidence."
+      ]
+    }
+  ]
+}
