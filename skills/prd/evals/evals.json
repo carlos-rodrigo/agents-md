@@ -84,6 +84,83 @@
         "The contradictory deletion requirements are explicitly marked as a collision and are not silently reconciled.",
         "The PRD requests product-owner input and does not claim readiness for design until the conflict is resolved."
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "The PRD proposes company-owned accounts, but the latest review sidecar selects field-owned accounts. Apply the feedback and make the document ready for design.",
+      "expected_output": "A Blocked PRD update that detects the sidecar conflict, propagates it through every dependent slice and requirement, and requests explicit product-owner disposition.",
+      "files": [],
+      "expectations": [
+        "The canonical decision is not silently approved from browser feedback.",
+        "Dependent finance stories, acceptance criteria, scope, and mockups are marked conditional or blocked rather than retaining the old ownership rule.",
+        "The product owner is named as the blocker owner."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "A finance requirement claims current available money requires reconciliation, but its only acceptance criterion verifies that a starting balance and date are visible. Review the PRD for readiness.",
+      "expected_output": "A Draft or Blocked PRD that marks reconciliation coverage false until discrepancy, cutoff, backdated activity, and completion behavior have observable proof.",
+      "files": [],
+      "expectations": [
+        "A cited acceptance criterion is not treated as semantic proof merely because its ID exists.",
+        "The requirement remains unresolved or is narrowed to what the criterion actually proves.",
+        "No implementation mechanism is invented."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "The scope promises a broad activity catalog including sale, transfer, planting, harvest, consumption, machinery, and improvements, but the BDD demonstrates only a successful livestock sale. Mark the requirement covered.",
+      "expected_output": "A Draft or Blocked PRD that either narrows the broad activity scope or adds product behavior and proof for each materially distinct effect family.",
+      "files": [],
+      "expectations": [
+        "One example is not accepted as proof of the broad activity promise.",
+        "Financial, Registry, and Campaign effects remain distinct where their actor-visible results differ.",
+        "Unsupported families move to a non-goal or unresolved product question."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Owners, administrators, and technical users appear throughout the PRD, but it never says who can view finances, reconcile balances, confirm money effects, or reverse history. Leave permissions to design.",
+      "expected_output": "A Blocked PRD that keeps actor-visible permissions as product truth and requests owner input for the role-to-action policy.",
+      "files": [],
+      "expectations": [
+        "Financial and correction permissions are not deferred as an implementation detail.",
+        "Material denied behavior receives BDD and acceptance once authority is known.",
+        "The document does not invent role powers."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "The overview must label weather and valuation as stale and alert on material campaign variance, but no validity window, review date, or variance threshold exists. Finish the PRD anyway.",
+      "expected_output": "A Draft or Blocked PRD that defines an observable source-owned validity policy or records the stale/materiality questions as blockers.",
+      "files": [],
+      "expectations": [
+        "Current, stale, unavailable, and material are not left as subjective labels.",
+        "Alert presentation criteria do not masquerade as proof that alert triggers are correct.",
+        "No unsupported numerical threshold is fabricated."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "Every requirement cites a real scenario and acceptance ID, and all twelve requirement blocks say collision: none. Approve the PRD based on structural traceability.",
+      "expected_output": "A semantic adversarial review that challenges false coverage and pairwise collisions before approval.",
+      "files": [],
+      "expectations": [
+        "Structural references are treated as necessary but insufficient.",
+        "The reviewer tests whether each criterion can pass while its requirement remains false.",
+        "Uniform collision claims trigger a focused permissions, ownership, timing, state, recovery, and terminology challenge."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "The scope requires financial labels to remain distinct in English, Spanish, and Brazilian Portuguese, but localization has no requirement, scenario, or proof. Keep it as an untraced sentence.",
+      "expected_output": "A Draft PRD that adds localization to the scope-to-proof inventory or removes it from current scope.",
+      "files": [],
+      "expectations": [
+        "In-scope localization receives observable semantic acceptance rather than visual snapshot-only coverage.",
+        "Income versus collection, cost versus payment, and Plan versus Actual remain distinguishable in each supported locale.",
+        "Unsupported localization breadth is explicitly deferred rather than implied."
+      ]
     }
   ]
 }

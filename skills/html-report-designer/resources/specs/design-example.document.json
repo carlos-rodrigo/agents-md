@@ -22,6 +22,19 @@
       "title": "The approved promise is consistent, portable review",
       "blocks": [
         {
+          "type": "architecture-approval",
+          "id": "authority.approval",
+          "decision": "Approve or revise the proposed architecture before task creation",
+          "recommendation": "Use the bounded ownership, state, contract, and recovery shape described by this technical design",
+          "goal": "Owning skills produce validated meaning; one portable renderer owns the report shell, decision controls, and System Diagram embedding.",
+          "shape": "The trigger enters an owned handler/service path, domain policy and state remain explicit, adapters own persistence or external effects, and proof closes the path",
+          "why": "Confirm the renderer boundary and the separation between review recording and canonical approval.",
+          "approve": "Ownership boundaries, key contracts/state, failure and recovery posture, scaling assumptions, and the listed architecture decisions",
+          "notBuilding": "Product behavior changes, implementation tasks, unrelated platform expansion, or architecture outside the stated boundary",
+          "risks": "Open decisions, evidence gaps, or non-fitting requirements listed in the detailed design remain blocking until owned",
+          "readiness": "Not ready for tasks until this brief and all blocking decisions are explicitly accepted"
+        },
+        {
           "type": "facts",
           "id": "design.authority.facts",
           "items": [

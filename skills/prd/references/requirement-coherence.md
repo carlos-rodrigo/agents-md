@@ -37,6 +37,26 @@ If two requirements cannot both be true, do not silently choose a winner, weaken
 
 This is a product-level check. Do not put APIs, services, schemas, persistence, or implementation workarounds here; hand those questions to Design Solution after the product conflict is resolved.
 
+## Semantic proof rule
+
+A cited acceptance ID is not proof by itself. Read the requirement and cited criterion together. If the criterion can pass while the requirement remains false, mark the requirement unresolved and strengthen or narrow the product contract. Presentation-only checks such as showing a date, label, or section do not prove reconciliation, valuation provenance, permission ownership, atomic effects, or alert correctness unless those observable semantics are explicit.
+
+## Decision and sidecar propagation
+
+Compare every decision block with the latest review sidecar before declaring coherence. A conflicting selected or confirmed option changes every dependent path; update or block the affected slices, criteria, requirements, scope, mockups, and diagram rather than changing only `selectedOptionId`. Matching feedback remains review input until explicit canonical approval.
+
+## Suspicious-pattern challenge
+
+Run a second pass when:
+
+- all requirements report `collision: none`;
+- broad capability lists use “such as,” “including,” or several materially different actions while BDD covers one example;
+- proposed decisions have normative dependents marked covered;
+- several requirements cite the same generic acceptance criterion;
+- permissions, currentness, staleness, materiality, or reconciliation appear without observable definitions.
+
+These patterns are not automatically wrong, but they require an explicit adversarial explanation before Review.
+
 ## Compact review example
 
 ```text

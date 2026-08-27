@@ -46,6 +46,19 @@
       "summary": "Design may define implementation ownership without changing which skill owns meaning or which visual language reviewers see.",
       "blocks": [
         {
+          "type": "architecture-approval",
+          "id": "authority.approval",
+          "decision": "Approve or revise the proposed architecture before task creation",
+          "recommendation": "Use the bounded ownership, state, contract, and recovery shape described by this technical design",
+          "goal": "A strict semantic sequence source passes through versioned validation, direct deterministic layout, and an additive same-style SVG renderer, while existing system-diagram-v1 validation, CSS, metadata, CLI behavior, and output bytes remain isolated.",
+          "shape": "The trigger enters an owned handler/service path, domain policy and state remain explicit, adapters own persistence or external effects, and proof closes the path",
+          "why": "Approve or revise the version-isolation seam, exact sequence source contract, same-style CSS extension, report adapter, deterministic layout constraints, and proof gate before implementation planning.",
+          "approve": "Ownership boundaries, key contracts/state, failure and recovery posture, scaling assumptions, and the listed architecture decisions",
+          "notBuilding": "Product behavior changes, implementation tasks, unrelated platform expansion, or architecture outside the stated boundary",
+          "risks": "Open decisions, evidence gaps, or non-fitting requirements listed in the detailed design remain blocking until owned",
+          "readiness": "Not ready for tasks until this brief and all blocking decisions are explicitly accepted"
+        },
+        {
           "type": "facts",
           "id": "design.authority.contract",
           "items": [

@@ -83,7 +83,7 @@ New architecture choices remain Proposed until a human accepts them. Report `Rea
 
 Every durable design uses these `section.role` values in causal reading order. Feature-specific headings are encouraged, but core roles may not be omitted:
 
-1. **`authority`** — approved PRD or bounded technical outcome, evidence basis, acceptance/proof boundary, constraints, and links.
+1. **`authority`** — a required concise architecture approval brief plus the approved PRD or bounded technical outcome, evidence basis, acceptance/proof boundary, constraints, and links.
 2. **`pressure`** — current system reality and force that makes the obvious solution insufficient.
 3. **`seam`** — chosen owning boundary, responsibility, state ownership, and narrower rejected seams.
 4. **`shape`** — concrete intended system shape and impact across architecture, API/contracts, domain, data/persistence, delivery/interface, integrations, operations/rollout, and verification; include a solution overview and reference-level contracts.
@@ -95,7 +95,27 @@ Every durable design uses these `section.role` values in causal reading order. F
 10. **`proof`** — tradeoffs, failure/recovery posture, risks, and observable proof strategy.
 11. **`boundary`** — adjacent architecture intentionally unchanged or deferred.
 
-Every durable design must include all eleven roles. The `traceability` role is the architecture stress test: structured `arch-###` entries demonstrate how every requirement fits the proposal or record the owner and mismatch that blocks completion. Load [references/requirement-traceability.md](references/requirement-traceability.md) when composing or reviewing this section, and load [references/optional-design-recipes.md](references/optional-design-recipes.md) for the mandatory shape map and slice outline.
+Every durable design must include all eleven roles. The `authority` section is the primary approval surface: its architecture approval brief states the decision, recommendation, goal/outcome, proposed shape, rationale, approval points, boundaries, risks, and readiness. The `traceability` role is supporting evidence: structured `arch-###` entries demonstrate how every requirement fits the proposal or record the owner and mismatch that blocks completion. Load [references/requirement-traceability.md](references/requirement-traceability.md) when composing or reviewing this section, and load [references/optional-design-recipes.md](references/optional-design-recipes.md) for the mandatory shape map and slice outline.
+
+## Approval-first review
+
+The architecture approval brief is the first review surface and should let a reviewer approve, reject, or request revision quickly. Keep it to the few decisions that materially affect ownership, contracts/state, recovery, scale, security, persistence, or product boundaries. Render detailed slices, contracts, algorithms, and traceability as supporting evidence rather than repeating them in the brief.
+
+Use this shape:
+
+```text
+Decision:
+Recommendation:
+Goal/outcome:
+Proposed shape:
+Why this shape:
+Approve:
+Not building:
+Risks/blockers:
+Readiness:
+```
+
+A design cannot claim readiness for tasks while the brief contains unresolved risks, non-fitting requirements, or unaccepted consequential decisions. Load [references/requirement-traceability.md](references/requirement-traceability.md) for detailed proof after the brief.
 
 ## Evidence and discovery
 
@@ -249,6 +269,7 @@ After explicit design approval, pass approved acceptance anchors, the chosen sea
 - The shape contains a future-system walkthrough, complete changed-surface contracts, consequential state/algorithm detail, and one concrete end-to-end example.
 - Changed surfaces name concrete existing and proposed units, responsibilities, contracts, state, dependencies, failures, and non-responsibilities.
 - Architecture slices are vertical, acceptance-linked, collectively complete, dependency-aware, and proof-bearing.
+- The authority section contains exactly one concise architecture approval brief that leads the report.
 - Exactly one infrastructure-style architecture diagram has approved System Diagram JSON/SVG provenance and a walkthrough.
 - Decisions expose credible alternatives, lifecycle, tradeoffs, owner, and approval.
 - Product behavior was not invented or silently changed.

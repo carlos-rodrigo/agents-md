@@ -14,8 +14,8 @@ const temp = mkdtempSync(join(tmpdir(), 'canonical-report-test-'));
 try {
   for (const [name, markers] of [
     ['report-example.document.json', ['data-document-kind="report"', 'The renderer owns presentation', 'class="scenario-panel"', 'class="copyable-code"', '<blockquote']],
-    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', '<ol class="storyboard"', 'class="workflow-sequence"', '<dt>Handoff</dt>', 'decision.retention', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
-    ['specs/design-example.document.json', ['data-document-kind="design"', 'decision.rendering-boundary', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
+    ['specs/prd-example.document.json', ['data-document-kind="prd"', 'class="slice-card"', 'Feature:', 'Scenario: Main scenario', '<ol class="storyboard"', 'class="workflow-sequence"', '<details><summary>Traceability</summary>', '<dt>Handoff</dt>', 'decision.retention', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
+    ['specs/design-example.document.json', ['data-document-kind="design"', 'class="architecture-approval-brief"', 'decision.rendering-boundary', 'data-review-decision="recorded-decision"', 'svg-source:system-diagram', 'data-diagram-style="infrastructure-v1"', 'data-diagram-output-sha256=']],
   ]) {
     const specPath = join(resources, name);
     const spec = JSON.parse(readFileSync(specPath, 'utf8'));
@@ -47,6 +47,7 @@ try {
 
   const profileFailures = [
     ['missing PRD role', prd, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'diagram'); }, 'prd documents require a "diagram" section role'],
+    ['missing PRD approval brief', prd, (candidate) => { candidate.sections.find((section) => section.role === 'product').blocks = candidate.sections.find((section) => section.role === 'product').blocks.filter((block) => block.type !== 'approval'); }, 'require exactly one approval brief block'],
     ['reordered PRD roles', prd, (candidate) => { [candidate.sections[0], candidate.sections[1]] = [candidate.sections[1], candidate.sections[0]]; }, 'prd section roles must follow this order'],
     ['duplicate PRD role', prd, (candidate) => { candidate.sections[1].role = candidate.sections[0].role; }, 'section.role values must be unique'],
     ['zero PRD diagrams', prd, (candidate) => { candidate.sections.find((section) => section.role === 'diagram').blocks = [{ type: 'paragraph', id: 'diagram-placeholder', text: 'Missing diagram' }]; }, 'require exactly one System Diagram block'],
@@ -57,6 +58,7 @@ try {
     ['cross-placed PRD slice', prd, (candidate) => { const slices = candidate.sections.find((section) => section.role === 'slices'); const scope = candidate.sections.find((section) => section.role === 'scope'); [slices.blocks, scope.blocks] = [scope.blocks, slices.blocks]; }, 'slice blocks must be inside the "slices" section role'],
     ['PRD decisions before product', prd, (candidate) => { const index = candidate.sections.findIndex((section) => section.role === 'decisions'); candidate.sections.unshift(candidate.sections.splice(index, 1)[0]); }, 'prd section roles must follow this order: product → problem → behavior → diagram → slices → requirements → scope → decisions'],
     ['missing design role', design, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'boundary'); }, 'design documents require a "boundary" section role'],
+    ['missing design approval brief', design, (candidate) => { candidate.sections.find((section) => section.role === 'authority').blocks = candidate.sections.find((section) => section.role === 'authority').blocks.filter((block) => block.type !== 'architecture-approval'); }, 'require exactly one architecture approval brief block'],
     ['missing design shape', design, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'shape'); }, 'design documents require a "shape" section role'],
     ['missing design slices', design, (candidate) => { candidate.sections = candidate.sections.filter((section) => section.role !== 'slices'); }, 'design documents require a "slices" section role'],
     ['missing design contract code', design, (candidate) => { candidate.sections.find((section) => section.role === 'shape').blocks = candidate.sections.find((section) => section.role === 'shape').blocks.filter((block) => block.type !== 'code'); }, 'shape code block'],

@@ -26,6 +26,15 @@
       "summary": "An author has one self-contained HTML artifact and needs evidence strong enough to make a sharing decision.",
       "blocks": [
         {
+          "type": "approval",
+          "id": "product.approval",
+          "product": "One validation result combines visual, functional, and declared-browser evidence without treating missing checks as success.",
+          "why": "Does this define enough observable evidence for an author to decide whether a generated report is ready to share, without prescribing the validator's implementation?",
+          "how": "The actor follows the single product path described by the behavior and BDD sections",
+          "approve": "The bounded behavior, material requirements, decisions, and acceptance proof",
+          "notBuilding": "Architecture, implementation mechanics, and adjacent capabilities outside the stated scope"
+        },
+        {
           "type": "facts",
           "id": "context-facts",
           "items": [

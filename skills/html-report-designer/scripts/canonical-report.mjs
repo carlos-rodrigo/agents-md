@@ -16,13 +16,13 @@ const idPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const statuses = new Set(['Draft', 'Review', 'Approved', 'Blocked']);
 const kinds = new Set(['prd', 'design', 'report', 'diagram', 'research', 'decision']);
 const decisionStatuses = new Set(['open', 'proposed', 'accepted']);
-const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'requirement', 'architecture', 'decision', 'diagram', 'code', 'quote']);
+const blockTypes = new Set(['paragraph', 'list', 'facts', 'steps', 'callout', 'scenario', 'slice', 'approval', 'architecture-approval', 'requirement', 'architecture', 'decision', 'diagram', 'code', 'quote']);
 const requiredRoles = {
   prd: ['product', 'problem', 'behavior', 'diagram', 'slices', 'requirements', 'scope'],
   design: ['authority', 'pressure', 'seam', 'shape', 'path', 'slices', 'traceability', 'diagram', 'decisions', 'proof', 'boundary'],
   diagram: ['diagram'],
 };
-const specialBlockRoles = { diagram: 'diagram', slice: 'slices', requirement: 'requirements', architecture: 'traceability', decision: 'decisions' };
+const specialBlockRoles = { approval: 'product', 'architecture-approval': 'authority', diagram: 'diagram', slice: 'slices', requirement: 'requirements', architecture: 'traceability', decision: 'decisions' };
 
 export function templateDigest(template = readFileSync(templatePath, 'utf8')) {
   return createHash('sha256').update(template).digest('hex');
@@ -66,6 +66,7 @@ export function validateDocumentSpec(input) {
   let sliceCount = 0;
   let decisionCount = 0;
   let requirementCount = 0;
+  let architectureApprovalCount = 0;
   const decisions = [];
   const architectureTraces = [];
   const roleBlockCounts = new Map();
@@ -91,6 +92,8 @@ export function validateDocumentSpec(input) {
       const owningRole = specialBlockRoles[block.type];
       if (enforcesSpecialPlacement && owningRole && section.role !== owningRole) errors.push(`${blockLabel} ${block.type} blocks must be inside the "${owningRole}" section role`);
       switch (block.type) {
+        case 'approval': validateApprovalBrief(block, blockLabel, errors); break;
+        case 'architecture-approval': architectureApprovalCount += 1; validateArchitectureApprovalBrief(block, blockLabel, errors); break;
         case 'paragraph': validateParagraph(block, blockLabel, errors); break;
         case 'list': validateList(block, blockLabel, errors); break;
         case 'facts': validateFacts(block, blockLabel, errors); break;
@@ -145,6 +148,8 @@ export function validateDocumentSpec(input) {
     if (roles.includes(role) && (roleBlockCounts.get(`${role}:${blockType}`) ?? 0) === 0) errors.push(`the "${role}" section role requires at least one ${blockType} block`);
   }
   if (['prd', 'design', 'diagram'].includes(document.kind) && diagramCount !== 1) errors.push(`${document.kind} documents require exactly one System Diagram block`);
+  if (document.kind === 'prd' && (roleBlockCounts.get('product:approval') ?? 0) !== 1) errors.push('prd documents require exactly one approval brief block in the product section');
+  if (document.kind === 'design' && architectureApprovalCount !== 1) errors.push('design documents require exactly one architecture approval brief block in the authority section');
   if (document.kind === 'prd' && sliceCount === 0) errors.push('prd documents require at least one complete slice block');
   if (document.kind === 'prd' && requirementCount === 0) errors.push('prd documents require at least one structured requirement walkthrough block');
   if (document.kind === 'design' && decisionCount === 0) errors.push('design documents require at least one architecture decision block');
@@ -224,6 +229,8 @@ function renderSection(section, baseDir) {
 function renderBlock(block, baseDir) {
   const reviewIdAttribute = block.id ? ` data-review-id="${escapeAttribute(block.id)}"` : '';
   switch (block.type) {
+    case 'approval': return renderApprovalBrief(block, reviewIdAttribute);
+    case 'architecture-approval': return renderArchitectureApprovalBrief(block, reviewIdAttribute);
     case 'paragraph': return `          <p class="document-block"${reviewIdAttribute}>${escapeHtml(block.text)}</p>`;
     case 'list': {
       const tag = block.style === 'numbered' ? 'ol' : 'ul';
@@ -244,11 +251,21 @@ function renderBlock(block, baseDir) {
   }
 }
 
+function renderApprovalBrief(brief, reviewIdAttribute = '') {
+  return `          <section class="approval-brief"${reviewIdAttribute} aria-label="Approval brief"><h3>Approval brief</h3><dl class="facts"><div><dt>Product</dt><dd>${escapeHtml(brief.product)}</dd></div><div><dt>Why</dt><dd>${escapeHtml(brief.why)}</dd></div><div><dt>How it works</dt><dd>${escapeHtml(brief.how)}</dd></div><div><dt>Approve</dt><dd>${escapeHtml(brief.approve)}</dd></div><div><dt>Not building</dt><dd>${escapeHtml(brief.notBuilding)}</dd></div></dl></section>`;
+}
+
+function renderArchitectureApprovalBrief(brief, reviewIdAttribute = '') {
+  return `          <section class="architecture-approval-brief"${reviewIdAttribute} aria-label="Architecture approval brief"><h3>Architecture approval brief</h3><dl class="facts"><div><dt>Decision</dt><dd>${escapeHtml(brief.decision)}</dd></div><div><dt>Recommendation</dt><dd>${escapeHtml(brief.recommendation)}</dd></div><div><dt>Goal/outcome</dt><dd>${escapeHtml(brief.goal)}</dd></div><div><dt>Proposed shape</dt><dd>${escapeHtml(brief.shape)}</dd></div><div><dt>Why this shape</dt><dd>${escapeHtml(brief.why)}</dd></div><div><dt>Approve</dt><dd>${escapeHtml(brief.approve)}</dd></div><div><dt>Not building</dt><dd>${escapeHtml(brief.notBuilding)}</dd></div><div><dt>Risks/blockers</dt><dd>${escapeHtml(brief.risks)}</dd></div><div><dt>Readiness</dt><dd>${escapeHtml(brief.readiness)}</dd></div></dl></section>`;
+}
+
 function renderRequirement(requirement, reviewIdAttribute = '') {
   const list = (items) => items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : '<p>None recorded</p>';
+  const state = `${requirement.status}${requirement.collision === 'conflict' ? ' · conflict' : ''}`;
   return `          <article class="requirement-panel ${requirement.status === 'blocked' ? 'requirement-panel--blocked' : ''}"${reviewIdAttribute}>
             <h3>${escapeHtml(requirement.id)} · ${escapeHtml(requirement.title)}</h3>
-            <dl class="facts"><div><dt>Authority</dt><dd>${escapeHtml(requirement.sourceType)} — ${escapeHtml(requirement.source)}</dd></div><div><dt>BDD coverage</dt><dd>${list(requirement.bddRefs)}</dd></div><div><dt>Product path</dt><dd>${escapeHtml(requirement.path)}</dd></div><div><dt>Dependencies</dt><dd>${list(requirement.dependencies)}</dd></div><div><dt>Interactions</dt><dd>${list(requirement.interactions)}</dd></div><div><dt>Collision check</dt><dd>${escapeHtml(requirement.collision)} — ${escapeHtml(requirement.resolution)}</dd></div><div><dt>Acceptance proof</dt><dd>${escapeHtml(requirement.proof)}</dd></div></dl>
+            <p class="requirement-summary"><strong>${escapeHtml(state)}</strong> · ${escapeHtml(requirement.proof)}</p>
+            <details><summary>Traceability</summary><dl class="facts"><div><dt>Authority</dt><dd>${escapeHtml(requirement.sourceType)} — ${escapeHtml(requirement.source)}</dd></div><div><dt>BDD coverage</dt><dd>${list(requirement.bddRefs)}</dd></div><div><dt>Product path</dt><dd>${escapeHtml(requirement.path)}</dd></div><div><dt>Dependencies</dt><dd>${list(requirement.dependencies)}</dd></div><div><dt>Interactions</dt><dd>${list(requirement.interactions)}</dd></div><div><dt>Collision check</dt><dd>${escapeHtml(requirement.collision)} — ${escapeHtml(requirement.resolution)}</dd></div></dl></details>
           </article>`;
 }
 
@@ -385,6 +402,14 @@ function validateLinks(value, label, errors) {
   });
 }
 
+function validateApprovalBrief(block, label, errors) {
+  requireOnly(block, ['type', 'id', 'product', 'why', 'how', 'approve', 'notBuilding'], label, errors);
+  for (const key of ['id', 'product', 'why', 'how', 'approve', 'notBuilding']) requireText(block[key], `${label}.${key}`, errors);
+}
+function validateArchitectureApprovalBrief(block, label, errors) {
+  requireOnly(block, ['type', 'id', 'decision', 'recommendation', 'goal', 'shape', 'why', 'approve', 'notBuilding', 'risks', 'readiness'], label, errors);
+  for (const key of ['id', 'decision', 'recommendation', 'goal', 'shape', 'why', 'approve', 'notBuilding', 'risks', 'readiness']) requireText(block[key], `${label}.${key}`, errors);
+}
 function validateParagraph(block, label, errors) { requireOnly(block, ['type', 'id', 'text'], label, errors); requireText(block.text, `${label}.text`, errors); }
 function validateList(block, label, errors) { requireOnly(block, ['type', 'id', 'style', 'items'], label, errors); if (block.style !== undefined) requireEnum(block.style, new Set(['bullets', 'checks', 'numbered']), `${label}.style`, errors); requireTextArray(block.items, `${label}.items`, errors); }
 function validateFacts(block, label, errors) { requireOnly(block, ['type', 'id', 'items'], label, errors); requirePairs(block.items, `${label}.items`, errors); }

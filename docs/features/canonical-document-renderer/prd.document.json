@@ -34,6 +34,15 @@
       "summary": "The product is the review experience, not a collection of loosely synchronized templates.",
       "blocks": [
         {
+          "type": "approval",
+          "id": "product.approval",
+          "product": "PRDs, designs, reports, decisions, research briefs, and diagram packets use one canonical report experience, explicit decision recording, and evidence-backed infrastructure-style SVG figures.",
+          "why": "Confirm that one rendering boundary and the globally approved Editorial Infrastructure language preserve domain-owned meaning while removing template and diagram ambiguity.",
+          "how": "The actor follows the single product path described by the behavior and BDD sections",
+          "approve": "The bounded behavior, material requirements, decisions, and acceptance proof",
+          "notBuilding": "Architecture, implementation mechanics, and adjacent capabilities outside the stated scope"
+        },
+        {
           "type": "facts",
           "id": "prd.product.definition",
           "items": [

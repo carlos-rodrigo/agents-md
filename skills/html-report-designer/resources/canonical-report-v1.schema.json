@@ -70,6 +70,8 @@
     },
     "block": {
       "oneOf": [
+        { "$ref": "#/$defs/approval" },
+        { "$ref": "#/$defs/architectureApproval" },
         { "$ref": "#/$defs/paragraph" },
         { "$ref": "#/$defs/list" },
         { "$ref": "#/$defs/facts" },
@@ -85,6 +87,8 @@
         { "$ref": "#/$defs/quote" }
       ]
     },
+    "approval": { "type": "object", "additionalProperties": false, "required": ["type", "id", "product", "why", "how", "approve", "notBuilding"], "properties": { "type": { "const": "approval" }, "id": { "$ref": "#/$defs/id" }, "product": { "$ref": "#/$defs/text" }, "why": { "$ref": "#/$defs/text" }, "how": { "$ref": "#/$defs/text" }, "approve": { "$ref": "#/$defs/text" }, "notBuilding": { "$ref": "#/$defs/text" } } },
+    "architectureApproval": { "type": "object", "additionalProperties": false, "required": ["type", "id", "decision", "recommendation", "goal", "shape", "why", "approve", "notBuilding", "risks", "readiness"], "properties": { "type": { "const": "architecture-approval" }, "id": { "$ref": "#/$defs/id" }, "decision": { "$ref": "#/$defs/text" }, "recommendation": { "$ref": "#/$defs/text" }, "goal": { "$ref": "#/$defs/text" }, "shape": { "$ref": "#/$defs/text" }, "why": { "$ref": "#/$defs/text" }, "approve": { "$ref": "#/$defs/text" }, "notBuilding": { "$ref": "#/$defs/text" }, "risks": { "$ref": "#/$defs/text" }, "readiness": { "$ref": "#/$defs/text" } } },
     "paragraph": { "type": "object", "additionalProperties": false, "required": ["type", "text"], "properties": { "type": { "const": "paragraph" }, "id": { "$ref": "#/$defs/id" }, "text": { "$ref": "#/$defs/text" } } },
     "list": { "type": "object", "additionalProperties": false, "required": ["type", "items"], "properties": { "type": { "const": "list" }, "id": { "$ref": "#/$defs/id" }, "style": { "enum": ["bullets", "checks", "numbered"] }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } } } },
     "facts": { "type": "object", "additionalProperties": false, "required": ["type", "items"], "properties": { "type": { "const": "facts" }, "id": { "$ref": "#/$defs/id" }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/pair" } } } },

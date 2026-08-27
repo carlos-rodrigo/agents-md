@@ -58,6 +58,22 @@ Status is a human governance contract:
 
 Report `Ready for design: yes` only when status is Approved and no blocking product decision remains. An exported browser decision record is review input, not approval or canonical truth.
 
+## Approval brief first
+
+The PRD is an approval brief, not a transcript of discovery. A reviewer should understand the proposal and the decisions needed without reading every traceability detail.
+
+Open the report with this compact shape:
+
+```text
+Product: {what we are building for whom}
+Why: {problem and consequence}
+How it works: {one end-to-end actor-visible path}
+Approve: {the few product choices, boundaries, and acceptance points that need judgment}
+Not building: {nearest important exclusions}
+```
+
+Keep the approval brief to one short paragraph or five concise bullets. The mockup is the primary visual explanation for UI-bearing work; the PRD explains the behavior and approval boundaries around it, not every visual detail. Put detailed traceability, evidence, and exception rationale in their owning sections or collapsed review detail rather than repeating them in the introduction.
+
 ## Go to the point
 
 Write for a reviewer who needs one clear, decision-ready product path:
@@ -66,6 +82,8 @@ Write for a reviewer who needs one clear, decision-ready product path:
 - State each fact once. Give every section new information instead of restating the summary, workflow, story, or acceptance.
 - Default to one short block per non-slice role. Use `behavior` for cross-slice rules, BDD scenarios for interaction detail, `acceptance` for proof, and `scope` for boundaries—not recaps.
 - Present one recommended product behavior. Do not brainstorm or list alternative approaches; use a decision block only for a real unresolved product choice.
+- Optimize for approval density: one material statement per requirement, one main BDD scenario per slice, only material exceptions, and only decisions that change product behavior or approval status.
+- Do not repeat a requirement's full path in product, behavior, slice, requirements, and scope. Each occurrence must add a distinct approval, transition, boundary, or proof fact.
 - Do not use `table` blocks. Prefer short paragraphs, bullets, facts, and BDD scenarios that scan in reading order.
 - Use concrete actors, actions, states, and outcomes. Remove throat-clearing, generic benefits, duplicated context, and implementation commentary.
 - Keep only detail that changes product behavior, scope, trust, acceptance, or a decision.
@@ -78,7 +96,7 @@ Before rendering, run a **Deduplication pass**. Reduce statements to `actor + tr
 
 Every substantive PRD uses these `section.role` values in a causal reading order. Headings may be feature-specific, but roles may not be omitted:
 
-1. **`product`** — what the product is, the actor, job/moment, bounded capability, entry point, and resulting state.
+1. **`product`** — a required concise approval brief plus what the product is, the actor, job/moment, bounded capability, entry point, and resulting state.
 2. **`problem`** — why we want to build it: current behavior, friction, consequence, and evidence.
 3. **`behavior`** — how the product should work end to end and the outcome-protecting product rules.
 4. **`diagram`** — one evidence-backed product-behavior diagram.
@@ -96,9 +114,11 @@ through {entry point}, resulting in {observable state}; it will not {boundary}.
 
 ## Requirement coherence walkthrough
 
-The `requirements` section is the product-specification stress test. Walk every stable requirement, BDD scenario, acceptance criterion, user story, invariant, or explicit product constraint through its satisfying product path, dependencies, interactions, collision check, resolution, and observable proof. Use stable `req-###` IDs and structured `requirement` blocks. Load [references/requirement-coherence.md](references/requirement-coherence.md) when composing or reviewing this section.
+The `approval` block in the `product` section is the primary review surface; the `requirements` section is the product-specification stress test. Walk every stable requirement, BDD scenario, acceptance criterion, user story, invariant, or explicit product constraint through its satisfying product path, dependencies, interactions, collision check, resolution, and observable proof. Use stable `req-###` IDs and structured `requirement` blocks. Load [references/requirement-coherence.md](references/requirement-coherence.md) when composing or reviewing this section.
 
 This is product-level, not architecture. If requirements collide around permissions, states, timing, ordering, terminology, boundaries, recovery, or acceptance, mark the affected requirement unresolved or blocked, name the product owner, explain the consequences, and request input. Never silently choose, weaken, duplicate, or invent a rule.
+
+Before claiming coherence, run a **Scope-to-proof inventory** and a **Decision-propagation pass** from [references/semantic-audit.md](references/semantic-audit.md). A syntactically valid scenario or cited acceptance ID is not semantic proof that the requirement is satisfied. Compare the latest review sidecar with canonical decisions and propagate any mismatch through every dependent slice, requirement, scope claim, mockup, and diagram. For substantive multi-slice work, require an independent adversarial review before Review and after material decision reconciliation.
 
 ## Product slices
 
@@ -162,11 +182,18 @@ Every rendered decision includes a **Decision recorded** checkbox. Recording req
 
 1. Inspect the request, current product surface, and smallest evidence set needed to avoid guessing.
 2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
-3. Compose the required section roles, complete BDD product slices, and the requirement coherence walkthrough in `canonical-report-v1` structured content.
+3. Compose the required section roles, one concise `approval` block in the `product` section, complete BDD product slices, and the requirement coherence walkthrough in `canonical-report-v1` structured content.
 4. Stress the requirements against each other. Resolve conflicts only from explicit product authority; otherwise mark the PRD Blocked and request owner input.
-5. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
-6. When the feature implies UI changes or visual suggestions, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
-7. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
+5. Run the semantic audit, including Decision-propagation pass, Scope-to-proof inventory, vocabulary/state, permission, financial-invariant, semantic proof, and collision checks. Then run the portable structural companion:
+
+```bash
+node "<prd-skill-dir>/scripts/audit-prd-traceability.mjs" \
+  docs/features/{feature}/prd.document.json
+```
+
+6. Invoke `system-diagram`, retain its JSON/SVG pair, and reference it from the diagram block.
+7. When the feature implies UI changes or visual suggestions, load `frontend-design`, generate `mockups.html`, label it proposed, and link it from `document.relatedArtifacts`.
+8. Load `html-report-designer`; resolve paths from that loaded skill directory. Render and validate with its bundled scripts:
 
 ```bash
 node "<html-report-designer-dir>/scripts/render-canonical-report.mjs" \
@@ -175,18 +202,23 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-8. Open the PRD and, when present, the mockups through Pi's HTML reviewer. Read both inline comments and selected or confirmed decision feedback from the generated sidecars. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
-9. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
+9. Open the PRD and, when present, the mockups through Pi's HTML reviewer. Read both inline comments and selected or confirmed decision feedback from the generated sidecars. Before changing canonical source, rerun the structural audit with the sidecar so anchors, selections, and source fingerprints are checked against the reviewed version. Reconcile approved input into source, then rerun the one-argument audit, rerender, and repeat independent adversarial review when meaning changed; the prior sidecar is historical once its source fingerprint is stale. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
+10. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
 If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.
 
 ## Quality gate
 
-- Product, problem, workflow, diagram, slices, and scope roles are direct, concise, and non-duplicative.
+- The required product approval brief is the first review surface and answers Product, Why, How it works, Approve, and Not building in five concise fields.
+- Detailed traceability is secondary/collapsed review material; it does not compete with the approval brief.
+- Product, problem, workflow, diagram, slices, requirements, and scope roles are direct, concise, and non-duplicative.
 - Every consequential claim has local authority as Sourced fact, Approved product truth, Proposed recommendation, Assumption, or Open question; the source list alone does not imply authority.
-- Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then with grammatical story fragments, and ends in an observable outcome.
-- The `requirements` walkthrough covers every requirement and demonstrates compatible product paths, dependencies, interactions, and observable proof.
+- Every slice traces `slice → story → BDD scenario → acceptance`, uses Feature/Scenario/Given/When/Then with grammatical story fragments, follows one deterministic path per scenario, and ends in an observable outcome.
+- The Scope-to-proof inventory covers every in-scope capability, role, state, invariant, localization promise, and consequential boundary.
+- The `requirements` walkthrough covers every requirement and demonstrates compatible product paths, dependencies, interactions, and semantic proof—not merely valid referenced IDs.
+- Decision propagation reconciles canonical source with the latest review sidecar and marks every unresolved dependent claim conditional or blocked.
 - Contradictory requirements are explicitly blocked or escalated to a named product owner; the PRD never silently resolves them.
+- An independent adversarial review reports no identified hidden collision or false `covered` claim before the document enters Review.
 - No tables, speculative alternatives, repeated summaries, redundant scenario/step/acceptance claims, or classic As/I want story prose appear.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
 - One infrastructure-style product diagram has `system-diagram-v1` JSON/SVG provenance, a text walkthrough, and a causal question independent of viewport or page composition.

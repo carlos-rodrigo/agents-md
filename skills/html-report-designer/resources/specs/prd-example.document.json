@@ -22,6 +22,15 @@
       "title": "Reviewers can create an agent-readable decision record",
       "blocks": [
         {
+          "type": "approval",
+          "id": "product.approval",
+          "product": "Reviewers can choose, explain, and record a product decision through the normal review-feedback channel while canonical approval remains explicit.",
+          "why": "Choose the retention policy, provide rationale, and verify that selected or confirmed browser input becomes agent-readable feedback without becoming approval.",
+          "how": "The actor follows the single product path described by the behavior and BDD sections",
+          "approve": "The bounded behavior, material requirements, decisions, and acceptance proof",
+          "notBuilding": "Architecture, implementation mechanics, and adjacent capabilities outside the stated scope"
+        },
+        {
           "type": "facts",
           "id": "prd.product.definition",
           "items": [

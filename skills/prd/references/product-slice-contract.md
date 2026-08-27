@@ -14,7 +14,9 @@ When {actor action or trigger}
 Then {stakeholder-observable result}
 ```
 
-Use the required `story` object only as compact traceability metadata for actor, capability, and outcome. Write `actor` as a noun phrase beginning with a lowercase common noun or determiner (`an establishment member`); write `capability` as a base-form verb phrase beginning lowercase without leading `can` or `to` (`see current readiness`); write `outcome` as a complete result clause beginning lowercase without leading `so that` (`the member knows whether to continue`). Preserve proper names and acronyms within each fragment and omit terminal punctuation. This keeps the renderer's `Feature: {actor} can {capability}; outcome: {outcome}.` line grammatical. Do not add a second “As a / I want / so that” narrative. Add exception scenarios only when error, empty, recovery, or permission behavior changes trust or scope.
+Use the required `story` object only as compact traceability metadata for actor, capability, and outcome. Write `actor` as a noun phrase beginning with a lowercase common noun or determiner (`an establishment member`); write `capability` as a base-form verb phrase beginning lowercase without leading `can` or `to` (`see current readiness`); write `outcome` as a complete result clause beginning lowercase without leading `so that` (`the member knows whether to continue`). Preserve proper names and acronyms within each fragment and omit terminal punctuation. This keeps the renderer's `Feature: {actor} can {capability}; outcome: {outcome}.` line grammatical. Do not add a second “As a / I want / so that” narrative.
+
+Each Scenario follows one deterministic path. Avoid branching conjunctions such as “paid now or pending,” “reviews or records,” or “creates or selects” when the branches produce different state. Split them into focused scenarios with distinct Then results. Add exception scenarios only when error, empty, recovery, permission-denied behavior, failure or retry, or conflict changes trust or scope.
 
 ## Required slice content
 

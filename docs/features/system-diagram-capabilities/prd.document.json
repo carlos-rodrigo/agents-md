@@ -33,6 +33,15 @@
       "summary": "The product change expands one existing skill rather than creating competing diagram tools or styles.",
       "blocks": [
         {
+          "type": "approval",
+          "id": "product.approval",
+          "product": "PRD and Design Solution decide when and what a situation needs to illustrate; System Diagram generates sequence, flow, architecture, or component diagrams in the established infrastructure visual language without inventing meaning.",
+          "why": "Confirm that capability selection, authority boundaries, staged delivery, sequence limits, and observable acceptance fully express the approved direction; then explicitly approve or request changes to the complete PRD.",
+          "how": "The actor follows the single product path described by the behavior and BDD sections",
+          "approve": "The bounded behavior, material requirements, decisions, and acceptance proof",
+          "notBuilding": "Architecture, implementation mechanics, and adjacent capabilities outside the stated scope"
+        },
+        {
           "type": "paragraph",
           "id": "prd.product.statement",
           "text": "For a PRD or Design Solution that needs to explain an evidence-backed situation during document review, the product will generate the appropriate sequence, flow, architecture, or component diagram through the existing System Diagram skill, resulting in a deterministic figure that a reviewer can retell; it will not transfer product or architecture authority to the renderer or introduce another visual language."
