@@ -47,7 +47,10 @@ Write the shortest complete contract a fresh agent can execute without chat hist
 - Link durable sources; summarize any needed chat-only decision in the task.
 - Separate advisory navigation from binding behavior, scope, implementation constraints, and invariants.
 - A `ready` change/build/fix task authorizes safe in-scope inspection, local edits, and non-destructive checks. Review/diagnose/plan tasks inspect and report unless the brief requests edits. Name only task-specific delegated choices and approval decisions.
+- Graph context and code cleanup guidance are execution aids; neither grants authority or changes the task contract.
 - Pair checks with setup and expected results; record actual action → observation evidence in `## Result`.
+- For implementation tasks, call `task_context_graph` before editing when the relevant surface is unknown. Record its files, relationships, risks, and fingerprint as advisory navigation context, not authorization.
+- If generated code needs cleanup, record the bounded cleanup scope and applicable `code-un-slopify` categories in the brief. Cleanup must preserve behavior and be verified separately from the implementation.
 - Prefer completeness over a line cap. Split only for multiple behaviors; never remove facts needed for a solo loop run.
 
 ---
@@ -147,6 +150,14 @@ Optional detail sections: `## Investigation`, `## Fixtures / setup`, `## Rollbac
 
 Before setting `status: ready`, run the **fresh agent readiness check**: can an agent derive the implementation checklist and execute the feedback loop without chat history, broad rediscovery, or invented product behavior?
 
+## Are You Proud review gate
+
+After generating or materially revising a task brief and before presenting it as complete, load `are-you-proud` and review the task, its authority/authorization boundary, execution contract, feedback loop, and stopping scope using that skill's rubric.
+
+Resolve every finding from the review, then run `are-you-proud` again. Repeat the repair-and-review cycle until it reports no findings. Do not stop at “mostly proud” while actionable findings remain. If a finding requires user authority, changes the approved contract, or cannot be repaired safely in scope, keep the task `draft` or `blocked`, record the finding and owner, and ask for input rather than claiming a clean result.
+
+Record the final review outcome in the task or handoff. For authorized completed tasks, the `## Result` receipt must state the review iterations and that no findings remained.
+
 - Source anchors open directly. Non-trivial work links an Approved design and tiny clear work captures the explicit user request; never rely on chat history.
 - `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` record explicit user authorization before `ready`; completeness alone is insufficient.
 - For `approved-design`, the validator confirms Approved JSON authority and that the adjacent HTML embeds the same canonical DocumentSpec.
@@ -220,7 +231,7 @@ Done:
 - Task contract: binding `Goal` / `Change` / `Done` / `Execute` items → satisfied
 - Feedback loop: `action` → actual observation; evidence path when applicable
 - Gate: `action` → passed
-- Review: self/oracle Are You Proud; findings resolved or skipped with reason
+- Review: Are You Proud iterations `{n}` → final review reports no findings | blocked with owner and reason
 - Follow-up applied to next task: none | `TASK-002`
 ```
 

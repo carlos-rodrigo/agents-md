@@ -122,9 +122,33 @@ Failed required checks cannot produce `done`. A behavior change without an execu
 
 ## Review
 
-Use `are-you-proud` for small/local work. Use Oracle with that rubric for large, risky, cross-cutting, auth/security/payment, schema/API, persistence, or repeated-failure work.
+At the end of every implementation, load and invoke `are-you-proud` against the actual diff, tests, contract, and verification evidence. This is mandatory for both task-backed and direct-request modes. For large, risky, cross-cutting, auth/security/payment, schema/API, persistence, or repeated-failure work, use Oracle in addition to `are-you-proud`.
 
-Before completion confirm scope, approved architecture/ADR alignment, every checklist item, TDD or recorded exception, edge coverage, final Gate, and resolution of must-fix review findings. Docs-only or tiny work may skip review with a stated reason.
+Resolve every finding from `are-you-proud`, rerun the affected checks, and invoke it again. Repeat the repair-and-review cycle until it reports no findings; do not treat “Mostly proud” or an unresolved suggestion as completion. If a finding requires user authority, changes the binding task contract, or cannot be repaired safely in scope, stop and report the blocker and owner instead of claiming `done`.
+
+Before completion confirm scope, approved architecture/ADR alignment, every checklist item, TDD or recorded exception, edge coverage, final Gate, and that the final `are-you-proud` review has no findings. Docs-only or tiny work may use a lighter review, but it may not omit the `are-you-proud` invocation.
+
+## Code quality pass
+
+After the implementation and its first focused verification pass, use `code-un-slopify` when the code was generated or the user asks for cleanup. Keep the pass inside the approved implementation scope and process one smell category at a time. Run focused tests after each pass. Any code change from the cleanup pass requires the final Are You Proud? review again and, when applicable, a fresh Oracle review.
+
+The complete implementation loop is:
+
+```text
+task_context_graph when the surface is unknown
+→ implement
+→ focused tests
+→ Are You Proud?
+→ Oracle when required
+→ fix concrete findings
+→ code-un-slopify
+→ focused tests
+→ Are You Proud?
+→ Oracle when required
+→ full Gate
+```
+
+Use the existing `un-slopify` skill for prose and technical artifacts. It is audit-only for executable code; `code-un-slopify` is the explicit code cleanup workflow.
 
 ## Finish
 
