@@ -25,6 +25,19 @@
       "title": "The approved promise is consistent, portable review",
       "blocks": [
         {
+          "type": "architecture-approval",
+          "id": "design.authority.approval",
+          "decision": "Which boundary owns report markup, CSS, and runtime?",
+          "recommendation": "Use one skill-relative renderer and report template.",
+          "goal": "Regenerate byte-identical, self-contained HTML from the same structured source, including from a copied skill in an unrelated working directory.",
+          "shape": "PRD and design skills own meaning; System Diagram supplies retained JSON and generated SVG; HTML Report Designer validates both and renders the report.",
+          "why": "A single rendering boundary prevents shell drift and remains portable after copying the skill.",
+          "approve": "The existing single-renderer decision and its portability proof, as accepted by the synthetic Eval Product Owner.",
+          "notBuilding": "Alternate report templates, alternate diagram renderers, product behavior, or automatic approval from browser state.",
+          "risks": "New component shapes require shared renderer changes; missing renderer or diagram provenance blocks generation instead of falling back.",
+          "readiness": "This approved synthetic design authorizes the focused portability proof, not mutable product documentation."
+        },
+        {
           "type": "facts",
           "id": "design.authority.facts",
           "items": [

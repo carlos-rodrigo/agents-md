@@ -122,15 +122,15 @@ Failed required checks cannot produce `done`. A behavior change without an execu
 
 ## Review
 
-At the end of every implementation, load and invoke `are-you-proud` against the actual diff, tests, contract, and verification evidence. This is mandatory for both task-backed and direct-request modes. For large, risky, cross-cutting, auth/security/payment, schema/API, persistence, or repeated-failure work, use Oracle in addition to `are-you-proud`.
+At the end of behavior-changing or non-trivial implementation, use `are-you-proud` against the actual diff, tests, contract, and verification evidence in either entry mode. For large, risky, cross-cutting, auth/security/payment, schema/API, persistence, or repeated-failure work, use Oracle in addition to `are-you-proud`.
 
-Resolve every finding from `are-you-proud`, rerun the affected checks, and invoke it again. Repeat the repair-and-review cycle until it reports no findings; do not treat “Mostly proud” or an unresolved suggestion as completion. If a finding requires user authority, changes the binding task contract, or cannot be repaired safely in scope, stop and report the blocker and owner instead of claiming `done`.
+Fix concrete correctness, security, contract, and required-verification findings, then rerun the affected checks. Allow at most two repair-and-review cycles. Optional taste suggestions do not block completion; report them as optional rather than widening scope. If a material finding remains, requires user authority, or cannot be repaired safely in scope, stop and report the blocker and owner.
 
-Before completion confirm scope, approved architecture/ADR alignment, every checklist item, TDD or recorded exception, edge coverage, final Gate, and that the final `are-you-proud` review has no findings. Docs-only or tiny work may use a lighter review, but it may not omit the `are-you-proud` invocation.
+Before completion confirm scope, approved architecture/ADR alignment, every checklist item, TDD or recorded exception, edge coverage, final Gate, and no unresolved material review findings. Docs-only or tiny work may use a concise inline self-review without loading another skill; state that exception.
 
 ## Code quality pass
 
-After the implementation and its first focused verification pass, use `code-un-slopify` when the code was generated or the user asks for cleanup. Keep the pass inside the approved implementation scope and process one smell category at a time. Run focused tests after each pass. Any code change from the cleanup pass requires the final Are You Proud? review again and, when applicable, a fresh Oracle review.
+Use `code-un-slopify` only when the user asks for cleanup or a concrete code smell justifies it, not merely because code was generated. Keep cleanup inside the approved scope, before the final review, and rerun affected tests. Re-review changed areas only; do not restart independent reviews of unchanged code.
 
 The complete implementation loop is:
 
@@ -138,13 +138,9 @@ The complete implementation loop is:
 task_context_graph when the surface is unknown
 → implement
 → focused tests
-→ Are You Proud?
-→ Oracle when required
-→ fix concrete findings
-→ code-un-slopify
-→ focused tests
-→ Are You Proud?
-→ Oracle when required
+→ optional scoped cleanup and affected tests
+→ one risk-appropriate review (Oracle only when required)
+→ fix material findings and rerun checks (at most two cycles)
 → full Gate
 ```
 

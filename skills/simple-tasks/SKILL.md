@@ -154,9 +154,9 @@ Before setting `status: ready`, run the **fresh agent readiness check**: can an 
 
 After generating or materially revising a task brief and before presenting it as complete, load `are-you-proud` and review the task, its authority/authorization boundary, execution contract, feedback loop, and stopping scope using that skill's rubric.
 
-Resolve every finding from the review, then run `are-you-proud` again. Repeat the repair-and-review cycle until it reports no findings. Do not stop at “mostly proud” while actionable findings remain. If a finding requires user authority, changes the approved contract, or cannot be repaired safely in scope, keep the task `draft` or `blocked`, record the finding and owner, and ask for input rather than claiming a clean result.
+Fix material authority, scope, behavior, or verification gaps, with at most two repair-and-review cycles. Optional taste suggestions do not block completion. If a material finding remains, requires user authority, changes the approved contract, or cannot be repaired safely in scope, keep the task `draft` or `blocked` and report the finding and owner.
 
-Record the final review outcome in the task or handoff. For authorized completed tasks, the `## Result` receipt must state the review iterations and that no findings remained.
+Record the final review outcome in the task or handoff, including iterations, any optional suggestions, and whether material findings remain.
 
 - Source anchors open directly. Non-trivial work links an Approved design and tiny clear work captures the explicit user request; never rely on chat history.
 - `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` record explicit user authorization before `ready`; completeness alone is insufficient.
@@ -231,7 +231,7 @@ Done:
 - Task contract: binding `Goal` / `Change` / `Done` / `Execute` items → satisfied
 - Feedback loop: `action` → actual observation; evidence path when applicable
 - Gate: `action` → passed
-- Review: Are You Proud iterations `{n}` → final review reports no findings | blocked with owner and reason
+- Review: Are You Proud iterations `{n}` → no unresolved material findings; optional suggestions listed | blocked with owner and reason
 - Follow-up applied to next task: none | `TASK-002`
 ```
 
