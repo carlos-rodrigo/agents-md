@@ -216,11 +216,11 @@ Accepted rationale for public API contracts, auth/security/privacy, persistence/
 
 ## Process
 
-1. Verify and read the Approved PRD source/report pair, existing design, relevant ADRs, entry points, owners, state, contracts, and tests.
+1. For product-backed work, verify and read the Approved PRD source/report pair. For technical-evidence-backed work, verify the explicit bounded technical request and current implementation/architecture evidence; no PRD is required. In either mode, read the existing design, relevant ADRs, entry points, owners, state, contracts, and tests.
 2. Return product questions to PRD authority. Label non-blocking technical assumptions with evidence, risk, and validation path.
 3. Name the architecture pressure, choose the narrowest owning seam, and trace one causal path.
 4. Build the complete system shape impact map, including explicit unchanged and not-applicable boundaries.
-5. Decompose the shape into vertical architecture slices and trace each slice to approved acceptance and proof.
+5. Decompose the shape into vertical architecture slices and trace each slice to approved product acceptance or the bounded technical outcome and proof, according to the selected evidence mode.
 6. Walk every requirement through the proposed architecture. Resolve every mismatch through the owning user/product/architecture decision; do not silently work around it.
 7. Record decisions as Open or Proposed unless explicit human acceptance already exists.
 8. Invoke `system-diagram`; retain and validate its approved JSON/SVG pair.
@@ -247,7 +247,7 @@ Architecture slices are required for every durable design. A slice is an indepen
 Each slice states:
 
 - stable ID and observable outcome;
-- approved PRD acceptance anchors;
+- approved PRD acceptance anchors in product-backed mode, or bounded technical outcome/evidence anchors in technical-evidence-backed mode;
 - external need and entry point;
 - participating existing and proposed units;
 - owning seam, contracts, state transition, dependencies, and invariants;
@@ -255,7 +255,7 @@ Each slice states:
 - proof strategy and dependency on other slices;
 - escalation boundary for unresolved architecture or product truth.
 
-A small durable design may have one slice. Omit slices only when the design gate skips the durable design entirely. Design slices link product acceptance anchors but do not reproduce PRD stories as their primary content. Do not call task briefs “slices,” turn slices into file-edit checklists, create package/layer phases, or create task files inside this skill.
+A small durable design may have one slice. Omit slices only when the design gate skips the durable design entirely. Design slices link the selected mode's product acceptance or technical outcome anchors but do not reproduce PRD stories as their primary content. Do not call task briefs “slices,” turn slices into file-edit checklists, create package/layer phases, or create task files inside this skill.
 
 ## Handoff
 
@@ -263,7 +263,7 @@ After explicit design approval, pass approved acceptance anchors, the chosen sea
 
 ## Quality gate
 
-- Approved PRD source/report authority is current, validated, linked, and unchanged.
+- Product-backed mode: Approved PRD source/report authority is current, validated, linked, and unchanged. Technical-evidence-backed mode: the bounded technical request and current evidence are linked, with no invented product behavior or fabricated PRD dependency.
 - Pressure, seam, ownership, state, causal path, proof, and boundary are explicit.
 - The system shape impact map covers architecture/modules, API/contracts, domain, data/persistence, delivery/interface, integrations, operations/rollout, and verification as changed, unchanged, or not applicable with evidence.
 - The shape contains a future-system walkthrough, complete changed-surface contracts, consequential state/algorithm detail, and one concrete end-to-end example.

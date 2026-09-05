@@ -184,7 +184,7 @@ Every rendered decision includes a **Decision recorded** checkbox. Recording req
 2. Separate blocking product questions, non-blocking assumptions, and technical questions. Ask only questions that materially change product truth; defer technical questions to design.
 3. Compose the required section roles, one concise `approval` block in the `product` section, complete BDD product slices, and the requirement coherence walkthrough in `canonical-report-v1` structured content.
 4. Stress the requirements against each other. Resolve conflicts only from explicit product authority; otherwise mark the PRD Blocked and request owner input.
-5. Run the semantic audit, including Decision-propagation pass, Scope-to-proof inventory, vocabulary/state, permission, financial-invariant, semantic proof, and collision checks. Then run the portable structural companion:
+5. Run the semantic audit, including Decision-propagation pass, Scope-to-proof inventory, vocabulary/state, permission, financial-invariant, semantic proof, and collision checks. Then run the portable structural companion (requires sibling `html-report-designer`; a structural pass is not semantic approval):
 
 ```bash
 node "<prd-skill-dir>/scripts/audit-prd-traceability.mjs" \
@@ -202,7 +202,7 @@ node "<html-report-designer-dir>/scripts/validate-html-report.mjs" \
   docs/features/{feature}/prd.html
 ```
 
-9. Open the PRD and, when present, the mockups through Pi's HTML reviewer. Read both inline comments and selected or confirmed decision feedback from the generated sidecars. Before changing canonical source, rerun the structural audit with the sidecar so anchors, selections, and source fingerprints are checked against the reviewed version. Reconcile approved input into source, then rerun the one-argument audit, rerender, and repeat independent adversarial review when meaning changed; the prior sidecar is historical once its source fingerprint is stale. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
+9. Open the PRD and, when present, the mockups through Pi's HTML reviewer. The audit accepts an optional second argument: `node "<prd-skill-dir>/scripts/audit-prd-traceability.mjs" path/to/prd.document.json path/to/prd.review.md`. Read both inline comments and selected or confirmed decision feedback from the generated sidecars. Before changing canonical source, rerun the structural audit with the sidecar so anchors, selections, and source fingerprints are checked against the reviewed version. Reconcile approved input into source, then rerun the one-argument audit, rerender, and repeat independent adversarial review when meaning changed; the prior sidecar is historical once its source fingerprint is stale. Confirm the diagram still teaches behavior when viewed without the mockup. Never patch generated HTML; update the canonical document source and rerender.
 10. Stop before architecture, APIs, schemas, tasks, rollout mechanics, or implementation commands.
 
 If any required companion skill or renderer is unavailable, report the blocker. Do not create a fallback shell, mockup, or diagram.
@@ -221,7 +221,7 @@ If any required companion skill or renderer is unavailable, report the blocker. 
 - An independent adversarial review reports no identified hidden collision or false `covered` claim before the document enters Review.
 - No tables, speculative alternatives, repeated summaries, redundant scenario/step/acceptance claims, or classic As/I want story prose appear.
 - Failure, recovery, empty, and permission behavior appears only where it changes trust or scope.
-- One infrastructure-style product diagram has `system-diagram-v1` JSON/SVG provenance, a text walkthrough, and a causal question independent of viewport or page composition.
+- One infrastructure-style product diagram has version-matching JSON/SVG provenance (`system-diagram-v1` graph or `system-diagram-v2` sequence), a text walkthrough, and a causal question independent of viewport or page composition.
 - UI-bearing features include a linked, self-contained proposed mockup artifact with representative responsive and consequential states; non-UI features state why mockups are not applicable.
 - Mockups contain no unsupported capability, clearly identify illustrative data, and preserve the human approval boundary.
 - Decisions have explicit lifecycle and human approval boundaries.

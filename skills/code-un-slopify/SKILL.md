@@ -45,8 +45,8 @@ Do not use for vendor/generated code, unrelated pre-existing code, behavior fixe
 6. Run the focused tests immediately.
 7. Repeat only for justified categories, one category per pass.
 8. Run the repository verification gate.
-9. Run Are You Proud? against the final diff.
-10. Run Oracle when the owning implementation workflow requires it.
+9. When embedded in implementation, hand the cleanup diff and verification evidence to the owning workflow's final review; do not start a second review gate. For standalone cleanup, run Are You Proud? against the final diff.
+10. Use Oracle only when required by the owning workflow or repository risk gates.
 
 Stop and report a blocker when a proposed cleanup changes behavior, lacks coverage, needs scope expansion, or makes no safe progress after two attempts.
 
@@ -107,4 +107,6 @@ Do not invent a slop score or treat a heuristic count as a quality gate. Finding
 
 ## Completion standard
 
-The pass is complete only when the approved scope is unchanged, every cleanup pass was tested, repository verification passes, and the final review reports no actionable findings. If code changed after Are You Proud? or Oracle, rerun the affected checks and both reviews.
+The pass is complete only when the approved scope is unchanged, every cleanup pass was tested, repository verification passes, and no unresolved material correctness, security, contract, or verification findings remain. Optional taste suggestions do not block completion or expand scope.
+
+Reuse the owning workflow's review and retry budget; standalone cleanup allows at most two repair-and-review cycles. After a material fix, rerun affected checks and re-review changed areas only. Do not restart reviews of unchanged code. If a material finding remains after the budget, report the blocker and owner rather than looping.

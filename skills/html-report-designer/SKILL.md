@@ -55,7 +55,7 @@ Author `canonical-report-v1` JSON against `resources/canonical-report-v1.schema.
 - exactly one System Diagram in its owning `diagram` role for substantive PRDs, designs, and standalone diagram packets;
 - at least one architecture decision for designs;
 - accepted decisions in Approved documents;
-- `system-diagram-v1` JSON/SVG provenance and exact renderer output at render time.
+- version-aware JSON/SVG provenance and exact renderer output: `system-diagram-v1` graphs or `system-diagram-v2` sequences.
 
 Use `resources/report-example.document.json` only as a block-shape example, never as a section inventory.
 
@@ -86,7 +86,7 @@ Every `decision` block renders a **Decision recorded** checkbox.
 
 ## Diagram contract
 
-A report `diagram` block references a `system-diagram-v1` JSON source and its generated SVG. A standalone `document.kind: "diagram"` packet must contain exactly one such block under its `diagram` section role. The renderer embeds the SVG only when it contains `<!-- svg-source:system-diagram -->`, the exact raw-source digest, `data-diagram-style="infrastructure-v1"`, accessible SVG metadata, a valid source document, and byte-exact output verified by the sibling bundled renderer. The rendered figure records an output digest so standalone validation detects modified embedded SVG even when retained source is unavailable. It never draws, lays out, or semantically changes a diagram.
+A report `diagram` block references a `system-diagram-v1` graph or `system-diagram-v2` sequence JSON source and its generated SVG. Dispatch validation by source version to the corresponding sibling renderer; never convert a sequence to v1 to satisfy a report gate. A standalone `document.kind: "diagram"` packet must contain exactly one such block under its `diagram` section role. The renderer embeds the SVG only when it contains `<!-- svg-source:system-diagram -->`, the exact raw-source digest, `data-diagram-style="infrastructure-v1"`, accessible SVG metadata, a valid source document, and byte-exact output verified by the sibling bundled renderer. The rendered figure records an output digest so standalone validation detects modified embedded SVG even when retained source is unavailable. It never draws, lays out, or semantically changes a diagram.
 
 ## UX contract
 
@@ -129,7 +129,7 @@ node "<html-report-designer-dir>/scripts/render-mockup.mjs" --check \
 - Exactly one h1, skip link, main landmark, heading order, review-ID uniqueness, self-containment, and print styles pass.
 - Required PRD/design profile behavior passes without teaching the renderer new product or architecture facts.
 - Every decision recorder has complete lifecycle controls, standalone export behavior, and the durable Pi HTML review marker; a selected or confirmed decision appears in the same agent-readable sidecar as comments.
-- Every substantive PRD/design embeds only renderer-produced infrastructure-style SVG with retained `system-diagram-v1` JSON source.
+- Every substantive PRD/design embeds only renderer-produced infrastructure-style SVG with retained v1 graph or v2 sequence JSON source and version-matching provenance.
 - Clean-copy rendering and validation pass from an unrelated working directory.
 - Generated HTML regenerates byte-for-byte.
 

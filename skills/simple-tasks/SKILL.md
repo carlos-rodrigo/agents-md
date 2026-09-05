@@ -33,7 +33,7 @@ Task content must trace to approved authority without silently becoming permissi
 - New tasks default to `draft`. An Approved design authorizes task drafting; it does not by itself authorize generated task details for execution.
 - A task becomes `ready` only after explicit user authorization. Record `authorized_by`, `authorized_at`, a parseable `authorization_basis`, and the validator-generated `authorization_fingerprint`.
 - Use `authorization_basis: "approved-design: docs/features/{feature}/design.document.json"` for non-trivial work or `authorization_basis: "user-request: {bounded request context}"` for a tiny clear/directly approved change.
-- The fingerprint binds authorization to Goal, Change, Done, authorization basis, and binding Execute behavior/scope/constraints/invariants. Changed binding content requires renewed user authorization and a new fingerprint.
+- The fingerprint binds authorization to Goal, Change, Done, authorization basis, and binding Execute behavior/scope/constraints/invariants, including continuation lines and nested bullets. Changed binding content requires renewed user authorization and a new fingerprint. If an older fingerprint omitted multiline content, obtain renewed authorization; do not silently regenerate it to pass validation.
 - A previously authorized task may be restored to `ready` after an agent-owned blocker is removed only when authorization metadata is preserved, upstream authority remains current, the binding task contract is unchanged, and validation passes.
 
 Do not infer or create authorization from completeness, passing checks, prior implementation, or an agent-authored status change.

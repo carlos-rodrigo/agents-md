@@ -127,7 +127,7 @@ ARCH-SLICE-001 — {observable outcome}
 External need: {caller} needs {capability} to observe {result}.
 Entry point: {UI action | route | command | event | public function}.
 Acceptance boundary: {BDD/API/CLI/browser/contract observation}.
-Approved acceptance: {PRD scenario/AC IDs}.
+Outcome authority: {Approved PRD scenario/AC IDs for product-backed work | bounded technical request/contract IDs for technical-evidence-backed work}.
 Participating units: {existing and proposed units from the shape map}.
 Contract/state delta: {new or changed inputs, outputs, states, invariants, and ownership}
 Path:

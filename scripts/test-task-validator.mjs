@@ -45,6 +45,16 @@ try {
   writeFileSync(join(tasks, '001-ready.md'), fingerprinted.replace('Add one bounded behavior', 'Add two unauthorized behaviors'));
   assertFailure(run('001-ready.md'), 'authorization_fingerprint does not match', 'binding-contract edits invalidate authorization');
 
+  const multiline = writeTask('001-ready.md', readyTask().replace(
+    '- Invariants: existing errors remain unchanged',
+    '- Invariants: existing errors remain unchanged\n  Retain previous output when rendering fails.\n  - Preserve its source digest.\nKeep the previous manifest too.',
+  ));
+  assertSuccess(run('001-ready.md'), 'authorized multiline binding bullet validates');
+  for (const [before, after] of [['Retain previous output', 'Remove previous output'], ['Preserve its source digest', 'Discard its source digest'], ['Keep the previous manifest', 'Delete the previous manifest']]) {
+    writeFileSync(join(tasks, '001-ready.md'), multiline.replace(before, after));
+    assertFailure(run('001-ready.md'), 'authorization_fingerprint does not match', 'continuation and nested invariant changes invalidate authorization');
+  }
+
   writeApprovedDesign('Approved');
   writeTask('001-ready.md', readyTask({ basis: 'approved-design: docs/features/example/design.document.json' }));
   assertSuccess(runSourceValidator('001-ready.md'), 'Approved design source/current report authorizes readiness');
@@ -85,6 +95,13 @@ try {
 
   writeTask('001-ready.md', doneTask().replace('node test.mjs → passed', 'not verified'));
   assertFailure(run('001-ready.md'), 'Feedback loop records failure', 'done task rejects negated feedback evidence');
+
+  writeTask('001-ready.md', doneTask().replace('self Are You Proud → no findings', 'Are You Proud iterations `1` → no unresolved material findings; optional suggestions: none'));
+  assertSuccess(run('001-ready.md'), 'documented successful review receipt validates verbatim');
+  for (const review of ['unresolved material findings', 'no unresolved material findings; blocking authorization issue', 'no unresolved material findings; unresolved regression']) {
+    writeTask('001-ready.md', doneTask().replace('self Are You Proud → no findings', review));
+    assertFailure(run('001-ready.md'), 'Review records incomplete evidence', 'real unresolved or blocking findings still fail');
+  }
 
   writeTask('001-ready.md', doneTask().replace('self Are You Proud → no findings', 'not approved'));
   assertFailure(run('001-ready.md'), 'Review records incomplete evidence', 'done task rejects negated review evidence');

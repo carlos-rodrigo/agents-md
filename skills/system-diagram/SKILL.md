@@ -108,7 +108,7 @@ node "<system-diagram-dir>/scripts/render-sequence-diagram.mjs" --check \
 
 Do not send v1 through sequence validation or layout. Do not hand-author sequence coordinates; source order and semantic references determine geometry.
 
-Author strict `system-diagram-v1` JSON. `resources/infrastructure-diagram.css` is the sole visual style source and is embedded into every SVG. Keep the JSON source and SVG together when regeneration matters. Preserve `<!-- svg-source:system-diagram -->`, `data-diagram-style="infrastructure-v1"`, the renderer's exact raw-JSON source digest, searchable text, embedded CSS, accessible title/description, stable review IDs, foreground edge labels, and renderer-owned `.diagram-reveal` groups.
+Author strict JSON for the selected version: `system-diagram-v1` for existing graph modes, or `system-diagram-v2` with `diagramType: "sequence"` for sequence diagrams. `resources/infrastructure-diagram.css` is the sole visual style source and is embedded into every SVG. Keep the JSON source and SVG together when regeneration matters. Preserve `<!-- svg-source:system-diagram -->`, `data-diagram-style="infrastructure-v1"`, the renderer's exact raw-JSON source digest, searchable text, embedded CSS, accessible title/description, stable review IDs, foreground edge labels, and renderer-owned `.diagram-reveal` groups.
 
 Do not hand-author the final SVG, edit generated SVG, use browser diagram runtimes, or add scene-local colors, fonts, roughness, or effects. The renderer owns the visual language. Split a crowded question into smaller figures instead.
 
@@ -149,7 +149,7 @@ Return the consuming skill:
 - Every meaningful edge is labelled.
 - Uncertainty and recovery are truthful.
 - Text, padding, routes, labels, and arrowheads remain legible.
-- `system-diagram-v1` JSON source is retained; generated SVG is current and carries System Diagram provenance and `infrastructure-v1` style metadata.
+- The selected v1 graph or v2 sequence JSON source is retained; generated SVG is current under its version-specific renderer and carries System Diagram provenance and `infrastructure-v1` style metadata.
 - SVG has viewBox, title, description, accessible naming, searchable text, and stable review anchors.
 - Nearby walkthrough preserves the conclusion with the image hidden.
 - Desktop, 320px overflow, print, no-JS, and reduced-motion states remain complete.

@@ -252,7 +252,8 @@ function validateResult(content, status, path, validationErrors) {
     if (!/\bpassed\b|\bgreen\b|\bsucceeded\b|\bexits? 0\b|\bexited 0\b/i.test(gate)) validationErrors.push({ path, message: 'done task Gate must record a successful terminal state' });
 
     const review = readBullet(result, 'Review');
-    if (/\b(?:unresolved|blocking|pending|not (?:approved|reviewed|proud|resolved))\b/i.test(review)) validationErrors.push({ path, message: 'done task Review records incomplete evidence' });
+    const remainingReview = review.replace(/\bno unresolved material findings\b/gi, 'no findings');
+    if (/\b(?:unresolved|blocking|pending|not (?:approved|reviewed|proud|resolved))\b/i.test(remainingReview)) validationErrors.push({ path, message: 'done task Review records incomplete evidence' });
     if (!/\b(?:no findings|resolved|proud|passed|approved|no change|not applicable)\b|skipped\s+(?:because|with reason|:)/i.test(review)) validationErrors.push({ path, message: 'done task Review must record no findings, resolved findings, or an explicit exception' });
   } else {
     const failureState = /\b(?:fail(?:ed|ing|ure)?|red|error|nonzero|exit(?:ed)?(?: code)? [1-9][0-9]*|unavailable|missing|timeout|blocked|rejected|skipp(?:ed|ing)|not run|not executed)\b/i;
@@ -349,8 +350,20 @@ function readSection(content, heading) {
 
 function readBullets(section, label) {
   if (!section) return [];
-  const expression = new RegExp(`^- ${escapeRegex(label)}:[ \\t]*(.*)$`, 'gm');
-  return [...section.matchAll(expression)].map((match) => normalize(match[1]));
+  const expression = new RegExp(`^- ${escapeRegex(label)}:[ \\t]*(.*)$`);
+  const lines = section.split(/\r?\n/);
+  const values = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const match = lines[index].match(expression);
+    if (!match) continue;
+    const parts = [match[1]];
+    // Include indented, nested, and lazy Markdown continuations up to the next item.
+    while (index + 1 < lines.length && !/^(?:[-*+]\s|\d+[.)]\s|#{1,6}\s)/.test(lines[index + 1])) {
+      parts.push(lines[++index]);
+    }
+    values.push(normalize(parts.join('\n')));
+  }
+  return values;
 }
 
 function readBullet(section, label) {

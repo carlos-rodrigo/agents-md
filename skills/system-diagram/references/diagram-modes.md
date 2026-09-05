@@ -5,7 +5,8 @@ Choose the smallest mode that answers the question.
 | Need | Mode | Shows |
 | --- | --- | --- |
 | Understand implementation flow | Code Flow | functions/methods/events/jobs and important payloads |
-| Understand temporal communication | Sequence capability | participants, lifelines, ordered messages, activations, fragments, recovery |\n| Understand static communication | Component Communication / Architecture view | modules/services, protocols, boundaries, ownership |
+| Understand temporal communication | Sequence capability | participants, lifelines, ordered messages, activations, fragments, recovery |
+| Understand static communication | Component Communication / Architecture view | modules/services, protocols, boundaries, ownership |
 | Understand product concepts | Domain Concept Model | concepts, meaning, states, relationships |
 | Understand domain behavior | Domain Evolution Map | source → verb/effect → target state plus invariant/authority |
 | Compare current/intended behavior | Before/After System Story | one stable baseline and material causal delta |

@@ -13,7 +13,7 @@ docs/features/{feature}/diagrams/{name}.svg
 
 ## Build
 
-Create an explicitly positioned `system-diagram-v1` JSON document, then run:
+Dispatch by the selected source version. For a v1 graph, create an explicitly positioned `system-diagram-v1` JSON document, then run:
 
 ```bash
 node "<system-diagram-dir>/scripts/render-system-diagram.mjs" spec.json output.svg
@@ -22,7 +22,16 @@ node "<system-diagram-dir>/scripts/render-system-diagram.mjs" --check spec.json 
 
 The renderer provides exact geometry, embedded component CSS, searchable semantic text, accessibility metadata, stable review IDs, labelled edge groups, provenance, and reading-order wrappers. It needs Node.js only—no browser export stage or runtime package installation.
 
-## Source contract
+For temporal sequence diagrams, author `system-diagram-v2` with `diagramType: "sequence"`; use `resources/sequence-minimal-v2.json` as a shape example. Supply semantic participant/message order, not coordinates:
+
+```bash
+node "<system-diagram-dir>/scripts/render-sequence-diagram.mjs" sequence.json output.svg
+node "<system-diagram-dir>/scripts/render-sequence-diagram.mjs" --check sequence.json output.svg
+```
+
+The `sequence-v1` layout owns sequence geometry. Never send v2 sources through the v1 graph renderer. Retain the selected version's source and check its output with the matching renderer.
+
+## V1 graph source contract
 
 The renderer, not each scene, owns fonts, color, node surfaces, shadows, grid, arrowheads, and semantic states. Source JSON supplies:
 
@@ -38,7 +47,7 @@ The source validator requires explicit non-empty title/description, XML-safe tex
 
 Do not add scene-local fill, stroke, roughness, font, arbitrary CSS, or SVG fragments. Unsupported fields fail validation instead of creating a second visual language.
 
-## Scene layout defaults
+## V1 graph scene layout defaults
 
 - Arrange the main explanation top to bottom.
 - Use a horizontal path only for comparisons, ownership lanes, or a real causal fan-out.
