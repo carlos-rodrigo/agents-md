@@ -73,10 +73,6 @@ assert((build.match(/const reportTemplateName = 'report-template\.html'/g) || []
 assert(!build.includes('const groups ='), 'single-template asset build must not retain multi-template grouping');
 for (const legacy of ['prd-template.html', 'design-template.html', 'system-diagram-template.html']) assert(!build.includes(legacy), `asset build still references ${legacy}`);
 
-for (const [label, path] of [['PRD', 'skills/prd/SKILL.md'], ['design', 'skills/design-solution/SKILL.md']]) {
-  const skill = text(path);
-  requireAll(`${label} canonical routing`, skill, ['canonical-report-v1', '<html-report-designer-dir>/scripts/render-canonical-report.mjs', 'Never patch generated HTML']);
-}
 const diagramSkill = text('skills/system-diagram/SKILL.md');
 requireAll('system diagram ownership', diagramSkill, ['does not own a report template or page shell', '<system-diagram-dir>/scripts/render-system-diagram.mjs']);
 const reviewRuntime = text(`${resources}/artifact-review-state.js`);

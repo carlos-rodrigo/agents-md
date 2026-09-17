@@ -62,7 +62,7 @@
         <section class="section-card reveal" id="design.authority" aria-labelledby="design.authority-title" data-review-id="design.authority">
           <span class="section-kicker">Authority</span>
           <h2 id="design.authority-title">The approved promise is consistent, portable review</h2>
-          <section class="architecture-approval-brief" data-review-id="design.authority.approval" aria-label="Architecture approval brief"><h3>Architecture approval brief</h3><dl class="facts"><div><dt>Decision</dt><dd>Which boundary owns report markup, CSS, and runtime?</dd></div><div><dt>Recommendation</dt><dd>Use one skill-relative renderer and report template.</dd></div><div><dt>Goal/outcome</dt><dd>Regenerate byte-identical, self-contained HTML from the same structured source, including from a copied skill in an unrelated working directory.</dd></div><div><dt>Proposed shape</dt><dd>PRD and design skills own meaning; System Diagram supplies retained JSON and generated SVG; HTML Report Designer validates both and renders the report.</dd></div><div><dt>Why this shape</dt><dd>A single rendering boundary prevents shell drift and remains portable after copying the skill.</dd></div><div><dt>Approve</dt><dd>The existing single-renderer decision and its portability proof, as accepted by the synthetic Eval Product Owner.</dd></div><div><dt>Not building</dt><dd>Alternate report templates, alternate diagram renderers, product behavior, or automatic approval from browser state.</dd></div><div><dt>Risks/blockers</dt><dd>New component shapes require shared renderer changes; missing renderer or diagram provenance blocks generation instead of falling back.</dd></div><div><dt>Readiness</dt><dd>This approved synthetic design authorizes the focused portability proof, not mutable product documentation.</dd></div></dl></section>
+          <section class="architecture-approval-brief" data-review-id="authority.approval" aria-label="Architecture approval brief"><h3>Architecture approval brief</h3><dl class="facts"><div><dt>Decision</dt><dd>Approve or revise the proposed architecture before task creation</dd></div><div><dt>Recommendation</dt><dd>Use the bounded ownership, state, contract, and recovery shape described by this technical design</dd></div><div><dt>Goal/outcome</dt><dd>An approved synthetic design authorizes portability proof without depending on mutable product documentation.</dd></div><div><dt>Proposed shape</dt><dd>The trigger enters an owned handler/service path, domain policy and state remain explicit, adapters own persistence or external effects, and proof closes the path</dd></div><div><dt>Why this shape</dt><dd>Confirm the renderer boundary and the separation between review recording and canonical approval.</dd></div><div><dt>Approve</dt><dd>Ownership boundaries, key contracts/state, failure and recovery posture, scaling assumptions, and the listed architecture decisions</dd></div><div><dt>Not building</dt><dd>Product behavior changes, implementation tasks, unrelated platform expansion, or architecture outside the stated boundary</dd></div><div><dt>Risks/blockers</dt><dd>Open decisions, evidence gaps, or non-fitting requirements listed in the detailed design remain blocking until owned</dd></div><div><dt>Readiness</dt><dd>Not ready for tasks until this brief and all blocking decisions are explicitly accepted</dd></div></dl></section>
           <dl class="facts" data-review-id="design.authority.facts"><div><dt>Promise</dt><dd>All durable reports use one visual and interaction system.</dd></div><div><dt>Proof</dt><dd>The same structured source regenerates byte-identical HTML.</dd></div><div><dt>Constraint</dt><dd>PRD and design truth remains owned by their domain skills.</dd></div></dl>
         </section>
 <section class="section-card reveal" id="design.pressure" aria-labelledby="design.pressure-title" data-review-id="design.pressure">
@@ -388,16 +388,16 @@
       "blocks": [
         {
           "type": "architecture-approval",
-          "id": "design.authority.approval",
-          "decision": "Which boundary owns report markup, CSS, and runtime?",
-          "recommendation": "Use one skill-relative renderer and report template.",
-          "goal": "Regenerate byte-identical, self-contained HTML from the same structured source, including from a copied skill in an unrelated working directory.",
-          "shape": "PRD and design skills own meaning; System Diagram supplies retained JSON and generated SVG; HTML Report Designer validates both and renders the report.",
-          "why": "A single rendering boundary prevents shell drift and remains portable after copying the skill.",
-          "approve": "The existing single-renderer decision and its portability proof, as accepted by the synthetic Eval Product Owner.",
-          "notBuilding": "Alternate report templates, alternate diagram renderers, product behavior, or automatic approval from browser state.",
-          "risks": "New component shapes require shared renderer changes; missing renderer or diagram provenance blocks generation instead of falling back.",
-          "readiness": "This approved synthetic design authorizes the focused portability proof, not mutable product documentation."
+          "id": "authority.approval",
+          "decision": "Approve or revise the proposed architecture before task creation",
+          "recommendation": "Use the bounded ownership, state, contract, and recovery shape described by this technical design",
+          "goal": "An approved synthetic design authorizes portability proof without depending on mutable product documentation.",
+          "shape": "The trigger enters an owned handler/service path, domain policy and state remain explicit, adapters own persistence or external effects, and proof closes the path",
+          "why": "Confirm the renderer boundary and the separation between review recording and canonical approval.",
+          "approve": "Ownership boundaries, key contracts/state, failure and recovery posture, scaling assumptions, and the listed architecture decisions",
+          "notBuilding": "Product behavior changes, implementation tasks, unrelated platform expansion, or architecture outside the stated boundary",
+          "risks": "Open decisions, evidence gaps, or non-fitting requirements listed in the detailed design remain blocking until owned",
+          "readiness": "Not ready for tasks until this brief and all blocking decisions are explicitly accepted"
         },
         {
           "type": "facts",

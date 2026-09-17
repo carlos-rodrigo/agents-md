@@ -132,14 +132,6 @@ Focused checks (run the relevant one while iterating):
 npm run test:reports
 npm run test:skills
 npm run test:diagram
-# Full compatibility proof for the documented minimum runtime:
-npx --yes -p node@18.20.8 -p npm@10.8.2 -c 'node -v && npm -v && npm ci && npm run verify'
-```
-
-Single final gate, which includes the focused suites:
-
-```bash
-npm run verify
 ```
 
 Eval definitions are durable. Raw run notes/logs should stay under ignored `.features/evals/` when needed.

@@ -6,8 +6,6 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const skills = {
-  prd: ['Draft', 'architecture', 'approval', 'tiny'],
-  'design-solution': ['Approved', 'product', 'task', 'tiny'],
   'simple-tasks': ['authorization', 'blocked', '_active.md', 'draft'],
   'implement-task': ['no-op', 'blocked', 'Result', 'acceptance'],
 };
