@@ -88,4 +88,8 @@ This skill designs; it does not implement.
 {API, schema, auth, persistence, infrastructure, dependency, or cross-cutting decisions needing approval}
 ```
 
+## Pride gate
+
+Before presenting the proposal, run `are-you-proud` against the proposal, repository evidence, trade-offs, and verification plan. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Do not present a plan with unresolved findings; escalate only decisions that require the user's authority.
+
 Keep it short enough for an architecture discussion. Separate evidence, assumptions, recommendations, and decisions. Do not claim repository behavior without an anchor. Do not implement until explicitly asked.

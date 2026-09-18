@@ -80,4 +80,8 @@ The Markdown is the canonical review document. The mockup is evidence, not produ
 This document defines product behavior and review evidence. It does not approve architecture or authorize implementation.
 ```
 
+## Pride gate
+
+Before presenting the specification or mockup, run `are-you-proud` against the requirement, scenarios, domain model, UX/UI, accessibility, and mockup evidence. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Do not present a plan with unresolved findings; escalate only decisions that require the user's authority.
+
 Omit empty sections. Keep facts, proposals, decisions, and unknowns distinct. Remove repeated conclusions and generic filler.
