@@ -9,6 +9,15 @@ Turn a requirement or technical feature into a shared product definition. Make t
 
 This skill defines product behavior and review evidence; it does not approve architecture or write application code.
 
+Save the final result after the pride gate at:
+
+```text
+.features/{feature}/what-we-are-going-to-build.md
+.features/{feature}/what-we-are-going-to-build.mockup.html
+```
+
+Use the existing feature folder when one exists. If the feature name is unclear, ask for a slug before writing the files.
+
 ## Method
 
 1. **Introduce the feature**
@@ -33,14 +42,7 @@ This skill defines product behavior and review evidence; it does not approve arc
 
 ## Deliverables
 
-Use the repository's existing feature-document convention. Otherwise:
-
-```text
-docs/features/{feature}/{feature}.md
-docs/features/{feature}/{feature}.mockup.html
-```
-
-The Markdown is the canonical review document. The mockup is evidence, not product truth. Keep the Markdown useful without the mockup.
+Use the paths above unless the repository already has a feature-folder convention. The Markdown is the canonical review document. The mockup is evidence, not product truth. Keep the Markdown useful without the mockup.
 
 ## Markdown shape
 
@@ -82,6 +84,6 @@ This document defines product behavior and review evidence. It does not approve 
 
 ## Pride gate
 
-Before presenting the specification or mockup, run `are-you-proud` against the requirement, scenarios, domain model, UX/UI, accessibility, and mockup evidence. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Do not present a plan with unresolved findings; escalate only decisions that require the user's authority.
+Before presenting or saving the specification or mockup, run `are-you-proud` against the requirement, scenarios, domain model, UX/UI, accessibility, and mockup evidence. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Save only the final Proud result to `.features/{feature}/what-we-are-going-to-build.md` and its mockup beside it. Do not present or save a plan with unresolved findings; escalate only decisions that require the user's authority.
 
 Omit empty sections. Keep facts, proposals, decisions, and unknowns distinct. Remove repeated conclusions and generic filler.

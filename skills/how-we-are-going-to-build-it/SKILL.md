@@ -9,6 +9,14 @@ Before coding, inspect the repository and propose the smallest durable design th
 
 This skill designs; it does not implement.
 
+Save the final proposal after the pride gate at:
+
+```text
+.features/{feature}/how-we-are-going-to-build.md
+```
+
+Use the existing feature folder when one exists. If the feature name is unclear, ask for a slug before writing the file.
+
 ## Method
 
 1. **Clarify the requirement**
@@ -90,6 +98,6 @@ This skill designs; it does not implement.
 
 ## Pride gate
 
-Before presenting the proposal, run `are-you-proud` against the proposal, repository evidence, trade-offs, and verification plan. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Do not present a plan with unresolved findings; escalate only decisions that require the user's authority.
+Before presenting or saving the proposal, run `are-you-proud` against the proposal, repository evidence, trade-offs, and verification plan. Fix every finding, rerun the review, and iterate until the verdict is **Proud**. Save only the final Proud result to `.features/{feature}/how-we-are-going-to-build.md`. Do not present or save a plan with unresolved findings; escalate only decisions that require the user's authority.
 
 Keep it short enough for an architecture discussion. Separate evidence, assumptions, recommendations, and decisions. Do not claim repository behavior without an anchor. Do not implement until explicitly asked.
