@@ -16,6 +16,7 @@ Baseline instructions for every project. Project `AGENTS.md` adds local guidance
 ## Safety Gates
 
 Never:
+
 - ship behavior changes without tests or an explicit test exception,
 - invent requirements, constraints, or business logic,
 - make large rewrites without approval,
@@ -27,11 +28,12 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 ## Product and Architecture
 
 - Tiny, obvious fixes may proceed after focused inspection and verification planning.
-- Non-trivial product work needs approved product truth before coding: review `prd.html` for intent and acceptance, then `design.html`, then task briefs when splitting or delegating work. Edit adjacent `*.document.json` sources and regenerate HTML; never patch report HTML.
-- When architecture matters, read the relevant `design.html` and ADRs under `docs/adrs/`. Keep editable intended architecture in `design.document.json`, regenerate `design.html` for review, and keep implementation detail and feedback loops in task briefs.
 - Preserve architecture-significant rationale in the relevant ADR (`architecture.md`, `api.md`, or `web.md`).
 - Keep task-loop state and large run artifacts under ignored `.features/{feature}/`; write durable docs only for requirements, current architecture, decisions, reusable verification, or non-obvious gotchas.
 - Keep always-loaded instructions short; load playbooks and deeper docs only when relevant.
+- Always build context first by searching over the codebase.
+- Plan changes priotizing existing patterns over new.
+- Avoid duplicating code and logic; prefer small, focused refactors over new abstractions.
 
 ## Verification
 
@@ -44,6 +46,7 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 
 - Use `researcher` for unfamiliar APIs, prior art, or broad exploration.
 - Use `oracle` for architecture trade-offs, pre-merge deep review, or after two failed attempts.
+- use `librarian` for code search, dependency inspection, and documentation.
 - Prefer detached `agent_job_start` jobs when tmux is available. For fan-out, set `followUp:false` and inspect results manually; chain `researcher` → `oracle` when uncertainty is high.
 
 ## Finish
@@ -51,3 +54,4 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 1. Run relevant quality gates and report the commands and results.
 2. Update task or durable docs only when the work used or changed them.
 3. Commit, push, or rebase only when asked or clearly required by the repository workflow.
+4. A change is done when you feel proud about it and was unslopyfied, reviewed, and verified. If you are unsure, ask for a second opinion.
