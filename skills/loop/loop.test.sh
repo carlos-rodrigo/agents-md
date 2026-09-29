@@ -67,6 +67,23 @@ run_loop() {
   fi
 }
 
+# Pi defaults to the openai provider, GPT-6 Astra, and xhigh thinking.
+project="$(new_project defaults)"
+bin="$(new_fake_pi defaults 'echo "ARGS: $*"; echo "Loop complete: defaults checked"')"
+state="$TMP_ROOT/defaults/count"
+output="$TMP_ROOT/defaults/output.log"
+run_loop "$project" "$bin" "$state" "$output" 1 || fail "defaults case should exit 0"
+assert_contains "$output" "--provider openai --model gpt-6-astra --thinking xhigh"
+
+# openai-responses transport failures are retried like openai-codex ones.
+project="$(new_project openai_transport)"
+bin="$(new_fake_pi openai_transport 'if [[ "$count" -eq 1 ]]; then echo "openai-responses transport error: fetch failed"; else echo "Loop complete: recovered"; fi')"
+state="$TMP_ROOT/openai_transport/count"
+output="$TMP_ROOT/openai_transport/output.log"
+run_loop "$project" "$bin" "$state" "$output" --provider-error-streak 3 3 || fail "openai transport case should exit 0"
+[[ "$(cat "$state")" == "2" ]] || fail "openai transport case should invoke pi exactly twice"
+assert_contains "$output" "Provider/WebSocket interruption detected; task state will not be classified"
+
 # A provider interruption must skip task classification and retry with a fresh iteration.
 project="$(new_project retry)"
 before="$(shasum -a 256 "$project/.features/demo/tasks/_active.md" | awk '{print $1}')"
