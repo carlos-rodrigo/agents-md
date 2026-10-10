@@ -67,13 +67,45 @@ run_loop() {
   fi
 }
 
-# Pi defaults to the openai provider, GPT-6 Astra, and xhigh thinking.
+PRIMARY_ARGS="--provider claude-bridge --model claude-opus-5-5 --thinking xhigh"
+FALLBACK_ARGS="--provider openai --model gpt-6-astra --thinking xhigh"
+
+# Pi defaults to Claude Opus 5.5 through the Claude bridge with xhigh thinking.
 project="$(new_project defaults)"
-bin="$(new_fake_pi defaults 'echo "ARGS: $*"; echo "Loop complete: defaults checked"')"
+bin="$(new_fake_pi defaults 'echo "ARGS: ${*:1:6}"; echo "Loop complete: defaults checked"')"
 state="$TMP_ROOT/defaults/count"
 output="$TMP_ROOT/defaults/output.log"
 run_loop "$project" "$bin" "$state" "$output" 1 || fail "defaults case should exit 0"
-assert_contains "$output" "--provider openai --model gpt-6-astra --thinking xhigh"
+assert_contains "$output" "$PRIMARY_ARGS"
+
+# A provider interruption on Opus switches the remaining iterations to GPT-6 Astra.
+project="$(new_project fallback_transport)"
+bin="$(new_fake_pi fallback_transport 'echo "ARGS: ${*:1:6}"; if [[ "$count" -eq 1 ]]; then echo "fetch failed"; else echo "Loop complete: recovered on fallback"; fi')"
+state="$TMP_ROOT/fallback_transport/count"
+output="$TMP_ROOT/fallback_transport/output.log"
+run_loop "$project" "$bin" "$state" "$output" --provider-error-streak 3 3 || fail "fallback transport case should exit 0"
+[[ "$(cat "$state")" == "2" ]] || fail "fallback transport case should invoke pi exactly twice"
+assert_contains "$output" "Switching Pi to fallback model openai/gpt-6-astra"
+[[ "$(grep -c -- "$PRIMARY_ARGS" "$output")" == "1" ]] || fail "primary model should run once"
+[[ "$(grep -c -- "$FALLBACK_ARGS" "$output")" == "1" ]] || fail "fallback model should run once"
+
+# A rate limit on Opus also switches to GPT-6 Astra.
+project="$(new_project fallback_rate_limit)"
+bin="$(new_fake_pi fallback_rate_limit 'echo "ARGS: ${*:1:6}"; if [[ "$count" -eq 1 ]]; then echo "Claude rate limit (five_hour): usage limit reached"; else echo "Loop complete: recovered on fallback"; fi')"
+state="$TMP_ROOT/fallback_rate_limit/count"
+output="$TMP_ROOT/fallback_rate_limit/output.log"
+run_loop "$project" "$bin" "$state" "$output" 3 || fail "fallback rate-limit case should exit 0"
+[[ "$(cat "$state")" == "2" ]] || fail "fallback rate-limit case should invoke pi exactly twice"
+assert_contains "$output" "Switching Pi to fallback model openai/gpt-6-astra"
+assert_contains "$output" "$FALLBACK_ARGS"
+
+# An empty fallback disables switching.
+project="$(new_project no_fallback)"
+bin="$(new_fake_pi no_fallback 'echo "ARGS: ${*:1:6}"; if [[ "$count" -eq 1 ]]; then echo "fetch failed"; else echo "Loop complete: recovered"; fi')"
+state="$TMP_ROOT/no_fallback/count"
+output="$TMP_ROOT/no_fallback/output.log"
+LOOP_PI_FALLBACK_MODEL="" run_loop "$project" "$bin" "$state" "$output" --provider-error-streak 3 3 || fail "no-fallback case should exit 0"
+[[ "$(grep -c -- "$PRIMARY_ARGS" "$output")" == "2" ]] || fail "without a fallback, both attempts should use the primary model"
 
 # openai-responses transport failures are retried like openai-codex ones.
 project="$(new_project openai_transport)"

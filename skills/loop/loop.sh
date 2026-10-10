@@ -20,9 +20,12 @@ PROVIDER_RETRY_DELAY_SECONDS="${LOOP_PROVIDER_RETRY_DELAY_SECONDS:-5}"
 AGENT=""
 AGENT_FILE=""
 AGENT_MODEL=""
-PI_PROVIDER="${LOOP_PI_PROVIDER:-openai}"
-PI_MODEL="${LOOP_PI_MODEL:-gpt-6-astra}"
+PI_PROVIDER="${LOOP_PI_PROVIDER:-claude-bridge}"
+PI_MODEL="${LOOP_PI_MODEL:-claude-opus-5-5}"
 PI_THINKING="${LOOP_PI_THINKING:-xhigh}"
+PI_FALLBACK_PROVIDER="${LOOP_PI_FALLBACK_PROVIDER:-openai}"
+PI_FALLBACK_MODEL="${LOOP_PI_FALLBACK_MODEL-gpt-6-astra}"
+PI_USING_FALLBACK=0
 OPENCODE_MODEL="${LOOP_OPENCODE_MODEL-$PI_MODEL}"
 OPENCODE_VARIANT="${LOOP_OPENCODE_VARIANT-$PI_THINKING}"
 
@@ -73,12 +76,22 @@ validate_non_negative_int() {
 
 is_rate_limit_error_output() {
   local file="$1"
-  grep -Eiq 'rate_limit_error|too[[:space:]]+many[[:space:]]+requests|\bHTTP[[:space:]]*429\b|\b429\b' "$file"
+  grep -Eiq 'rate_limit_error|Claude[[:space:]]+rate[[:space:]]+limit|too[[:space:]]+many[[:space:]]+requests|\bHTTP[[:space:]]*429\b|\b429\b' "$file"
 }
 
 is_provider_transport_error_output() {
   local file="$1"
   grep -Eiq 'provider_transport_failure|WebSocket[^[:cntrl:]]*(idle[[:space:]]+timeout|timed[[:space:]]+out|closed|terminated)|openai(-codex)?-responses[^[:cntrl:]]*(transport|timeout|fetch failed)|^[[:space:]]*(Error:[[:space:]]*)?fetch failed[.!]?[[:space:]]*$' "$file"
+}
+
+# After the first rate limit or provider interruption, run the remaining
+# iterations on the fallback model. Failure streaks keep counting across the switch.
+switch_to_pi_fallback() {
+  [[ "$TOOL" == "pi" && "$PI_USING_FALLBACK" -eq 0 && -n "$PI_FALLBACK_MODEL" ]] || return 0
+  PI_PROVIDER="$PI_FALLBACK_PROVIDER"
+  PI_MODEL="$PI_FALLBACK_MODEL"
+  PI_USING_FALLBACK=1
+  echo "↪ Switching Pi to fallback model $PI_PROVIDER/$PI_MODEL for the remaining iterations." | tee -a "$LOG_FILE"
 }
 
 usage() {
@@ -105,8 +118,11 @@ Options:
   -h, --help               Show this help
 
 Environment overrides:
-  LOOP_PI_PROVIDER         Pi provider (default: openai)
-  LOOP_PI_MODEL            Pi model (default: gpt-6-astra)
+  LOOP_PI_PROVIDER         Pi provider (default: claude-bridge)
+  LOOP_PI_MODEL            Pi model (default: claude-opus-5-5)
+  LOOP_PI_FALLBACK_PROVIDER  Pi fallback provider (default: openai)
+  LOOP_PI_FALLBACK_MODEL   Pi fallback model after a rate limit or provider interruption
+                           (default: gpt-6-astra; empty disables fallback)
   LOOP_PI_THINKING         Pi thinking level (default: xhigh)
   LOOP_OPENCODE_MODEL      OpenCode model (default: same as LOOP_PI_MODEL)
   LOOP_OPENCODE_VARIANT    OpenCode variant/reasoning (default: same as LOOP_PI_THINKING)
@@ -390,7 +406,7 @@ PROMPT="${PROMPT//\{\{TARGET_TASK_LINE\}\}/$TARGET_TASK_LINE}"
 
 TOOL_RUNTIME=""
 if [[ "$TOOL" == "pi" ]]; then
-  TOOL_RUNTIME=" pi_provider=$PI_PROVIDER pi_model=$PI_MODEL pi_thinking=$PI_THINKING"
+  TOOL_RUNTIME=" pi_provider=$PI_PROVIDER pi_model=$PI_MODEL pi_thinking=$PI_THINKING pi_fallback=${PI_FALLBACK_MODEL:+$PI_FALLBACK_PROVIDER/$PI_FALLBACK_MODEL}"
 elif [[ "$TOOL" == "opencode" ]]; then
   TOOL_RUNTIME=" opencode_model=${OPENCODE_MODEL:-none} opencode_variant=${OPENCODE_VARIANT:-none}"
 fi
@@ -518,6 +534,9 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
     echo "- Duration: $DURATION_STR"
     echo "- Tool: $TOOL"
     echo "- Tool exit: $TOOL_EXIT"
+    if [[ "$TOOL" == "pi" ]]; then
+      echo "- Model: $PI_PROVIDER/$PI_MODEL"
+    fi
     if [[ "$PROVIDER_INTERRUPTION" -eq 1 ]]; then
       echo "- Outcome: $INTERRUPTION_OUTCOME"
       echo "- Task classification: skipped"
@@ -543,6 +562,7 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
       rm -f "$TEMP_OUTPUT"
       exit 4
     fi
+    switch_to_pi_fallback
 
     RETRY_DELAY=$((PROVIDER_RETRY_DELAY_SECONDS * PROVIDER_ERROR_STREAK))
     rm -f "$TEMP_OUTPUT"
@@ -611,6 +631,7 @@ for i in $(seq 1 "$MAX_ITERATIONS"); do
   if is_rate_limit_error_output "$TEMP_OUTPUT"; then
     RATE_LIMIT_STREAK=$((RATE_LIMIT_STREAK + 1))
     echo "⚠️  Rate-limit error detected (streak $RATE_LIMIT_STREAK/$RATE_LIMIT_MAX_STREAK)." | tee -a "$LOG_FILE"
+    switch_to_pi_fallback
 
     if [[ "$RATE_LIMIT_STREAK" -ge "$RATE_LIMIT_MAX_STREAK" ]]; then
       rm -f "$TEMP_OUTPUT"
