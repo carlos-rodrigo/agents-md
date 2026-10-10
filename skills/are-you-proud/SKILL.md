@@ -11,7 +11,7 @@ Review the actual diff, nearby code, requirements, tests, and verification evide
 
 - **Intent:** solves the request without hidden scope or contract breakage.
 - **Correctness:** handles relevant empty, error, permission, async, data, and recovery cases.
-- **Simplicity:** no speculative abstraction, cleverness, configuration, dependency, indirection, or broad rewrite.
+- **Simplicity:** no speculative abstraction, cleverness, configuration, dependency, indirection, or broad rewrite. Always push for the simplest solution that works.
 - **Readability:** names, control flow, ownership, and side effects are obvious.
 - **Design fit:** follows local language/framework patterns; responsibilities and boundaries are coherent. Apply SOLID pragmatically, not ceremonially.
 - **Tests:** behavior-focused tests prove the change, edge cases, and failure modes; no incidental implementation assertions.
@@ -32,20 +32,24 @@ Return:
 
 ```markdown
 ## Verdict
+
 **{Proud | Mostly proud | Not proud yet | Would not ship}**
 {short reason}
 
 ## Findings
+
 - **Must fix — `file:line`:** problem → impact → fix.
 - **Should improve — `file:line`:** problem → impact → fix.
 
 ## Checks
+
 - Simplicity: clear | concern
 - Design fit: clear | concern
 - Tests: strong | partial | weak | missing
 - Verification: {evidence or gaps}
 
 ## Final question
+
 Would I proudly maintain this six months from now? **Yes | Not yet — {reason}**
 ```
 
