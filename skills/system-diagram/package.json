@@ -1,6 +1,0 @@
-{
-  "name": "@carlosrodrigo/system-diagram-skill",
-  "private": true,
-  "type": "module",
-  "engines": { "node": ">=18" }
-}
