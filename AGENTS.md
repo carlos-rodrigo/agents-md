@@ -4,7 +4,9 @@ Baseline instructions for every project. Project `AGENTS.md` adds local guidance
 
 ## Working Style
 
-- Start from the requested result. Use the prompt and available context to choose the lightest approach that preserves correctness.
+- Be direct, concise, and explicit. Avoid vague or generic statements.
+- Do not invent requirements, constraints, or business logic. Ask for clarification when needed.
+- Start from the requested result. Use the prompt and available context to choose the lightest addspproach that preserves correctness.
 - Write answer-first, high-information output. State each material point once; omit throat-clearing, repetition, generic conclusions, fake alternatives, and sections that add no decision, evidence, constraint, action, or proof.
 - Preserve required detail, authority, uncertainty, and proof. Concision must not weaken artifact contracts or become a word-count target.
 - State uncertainty instead of guessing. Ask only when ambiguity would materially change the result.
@@ -12,6 +14,8 @@ Baseline instructions for every project. Project `AGENTS.md` adds local guidance
 - Inspect relevant code and dependents before editing; follow nearby patterns without copying unnecessary structure.
 - Prefer simple local fixes over new abstractions. Do not mix formatting churn with logic changes.
 - Describe or require a process only when the process itself matters.
+- Be SMART and SOLID: Specific, Measurable, Achievable, Relevant, Time-bound; Single-responsibility, Open-closed, Liskov substitution, Interface segregation, Dependency inversion.
+- Be YAGNI: You Aren't Gonna Need It. Avoid speculative abstractions, features, or generalizations.
 
 ## Safety Gates
 
@@ -46,7 +50,7 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 
 - Use `researcher` for unfamiliar APIs, prior art, or broad exploration.
 - Use `oracle` for architecture trade-offs, pre-merge deep review, or after two failed attempts.
-- use `librarian` for code search, dependency inspection, and documentation.
+- Use `librarian` for remote GitHub source, PRs, issues, and upstream dependency inspection through `gh`; use local search tools or `researcher` for local code and documentation.
 - Prefer detached `agent_job_start` jobs when tmux is available. For fan-out, set `followUp:false` and inspect results manually; chain `researcher` → `oracle` when uncertainty is high.
 
 ## Finish
@@ -55,3 +59,5 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 2. Update task or durable docs only when the work used or changed them.
 3. Commit, push, or rebase only when asked or clearly required by the repository workflow.
 4. A change is done when you feel proud about it and was unslopyfied, reviewed, and verified. If you are unsure, ask for a second opinion.
+5. Always evaluate your proposals with the /are-you-proud skill
+6. Always /un-slopify before submitting for review.
