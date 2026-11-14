@@ -12,6 +12,7 @@ Baseline instructions for every project. Project `AGENTS.md` adds local guidance
 - State uncertainty instead of guessing. Ask only when ambiguity would materially change the result.
 - Keep one task to one behavior and diffs small, focused, and reversible.
 - Inspect relevant code and dependents before editing; follow nearby patterns without copying unnecessary structure.
+- Write code a human can understand on the first read. Use clear, specific names from the domain, straightforward control flow, and the fewest moving parts needed. Prefer existing patterns over new abstractions. Avoid comments that narrate the code; keep comments that explain non-obvious reasons, constraints, or workarounds. Do not sacrifice correctness for brevity.
 - Prefer simple local fixes over new abstractions. Do not mix formatting churn with logic changes.
 - Describe or require a process only when the process itself matters.
 - Be SMART and SOLID: Specific, Measurable, Achievable, Relevant, Time-bound; Single-responsibility, Open-closed, Liskov substitution, Interface segregation, Dependency inversion.
@@ -42,7 +43,7 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 ## Verification
 
 - Define the observable success signal before changing behavior; prefer TDD when practical.
-- Use `verification_plan` when available, then run the smallest focused check and the applicable repository regression gate. Documentation-only changes require relevant link, command and consistency checks; explain any skipped gates.
+- Run the smallest focused check and the applicable repository regression gate. Documentation-only changes require relevant link, command and consistency checks; explain any skipped gates.
 - Do not mark work done without verification evidence.
 - Match evidence to the claim: report the command or procedure, relevant build/environment, observed result and artifact location. A plan, tool invocation, agent assertion or passing mock is not evidence that the user-visible path works. Performance claims require comparable before/after measurements; missing observations remain explicitly unverified.
 - When the cause is uncertain, identify plausible competing explanations and run checks that distinguish them before changing behavior. Prefer a small reproducible diagnostic or comparison harness over repeated speculative patches; retain useful failure evidence.
@@ -51,6 +52,8 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 
 ## Subagents
 
+- For implementation requests, delegate the authorized task or task set to `manager`. It runs one fresh `builder` at a time, summons `oracle`, routes repairs until no must-fix or should-fix findings remain, verifies evidence, and owns completion and pending-task updates. Do not require the user to trigger each step.
+- A `builder` implements and verifies only its assigned task, creating a brief with `simple-tasks` if missing. It returns evidence and discoveries; it does not summon Oracle, mark work done, or edit pending tasks. Managers and builders must not recursively dispatch another manager.
 - Use `researcher` for unfamiliar APIs, prior art, or broad exploration.
 - Use `oracle` for architecture trade-offs, pre-merge deep review, or after two failed attempts.
 - Use `librarian` for remote GitHub source, PRs, issues, and upstream dependency inspection through `gh`; use local search tools or `researcher` for local code and documentation.

@@ -400,7 +400,7 @@ PROMPT="${PROMPT//\{\{SUMMARY_FILE\}\}/$SUMMARY_FILE}"
 if [[ -n "$TASK_ID" ]]; then
   TARGET_TASK_LINE="Target task: $TASK_ID. Do not execute any other task."
 else
-  TARGET_TASK_LINE="Target task: none. Pick the next ready/open task by dependency order."
+  TARGET_TASK_LINE="Target task: none. Pick the next todo or resumable in-progress task by dependency order."
 fi
 PROMPT="${PROMPT//\{\{TARGET_TASK_LINE\}\}/$TARGET_TASK_LINE}"
 

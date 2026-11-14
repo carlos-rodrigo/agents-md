@@ -1,12 +1,8 @@
 ---
 id: TASK-003
-status: ready
+status: todo
 order: 3
 created: 2026-07-31
-authorized_by: Eval Product Owner
-authorized_at: 2026-07-31
-authorization_basis: "user-request: synthetic next-task eval"
-authorization_fingerprint: sha256:00be01012d49151f5e7515ebbc8d34d340aa2ad52c5723d9812f31067b466932
 ---
 
 # TASK-003 — Execute the next synthetic behavior
@@ -17,7 +13,7 @@ authorization_fingerprint: sha256:00be01012d49151f5e7515ebbc8d34d340aa2ad52c5723
 - Done: Public output includes the next field
 
 ## Context
-- Source anchors: TASK-002#Result
+- Sources: TASK-002#Result
 - Facts / decisions: Preserve relevant completed-task discovery here
 - Depends: TASK-002
 

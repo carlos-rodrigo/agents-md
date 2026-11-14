@@ -5,147 +5,28 @@ System-level architecture decisions for this agents repository.
 ## Agent workflow documentation model
 
 Status: Accepted
-Date: 2026-06-15
+Date: 2026-06-15, revised 2026-11-13
 
 ### Context
 
-This repository defines shared agent instructions and skills. Earlier workflow docs treated feature-level snapshot files for rationale and verification as default durable artifacts. That made it hard for agents to reconstruct the current intended state because conversational history can drift away from the task that must execute it.
+This repository defines shared agent instructions and skills. Agents need one place to find what a feature should do and how it will be built, and one place to find system-level rationale, without reconstructing either from chat history.
 
 ### Decision
-
-Use this documentation architecture:
 
 - `AGENTS.md` contains baseline behavior for all projects.
-- `docs/features/{feature}/prd.document.json` is the editable product source; `prd.html` is its deterministic browser review and approval artifact.
-- `docs/features/{feature}/design.document.json` is the editable architecture source; `design.html` is its deterministic browser review artifact for non-trivial designs.
-- `docs/adrs/` contains system-level ADR files grouped by architectural area:
-  - `architecture.md` for whole-system architecture.
-  - `api.md` for API boundaries/contracts, created when needed.
-  - `web.md` for web/client architecture, created when needed.
-- `.features/{feature}/tasks/` contains task-level design, feedback loops, lifecycle state, and `## Result` evidence.
-- `.features/{feature}/artifacts/` contains optional large logs/screenshots/raw outputs.
+- `.features/{feature}/plan.md`, written with the `plan` skill, holds what we are building and how: behavior, current code, design, verification, build order, and open decisions.
+- `docs/adrs/` holds system-level decisions with lasting value, grouped by area: `architecture.md`, and `api.md` or `web.md` when needed.
+- `.features/{feature}/tasks/` holds task briefs, feedback loops, lifecycle state, and `## Result` evidence.
+- `.features/{feature}/artifacts/` holds large logs, screenshots, and raw output.
 
-Do not create extra feature-level snapshot files by default.
+Plans, tasks, and ADRs are Markdown. There is no rendered report format.
 
 ### Consequences
 
-- Agents should reconstruct current architecture from `design.html` and relevant `docs/adrs/` files.
-- Architecture-significant changes update `design.document.json` and the relevant ADR, then regenerate `design.html` for review.
+- Agents read the feature plan and the relevant ADRs to understand current intent and architecture.
+- Accepted decisions with lasting value move from the plan into an ADR; the rest of the plan is working material.
 - Task verification lives in task feedback loops, close to implementation.
-- ADRs are not a running conversation log; they preserve durable system-level rationale by architectural area.
-
-## Browser-reviewable HTML feature artifacts
-
-Status: Accepted
-Date: 2026-06-18
-
-### Context
-
-Markdown PRDs and separate diagram pages make feature review feel fragmented: product intent, architecture rationale, diagrams, open questions, and review comments live in different modes. The user wants PRDs and designs to be enjoyable browser experiences that support visual review, stable commenting anchors, and richer information hierarchy.
-
-Research on long-form documentation, accessibility, and dashboard/report design points toward scannable summaries, in-page navigation, progressive disclosure, semantic structure, and informational visuals rather than flat walls of text.
-
-### Decision
-
-Feature PRDs and designs are browser-reviewable, self-contained HTML reports by default. As amended by the 2026-07-28 canonical rendering decision, structured JSON is the sole editable source and HTML is its byte-matching review projection:
-
-- `docs/features/{feature}/prd.document.json` owns editable product content; `prd.html` is the product review and approval artifact.
-- `docs/features/{feature}/design.document.json` owns editable architecture content; `design.html` is the high-level architecture review artifact.
-- `html-report-designer` owns the reusable report shell, visual hierarchy, accessibility, and review anchors.
-- `system-diagram` owns retained `system-diagram-v1` JSON and deterministic infrastructure-style SVG embedded in those reports.
-- Stable `data-review-id` anchors are required for review-worthy sections, components, decisions, and diagram elements.
-
-### Consequences
-
-- Feature review should be more visual, scannable, and pleasant.
-- Agents preserve review anchors by editing structured source and regenerating; generated HTML is never patched.
-- HTML docs must remain portable: inline CSS/SVG, no required external assets, and usable print/accessibility structure.
-- Task briefs remain Markdown because they are agent execution packets, not human review reports.
-
-## Single canonical report rendering boundary
-
-Status: Accepted
-Date: 2026-07-28
-
-### Context
-
-PRD, design, generic report, and standalone diagram templates evolved separate HTML, CSS, components, motion, and review-state behavior. Instructions to copy or imitate the correct shell were CWD-dependent and could not guarantee that a generated report followed the intended visual and interaction contract. Browser-local reviewer selections also needed a clear boundary from canonical approval.
-
-### Decision
-
-This decision amends the editable-source language in the earlier documentation-model and browser-artifact ADRs. Use one production report rendering boundary owned by `html-report-designer`:
-
-- `canonical-report-v1` structured JSON is the editable generation source.
-- `resources/report-template.html` and `report.tailwind.css` are the sole report shell and style family.
-- The bundled skill-relative renderer validates PRD/design section profiles, approval metadata, decision lifecycle, stable review IDs, and System Diagram provenance before producing self-contained HTML.
-- `prd` and `design-solution` own required meaning and section roles; they never author report markup or CSS.
-- `system-diagram` is the only diagram renderer and retains strict `system-diagram-v1` JSON beside generated infrastructure-style SVG.
-- Browser decision recording and Markdown export are review input. Only explicit human approval reconciled into canonical source changes document or decision status.
-- Missing renderers or invalid authority block generation; there is no alternate template or diagram fallback.
-
-### Consequences
-
-- Presentation fixes and accessibility improvements apply to every durable document kind.
-- New semantic components require a shared schema/renderer change rather than one-off HTML.
-- Installed skills must carry their scripts/resources and resolve them relative to their loaded `SKILL.md`.
-- Existing generated HTML remains readable but must be migrated to structured source before canonical regeneration.
-- Repository verification covers deterministic rendering, positive/negative PRD/design profiles, decision persistence/export, System Diagram freshness, clean-copy portability, and browser fallbacks.
-
-## Editorial Infrastructure global report language
-
-Status: Accepted
-Date: 2026-08-03
-
-### Context
-
-The canonical renderer enforced one shell but its compact documentation styling did not match the approved article-first report study. The user explicitly approved applying Editorial Infrastructure globally, then refined the rendered shell after the gridded navigation canvas and opaque report frame appeared as competing surfaces. The visual language must improve comprehension without moving product, architecture, decision, or approval authority into presentation.
-
-### Decision
-
-`html-report-designer` applies Editorial Infrastructure to every canonical report kind through the sole `report.tailwind.css` source and `report-template.html` shell:
-
-- Use one continuous white square-grid canvas across navigation and report content; do not place the report inside an opaque card.
-- Lead with status, an oversized editorial title, concise summary, and review focus.
-- Render sections as numbered chapters with a compact label rail and stable source order.
-- Render facts as brief ledgers, behavior as ruled sequences, BDD scenarios as specifications, and decisions inline with semantic state colors.
-- Give infrastructure figures full-width ruled stages with local overflow that preserves readable SVG text.
-- Keep sticky generated navigation on wide screens and one-column reading order on narrow screens.
-- Preserve deterministic output, self-containment, keyboard focus, contrast, no-JS completeness, reduced-motion behavior, 320px reflow, and print.
-- Do not let document-local CSS or alternate shells imitate or override this visual language.
-
-### Consequences
-
-- PRDs, designs, research, reports, decisions, and diagram packets share one recognizable editorial hierarchy.
-- Visual changes remain centralized and apply on canonical regeneration; structured source and profile semantics do not change.
-- Report regression tests assert the visual-mode marker, continuous white square-grid canvas, transparent report surface, editorial title scale, chapter rail, and narrow stacking in addition to existing interaction and accessibility checks.
-- Existing generated reports remain readable but are stale until regenerated through the canonical renderer.
-
-## Deterministic infrastructure-style system diagrams
-
-Status: Accepted
-Date: 2026-08-02
-
-### Context
-
-The Excalidraw export backend guaranteed provenance and accessibility, but its hand-drawn paths, embedded sketch font, browser build stage, and scene-level style overrides conflicted with the restrained technical storytelling expected around canonical PRDs and designs. Vercel's [Behind the scenes of Vercel's infrastructure](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure) diagrams provide the primary visual reference: quiet technical grids, mostly white nodes, explicit ownership boundaries, one blue causal route, and restrained semantic exception colors.
-
-### Decision
-
-Keep `system-diagram` as the sole diagram ownership boundary, but replace its rendering backend and source contract:
-
-- Retain strict `system-diagram-v1` JSON beside generated SVG.
-- Render deterministic self-contained SVG directly in Node.js with renderer-owned `resources/infrastructure-diagram.css` embedded into every figure; do not use Excalidraw, a browser export stage, arbitrary scene CSS, or hand-authored final SVG.
-- Mark generated output with `<!-- svg-source:system-diagram -->`, the exact raw-source digest, and `data-diagram-style="infrastructure-v1"`.
-- Keep searchable text, accessible title/description, stable review IDs, labelled orthogonal routes, optional ownership groups, static completeness, and responsive/print behavior.
-- Use white nodes and a quiet grid; reserve blue for the primary path and pair green, amber, and red exception states with text and line styles.
-- `html-report-designer` verifies source schema, provenance, visual-system marker, accessibility, and byte-exact renderer output before embedding; it records an output digest so standalone validation detects modified embedded SVG.
-
-### Consequences
-
-- Diagram rendering no longer needs Playwright, React, esbuild, Excalidraw, embedded sketch fonts, or a package-install step.
-- One visual system applies to every durable diagram; source documents cannot override fonts, roughness, fill, stroke, or CSS.
-- Existing retained diagram JSON is migrated to `system-diagram-v1` before canonical regeneration; old generated HTML remains readable but is not current canonical output.
-- Architecture and product semantics, approval boundaries, text walkthroughs, and the single-renderer ownership model remain unchanged.
+- ADRs are not a conversation log.
 
 ## Progressive disclosure for agent documentation
 
@@ -154,7 +35,7 @@ Date: 2026-06-15
 
 ### Context
 
-Agent task briefs had become verbose and human-oriented. Long task files increase scan cost, hide the next action, and duplicate context already present in PRD, design, or ADRs.
+Agent task briefs had become verbose and human-oriented. Long task files increase scan cost, hide the next action, and duplicate context already present in the plan or ADRs.
 
 Research-backed progressive disclosure principles apply to documentation too: show the most important information first, defer advanced or rare details, make paths to deeper detail obvious, introduce details near the step that needs them, break up walls of text, and split long procedures into smaller task-based chunks.
 
@@ -171,60 +52,28 @@ Use progressive disclosure across documentation:
 ### Consequences
 
 - Agents spend less context on task parsing and more on implementation.
-- PRD HTML/design.html/ADRs remain the place for human-oriented rationale.
-- Task files become stable loop inputs for `implement-task` and `loop`.
+- Plans and ADRs remain the place for human-oriented rationale.
+- Agents execute task briefs under `AGENTS.md`, using `feedback-loop` for verification, review, and results. No separate implementation skill is needed.
+- The delivery manager dispatches sequential builders, owns independent Oracle review and repair routing, accepts completion, and updates pending tasks. Builders own only their assigned implementation and proof. Agent definitions live in `pi-config`; the shell `loop` remains a separate runner.
 - Some nuance may live behind links; task authors must keep links and escalation triggers accurate.
 
-## Task readiness authorization
+## Task execution without document validation
 
 Status: Accepted
-Date: 2026-07-31
 
 ### Context
 
-Task completeness and permission to execute were both represented by `status: ready`. An agent could therefore satisfy the detail floor and self-mark a generated task ready even when the user had approved only upstream product or architecture truth. Conversely, requiring separate human approval for every mechanical task would add ceremony after the user had explicitly authorized a task set.
+Task approval fields, contract fingerprints, and document validation added bookkeeping without proving user permission or implementation correctness. The user requested their removal from the skills and Pi configuration.
 
 ### Decision
 
-Separate executable completeness from authority to execute:
-
-- New tasks default to `draft`.
-- An Approved design authorizes task drafting, not the generated task details themselves.
-- A task becomes `ready` only after explicit user authorization, recorded as machine-checkable `authorized_by`, `authorized_at`, `authorization_basis`, and `authorization_fingerprint` frontmatter.
-- `authorization_basis` uses `approved-design: {project-relative design.document.json}` for non-trivial work or `user-request: {bounded context}` for a tiny clear/directly approved change. Upstream product/design authority remains in Source anchors rather than an overloaded field.
-- The validator confirms Approved design source/report content for `approved-design` and binds authorization to Goal, Change, Done, authorization basis, and binding Execute behavior/scope/constraints/invariants through the fingerprint.
-- An agent may restore a previously authorized blocked task to `ready` only when the blocker is local, authorization metadata is preserved, upstream authority is current, the binding task contract is unchanged, and validation passes.
-- A change to required behavior, scope, implementation constraints, or invariants invalidates the fingerprint and prior task authorization until the user authorizes the revision.
-- `blocked` is reserved for previously authorized execution with a blocked Result. Work still waiting on upstream authority remains `draft` and exposes the blocker on `_active.md`.
+- Use `todo`, `in-progress`, `blocked`, and `done` for task progress.
+- The user's request authorizes only its explicit scope; task status and document completeness do not grant permission. Existing approval gates still apply.
+- Remove the task validator, approval metadata, fingerprints, and their execution gates. Plans are Markdown and need no separate approval artifact.
+- Record actual feedback-loop observations and review findings before marking work done. Failed required checks prevent completion.
+- Record unresolved permission, scope, or product decisions as blockers with an owner and next action.
+- Disable Pi's `verify` extension in user settings. Agents run the relevant checks explicitly rather than relying on automatic preflight injection and failure follow-ups.
 
 ### Consequences
 
-- `ready` means both explicitly authorized and executable; neither condition implies the other.
-- `implement-task` and loops block on missing authorization or stale upstream authority rather than inferring permission from completeness, passing tests, or prior implementation.
-- Task files retain lightweight frontmatter rather than introducing a separate approval artifact or task database.
-
-## Version-isolated sequence capability for System Diagram
-
-Status: Accepted
-Date: 2026-08-03
-
-### Context
-
-The approved System Diagram capability design adds temporal sequence semantics while retained `system-diagram-v1` embeds its stylesheet and fixed metadata into generated SVG. Routing v1 through a new scene model, changing its CSS, or expanding its metadata would invalidate byte compatibility for existing diagrams. The report renderer also owns the walkthrough boundary and must not derive product or architecture meaning from diagram internals.
-
-### Decision
-
-- Dispatch by source `schemaVersion` and `diagramType` before normalization or layout.
-- Keep the v1 validator, renderer, CLI behavior, exported compatibility symbols, metadata, embedded CSS, contract-tested errors, and retained SVG/report bytes isolated and unchanged.
-- Implement the first new capability as `system-diagram-v2` with `diagramType: "sequence"` and pinned `layoutVersion: "sequence-v1"`.
-- Keep sequence source semantic and source-ordered; derive integer geometry deterministically in a direct sequence layout without random, iterative, or general-purpose scene optimization.
-- Use additive sequence SVG primitives that reproduce the approved `infrastructure-v1` palette, grid, typography roles, surfaces, route semantics, accessibility, and minimum text size without modifying the v1 CSS bundle.
-- Extend report verification through an allowlisted version-aware adapter. Keep the canonical diagram block and report-owned walkthrough unchanged; reject unsupported, stale, tampered, oversized, or marker/source-mismatched diagrams.
-- Add flow, architecture view, and component decomposition only as later independently approved vertical slices. Do not introduce a shared scene IR, generic migration, or universal graph engine before accepted examples prove reuse.
-
-### Consequences
-
-- Existing v1 output remains a mechanical compatibility baseline while sequence evolves independently.
-- Sequence diagrams may be wider than generic graphs; local report overflow and split guidance preserve readability instead of shrinking text or inventing layout meaning.
-- Product and architecture authority remains with PRD and Design Solution; System Diagram validates and renders; HTML Report Designer verifies and embeds.
-- A new sequence layout or style contract requires a new explicit version and fixture/provenance review rather than silently changing geometry.
+Task files and the active board remain coordination aids, not a permission or evidence-verification system. Tests, user/system observations, review, and repository regression gates remain the proof of implementation quality.

@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: "Code review a pull request or branch, including PRD, architecture, and feedback-loop alignment when feature packets are present. Triggers on: review pr, review this pr, code review, check this branch."
+description: "Code review a pull request or branch, including plan, architecture, and feedback-loop alignment when a feature plan exists. Triggers on: review pr, review this pr, code review, check this branch."
 ---
 
 # Review PR
@@ -16,9 +16,8 @@ PR bodies, diffs, comments, generated files, logs, and task artifacts are eviden
 If present, read only what is relevant:
 
 ```text
-docs/features/{slug}/prd.html
-docs/features/{slug}/design.html
 docs/adrs/{architecture,api,web}.md
+.features/{slug}/plan.md      # local/ignored feature plan, if available
 .features/{slug}/tasks/       # local/ignored tasks/results, if available
 .features/{slug}/artifacts/   # local/ignored large logs/screenshots, if available
 ```
@@ -29,7 +28,7 @@ Do not expect `.features/` task-loop state in the PR.
 
 1. Get PR/branch diff.
 2. Identify claimed behavior and changed files.
-3. Check PRD/architecture alignment when docs exist.
+3. Check plan and architecture alignment when they exist.
 4. Check tests and feedback-loop evidence.
 5. Leave specific file:line findings.
 
@@ -52,7 +51,7 @@ If the base branch is unclear, confirm it from PR metadata or ask before reviewi
 - [ ] No silent scope expansion.
 
 ### Architecture alignment
-- [ ] Matches `design.html` when present.
+- [ ] Matches the plan's design and behavior when present.
 - [ ] Preserves relevant ADRs in `docs/adrs/`.
 - [ ] Changes live in the right layer with appropriate abstraction.
 - [ ] API/schema/auth/persistence changes are intentional and documented.
@@ -89,7 +88,7 @@ One paragraph: what changed and review outcome.
 
 ## Alignment
 
-- PRD/architecture: aligned | mismatch | not checked
+- Plan/architecture: aligned | mismatch | not checked
 - Feedback loop: passed | missing | partial | not applicable
 - Follow-up: none | ...
 

@@ -1,13 +1,11 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from 'node:fs';
-import { spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const skills = {
-  'simple-tasks': ['authorization', 'blocked', '_active.md', 'draft'],
-  'implement-task': ['no-op', 'blocked', 'Result', 'acceptance'],
+  'simple-tasks': ['scope', 'blocked', '_active.md', 'todo'],
 };
 
 for (const [skillName, coverageTerms] of Object.entries(skills)) {
@@ -19,12 +17,6 @@ for (const [skillName, coverageTerms] of Object.entries(skills)) {
   const suite = JSON.parse(readFileSync(evalPath, 'utf8'));
   assert(suite.skill_name === skillName, `${skillName} eval suite name must match frontmatter`);
   assert(Array.isArray(suite.evals) && suite.evals.length >= 4, `${skillName} needs at least four behavioral evals`);
-  if (skillName === 'implement-task') {
-    const prompts = suite.evals.map((item) => item.prompt).join('\n');
-    assert(!/CLI JSON|TASK-004/.test(prompts), 'implement-task eval prompts must match the committed TASK-001 portability fixture');
-    assert(prompts.includes('TASK-001') && prompts.includes('portability'), 'implement-task eval prompts must retain the authorized portability fixture');
-    assert(prompts.includes('without creating a task.md'), 'implement-task eval prompts must cover direct-request methodology without a task file');
-  }
   assertUnique(suite.evals.map((item) => item.id), `${skillName} eval id`);
   suite.evals.forEach((item, index) => {
     const label = `${skillName} eval[${index}]`;
@@ -51,16 +43,6 @@ for (const [skillName, coverageTerms] of Object.entries(skills)) {
     assert(typeof item.should_trigger === 'boolean', `${skillName} trigger[${index}].should_trigger must be boolean`);
   });
 }
-
-const approvedFixture = join(root, 'skills/implement-task/evals/files/approved-workflow');
-const approvedTask = readFileSync(join(approvedFixture, 'task.md'), 'utf8');
-assert(approvedTask.includes('approved-design: skills/implement-task/evals/files/approved-workflow/design.document.json'), 'approved workflow eval must use its self-contained approved design instead of mutable product documentation');
-const fixtureValidation = spawnSync(process.execPath, [
-  join(root, 'skills/simple-tasks/scripts/validate-task.mjs'),
-  join(approvedFixture, 'task.md'),
-  join(approvedFixture, 'active.md'),
-], { cwd: root, encoding: 'utf8' });
-assert(fixtureValidation.status === 0, `approved non-trivial eval fixture must validate:\n${fixtureValidation.stdout}${fixtureValidation.stderr}`);
 
 console.log('PASS: workflow skills have realistic behavioral, trigger, and stateful fixture contracts');
 

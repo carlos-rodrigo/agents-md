@@ -6,8 +6,8 @@ Started: 2026-07-31
 - Advance completed work.
 
 ## Progress
-- [ ] TASK-002 — Completed synthetic task (ready)
-- [ ] TASK-003 — Next synthetic task (ready)
+- [ ] TASK-002 — Completed synthetic task (todo)
+- [ ] TASK-003 — Next synthetic task (todo)
 
 ## Current / Next
 - Current: TASK-002

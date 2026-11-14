@@ -1,161 +1,100 @@
 # agents-md
 
-Personal collection of agent skills for AI coding assistants (Pi, Claude Code, Codex, etc.). `AGENTS.md` and `~/.agents/skills` are the canonical source.
+Personal agent instructions and skills for Pi, Claude Code, Codex, and similar coding agents. `AGENTS.md` and the skills in `skills/` are the source; `~/.agents/skills` links to them.
 
-## Workflow direction
-
-Default feature workflow is PRD-first: durable feature docs in `docs/features/`, system-level ADRs in `docs/adrs/`, and task-loop state in ignored `.features/`.
+## Workflow
 
 ```text
-docs/features/{slug}/
-  prd.document.json # editable product source rendered deterministically
-  prd.html          # product review and approval artifact
-  design.document.json # editable architecture source rendered deterministically
-  design.html       # high-level architecture/design review artifact
+plan  →  simple-tasks  →  execute task brief  →  review-pr
+                            (feedback loop + Oracle review)
+                        ↘  loop (runs tasks unattended)
 ```
+
+1. **Plan** (`plan`): agree on what we are building and how: behavior, how the current code works, the design, how we will verify it, the build order, and the decisions you need to make. `are-you-proud` reviews the plan for contradictions and ambiguity.
+2. **Split** (`simple-tasks`): turn the build order into task briefs. Each task has a goal, the files it should touch, scope, and a feedback loop built with `feedback-loop`. `are-you-proud` reviews the task set against the plan.
+3. **Delegate to `manager`:** it dispatches one fresh `builder` per task, checks its proof, and summons Oracle. It routes repairs until a review has no must-fix or should-fix findings, then accepts completion and updates pending tasks. The builder implements and runs the task's feedback loop; it does not coordinate reviews or mark work done.
+4. **Run unattended** (`loop`, optional): execute tasks one per iteration in the background.
+
+Say “Implement TASK-003” or “Implement the remaining tasks for this feature.” Shared `AGENTS.md` routes implementation to `manager`; you do not trigger review and repair separately. For a request without a task brief, the builder creates one. Explicit small inline work can still skip task artifacts and use `feedback-loop` directly.
+
+`manager` and `builder` are agent definitions in `pi-config`, not skills. They inherit the caller's model. The current launcher uses fresh contexts for repair calls too, handing off through task Results and Oracle findings. The shell `loop` remains a separate runner; it has not been replaced by this manager.
+
+## Where things live
 
 ```text
-docs/adrs/
-  architecture.md   # whole-system architecture decisions
-  api.md            # API decisions, created when needed
-  web.md            # web/client decisions, created when needed
+AGENTS.md                         # baseline rules for every project
+docs/adrs/                        # lasting system decisions: architecture.md, api.md, web.md
+.features/{feature}/plan.md       # the feature plan (gitignored working material)
+.features/{feature}/tasks/        # task briefs, _active.md board, results
+.features/{feature}/artifacts/    # screenshots, logs, scripts, raw output
 ```
 
-```text
-.features/{slug}/   # gitignored task-loop state
-  tasks/            # optional task briefs with feedback loops and results
-  artifacts/        # optional large logs/screenshots/raw outputs
-```
-
-Classic `design.md` and extra feature-level snapshot docs are compatibility artifacts, not the default.
-
-This setup intentionally avoids MCP-specific workflows. Prefer local files, built-in harness tools, and explicit user approval for external services.
-
-## Context discipline
-
-Compaction/handoff is runtime state, not another durable artifact. When context gets large or work moves to a fresh session, carry forward only:
-
-- goal and current status,
-- architecture/constraints to preserve,
-- files read or changed,
-- feedback-loop evidence run or still missing,
-- blockers and next action.
-
-Durable docs capture product requirements, current architecture, and ADR-worthy rationale; task feedback loops and `## Result` sections capture task-local evidence.
+Plans, tasks, and ADRs are Markdown. Accepted decisions with lasting value move from the plan into an ADR.
 
 ## Skills
 
-### Planning / Product
+### Planning and delivery
 
-| Skill | Description |
-|-------|-------------|
-| **prd** ★ | Create/update feature `prd.html` reports with why, what, scope, BDD requirements, and acceptance criteria |
-| **design-solution** ★ | Create/update design source plus rendered `design.html`, with system ADRs when needed |
-| **html-report-designer** | Create enjoyable, accessible, self-contained HTML reports for PRDs, designs, diagrams, and decision packets |
-| **feedback-loop** | Define task-level feedback loops and task-local results |
-| **system-diagram** | Create retained structured diagram JSON and clean, accessible, self-contained infrastructure SVGs |
+| Skill | Use |
+|---|---|
+| **plan** | Plan a feature: what, why, how, verification, build order, open decisions |
+| **simple-tasks** | Create and track task briefs and the `_active.md` board |
+| **feedback-loop** | Build the checks that prove a task works, and the Oracle review rounds |
+| **loop** | Run tasks unattended, one per iteration |
+| **are-you-proud** | Review code, plans, and tasks for correctness, contradictions, ambiguity, and simplicity |
+| **review-pr** | Review a pull request or branch against its plan and evidence |
 
-### Development
+### Architecture and cleanup
 
-| Skill | Description |
-|-------|-------------|
-| **implement-task** | Execute one approved `.features` task brief |
-| **loop** | Autonomous execution loop over ready `.features` task briefs |
-| **simple-tasks** | Manage ignored `.features` task loop state |
-| **review-pr** | Code review plus PRD, architecture, and feedback-loop alignment when feature packets exist |
-
-### Architecture
-
-| Skill | Description |
-|-------|-------------|
-| **improve-architecture** ★ | Find refactoring opportunities, focus on deep modules |
-
-### Utilities
-
-| Skill | Description |
-|-------|-------------|
-| **doc-briefing** | Summarize any document into 5 key bullets |
-| **un-slopify** | Tighten existing artifacts without losing decisions, evidence, constraints, uncertainty, or proof |
-| **audio-briefing** | Generate audio summaries |
-| **tmux** | Manage background processes with tmux |
+| Skill | Use |
+|---|---|
+| **improve-architecture** ★ | Find refactors toward deeper, more testable modules |
+| **code-un-slopify** | Simplify generated code without changing behavior |
+| **un-slopify** | Tighten prose without losing decisions, evidence, or constraints |
 
 ### Frontend
 
-| Skill | Description |
-|-------|-------------|
-| **frontend-design** | Create distinctive production-grade frontend interfaces |
-| **vercel-react-best-practices** | React/Next.js patterns from Vercel |
-| **web-design-guidelines** | Web interface design guidelines |
+| Skill | Use |
+|---|---|
+| **vercel-react-best-practices** | React and Next.js performance patterns |
+| **web-design-guidelines** | Review UI for guidelines, accessibility, and UX |
 
-## Installation / compatibility
+### Utilities
 
-Use this repo as the canonical shared skill location:
+| Skill | Use |
+|---|---|
+| **doc-briefing** | Summarize a document |
+| **tmux** | Run and inspect background processes |
+
+## Install
+
+Link each skill into the shared skill directory:
 
 ```bash
-# Pi / shared agent skill location
-cp -r skills/* ~/.agents/skills/
-
-# The System Diagram renderer is dependency-free and needs no install step.
+for skill in skills/*/; do ln -sfn "$PWD/${skill%/}" ~/.agents/skills/; done
 ```
 
-For retained diagrams from the former Excalidraw backend, follow `skills/system-diagram/references/migrating-from-excalidraw.md` before regeneration.
+For Claude Code, link or copy the skills into `~/.claude/skills/` and, optionally, `ln -s AGENTS.md CLAUDE.md`.
 
-For Claude Code, either copy skills or symlink/import from this repo:
-
-```bash
-cp -r skills/* ~/.claude/skills/
-# optional: make Claude read the same baseline
-ln -s AGENTS.md CLAUDE.md
-```
-
-## Evals and validation
-
-Harness evals live under `evals/`. They test agent behavior and model fit, especially when changing instructions or trying a new model.
+## Tests and evals
 
 ```bash
+npm test                                                           # skill contract checks
 python3 scripts/evals/run_style_eval.py evals/style/minimal-code-style.json
 ```
 
-All durable PRDs, designs, reports, decisions, research briefs, and diagram packets render through one canonical report template. Render and validate with the bundled skill-relative scripts:
+Eval definitions live in `evals/` and in each skill's `evals/` folder. Keep raw run notes under `.features/evals/`.
 
-```bash
-node ~/.agents/skills/html-report-designer/scripts/render-canonical-report.mjs \
-  docs/features/<feature>/design.document.json \
-  docs/features/<feature>/design.html
-node ~/.agents/skills/html-report-designer/scripts/validate-html-report.mjs \
-  docs/features/<feature>/design.html
-```
+## Principles
 
-Focused checks (run the relevant one while iterating):
-
-```bash
-npm run test:reports
-npm run test:skills
-npm run test:diagram
-```
-
-Eval definitions are durable. Raw run notes/logs should stay under ignored `.features/evals/` when needed.
-
-## Rename policy
-
-Some skill names are kept for muscle memory (`prd`, `design-solution`, `implement-task`) and now follow the PRD-first workflow. Add renamed aliases later only if usage proves the old names are confusing.
+- **Plan before building non-trivial work.** You own product behavior, scope, and trade-offs; the plan lists the decisions that are yours.
+- **Proof, not paperwork.** A task is done when its checks show the behavior works, not when its document looks complete.
+- **Iterate until proud.** Review rounds repeat until no must-fix or should-fix findings remain; questions only you can answer become decisions, not findings.
+- **Lightest durable artifact.** Write an ADR only for decisions with lasting value; plans and tasks are working material.
 
 ## Credits
 
-Skills marked with ★ are adapted from [mattpocock/skills](https://github.com/mattpocock/skills):
-- `improve-architecture` — deep modules focus
-- `prd` and `design-solution` — vertical slices/tracer bullets approach
-
-## Philosophy
-
-- **PRD before execution** — user owns product/system rules, tradeoffs, scope, and acceptance behavior
-- **Progressive disclosure** — essential facts first; links and optional sections for detail
-- **Agent-first tasks** — task briefs use bullets, paths, commands, expected results, and escalation triggers
-- **Agent owns mechanics** — implementation details, tests, and reports are agent-owned unless they alter product intent or architecture
-- **Lightest durable artifact** — write docs when they preserve requirements, current architecture, ADR-worthy rationale, or reusable understanding
-- **Task-loop state is disposable** — tasks and large artifacts live under ignored `.features`; durable architecture/rationale stays in docs
-- **Task briefs are optional** — use them for delegation/splitting, not for every small change
-- **Evidence is part of done** — task `## Result` sections record feedback-loop evidence, not just summaries
+Skills marked ★ are adapted from [mattpocock/skills](https://github.com/mattpocock/skills).
 
 ## License
 

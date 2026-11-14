@@ -3,10 +3,6 @@ id: TASK-002
 status: done
 order: 2
 created: 2026-07-31
-authorized_by: Eval Product Owner
-authorized_at: 2026-07-31
-authorization_basis: "user-request: synthetic completed-task eval"
-authorization_fingerprint: sha256:07cbf5420b2dee3580a190fd2daa37462ead3da8b3db8e37d60aaf7531a2a1ce
 ---
 
 # TASK-002 — Complete the synthetic behavior
@@ -17,7 +13,7 @@ authorization_fingerprint: sha256:07cbf5420b2dee3580a190fd2daa37462ead3da8b3db8e
 - Done: Public synthetic output is present
 
 ## Context
-- Source anchors: approved-design.document.json
+- Sources: approved-plan.md#Build order
 - Facts / decisions: The exact task was authorized
 - Depends: none
 

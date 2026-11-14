@@ -3,35 +3,35 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Create ready implementation tasks from the explicitly Approved import design. I authorize the resulting tasks for execution. Preserve AC-004, the retry-state seam, rollback invariant, and ADR links.",
-      "expected_output": "Small authorized ready task briefs and an _active.md board that trace to the Approved design without inventing behavior.",
-      "files": ["evals/files/approved-design.document.json", "evals/files/approved-design.html"],
+      "prompt": "Create implementation tasks from the approved recovery plan. I authorize them for execution. Preserve AC-004, the retry-state seam, the rollback invariant, and the ADR link.",
+      "expected_output": "Small todo task briefs with feedback loops and an _active.md board that trace to the plan without inventing behavior, reviewed with are-you-proud.",
+      "files": ["evals/files/approved-plan.md"],
       "expectations": [
-        "Each ready task records machine-checkable authorization and direct source anchors.",
+        "Each task records direct source anchors and stays within the user-authorized scope.",
         "Tasks are split by observable vertical behavior rather than package or layer.",
         "The active board and dependencies identify one executable next task."
       ]
     },
     {
       "id": 2,
-      "prompt": "Split the Approved recovery design into tasks, but do not authorize implementation yet. I want to review the task boundaries first.",
-      "expected_output": "Complete draft task briefs rather than ready tasks, with no implicit authorization.",
-      "files": ["evals/files/approved-design.document.json", "evals/files/approved-design.html"],
+      "prompt": "Split the approved recovery plan into tasks, but do not authorize implementation yet. I want to review the task boundaries first.",
+      "expected_output": "Task briefs marked blocked for user review, with no implicit permission to execute.",
+      "files": ["evals/files/approved-plan.md"],
       "expectations": [
-        "Every new task remains draft despite being executable in detail.",
-        "The approved design is linked as authority without treating it as task authorization.",
+        "Tasks remain blocked pending the user's review of scope and boundaries.",
+        "The plan is linked without treating it as permission to execute the proposed tasks.",
         "The board reports review as the next action rather than executable work."
       ]
     },
     {
       "id": 3,
-      "prompt": "Create a task to implement calendar event deletion. The design is Draft and the PRD still has an open decision about whether teenagers may delete shared events.",
-      "expected_output": "A draft task-planning result that names the upstream product/design blocker instead of creating ready or blocked implementation work.",
-      "files": ["evals/files/review-design.document.json", "evals/files/review-design.html"],
+      "prompt": "Create a task to implement calendar event deletion. The plan is a draft and still has an open decision about whether teenagers may delete shared events.",
+      "expected_output": "A blocked task-planning result that names the unresolved product decision and its owner without inventing permission behavior.",
+      "files": ["evals/files/draft-plan.md"],
       "expectations": [
-        "No task is marked ready.",
+        "No implementation starts before the permission decision is resolved.",
         "The unresolved product permission is not invented in Facts or Required behavior.",
-        "The blocker and authority path are visible on the active board."
+        "The open decision and its owner are visible on the active board."
       ]
     },
     {

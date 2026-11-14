@@ -86,8 +86,8 @@ Do not flag content merely because it is long. Keep necessary evidence, exceptio
 ## Artifact profiles
 
 - **General prose:** preserve claims, sources, scope, and appropriate voice; remove filler, inflated importance, vague attribution, repeated conclusions, and stock sections.
-- **PRD:** preserve approved scope, actors, behavior, BDD scenarios, requirement IDs, acceptance, authority labels, open questions, and boundaries. Defer product changes to `prd`.
-- **Design / ADR:** preserve ownership, causal path, contracts, state, decisions, credible alternatives, trade-offs, failure/recovery, and constraints. Defer architecture decisions to `design-solution`.
+- **PRD:** preserve approved scope, actors, behavior, BDD scenarios, requirement IDs, acceptance, authority labels, open questions, and boundaries. Defer product changes to `plan`.
+- **Design / ADR:** preserve ownership, causal path, contracts, state, decisions, credible alternatives, trade-offs, failure/recovery, and constraints. Defer architecture decisions to `plan`.
 - **Plan / task:** preserve goal, change, done state, scope, dependencies, authorization, invariants, expected observations, blockers, and proof. Remove phase theater and commands without expected results.
 - **Review:** preserve `file:line`, severity, impact, evidence, recommendation, and uncertainty. Remove praise sandwiches, generic checklists, and diff narration.
 - **Code comments:** keep non-obvious rationale, invariants, compatibility, and hazards. Remove comments that only translate syntax into prose.
