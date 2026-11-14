@@ -69,7 +69,7 @@ loop_job_status({ "jobId": "...", "cwd": "/Users/carlosrodrigo/Developer/gromati
 loop_job_cancel({ "jobId": "...", "cwd": "/Users/carlosrodrigo/Developer/gromatik", "killWindow": true })
 ```
 
-Fallback when `loop_job_start` is unavailable: use the tmux skill to create a detached window and run `loop.sh` directly, then monitor `.features/{feature}/artifacts/loop/loop.log`.
+Fallback when `loop_job_start` is unavailable: create a detached tmux window and run `loop.sh` directly, then monitor `.features/{feature}/artifacts/loop/loop.log`.
 
 ## Steps
 

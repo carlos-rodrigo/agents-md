@@ -52,20 +52,6 @@ Plans, tasks, and ADRs are Markdown. Accepted decisions with lasting value move 
 | **code-un-slopify** | Simplify generated code without changing behavior |
 | **un-slopify** | Tighten prose without losing decisions, evidence, or constraints |
 
-### Frontend
-
-| Skill | Use |
-|---|---|
-| **vercel-react-best-practices** | React and Next.js performance patterns |
-| **web-design-guidelines** | Review UI for guidelines, accessibility, and UX |
-
-### Utilities
-
-| Skill | Use |
-|---|---|
-| **doc-briefing** | Summarize a document |
-| **tmux** | Run and inspect background processes |
-
 ## Install
 
 Link each skill into the shared skill directory:
