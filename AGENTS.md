@@ -57,13 +57,11 @@ Get approval before schema, API-contract, auth/financial, infrastructure, major-
 - Use `researcher` for unfamiliar APIs, prior art, or broad exploration.
 - Use `oracle` for architecture trade-offs, pre-merge deep review, or after two failed attempts.
 - Use `librarian` for remote GitHub source, PRs, issues, and upstream dependency inspection through `gh`; use local search tools or `researcher` for local code and documentation.
-- Prefer detached `agent_job_start` jobs when tmux is available. For fan-out, set `followUp:false` and inspect results manually; chain `researcher` → `oracle` when uncertainty is high.
+- Use detached `agent_job_start` for research or reviews you don't need to wait on. For fan-out, set `followUp:false` and poll the results; chain `researcher` → `oracle` when uncertainty is high.
 
 ## Finish
 
 1. Run relevant quality gates and report the commands and results.
 2. Update task or durable docs only when the work used or changed them.
 3. Commit, push, or rebase only when asked or clearly required by the repository workflow.
-4. Finish only after the change has been reviewed and verified. If uncertainty remains, ask for a second opinion.
-5. Always evaluate your proposals with the /are-you-proud skill
-6. Always /un-slopify before submitting for review.
+4. Finish only after the change has been reviewed and verified: manager-led work through its Oracle rounds; other changes, plans, and proposals with `are-you-proud`. If uncertainty remains, ask for a second opinion.

@@ -17,14 +17,14 @@ for (const name of skillNames) {
     if (/^(?:https?:|mailto:|#)/.test(link)) continue;
     assert(existsSync(resolve(dirname(file), link.split('#')[0])), `${name}: missing linked resource ${link}`);
   }
-  for (const removed of ['prd', 'design-solution', 'html-report-designer', 'system-diagram', 'what-we-are-going-to-build', 'how-we-are-going-to-build-it']) {
+  for (const removed of ['prd', 'design-solution', 'html-report-designer', 'system-diagram', 'what-we-are-going-to-build', 'how-we-are-going-to-build-it', 'implement-task', 'loop', 'improve-architecture', 'code-un-slopify', 'un-slopify', 'review-pr']) {
     assert(!content.includes('`' + removed + '`'), `${name}: references removed skill ${removed}`);
   }
   assert(!/document\.json|canonical-report|prd\.html|design\.html/.test(content), `${name}: references the removed JSON/HTML report flow`);
 }
 
-assert(!skill('code-un-slopify').includes('both reviews'), 'cleanup must not unconditionally restart both reviews');
-assert(skill('code-un-slopify').includes('at most two'), 'cleanup review must be bounded');
-assert(skill('code-un-slopify').includes('Optional taste suggestions do not block'), 'taste must not block cleanup');
+for (const removed of ['improve-architecture', 'code-un-slopify', 'un-slopify', 'review-pr']) {
+  assert(!existsSync(join(skillsDir, removed)), `${removed} skill must be removed`);
+}
 
-console.log('PASS: skill frontmatter, linked resources, skill references, and bounded cleanup reviews');
+console.log('PASS: skill frontmatter, linked resources, and no references to removed skills');

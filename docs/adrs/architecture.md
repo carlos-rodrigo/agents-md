@@ -54,7 +54,7 @@ Use progressive disclosure across documentation:
 - Agents spend less context on task parsing and more on implementation.
 - Plans and ADRs remain the place for human-oriented rationale.
 - Agents execute task briefs under `AGENTS.md`, using `feedback-loop` for verification, review, and results. No separate implementation skill is needed.
-- The delivery manager dispatches sequential builders, owns independent Oracle review and repair routing, accepts completion, and updates pending tasks. Builders own only their assigned implementation and proof. Agent definitions live in `pi-config`; the shell `loop` remains a separate runner.
+- The delivery manager dispatches sequential builders, owns independent Oracle review and repair routing, accepts completion, and updates pending tasks. Builders own only their assigned implementation and proof. Agent definitions live in `pi-config`. The manager replaced the shell `loop` runner, which was deleted.
 - Some nuance may live behind links; task authors must keep links and escalation triggers accurate.
 
 ## Task execution without document validation

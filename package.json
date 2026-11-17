@@ -6,7 +6,7 @@
   "license": "MIT",
   "engines": { "node": ">=18" },
   "scripts": {
-    "test:skills": "node scripts/test-skill-audit-regressions.mjs && node scripts/test-un-slopify-contract.mjs && node scripts/test-workflow-skill-evals.mjs && node scripts/test-simple-tasks-skill.mjs",
+    "test:skills": "node scripts/test-skill-audit-regressions.mjs && node scripts/test-workflow-skill-evals.mjs && node scripts/test-simple-tasks-skill.mjs",
     "test": "npm run test:skills"
   }
 }

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Check whether an agent-produced patch follows the baseline code-style expectations from `AGENTS.md` and `review-pr`:
+Check whether an agent-produced patch follows the baseline code-style expectations from `AGENTS.md`:
 
 - small, focused, reversible diff,
 - no unrelated formatting churn,
