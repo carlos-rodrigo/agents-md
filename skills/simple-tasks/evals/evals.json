@@ -5,7 +5,9 @@
       "id": 1,
       "prompt": "Create implementation tasks from the approved recovery plan. I authorize them for execution. Preserve AC-004, the retry-state seam, the rollback invariant, and the ADR link.",
       "expected_output": "Small todo task briefs with feedback loops and an _active.md board that trace to the plan without inventing behavior, reviewed with are-you-proud.",
-      "files": ["evals/files/approved-plan.md"],
+      "files": [
+        "evals/files/approved-plan.md"
+      ],
       "expectations": [
         "Each task records direct source anchors and stays within the user-authorized scope.",
         "Tasks are split by observable vertical behavior rather than package or layer.",
@@ -16,7 +18,9 @@
       "id": 2,
       "prompt": "Split the approved recovery plan into tasks, but do not authorize implementation yet. I want to review the task boundaries first.",
       "expected_output": "Task briefs marked blocked for user review, with no implicit permission to execute.",
-      "files": ["evals/files/approved-plan.md"],
+      "files": [
+        "evals/files/approved-plan.md"
+      ],
       "expectations": [
         "Tasks remain blocked pending the user's review of scope and boundaries.",
         "The plan is linked without treating it as permission to execute the proposed tasks.",
@@ -27,7 +31,9 @@
       "id": 3,
       "prompt": "Create a task to implement calendar event deletion. The plan is a draft and still has an open decision about whether teenagers may delete shared events.",
       "expected_output": "A blocked task-planning result that names the unresolved product decision and its owner without inventing permission behavior.",
-      "files": ["evals/files/draft-plan.md"],
+      "files": [
+        "evals/files/draft-plan.md"
+      ],
       "expectations": [
         "No implementation starts before the permission decision is resolved.",
         "The unresolved product permission is not invented in Facts or Required behavior.",
@@ -38,11 +44,28 @@
       "id": 4,
       "prompt": "TASK-002 is complete and its Result contains passing fast, user, edge, gate, and review evidence. Update the task status and _active.md, then point to TASK-003 without creating a separate handoff file.",
       "expected_output": "A consistent done task and active board update with next-task context written directly into TASK-003 if needed.",
-      "files": ["evals/files/completed-task.md", "evals/files/active-before.md", "evals/files/next-task.md"],
+      "files": [
+        "evals/files/completed-task.md",
+        "evals/files/active-before.md",
+        "evals/files/next-task.md"
+      ],
       "expectations": [
         "TASK-002 is checked off only after its Result receipt is complete.",
         "The active board current/next fields agree with task frontmatter and dependencies.",
         "No feature-level result or continuation artifact is created."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Create a task to fix the intermittent sync test failure in the report. I authorize the fix, but nobody knows the cause yet.",
+      "expected_output": "A todo task whose feedback loop starts with Diagnose, Baseline, and Harness steps instead of a guessed cause or reproduction, with fixed defined by the report's Done. Reviewed with are-you-proud.",
+      "files": [
+        "evals/files/flaky-sync-report.md"
+      ],
+      "expectations": [
+        "The feedback loop has Diagnose, Baseline, and Harness lines and does not state a guessed cause or a guessed Repro command.",
+        "Fixed is taken from the report's Done (cause fixed, not masked, under CI-like load), not an invented threshold, and a longer wait or retry is not accepted as the fix.",
+        "The task stays todo and ready, and says to stop with a blocker if the cause lies outside the sync scope or needs a user decision."
       ]
     }
   ]

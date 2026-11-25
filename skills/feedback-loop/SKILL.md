@@ -1,6 +1,6 @@
 ---
 name: feedback-loop
-description: "Build the verification loop a task's implementer runs to prove the work does what it should: setup, failing reproduction, tests, AI evals, browser workflows with agent-browser, API calls, scripted routines, expected observations, evidence, and Oracle review rounds. Use when writing or refining a task's Feedback loop, or when asked how to verify a change. Product behavior belongs in the `plan`; this skill covers implementation proof. Triggers on: feedback loop, how to verify, how to test, verification plan, define testing, task checks."
+description: "Build the verification loop a task's implementer runs to prove the work does what it should: setup, failing reproduction, tests, AI evals, browser workflows with agent-browser, API calls, scripted routines, expected observations, evidence, and Oracle review rounds; and, when the checks cannot be written yet, the diagnosis, proof context, and harness that make them possible. Use when writing or refining a task's Feedback loop, or when asked how to verify a change. Product behavior belongs in the `plan`; this skill covers implementation proof. Triggers on: feedback loop, how to verify, how to test, verification plan, define testing, task checks, diagnose, flaky, cannot reproduce."
 ---
 
 # Feedback Loop
@@ -45,9 +45,23 @@ An AI check passes only when every trial of every case passes. A case that passe
 
 When further confirmation arrives only after deploy (production behavior, a metric), add an Outcome line. It is a follow-up outside the required checks and never blocks `done`. If an agreed Done item can only be observed after deploy, it stays a required check: keep the task `blocked` on it unless the user changes the requirement.
 
+## When the loop cannot be written yet
+
+Sometimes the checks cannot be written up front: the cause is unknown, the failure is intermittent, or nothing can drive the behavior repeatably. Then build the loop first, in three stages, and write in the task what each stage must find out. Do not guess the cause or the checks.
+
+1. **Diagnose.** List the plausible explanations and run experiments that tell them apart: capture traces, replay real inputs, bisect. Do not start the fix yet. Instrument a scratch copy or worktree so diagnostic code never enters the change. The stage ends with one cause confirmed by evidence, or a blocker. Stop when two experiments in a row add no new information. Failing to reproduce is not a no-op: record a no-op only with evidence of what already fixed it.
+2. **Baseline.** Collect the fixtures, recorded inputs, and environment the checks need. "Fixed" comes from the task's Done; if Done does not define it, ask the user rather than invent a threshold. The observation must show the diagnosed cause is gone, not only that the symptom stopped: a retry or a longer timeout can hide a race. If a fixed wait is the cause, wait for the observable condition instead of waiting longer.
+3. **Harness.** Write the tools that make each iteration cheap and repeatable: a script that reproduces the failure on demand or at a measured rate, load or fault injection, a replay fixture, an eval set. It prints the observation. Trust it only after it shows the failure on the base, for the diagnosed reason and often enough that a clean run is conclusive: raise the load or inject faults until the base fails most runs. Record that run on the base as the Baseline.
+
+Then iterate on the fix with the harness. When more than one fix is plausible, run each through the same harness and keep the simplest one that meets the expected observation; record the others and why they lost. Each candidate that misses the observation counts as a repair attempt under Stop. The harness becomes the Repro and Script checks. Keep it under the task's artifacts. Move only a deterministic form into the repository's tests, such as a forced interleaving or a fixed replay; a rate-based harness would be a flaky test.
+
+If the diagnosis changes what the task must do, stop and report a blocker, with the diagnosis as the Result: the cause lies outside the task's scope, the fix needs a product, API, schema, auth, or persistence decision, or the fix is larger than the task. The user owns that decision. In manager-led work, the manager reports the blocker and creates or rescopes tasks only after the user approves.
+
+Skip these stages when the checks can be written directly. A bug with a known reproduction goes straight to Repro.
+
 ## Run it
 
-Run in order: Repro → Test → Eval → Discriminates → Browser/API/Script → Edge → Guard → Gate. After a fix, rerun from the first check that failed or that the fix could affect. Run the Gate last, after the last fix.
+When the loop had to be built, do Diagnose → Baseline → Harness once. Then run in order: Repro → Test → Eval → Discriminates → Browser/API/Script → Edge → Guard → Gate. After a fix, rerun from the first check that failed or that the fix could affect. Run the Gate last, after the last fix.
 
 **Stop** after 3 repair attempts on the same distinct failure, or sooner when the same failure repeats twice with no new information. Each review finding counts as one distinct failure. Also stop for owner decisions, a missing environment or data, unrelated regressions, or out-of-scope product, architecture, API, schema, auth, or persistence work. Stopping produces a `blocked` Result with the owner and next action, never `done`.
 
@@ -73,6 +87,9 @@ The implementer may add checks. Removing or weakening an expected observation ch
 ## Feedback loop
 
 - Setup: {start command, URL, seed data, account/env var by name, cleanup}
+- Diagnose: {hypotheses} → {experiments that separate them}; done when one cause is confirmed with evidence, else blocker
+- Baseline: {measurement} under {conditions}; fixed means {observation from Done}
+- Harness: {what it must reproduce and print}; trusted once it fails on base most runs, for the diagnosed reason
 - Repro: `{command}` on base `{ref}` → {fails for the expected reason} | not applicable: {reason}
 - Test: `{command}` → {expected result}
 - Eval: `{command}` → {cases} × {trials} all pass on `{model}`
@@ -87,7 +104,7 @@ The implementer may add checks. Removing or weakening an expected observation ch
 - Outcome (after deploy, non-blocking): {production signal} → {expected}, checked by {who}
 ```
 
-Delete the lines that don't apply. Always keep Setup, Edge, Gate, and Review. Keep Repro for bugs and new behavior, Eval whenever an AI step changes, Discriminates when the check could pass without the fix, and Guard when the area has a fixed regression set.
+Delete the lines that don't apply. Always keep Setup, Edge, Gate, and Review. Keep Diagnose, Baseline, and Harness when the checks could not be written up front, Repro for bugs and new behavior, Eval whenever an AI step changes, Discriminates when the check could pass without the fix, and Guard when the area has a fixed regression set.
 
 ## Result section
 
@@ -99,6 +116,9 @@ Record what actually happened, not what was planned, so a later reader can compa
 - Status: in-progress (awaiting review) | done | blocked
 - Changed: `{paths}`
 - Contract: every Goal, Done, and binding Execute item met | unmet: {item, owner, reason}
+- Diagnosis: {cause} confirmed by `{evidence path}`; ruled out: {hypothesis → evidence}
+- Baseline: {measurement} under {conditions}: before {value} → after {value}; harness `{path}`
+- Candidates: {fix} → {observation} (one line each); chose {fix} because {reason}
 - Proof: {check} `{command}` @ `{commit}` → {actual observation}; evidence `{path}`  (one line per check)
 - Eval: `{command}` @ `{commit}`, model `{id}` → {passed}/{trials} per case
 - Guard: before {n/N} → after {n/N}

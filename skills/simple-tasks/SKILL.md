@@ -79,7 +79,7 @@ created: YYYY-MM-DD
 {optional: what prevents rediscovery or a likely mistake}
 ```
 
-Optional sections when they earn their place: `## Investigation`, `## Fixtures / setup`, `## Rollback`.
+Optional sections when they earn their place: `## Investigation` (findings known when the task is written; a diagnosis run during the task goes in its Result), `## Fixtures / setup`, `## Rollback`.
 
 Write each task's `## Feedback loop` with the `feedback-loop` skill when you create the task; a task without one is not ready to implement. The implementer adds `## Result` using the same skill. Execute the task brief directly, following `AGENTS.md` and its feedback loop.
 
@@ -89,7 +89,7 @@ A task is ready when a fresh agent could derive the implementation checklist and
 
 - sources open directly, and chat-only decisions are copied into the task;
 - scope, non-goals, and invariants make the stopping point clear;
-- each check names its setup, action, and expected result;
+- each check names its setup, action, and expected result; when the checks cannot be written yet, the feedback loop's Diagnose, Baseline, and Harness steps say what to find out and what will count as fixed; values those steps will measure, such as a run count or load level, are not placeholders;
 - no placeholders, `TBD`, "as needed", or open product decisions remain. Otherwise mark the task `blocked` with the owner and the question.
 
 ## Review the tasks
