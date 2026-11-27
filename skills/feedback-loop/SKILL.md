@@ -23,7 +23,8 @@ It lives in the task file:
    | Behavior | Proof |
    |---|---|
    | Logic, data rules, edge cases | Test: `{command}` |
-   | Pure logic, parser, encoder, or refactor | Test (property or differential): `{command}` checks an invariant (round-trip, ordering, idempotence) over generated inputs, or compares old and new output on the same inputs |
+   | Pure logic, parser, or encoder | Test (property or differential): `{command}` checks an invariant (round-trip, ordering, idempotence) over generated inputs, or compares old and new output on the same inputs |
+   | Behavior-preserving preparation or refactor | Guard: tests written on the base pin current behavior (a differential test can serve), and the same tests pass unchanged after |
    | Prompt, guidance, classifier, or other AI step | Eval: `{command}` over fixed cases, at least 3 trials each, more when the step is flaky |
    | UI workflow | Browser: `agent-browser` steps through the flow and reads the page |
    | HTTP API | API: `curl` with expected status and body fields |
@@ -35,7 +36,7 @@ It lives in the task file:
 5. **Prove the check discriminates** when it could pass without the fix: a weak assertion, an AI check, or a check written after the code. Plant a wrong version and show the check fails on it.
 6. **Make setup explicit.** State how to reach the starting state: start command, URL, seed data, and which test account or environment variable to use (by name, never the secret). State cleanup if the check leaves state behind. Redact fixtures built from production data before committing them.
 7. **Cover one important failure.** Invalid input, missing permission, empty state, or network error. Pick what this change could break.
-8. **Guard what already works** when the area has a fixed regression set (eval cases, replay fixtures, snapshots): record the pass count before and after; no previously passing case may fail.
+8. **Guard what already works** when the area has a fixed regression set (eval cases, replay fixtures, snapshots), or when a preparation or refactor must preserve behavior (write the pinning tests on the base first): record the pass count before and after; no previously passing case may fail.
 9. **End with the regression gate.** The repository's normal test or build command.
 
 Use only the proof types that apply. Write a script when a check takes several steps or will be re-run in every review round. Save it under `.features/{feature}/artifacts/TASK-NNN/`, or under the repository's tests if it has lasting value.
@@ -107,7 +108,7 @@ The implementer may add checks. Removing or weakening an expected observation ch
 - Outcome (after deploy, non-blocking): {production signal} → {expected}, checked by {who}
 ```
 
-Delete the lines that don't apply. Always keep Setup, Edge, Gate, and Review. Keep Diagnose, Baseline, and Harness when the checks could not be written up front, Repro for bugs and new behavior, Eval whenever an AI step changes, Discriminates when the check could pass without the fix, and Guard when the area has a fixed regression set.
+Delete the lines that don't apply. Always keep Setup, Edge, Gate, and Review. Keep Diagnose, Baseline, and Harness when the checks could not be written up front, Repro for bugs and new behavior, Eval whenever an AI step changes, Discriminates when the check could pass without the fix, and Guard when the area has a fixed regression set or the task prepares or refactors code.
 
 ## Result section
 

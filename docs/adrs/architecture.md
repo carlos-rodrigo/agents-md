@@ -14,7 +14,7 @@ This repository defines shared agent instructions and skills. Agents need one pl
 ### Decision
 
 - `AGENTS.md` contains baseline behavior for all projects.
-- `.features/{feature}/plan.md`, written with the `plan` skill, holds what we are building and how: behavior, current code, design, verification, build order, and open decisions.
+- `.features/{feature}/plan.md`, written with the `plan` skill, holds what we are building and how: behavior, current code and whether it is fit for the change, design, verification, build order, and open decisions.
 - `docs/adrs/` holds system-level decisions with lasting value, grouped by area: `architecture.md`, and `api.md` or `web.md` when needed.
 - `.features/{feature}/tasks/` holds task briefs, feedback loops, lifecycle state, and `## Result` evidence.
 - `.features/{feature}/artifacts/` holds large logs, screenshots, and raw output.

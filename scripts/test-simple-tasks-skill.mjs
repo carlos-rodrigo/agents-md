@@ -45,6 +45,12 @@ for (const marker of ['Test (property or differential):', 'at least 3 trials eac
   assert(feedbackLoop.includes(marker), `feedback-loop proof-integrity rule missing ${marker}`);
 }
 assert(areYouProud.includes('No unapproved deletion, skipping, or loosening of tests') && areYouProud.includes('are claims until a rerun or saved artifact confirms them'), 'are-you-proud checks test gaming and unverified claims');
+for (const marker of ['**Judge whether the code is fit for the change.**', '**Prepare:**', '## Fit for the change', 'do not mirror it', 'It is the first slice of the build order', 'Prepare only what makes this change easier', '→ fit | prepare | note', 'open the cited `path:Symbol` and check']) {
+  assert(plan.includes(marker), `plan fit check missing ${marker}`);
+}
+assert(simpleTasks.includes('Check the code is fit for the change before writing `Required implementation`') && simpleTasks.includes('When it is not in an approved plan, it needs the user') && simpleTasks.includes('Never ask the implementer to mirror an unhealthy pattern'), 'tasks apply the fit check and keep preparation scope with the user');
+assert(!/\btid(y|ied)\b|refactor first/i.test(plan + simpleTasks), 'plan and simple-tasks use the single Prepare outcome');
+assert(feedbackLoop.includes('Behavior-preserving preparation or refactor'), 'refactors are proved by unchanged pinned tests');
 assert(simpleTasks.includes('Diagnose, Baseline, and Harness steps say what to find out') && simpleTasks.includes('are not placeholders'), 'tasks needing diagnosis are still ready');
 assert(!/`prd`|loop:gate|nuvo-/.test(feedbackLoop), 'feedback-loop has no references to removed skills or other projects');
 assert(feedbackLoop.includes('foreground `subagent` tool'), 'Oracle review uses a foreground subagent');

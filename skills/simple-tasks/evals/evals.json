@@ -68,6 +68,19 @@
         "The task stays todo and ready, and says to stop with a blocker if the cause lies outside the sync scope or needs a user decision.",
         "After writing, the agent has the Oracle review the task with are-you-proud (or reviews it itself and says so when no Oracle is available), reviews again after every fix until a round has no must-fix or should-fix findings, and reports the verdict, the number of rounds, and the reviewer."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Create a task (no plan exists) so that customers can choose to see cart lines and the invoice total in EUR instead of USD (a fixed rate passed in by the caller is fine). Feature slug: eur-prices. I authorize the task; write the task brief and board only, do not implement.",
+      "expected_output": "One todo feature task whose fit check puts the formatter extraction first, pinned by tests on the base, without a separate preparation task. Reviewed by the Oracle with are-you-proud.",
+      "files": [
+        "evals/files/cart-invoice-repo.md"
+      ],
+      "expectations": [
+        "The extraction of the duplicated formatting (including into a new src/money.js if the design adds it) is the feature task's first `Required implementation` bullet.",
+        "A Guard line pins the current USD output of invoiceTotal and cartLine with tests on the base before any edit.",
+        "There is no separate preparation task, and the task is not blocked over the preparation."
+      ]
     }
   ]
 }

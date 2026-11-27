@@ -32,6 +32,7 @@ Write the shortest complete contract a fresh agent can execute without chat hist
 - Write one `Required behavior` bullet per behavior, including important failure behavior.
 - Separate binding content from navigation. `Required behavior`, `Required implementation`, scope, and invariants are binding. `Files` and `Inspect first` only help the agent find its way; they do not mandate edits.
 - Split only independent behaviors. Never remove a fact the implementer needs to work alone.
+- Check the code is fit for the change before writing `Required implementation`, as the `plan` skill's fit check describes. Preparation the change needs becomes its own task before the feature task, with unchanged behavior as its Done and a Guard line in its feedback loop. When it is not in an approved plan, it needs the user, unless it stays inside files the feature task already changes or adds: then write it as that task's first `Required implementation` bullet, with a Guard line. List notes under `Notes`. Never ask the implementer to mirror an unhealthy pattern.
 
 ## Task shape
 
@@ -102,6 +103,7 @@ After writing tasks or changing their scope, ask the Oracle, with the foreground
 - ambiguous Goal, Done, or scope;
 - plan outcomes no task covers, and tasks that overlap;
 - Done items the feedback loop cannot prove;
+- facts, `Inspect first` anchors, or mirrored patterns that the code does not support, or that copy a problem: open them and check;
 - dependencies in the wrong order.
 
 Iterate until proud, as `are-you-proud` defines: fix every must-fix and should-fix finding, then request another round; a round that led to a fix is never the last. Stop when a round has no must-fix and no should-fix findings. A question only the user can answer becomes a blocker on that task, with the owner and the question; it is not a finding, and it does not delay the review. Report the final verdict, the number of rounds, and the reviewer: the Oracle, or you when it was unavailable.

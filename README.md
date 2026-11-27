@@ -9,7 +9,7 @@ plan  →  simple-tasks  →  manager → builder → Oracle
                             (feedback loop + review until clean)
 ```
 
-1. **Plan** (`plan`): agree on what we are building and how: behavior, how the current code works, the design, how we will verify it, the build order, and the decisions you need to make. The Oracle reviews the plan with `are-you-proud` for contradictions and ambiguity, round after round until clean.
+1. **Plan** (`plan`): agree on what we are building and how: behavior, how the current code works and whether it is fit for the change, the design, how we will verify it, the build order, and the decisions you need to make. The Oracle reviews the plan with `are-you-proud` for contradictions and ambiguity, round after round until clean.
 2. **Split** (`simple-tasks`): turn the build order into task briefs. Each task has a goal, the files it should touch, scope, and a feedback loop built with `feedback-loop`. The Oracle reviews the task set against the plan the same way.
 3. **Delegate to `manager`:** it dispatches one fresh `builder` per task, checks its proof, and summons Oracle. It routes repairs until a review has no must-fix or should-fix findings, then accepts completion and updates pending tasks. The builder implements and runs the task's feedback loop; it does not coordinate reviews or mark work done.
 
