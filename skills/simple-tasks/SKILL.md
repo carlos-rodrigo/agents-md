@@ -7,6 +7,8 @@ description: "Create and manage small project-local task briefs when work needs 
 
 Use a task only when work needs sequencing, delegation, or resumption. Create tasks from the build order in `.features/{feature}/plan.md` (see the `plan` skill), or from the user's request for small work. Store task state under `.features/{feature}/tasks/`; it is working material, not durable documentation.
 
+Writing tasks or changing their scope always ends with an Oracle review that uses the `are-you-proud` skill: follow [Review the tasks](#review-the-tasks) before you report.
+
 ```text
 .features/{feature}/tasks/_active.md    # progress board
 .features/{feature}/tasks/NNN-title.md  # task brief, status, and result
@@ -94,7 +96,7 @@ A task is ready when a fresh agent could derive the implementation checklist and
 
 ## Review the tasks
 
-After writing or changing tasks, review the task set with `are-you-proud` against the plan or request. Look for:
+After writing tasks or changing their scope, ask the Oracle, with the foreground `subagent` tool and agent `oracle`, to review the task set against the plan or request with `are-you-proud`. Pass the task paths, the plan or request, and the previous round's findings. If you have no `subagent` tool or the Oracle is unavailable, read the `are-you-proud` skill and review it yourself, and report that the review was not independent. The review looks for:
 
 - contradictions between tasks, or with the plan;
 - ambiguous Goal, Done, or scope;
@@ -102,7 +104,7 @@ After writing or changing tasks, review the task set with `are-you-proud` agains
 - Done items the feedback loop cannot prove;
 - dependencies in the wrong order.
 
-Iterate until proud, as `are-you-proud` defines: fix and review again until a round has no must-fix and no should-fix findings. A question only the user can answer becomes a blocker on that task, with the owner and the question; it is not a finding.
+Iterate until proud, as `are-you-proud` defines: fix every must-fix and should-fix finding, then request another round; a round that led to a fix is never the last. Stop when a round has no must-fix and no should-fix findings. A question only the user can answer becomes a blocker on that task, with the owner and the question; it is not a finding, and it does not delay the review. Report the final verdict, the number of rounds, and the reviewer: the Oracle, or you when it was unavailable.
 
 ## Active board
 

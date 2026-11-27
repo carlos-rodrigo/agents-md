@@ -9,13 +9,13 @@ plan  →  simple-tasks  →  manager → builder → Oracle
                             (feedback loop + review until clean)
 ```
 
-1. **Plan** (`plan`): agree on what we are building and how: behavior, how the current code works, the design, how we will verify it, the build order, and the decisions you need to make. `are-you-proud` reviews the plan for contradictions and ambiguity.
-2. **Split** (`simple-tasks`): turn the build order into task briefs. Each task has a goal, the files it should touch, scope, and a feedback loop built with `feedback-loop`. `are-you-proud` reviews the task set against the plan.
+1. **Plan** (`plan`): agree on what we are building and how: behavior, how the current code works, the design, how we will verify it, the build order, and the decisions you need to make. The Oracle reviews the plan with `are-you-proud` for contradictions and ambiguity, round after round until clean.
+2. **Split** (`simple-tasks`): turn the build order into task briefs. Each task has a goal, the files it should touch, scope, and a feedback loop built with `feedback-loop`. The Oracle reviews the task set against the plan the same way.
 3. **Delegate to `manager`:** it dispatches one fresh `builder` per task, checks its proof, and summons Oracle. It routes repairs until a review has no must-fix or should-fix findings, then accepts completion and updates pending tasks. The builder implements and runs the task's feedback loop; it does not coordinate reviews or mark work done.
 
 Say “Implement TASK-003” or “Implement the remaining tasks for this feature.” Shared `AGENTS.md` routes implementation to `manager`; you do not trigger review and repair separately. For a request without a task brief, the builder creates one. Explicit small inline work can still skip task artifacts and use `feedback-loop` directly.
 
-`manager` and `builder` are agent definitions in `pi-config`, not skills. They inherit the caller's model. The current launcher uses fresh contexts for repair calls too, handing off through task Results and Oracle findings.
+`manager` and `builder` are agent definitions in `pi-config`, not skills. They run Claude models pinned in their definitions. The current launcher uses fresh contexts for repair calls too, handing off through task Results and Oracle findings.
 
 ## Where things live
 

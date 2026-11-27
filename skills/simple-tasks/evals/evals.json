@@ -58,14 +58,15 @@
     {
       "id": 5,
       "prompt": "Create a task to fix the intermittent sync test failure in the report. I authorize the fix, but nobody knows the cause yet.",
-      "expected_output": "A todo task whose feedback loop starts with Diagnose, Baseline, and Harness steps instead of a guessed cause or reproduction, with fixed defined by the report's Done. Reviewed with are-you-proud.",
+      "expected_output": "A todo task whose feedback loop starts with Diagnose, Baseline, and Harness steps instead of a guessed cause or reproduction, with fixed defined by the report's Done. Reviewed by the Oracle with are-you-proud.",
       "files": [
         "evals/files/flaky-sync-report.md"
       ],
       "expectations": [
         "The feedback loop has Diagnose, Baseline, and Harness lines and does not state a guessed cause or a guessed Repro command.",
         "Fixed is taken from the report's Done (cause fixed, not masked, under CI-like load), not an invented threshold, and a longer wait or retry is not accepted as the fix.",
-        "The task stays todo and ready, and says to stop with a blocker if the cause lies outside the sync scope or needs a user decision."
+        "The task stays todo and ready, and says to stop with a blocker if the cause lies outside the sync scope or needs a user decision.",
+        "After writing, the agent has the Oracle review the task with are-you-proud (or reviews it itself and says so when no Oracle is available), reviews again after every fix until a round has no must-fix or should-fix findings, and reports the verdict, the number of rounds, and the reviewer."
       ]
     }
   ]

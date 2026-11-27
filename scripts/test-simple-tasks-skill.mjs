@@ -34,6 +34,13 @@ for (const marker of ['- Eval:', '- Discriminates:', '- Guard:', '- Outcome (aft
 for (const marker of ['## When the loop cannot be written yet', '- Diagnose:', '- Baseline:', '- Harness:', '- Diagnosis:', '- Candidates:', 'Trust it only after it shows the failure on the base', 'keep the simplest one that meets the expected observation', 'Stop when two experiments in a row add no new information', 'Do not start the fix yet', 'diagnostic code never enters the change', 'Failing to reproduce is not a no-op', 'ask the user rather than invent a threshold', 'not only that the symptom stopped', 'Record that run on the base as the Baseline', 'wait for the observable condition instead of waiting longer', 'fails on base most runs, for the diagnosed reason', 'counts as a repair attempt under Stop', 'The user owns that decision', 'creates or rescopes tasks only after the user approves', 'Skip these stages when the checks can be written directly', 'do Diagnose → Baseline → Harness once']) {
   assert(feedbackLoop.includes(marker), `feedback-loop diagnosis stage missing ${marker}`);
 }
+for (const [name, text] of [['simple-tasks', simpleTasks], ['plan', plan]]) {
+  assert(/always ends with an Oracle review that uses the `are-you-proud` skill/.test(text), `${name} must say up front that the Oracle reviews`);
+  assert(text.includes('agent `oracle`') && /read the `are-you-proud` skill and review it yourself, and report that the review was not independent/.test(text), `${name} must use the Oracle and state when self-review replaced it`);
+  assert(/final verdict, the number of rounds, and the reviewer/.test(text) && text.includes('it does not delay the review'), `${name} reports the verdict and does not wait on user decisions`);
+  assert(text.includes('a round that led to a fix is never the last'), `${name} review cannot stop right after a fix`);
+  assert(!text.includes('Outside manager-led work, apply it yourself'), `${name} review has one reviewer rule`);
+}
 assert(simpleTasks.includes('Diagnose, Baseline, and Harness steps say what to find out') && simpleTasks.includes('are not placeholders'), 'tasks needing diagnosis are still ready');
 assert(!/`prd`|loop:gate|nuvo-/.test(feedbackLoop), 'feedback-loop has no references to removed skills or other projects');
 assert(feedbackLoop.includes('foreground `subagent` tool'), 'Oracle review uses a foreground subagent');

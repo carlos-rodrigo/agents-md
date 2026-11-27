@@ -7,7 +7,7 @@ description: "Plan a feature before implementation: what we are building and why
 
 Build a shared, high-level understanding of what we are building and how, before writing tasks or code. The plan is the source for `simple-tasks`. It does not implement anything.
 
-Save it at `.features/{feature}/plan.md`. Ask for a feature slug if it is unclear.
+Save it at `.features/{feature}/plan.md`. Ask for a feature slug if it is unclear. A plan always ends with an Oracle review that uses the `are-you-proud` skill: follow [Review with are-you-proud](#review-with-are-you-proud) before you present it.
 
 ## Method
 
@@ -79,7 +79,7 @@ Omit sections that add nothing: a small change may need only Outcome, Behavior, 
 
 ## Review with are-you-proud
 
-Before presenting the plan, review it with `are-you-proud`. For a plan, it looks for:
+Before presenting the plan, ask the Oracle, with the foreground `subagent` tool and agent `oracle`, to review it with `are-you-proud`. Pass the plan path, the user's request, and the previous round's findings. If you have no `subagent` tool or the Oracle is unavailable, read the `are-you-proud` skill and review it yourself, and report that the review was not independent. For a plan, the review looks for:
 
 - contradictions between sections, such as a scenario the design cannot produce or a build step with no outcome;
 - ambiguous or undefined terms, owners, and boundaries;
@@ -87,7 +87,7 @@ Before presenting the plan, review it with `are-you-proud`. For a plan, it looks
 - outcomes that cannot be verified as written;
 - design that is larger than the outcome needs.
 
-Iterate until proud, as `are-you-proud` defines: fix and review again until a round has no must-fix and no should-fix findings. A question only the user can answer goes into Decisions needed; it is not a finding.
+Iterate until proud, as `are-you-proud` defines: fix every must-fix and should-fix finding, then request another round; a round that led to a fix is never the last. Stop when a round has no must-fix and no should-fix findings. A question only the user can answer goes into Decisions needed; it is not a finding, and it does not delay the review. When you present the plan, give the final verdict, the number of rounds, and the reviewer: the Oracle, or you when it was unavailable.
 
 ## After approval
 
