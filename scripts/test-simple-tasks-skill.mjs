@@ -41,6 +41,10 @@ for (const [name, text] of [['simple-tasks', simpleTasks], ['plan', plan]]) {
   assert(text.includes('a round that led to a fix is never the last'), `${name} review cannot stop right after a fix`);
   assert(!text.includes('Outside manager-led work, apply it yourself'), `${name} review has one reviewer rule`);
 }
+for (const marker of ['Test (property or differential):', 'at least 3 trials each', 'run the Gate on the base and record it as `Base`', 'A failing base is a blocker unless fixing that failure is the task', 'adds no failure beyond them', 'special-cases test inputs', 'before every review round', "treats the builder's Result as claims", '- Base:', '- Tried:', '- Next:', 'Update `Tried` and `Next` after each milestone']) {
+  assert(feedbackLoop.includes(marker), `feedback-loop proof-integrity rule missing ${marker}`);
+}
+assert(areYouProud.includes('No unapproved deletion, skipping, or loosening of tests') && areYouProud.includes('are claims until a rerun or saved artifact confirms them'), 'are-you-proud checks test gaming and unverified claims');
 assert(simpleTasks.includes('Diagnose, Baseline, and Harness steps say what to find out') && simpleTasks.includes('are not placeholders'), 'tasks needing diagnosis are still ready');
 assert(!/`prd`|loop:gate|nuvo-/.test(feedbackLoop), 'feedback-loop has no references to removed skills or other projects');
 assert(feedbackLoop.includes('foreground `subagent` tool'), 'Oracle review uses a foreground subagent');

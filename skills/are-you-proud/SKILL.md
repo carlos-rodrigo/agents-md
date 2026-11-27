@@ -14,8 +14,8 @@ Review the actual diff, nearby code, requirements, tests, and verification evide
 - **Simplicity:** no speculative abstraction, cleverness, configuration, dependency, indirection, or broad rewrite. Always push for the simplest solution that works.
 - **Readability:** names, control flow, ownership, and side effects are obvious.
 - **Design fit:** follows local language/framework patterns; responsibilities and boundaries are coherent. Apply SOLID pragmatically, not ceremonially.
-- **Tests:** behavior-focused tests prove the change, edge cases, and failure modes; no incidental implementation assertions.
-- **Evidence:** required checks ran and skipped checks have reasons.
+- **Tests:** behavior-focused tests prove the change, edge cases, and failure modes; no incidental implementation assertions. No unapproved deletion, skipping, or loosening of tests, and no implementation that hard-codes the tests' expected outputs or special-cases test inputs.
+- **Evidence:** required checks ran and skipped checks have reasons. An implementer's reported results are claims until a rerun or saved artifact confirms them.
 
 ## For plans and tasks
 

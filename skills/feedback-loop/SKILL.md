@@ -23,7 +23,8 @@ It lives in the task file:
    | Behavior | Proof |
    |---|---|
    | Logic, data rules, edge cases | Test: `{command}` |
-   | Prompt, guidance, classifier, or other AI step | Eval: `{command}` over fixed cases, several trials each |
+   | Pure logic, parser, encoder, or refactor | Test (property or differential): `{command}` checks an invariant (round-trip, ordering, idempotence) over generated inputs, or compares old and new output on the same inputs |
+   | Prompt, guidance, classifier, or other AI step | Eval: `{command}` over fixed cases, at least 3 trials each, more when the step is flaky |
    | UI workflow | Browser: `agent-browser` steps through the flow and reads the page |
    | HTTP API | API: `curl` with expected status and body fields |
    | CLI, job, or multi-step routine | Script: a runnable script that drives the routine and prints the observation |
@@ -61,6 +62,8 @@ Skip these stages when the checks can be written directly. A bug with a known re
 
 ## Run it
 
+Before the first edit, when the Result has no `Base` line yet, run the Gate on the base and record it as `Base`. A failing base is a blocker unless fixing that failure is the task: it hides which failures the change causes. If the user accepts the existing failures, record them in `Base`; the Gate then passes when the change adds no failure beyond them.
+
 When the loop had to be built, do Diagnose → Baseline → Harness once. Then run in order: Repro → Test → Eval → Discriminates → Browser/API/Script → Edge → Guard → Gate. After a fix, rerun from the first check that failed or that the fix could affect. Run the Gate last, after the last fix.
 
 **Stop** after 3 repair attempts on the same distinct failure, or sooner when the same failure repeats twice with no new information. Each review finding counts as one distinct failure. Also stop for owner decisions, a missing environment or data, unrelated regressions, or out-of-scope product, architecture, API, schema, auth, or persistence work. Stopping produces a `blocked` Result with the owner and next action, never `done`.
@@ -79,7 +82,7 @@ In manager-led work, the builder runs checks and records evidence; the manager s
 
 If the Oracle is unavailable in manager-led work, keep the task incomplete and report the review blocker; self-review is not independent approval. Outside manager-led work, apply `are-you-proud` yourself and record that the Oracle review did not run.
 
-The implementer may add checks. Removing or weakening an expected observation changes the agreed outcome and needs the user.
+The implementer may add checks. Removing or weakening an expected observation changes the agreed outcome and needs the user. Weakening includes unapproved deletion, skipping, or loosening of tests, and an implementation that hard-codes the tests' expected outputs or special-cases test inputs. In manager-led work, the manager checks for it and reruns the Gate and the Proof check closest to the user-visible outcome itself before every review round; Oracle treats the builder's Result as claims to verify against those reruns and the artifacts.
 
 ## Task section
 
@@ -99,7 +102,7 @@ The implementer may add checks. Removing or weakening an expected observation ch
 - Script: `{path}` → {expected output}
 - Edge: {failure or boundary action} → {expected result}
 - Guard: `{command}` → before {n/N}, after {n/N}; no old case fails
-- Gate: `{regression command}` → exits 0
+- Gate: `{regression command}` → exits 0, or adds no failure beyond those accepted in `Base`
 - Review: Oracle with are-you-proud on diff and evidence; iterate until no must-fix or should-fix findings
 - Outcome (after deploy, non-blocking): {production signal} → {expected}, checked by {who}
 ```
@@ -108,12 +111,13 @@ Delete the lines that don't apply. Always keep Setup, Edge, Gate, and Review. Ke
 
 ## Result section
 
-Record what actually happened, not what was planned, so a later reader can compare runs. `@ {commit}` is the base commit; when the tested change is uncommitted, add `+ {diff artifact path}` capturing staged, unstaged, and new files.
+Record what actually happened, not what was planned, so a later reader can compare runs. Update `Tried` and `Next` after each milestone, not only at the end, so a fresh agent can resume if the session dies. `@ {commit}` is the base commit; when the tested change is uncommitted, add `+ {diff artifact path}` capturing staged, unstaged, and new files.
 
 ```markdown
 ## Result
 
 - Status: in-progress (awaiting review) | done | blocked
+- Base: `{gate}` @ `{base commit}` before editing → {result}; accepted failures: {tests, accepted by} | none
 - Changed: `{paths}`
 - Contract: every Goal, Done, and binding Execute item met | unmet: {item, owner, reason}
 - Diagnosis: {cause} confirmed by `{evidence path}`; ruled out: {hypothesis → evidence}
@@ -125,6 +129,8 @@ Record what actually happened, not what was planned, so a later reader can compa
 - Gate: `{command}` @ `{commit}` → {result}
 - Review: round {N} → {verdict}; fixed: {findings}; not fixed: {finding + reason}
 - Outcome follow-up: {signal, who checks it} | not applicable
+- Tried: {approach → outcome} (one line each, including dead ends)
+- Next: {the next step a fresh agent should take} | none
 - Blocker: none | {what, owner, next action}
 ```
 
